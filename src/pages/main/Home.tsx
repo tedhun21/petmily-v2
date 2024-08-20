@@ -7,14 +7,15 @@ import { Link, useNavigate } from 'react-router-dom';
 import { SyntheticEvent, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import axios from 'axios';
-import { getCookieValue } from 'hooks/getCookie';
-import { refreshAccessToken } from 'hooks/refreshAcessToken';
+
 import { useSelector } from 'react-redux';
 import StarIcon from '@mui/icons-material/Star';
 import { styled as styledMui } from '@mui/material/styles';
 import { IUser } from 'store/userSlice';
 import Footer from '@components/footer/Footer';
 import HomeAd from '@components/HomeAd';
+import { getCookieValue } from '../../../utils/getCookie';
+import { refreshAccessToken } from '../../../utils/refreshAccessToken';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 const bucketUrl = process.env.REACT_APP_BUCKET_URL;

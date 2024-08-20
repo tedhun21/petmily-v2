@@ -3,9 +3,10 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { getCookieValue } from 'hooks/getCookie';
+
 import { SyntheticEvent } from 'react';
-import { refreshAccessToken } from 'hooks/refreshAcessToken';
+import { getCookieValue } from '../../utils/getCookie';
+import { refreshAccessToken } from '../../utils/refreshAccessToken';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 const bucketUrl = process.env.REACT_APP_BUCKET_URL;

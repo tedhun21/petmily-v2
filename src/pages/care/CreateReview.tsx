@@ -5,11 +5,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { IUser } from 'store/userSlice';
 import axios from 'axios';
-import { getCookieValue } from 'hooks/getCookie';
-import jwt_decode from 'jwt-decode';
+
+import { getCookieValue } from '../../../utils/getCookie';
 
 const apiUrl = process.env.REACT_APP_API_URL;
-const bucketUrl = process.env.REACT_APP_BUCKET_URL;
 
 export default function CreateReview() {
   const navigate = useNavigate();

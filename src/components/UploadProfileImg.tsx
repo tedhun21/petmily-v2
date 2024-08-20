@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import axios, { AxiosError } from 'axios';
-import { getCookieValue } from 'hooks/getCookie';
+
 import { useSelector } from 'react-redux';
 import { IUser } from 'store/userSlice';
+import { getCookieValue } from '../../utils/getCookie';
 
 //  DefaultUserProfile 이미지 안보임
 //  모달 디자인

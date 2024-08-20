@@ -1,11 +1,12 @@
 import axios from 'axios';
-import { getCookieValue } from 'hooks/getCookie';
-import { refreshAccessToken } from 'hooks/refreshAcessToken';
+
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import { IUser } from 'store/userSlice';
 import styled, { keyframes } from 'styled-components';
+import { getCookieValue } from '../../../utils/getCookie';
+import { refreshAccessToken } from '../../../utils/refreshAccessToken';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 const bucketUrl = process.env.REACT_APP_BUCKET_URL;

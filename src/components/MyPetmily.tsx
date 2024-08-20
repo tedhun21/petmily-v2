@@ -1,11 +1,12 @@
 import styled from 'styled-components';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
-import { getCookieValue } from 'hooks/getCookie';
+
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import { getCookieValue } from '../../utils/getCookie';
 
 // 펫 이미지 없을 때 디폴트 이미지 수정
 // 펫밀리 카드 디자인 수정

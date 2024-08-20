@@ -9,7 +9,7 @@ import axios from 'axios';
 import UploadProfileImg from '../../components/UploadProfileImg';
 import { useState } from 'react';
 import { IUser, deleteUser } from 'store/userSlice';
-import { deleteCookie } from 'hooks/deleteCookie';
+import { deleteCookie } from '../../../utils/deleteCookie';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { TextField } from '@mui/material';
