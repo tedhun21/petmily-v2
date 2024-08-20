@@ -1,9 +1,8 @@
 import axios from 'axios';
 import { getCookieValue } from './getCookie';
-
 const apiUrl = process.env.REACT_APP_API_URL;
 
-export const refreshAccessToken = async () => {
+export async function refreshAccessToken() {
   const refreshToken = getCookieValue('refresh_token');
 
   try {
@@ -20,4 +19,4 @@ export const refreshAccessToken = async () => {
     console.log(error);
     throw error;
   }
-};
+}

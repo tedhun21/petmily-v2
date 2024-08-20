@@ -9,7 +9,7 @@ import axios from 'axios';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
-const Search = () => {
+export default function Search() {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [showResults, setShowResults] = useState(false);
 
@@ -100,7 +100,7 @@ const Search = () => {
       )}
     </SearchContainer>
   );
-};
+}
 
 const SearchContainer = styled.div`
   display: flex;
@@ -145,5 +145,3 @@ const ResultText = styled.div`
   color: #595959;
   font-weight: ${(props) => props.theme.fontWeights.extrabold};
 `;
-
-export default Search;

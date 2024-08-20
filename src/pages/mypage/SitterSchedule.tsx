@@ -13,12 +13,13 @@ import { useForm } from 'react-hook-form';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-import { getCookieValue } from 'hooks/getCookie';
+
 import { IUser } from 'store/userSlice';
 import dayjs, { Dayjs } from 'dayjs';
 import DaumPostcode from 'react-daum-postcode';
 import { Modal, Sheet } from '@mui/joy';
 import { TextField } from '@mui/material';
+import { getCookieValue } from '../../utils/getCookie';
 
 //  주소가 바뀌어야 수정 가능
 
@@ -47,7 +48,7 @@ const token = getCookieValue('access_token');
 
 const daysOfWeek = ['월', '화', '수', '목', '금'];
 
-const SitterSchedule = () => {
+export default function SitterSchedule() {
   const { memberId } = useSelector((state: IUser) => state.user);
 
   const navigate = useNavigate();
@@ -397,7 +398,7 @@ const SitterSchedule = () => {
       </MainContainer>
     </>
   );
-};
+}
 
 const ImageContainer = styled.div`
   display: flex;
@@ -479,4 +480,3 @@ const ErrorMessage = styled.div`
   color: red;
   font-size: 14px;
 `;
-export default SitterSchedule;

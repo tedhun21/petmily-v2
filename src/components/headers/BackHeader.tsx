@@ -4,7 +4,7 @@ import { IUser } from 'store/userSlice';
 import BackButton from '@components/buttons/BackButton';
 import styled from 'styled-components';
 
-const BackHeader = () => {
+export default function BackHeader() {
   const { isLogin } = useSelector((state: IUser) => state.user);
 
   return (
@@ -12,9 +12,7 @@ const BackHeader = () => {
       <BackButton></BackButton>
     </Container>
   );
-};
-
-export default BackHeader;
+}
 
 const Container = styled.header`
   width: 100%;

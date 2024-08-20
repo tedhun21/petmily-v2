@@ -5,11 +5,12 @@ import { IUser } from 'store/userSlice';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import CareCard from '@components/Carecard';
-import { getCookieValue } from 'hooks/getCookie';
+
 import { useInView } from 'react-intersection-observer';
 import jwt_decode from 'jwt-decode';
-import { refreshAccessToken } from 'hooks/refreshAcessToken';
+
 import { CircularProgress } from '@mui/material';
+import { getCookieValue } from '../../utils/getCookie';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -19,7 +20,7 @@ const filters = [
   { text: '완료', value: `&condition=finish` },
 ];
 
-const Cares = () => {
+export default function Care() {
   const navigate = useNavigate();
   const accessToken = getCookieValue('access_token');
 
@@ -119,9 +120,7 @@ const Cares = () => {
       </CareContainer>
     </MainContainer>
   );
-};
-
-export default Cares;
+}
 
 const MainContainer = styled.main`
   height: 100%;

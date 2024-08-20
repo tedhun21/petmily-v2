@@ -7,15 +7,16 @@ import { FormatListBulleted } from '@mui/icons-material';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { IReservation, deleteReservation } from 'store/reservationSlice';
-import { refreshAccessToken } from 'hooks/refreshAcessToken';
-import { getCookieValue } from 'hooks/getCookie';
+
 import PetsitterCard from '@components/PetsitterCard';
 import { deleteUser } from 'store/userSlice';
-import { deleteCookie } from 'hooks/deleteCookie';
+import { deleteCookie } from '../../utils/deleteCookie';
+import { refreshAccessToken } from '../../utils/refreshAccessToken';
+import { getCookieValue } from '../../utils/getCookie';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
-const ReservationStepTwo = () => {
+export default function ReservationStepTwo() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -217,9 +218,7 @@ const ReservationStepTwo = () => {
       </Drawer>
     </MainContainer>
   );
-};
-
-export default ReservationStepTwo;
+}
 
 const MainContainer = styled.div`
   display: flex;

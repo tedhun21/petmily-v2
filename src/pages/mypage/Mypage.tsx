@@ -8,7 +8,7 @@ import MyPetmily from '@components/MyPetmily';
 
 const BucketUrl = process.env.REACT_APP_BUCKET_URL;
 
-const Mypage = () => {
+export default function Mypage() {
   const navigate = useNavigate();
   const { isLogin, name, petsitterBoolean, photo } = useSelector((state: IUser) => state.user);
 
@@ -50,7 +50,7 @@ const Mypage = () => {
       {petsitterBoolean ? <MySchedule /> : <MyPetmily />}
     </MypageContainer>
   );
-};
+}
 
 // 전체 페이지
 const MypageContainer = styled.main`
@@ -118,4 +118,3 @@ const Title = styled.span`
   margin-top: 10px;
   font-size: 14px;
 `;
-export default Mypage;

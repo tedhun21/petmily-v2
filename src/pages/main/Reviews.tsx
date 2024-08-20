@@ -29,7 +29,7 @@ type ReviewType = {
 //   <Rating name="half-rating-read" defaultValue={2.5} precision={0.5} readOnly />
 const userDefaultImage = '/imgs/DefaultUser.svg';
 
-const Reviews = () => {
+export default function Reviews() {
   const [page, setPage] = useState(1);
   const [reviews, setReviews] = useState<ReviewType[]>([]);
   const [isEnd, setIsEnd] = useState(false);
@@ -133,9 +133,7 @@ const Reviews = () => {
       </ReviewPage>
     </>
   );
-};
-
-export default Reviews;
+}
 
 const ReviewPage = styled.div`
   display: flex;

@@ -4,7 +4,7 @@ interface Props {
   children: string;
 }
 
-const GoogleOAuthButton = ({ children }: Props) => {
+export default function GoogleOAuthButton({ children }: Props) {
   const apiUrl = process.env.REACT_APP_API_URL;
 
   const handleGooleOAuth = () => {
@@ -16,9 +16,7 @@ const GoogleOAuthButton = ({ children }: Props) => {
       <div>{children}</div>
     </GoogleOAuthButtonStyle>
   );
-};
-
-export default GoogleOAuthButton;
+}
 
 const GoogleOAuthButtonStyle = styled.button`
   display: flex;

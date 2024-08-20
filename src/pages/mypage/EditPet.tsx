@@ -13,12 +13,13 @@ import Button from '@mui/material/Button';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import { getCookieValue } from 'hooks/getCookie';
+
 import { useForm } from 'react-hook-form';
 import { StyledButton, ErrorMsg, InfoText } from './EditUserProfile';
 import { TextField } from '@mui/material';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { getCookieValue } from '../../utils/getCookie';
 
 //  중성화 수정 (등록할 때 중성화 하지 않은 펫만 가능)
 
@@ -47,7 +48,7 @@ type IEditPet = yup.InferType<typeof schema>;
 const apiUrl = process.env.REACT_APP_API_URL;
 
 // 펫 수정
-const EditPet = () => {
+export default function EditPet() {
   const navigate = useNavigate();
 
   const { petId } = useParams();
@@ -259,7 +260,7 @@ const EditPet = () => {
       )}
     </>
   );
-};
+}
 
 const Info = styled.div`
   ${(props) => props.theme.fontSize.s14h21};
@@ -277,5 +278,3 @@ const BtnContainer = styled.div`
   justify-content: flex-end;
   margin-right: 36px;
 `;
-
-export default EditPet;

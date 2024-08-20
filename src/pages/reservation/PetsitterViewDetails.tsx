@@ -5,8 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setReservation, setPetsitterId, IReservation } from 'store/reservationSlice';
 import axios from 'axios';
 
-import { getCookieValue } from 'hooks/getCookie';
-import { refreshAccessToken } from 'hooks/refreshAcessToken';
 import { IUser } from 'store/userSlice';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
@@ -14,6 +12,8 @@ import Divider from '@mui/material/Divider';
 import Reviews from '@components/Reviews';
 import PossibleReservationTime from '@components/PossibleReservationTime';
 import dayjs from 'dayjs';
+import { getCookieValue } from '../../utils/getCookie';
+import { refreshAccessToken } from '../../utils/refreshAccessToken';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 const bucketUrl = process.env.REACT_APP_BUCKET_URL;
@@ -60,7 +60,7 @@ const convertTo12Hour = (time: string) => {
   return `${hours}:${minutes < 10 ? '0' + minutes : minutes} ${period}`;
 };
 
-const PetsitterViewDetails = () => {
+export default function PetsitterViewDetails() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { petsitterId } = useParams();
@@ -267,9 +267,7 @@ const PetsitterViewDetails = () => {
       </ButtonContainer>
     </MainContainer>
   );
-};
-
-export default PetsitterViewDetails;
+}
 
 const MainContainer = styled.div`
   display: flex;

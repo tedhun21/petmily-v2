@@ -1,11 +1,12 @@
 import styled from 'styled-components';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
-import { getCookieValue } from 'hooks/getCookie';
+
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import { getCookieValue } from '../utils/getCookie';
 
 // 펫 이미지 없을 때 디폴트 이미지 수정
 // 펫밀리 카드 디자인 수정
@@ -13,7 +14,7 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 const BucketUrl = process.env.REACT_APP_BUCKET_URL;
 const apiUrl = process.env.REACT_APP_API_URL;
 
-const MyPetmily = () => {
+export default function MyPetmily() {
   const token = getCookieValue('access_token');
   const [petmily, setPetmily] = useState<any[]>([]);
 
@@ -107,7 +108,7 @@ const MyPetmily = () => {
       </CardsContainer>
     </PetmilyContainer>
   );
-};
+}
 
 // petmily 카드 컨테이너
 const PetmilyContainer = styled.div`
@@ -241,4 +242,3 @@ const AdditionalInfo = styled.div`
   width: 100%;
   margin-top: 10px;
 `;
-export default MyPetmily;

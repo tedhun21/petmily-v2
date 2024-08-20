@@ -1,15 +1,15 @@
 import styled from 'styled-components';
 import Button from '@mui/material/Button';
-import { getCookieValue } from 'hooks/getCookie';
+
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { IUser } from 'store/userSlice';
+import { getCookieValue } from '../../utils/getCookie';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 const token = getCookieValue('access_token');
-
-const PetSitterHome = () => {
+export default function PetSitterHome() {
   const { memberId, petsitterBoolean, petsitterId } = useSelector((state: IUser) => state.user);
 
   return (
@@ -27,7 +27,7 @@ const PetSitterHome = () => {
       </ContentContainer>
     </MainContainer>
   );
-};
+}
 
 const MainContainer = styled.div`
   display: flex;
@@ -52,5 +52,3 @@ const Icon = styled.img`
   margin-right: 8px;
 `;
 const InfoText = styled.div``;
-
-export default PetSitterHome;

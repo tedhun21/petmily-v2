@@ -33,13 +33,13 @@ import DaumPostcode from 'react-daum-postcode';
 import dayjs, { Dayjs } from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 
-import { getCookieValue } from 'hooks/getCookie';
-
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteReservation, setReservation } from 'store/reservationSlice';
 import { IUser, deleteUser } from 'store/userSlice';
-import { refreshAccessToken } from 'hooks/refreshAcessToken';
-import { deleteCookie } from 'hooks/deleteCookie';
+
+import { deleteCookie } from '../../utils/deleteCookie';
+import { getCookieValue } from '../../utils/getCookie';
+import { refreshAccessToken } from '../../utils/refreshAccessToken';
 
 interface IFormInput {
   address: string;
@@ -50,7 +50,7 @@ interface IFormInput {
 const apiUrl = process.env.REACT_APP_API_URL;
 const bucketUrl = process.env.REACT_APP_BUCKET_URL;
 
-const Reservation = () => {
+export default function Reservation() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -727,9 +727,7 @@ const Reservation = () => {
       </ReservationContainer>
     </MainContainer>
   );
-};
-
-export default Reservation;
+}
 
 const MainContainer = styled.div`
   display: flex;

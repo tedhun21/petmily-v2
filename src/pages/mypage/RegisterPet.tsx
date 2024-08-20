@@ -7,9 +7,10 @@ import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { getCookieValue } from 'hooks/getCookie';
+
 import axios from 'axios';
 import { InfoText } from './EditUserProfile';
+import { getCookieValue } from '../../utils/getCookie';
 
 // 버튼 수정
 // 라디오 간격
@@ -44,7 +45,7 @@ const apiUrl = process.env.REACT_APP_API_URL;
 const defaultDogProfile = '/imgs/PetProfile.png';
 const defaultCatProfile = '/imgs/CatProfile.png';
 
-const RegisterPet = () => {
+export default function RegisterPet() {
   const navigate = useNavigate();
 
   const { register, handleSubmit, setValue, formState } = useForm<IRegisterPet>({
@@ -264,7 +265,7 @@ const RegisterPet = () => {
       </MainContainer>
     </>
   );
-};
+}
 
 export const MainContainer = styled.main`
   display: flex;
@@ -366,4 +367,3 @@ export const ErrorMsg = styled.div`
   margin-top: 5px;
   ${(props) => props.theme.fontSize.s14h21}
 `;
-export default RegisterPet;

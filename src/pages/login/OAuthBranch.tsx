@@ -1,12 +1,12 @@
 import axios from 'axios';
-import { getCookieValue } from 'hooks/getCookie';
+
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
-const OAuthBranch = () => {
+export default function OAuthBranch() {
   const navigate = useNavigate();
 
   const handleMemberOAuth = async () => {
@@ -44,8 +44,7 @@ const OAuthBranch = () => {
       </ImgContainer>
     </MainContainer>
   );
-};
-export default OAuthBranch;
+}
 
 const MainContainer = styled.main`
   display: flex;

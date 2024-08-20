@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import axios, { AxiosError } from 'axios';
-import { getCookieValue } from 'hooks/getCookie';
+
 import { useSelector } from 'react-redux';
 import { IUser } from 'store/userSlice';
+import { getCookieValue } from '../utils/getCookie';
 
 //  DefaultUserProfile 이미지 안보임
 //  모달 디자인
@@ -19,7 +20,7 @@ import { IUser } from 'store/userSlice';
 const apiUrl = process.env.REACT_APP_API_URL;
 const BucketUrl = process.env.REACT_APP_BUCKET_URL;
 
-const UploadProfileImg = ({ petId, setImageFile, currentImageUrl, defaultProfileImg }: any) => {
+export default function UploadProfileImg({ petId, setImageFile, currentImageUrl, defaultProfileImg }: any) {
   const [previewImage, setPreviewImage] = useState<string | null>(currentImageUrl);
   const fileInputRef = React.createRef<HTMLInputElement>();
   const [openModal, setOpenModal] = useState(false);
@@ -144,7 +145,7 @@ const UploadProfileImg = ({ petId, setImageFile, currentImageUrl, defaultProfile
       </Modal>
     </div>
   );
-};
+}
 
 const ModalBody = ({ hasImage, onAdd, onEdit, onDelete, onClose }: any) => {
   const [hadImage, setHadImage] = useState(hasImage);
@@ -188,4 +189,3 @@ const ModalBody = ({ hasImage, onAdd, onEdit, onDelete, onClose }: any) => {
     </div>
   );
 };
-export default UploadProfileImg;

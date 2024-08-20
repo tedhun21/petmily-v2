@@ -3,18 +3,19 @@ import { MainContainer, PageTitle, RegisterInputWrapper, InputContainer, InputLa
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCookieValue } from 'hooks/getCookie';
+
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import UploadProfileImg from '../../components/UploadProfileImg';
 import { useState } from 'react';
 import { IUser, deleteUser } from 'store/userSlice';
-import { deleteCookie } from 'hooks/deleteCookie';
+import { deleteCookie } from '../../utils/deleteCookie';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { TextField } from '@mui/material';
 import DaumPostcode from 'react-daum-postcode';
 import { Modal, Sheet } from '@mui/joy';
+import { getCookieValue } from '../../utils/getCookie';
 
 // 버튼 수정
 
@@ -36,7 +37,7 @@ type IEditUser = yup.InferType<typeof schema>;
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
-const EditUserProfile = () => {
+export default function EditUserProfile() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -238,7 +239,7 @@ const EditUserProfile = () => {
       </MainContainer>
     </>
   );
-};
+}
 
 const Info = styled.div`
   ${(props) => props.theme.fontSize.s16h24};
@@ -288,5 +289,3 @@ export const ErrorMsg = styled.div`
   margin-top: 5px;
   ${(props) => props.theme.fontSize.s14h21}
 `;
-
-export default EditUserProfile;

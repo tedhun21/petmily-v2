@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const Footer = () => {
+export default function Footer() {
   return (
     <MainContainer>
       <ContactUs>Contact Us</ContactUs>
@@ -42,9 +42,7 @@ const Footer = () => {
       </LinkImgContainer>
     </MainContainer>
   );
-};
-
-export default Footer;
+}
 
 const MainContainer = styled.div`
   width: 100%;

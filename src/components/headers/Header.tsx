@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-const Header = () => {
+export default function Header() {
   const { isLogin } = useSelector((state: any) => state.user);
 
   return (
@@ -20,9 +20,7 @@ const Header = () => {
       </ButtonContainer>
     </Container>
   );
-};
-
-export default Header;
+}
 
 const Container = styled.header`
   display: flex;

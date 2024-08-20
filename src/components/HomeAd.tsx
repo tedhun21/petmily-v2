@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const HomeAd = () => {
+export default function HomeAd() {
   return (
     <AdContainer>
       <GifContainer src="/imgs/HomeAd.gif" alt="ad" />
@@ -14,7 +14,7 @@ const HomeAd = () => {
       </TextContainer>
     </AdContainer>
   );
-};
+}
 
 const AdContainer = styled.div`
   display: flex;
@@ -57,5 +57,3 @@ const InfoText = styled.div`
 const GifContainer = styled.img`
   width: 300px;
 `;
-
-export default HomeAd;

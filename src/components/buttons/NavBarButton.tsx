@@ -8,7 +8,7 @@ interface NavBarButtonProps {
   link: string;
 }
 
-const NavBarButton = ({ children, link }: NavBarButtonProps) => {
+export default function NavBarButton({ children, link }: NavBarButtonProps) {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
@@ -23,8 +23,7 @@ const NavBarButton = ({ children, link }: NavBarButtonProps) => {
       {children}
     </NavBarButtonStyle>
   );
-};
-export default NavBarButton;
+}
 
 const NavBarButtonStyle = styled.button<{ isActive: boolean }>`
   flex-shrink: 0;

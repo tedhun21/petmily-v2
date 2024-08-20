@@ -5,9 +5,10 @@ import { Avatar } from '@mui/material';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import axios from 'axios';
 import { SyntheticEvent, useEffect, useState } from 'react';
-import { getCookieValue } from 'hooks/getCookie';
+
 import AddIcon from '@mui/icons-material/Add';
 import { useParams } from 'react-router-dom';
+import { getCookieValue } from '../../utils/getCookie';
 
 const BucketUrl = process.env.REACT_APP_BUCKET_URL || '';
 const apiUrl = process.env.REACT_APP_API_URL;
@@ -33,7 +34,7 @@ interface JournalImgProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   isDefault?: boolean;
 }
 
-const ViewJournal = () => {
+export default function ViewJournal() {
   const [journal, setJournal] = useState<JournalType | null>(null);
   const [showAll, setShowAll] = useState(false);
 
@@ -167,7 +168,7 @@ const ViewJournal = () => {
       )}
     </MainContainer>
   );
-};
+}
 
 const MainContainer = styled.div`
   padding: 12px;
@@ -278,4 +279,3 @@ const Content = styled.div`
 
   /* letter-spacing: 0.2px; */
 `;
-export default ViewJournal;

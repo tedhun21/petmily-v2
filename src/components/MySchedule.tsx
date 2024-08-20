@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
-import { getCookieValue } from 'hooks/getCookie';
+
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
@@ -12,6 +12,7 @@ import PersonPinIcon from '@mui/icons-material/PersonPin';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import PetsIcon from '@mui/icons-material/Pets';
 import CircularProgress from '@mui/joy/CircularProgress';
+import { getCookieValue } from '../utils/getCookie';
 
 // 디자인 수정
 
@@ -30,7 +31,7 @@ type InfoType = {
   monthTotalReservation: number | null;
 } | null;
 
-const MySchedule = () => {
+export default function MySchedule() {
   const { memberId } = useSelector((state: IUser) => state.user);
 
   const [info, setInfo] = useState<InfoType>(null);
@@ -175,7 +176,7 @@ const MySchedule = () => {
       )}
     </Container>
   );
-};
+}
 
 const Container = styled.div`
   margin-top: 60px;
@@ -255,4 +256,3 @@ const Image = styled.img`
   width: 120px;
   margin-bottom: 20px;
 `;
-export default MySchedule;
