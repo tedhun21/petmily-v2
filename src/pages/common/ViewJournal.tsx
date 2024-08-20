@@ -8,7 +8,7 @@ import { SyntheticEvent, useEffect, useState } from 'react';
 
 import AddIcon from '@mui/icons-material/Add';
 import { useParams } from 'react-router-dom';
-import { getCookieValue } from '../../../utils/getCookie';
+import { getCookieValue } from '../../utils/getCookie';
 
 const BucketUrl = process.env.REACT_APP_BUCKET_URL || '';
 const apiUrl = process.env.REACT_APP_API_URL;

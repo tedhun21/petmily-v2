@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 import Button from '@mui/material/Button';
-import { getCookieValue } from 'hooks/getCookie';
+
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { IUser } from 'store/userSlice';
+import { getCookieValue } from '../../utils/getCookie';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 const token = getCookieValue('access_token');

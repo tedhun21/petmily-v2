@@ -5,8 +5,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import { SyntheticEvent } from 'react';
-import { getCookieValue } from '../../utils/getCookie';
-import { refreshAccessToken } from '../../utils/refreshAccessToken';
+import { getCookieValue } from '../utils/getCookie';
+import { refreshAccessToken } from '../utils/refreshAccessToken';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 const bucketUrl = process.env.REACT_APP_BUCKET_URL;

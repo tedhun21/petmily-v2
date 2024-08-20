@@ -7,9 +7,10 @@ import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { getCookieValue } from 'hooks/getCookie';
+
 import axios from 'axios';
 import { InfoText } from './EditUserProfile';
+import { getCookieValue } from '../../utils/getCookie';
 
 // 버튼 수정
 // 라디오 간격

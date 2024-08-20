@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { IUser } from 'store/userSlice';
 import axios from 'axios';
 
-import { getCookieValue } from '../../../utils/getCookie';
+import { getCookieValue } from '../../utils/getCookie';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 

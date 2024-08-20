@@ -6,9 +6,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 
 import { IUser, deleteUser, login, setUser } from 'store/userSlice';
-import { deleteCookie } from '../../../utils/deleteCookie';
-import { getCookieValue } from '../../../utils/getCookie';
-import { refreshAccessToken } from '../../../utils/refreshAccessToken';
+import { deleteCookie } from '../../utils/deleteCookie';
+import { getCookieValue } from '../../utils/getCookie';
+import { refreshAccessToken } from '../../utils/refreshAccessToken';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 

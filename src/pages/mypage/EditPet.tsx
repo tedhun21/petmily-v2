@@ -13,12 +13,13 @@ import Button from '@mui/material/Button';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import { getCookieValue } from 'hooks/getCookie';
+
 import { useForm } from 'react-hook-form';
 import { StyledButton, ErrorMsg, InfoText } from './EditUserProfile';
 import { TextField } from '@mui/material';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { getCookieValue } from '../../utils/getCookie';
 
 //  중성화 수정 (등록할 때 중성화 하지 않은 펫만 가능)
 

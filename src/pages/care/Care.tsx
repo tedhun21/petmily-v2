@@ -10,7 +10,7 @@ import { useInView } from 'react-intersection-observer';
 import jwt_decode from 'jwt-decode';
 
 import { CircularProgress } from '@mui/material';
-import { getCookieValue } from '../../../utils/getCookie';
+import { getCookieValue } from '../../utils/getCookie';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 

@@ -14,8 +14,8 @@ import { styled as styledMui } from '@mui/material/styles';
 import { IUser } from 'store/userSlice';
 import Footer from '@components/footer/Footer';
 import HomeAd from '@components/HomeAd';
-import { getCookieValue } from '../../../utils/getCookie';
-import { refreshAccessToken } from '../../../utils/refreshAccessToken';
+import { getCookieValue } from '../../utils/getCookie';
+import { refreshAccessToken } from '../../utils/refreshAccessToken';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 const bucketUrl = process.env.REACT_APP_BUCKET_URL;

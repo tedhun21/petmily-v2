@@ -37,9 +37,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { deleteReservation, setReservation } from 'store/reservationSlice';
 import { IUser, deleteUser } from 'store/userSlice';
 
-import { deleteCookie } from '../../../utils/deleteCookie';
-import { getCookieValue } from '../../../utils/getCookie';
-import { refreshAccessToken } from '../../../utils/refreshAccessToken';
+import { deleteCookie } from '../../utils/deleteCookie';
+import { getCookieValue } from '../../utils/getCookie';
+import { refreshAccessToken } from '../../utils/refreshAccessToken';
 
 interface IFormInput {
   address: string;

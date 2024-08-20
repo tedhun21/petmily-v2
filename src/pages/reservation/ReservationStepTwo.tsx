@@ -10,9 +10,9 @@ import { IReservation, deleteReservation } from 'store/reservationSlice';
 
 import PetsitterCard from '@components/PetsitterCard';
 import { deleteUser } from 'store/userSlice';
-import { deleteCookie } from '../../../utils/deleteCookie';
-import { refreshAccessToken } from '../../../utils/refreshAccessToken';
-import { getCookieValue } from '../../../utils/getCookie';
+import { deleteCookie } from '../../utils/deleteCookie';
+import { refreshAccessToken } from '../../utils/refreshAccessToken';
+import { getCookieValue } from '../../utils/getCookie';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 

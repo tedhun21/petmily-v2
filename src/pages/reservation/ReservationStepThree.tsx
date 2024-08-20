@@ -10,9 +10,10 @@ import { notice, verificationNotice, impossibleNotice1, impossibleNotice2 } from
 import { useSelector, useDispatch } from 'react-redux';
 import { IReservation, addBody, deleteReservation } from 'store/reservationSlice';
 import { IUser } from 'store/userSlice';
-import { getCookieValue } from 'hooks/getCookie';
+
 import axios from 'axios';
 import { useNavigate } from 'react-router';
+import { getCookieValue } from '../../utils/getCookie';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 const bucketUrl = process.env.REACT_APP_BUCKET_URL || '';

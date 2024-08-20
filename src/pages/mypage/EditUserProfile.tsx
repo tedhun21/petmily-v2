@@ -3,18 +3,19 @@ import { MainContainer, PageTitle, RegisterInputWrapper, InputContainer, InputLa
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCookieValue } from 'hooks/getCookie';
+
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import UploadProfileImg from '../../components/UploadProfileImg';
 import { useState } from 'react';
 import { IUser, deleteUser } from 'store/userSlice';
-import { deleteCookie } from '../../../utils/deleteCookie';
+import { deleteCookie } from '../../utils/deleteCookie';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { TextField } from '@mui/material';
 import DaumPostcode from 'react-daum-postcode';
 import { Modal, Sheet } from '@mui/joy';
+import { getCookieValue } from '../../utils/getCookie';
 
 // 버튼 수정
 

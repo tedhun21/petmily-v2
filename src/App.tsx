@@ -47,6 +47,7 @@ import ViewPetsitters from '@pages/reservation/ViewPetsitters';
 import ViewJournal from '@pages/common/ViewJournal';
 import PetsitterViewDetails from '@pages/reservation/PetsitterViewDetails';
 import SitterSchedule from '@pages/mypage/SitterSchedule';
+import NotFound from '@pages/common/404';
 
 const NavHeaderLayout = () => {
   return (
@@ -92,6 +93,7 @@ const router = createBrowserRouter(
         <Route path="petsitters/:petsitterId" element={<PetsitterViewDetails />} />
         <Route path="petsitters/:memberId/schedule" element={<SitterSchedule />} />
       </Route>
+      <Route path="*" element={<NotFound />} />
     </Route>,
   ),
 );

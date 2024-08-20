@@ -5,7 +5,7 @@ import axios, { AxiosError } from 'axios';
 
 import { useSelector } from 'react-redux';
 import { IUser } from 'store/userSlice';
-import { getCookieValue } from '../../utils/getCookie';
+import { getCookieValue } from '../utils/getCookie';
 
 //  DefaultUserProfile 이미지 안보임
 //  모달 디자인
