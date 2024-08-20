@@ -47,7 +47,7 @@ type IEditPet = yup.InferType<typeof schema>;
 const apiUrl = process.env.REACT_APP_API_URL;
 
 // 펫 수정
-const EditPet = () => {
+export default function EditPet() {
   const navigate = useNavigate();
 
   const { petId } = useParams();
@@ -259,7 +259,7 @@ const EditPet = () => {
       )}
     </>
   );
-};
+}
 
 const Info = styled.div`
   ${(props) => props.theme.fontSize.s14h21};
@@ -277,5 +277,3 @@ const BtnContainer = styled.div`
   justify-content: flex-end;
   margin-right: 36px;
 `;
-
-export default EditPet;

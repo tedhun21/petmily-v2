@@ -19,7 +19,7 @@ const schema = yup.object().shape({
 });
 type IFormLoginInputs = yup.InferType<typeof schema>;
 
-const Login = () => {
+export default function Login() {
   const apiUrl = process.env.REACT_APP_API_URL;
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -115,9 +115,7 @@ const Login = () => {
       </LoginContainer>
     </MainContainer>
   );
-};
-
-export default Login;
+}
 
 const MainContainer = styled.main`
   display: flex;

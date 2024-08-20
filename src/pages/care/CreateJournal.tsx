@@ -10,7 +10,7 @@ import styled, { keyframes } from 'styled-components';
 const apiUrl = process.env.REACT_APP_API_URL;
 const bucketUrl = process.env.REACT_APP_BUCKET_URL;
 
-const CreateJournal = () => {
+export default function CreateJournal() {
   const navigate = useNavigate();
   const { reservationId } = useParams();
 
@@ -286,9 +286,7 @@ const CreateJournal = () => {
       </ButtonContainer>
     </MainContainer>
   );
-};
-
-export default CreateJournal;
+}
 
 const MainContainer = styled.main`
   display: flex;

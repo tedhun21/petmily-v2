@@ -11,7 +11,7 @@ import { refreshAccessToken } from 'hooks/refreshAcessToken';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
-const NavHeader = () => {
+export default function NavHeader() {
   const accessToken = getCookieValue('access_token');
   const refreshToken = getCookieValue('refresh_token');
 
@@ -147,9 +147,7 @@ const NavHeader = () => {
       </HeaderContatiner>
     </Container>
   );
-};
-
-export default NavHeader;
+}
 
 const Container = styled.header`
   display: flex;

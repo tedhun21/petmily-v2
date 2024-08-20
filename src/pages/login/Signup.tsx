@@ -43,7 +43,7 @@ const schema = yup.object().shape({
 });
 type IFormSignupInputs = yup.InferType<typeof schema>;
 
-const Signup = () => {
+export default function Signup() {
   const navigate = useNavigate();
   const [isSignupLoading, setIsSignupLoading] = useState(false);
 
@@ -226,9 +226,7 @@ const Signup = () => {
       )}
     </MainContainer>
   );
-};
-
-export default Signup;
+}
 
 const MainContainer = styled.main`
   display: flex;

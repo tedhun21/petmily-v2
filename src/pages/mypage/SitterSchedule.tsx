@@ -47,7 +47,7 @@ const token = getCookieValue('access_token');
 
 const daysOfWeek = ['월', '화', '수', '목', '금'];
 
-const SitterSchedule = () => {
+export default function SitterSchedule() {
   const { memberId } = useSelector((state: IUser) => state.user);
 
   const navigate = useNavigate();
@@ -397,7 +397,7 @@ const SitterSchedule = () => {
       </MainContainer>
     </>
   );
-};
+}
 
 const ImageContainer = styled.div`
   display: flex;
@@ -479,4 +479,3 @@ const ErrorMessage = styled.div`
   color: red;
   font-size: 14px;
 `;
-export default SitterSchedule;

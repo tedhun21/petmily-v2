@@ -60,7 +60,7 @@ const convertTo12Hour = (time: string) => {
   return `${hours}:${minutes < 10 ? '0' + minutes : minutes} ${period}`;
 };
 
-const PetsitterViewDetails = () => {
+export default function PetsitterViewDetails() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { petsitterId } = useParams();
@@ -267,9 +267,7 @@ const PetsitterViewDetails = () => {
       </ButtonContainer>
     </MainContainer>
   );
-};
-
-export default PetsitterViewDetails;
+}
 
 const MainContainer = styled.div`
   display: flex;

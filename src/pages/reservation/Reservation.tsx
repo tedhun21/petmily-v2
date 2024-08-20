@@ -50,7 +50,7 @@ interface IFormInput {
 const apiUrl = process.env.REACT_APP_API_URL;
 const bucketUrl = process.env.REACT_APP_BUCKET_URL;
 
-const Reservation = () => {
+export default function Reservation() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -727,9 +727,7 @@ const Reservation = () => {
       </ReservationContainer>
     </MainContainer>
   );
-};
-
-export default Reservation;
+}
 
 const MainContainer = styled.div`
   display: flex;

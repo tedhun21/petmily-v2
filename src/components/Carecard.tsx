@@ -10,7 +10,7 @@ import { refreshAccessToken } from 'hooks/refreshAcessToken';
 const apiUrl = process.env.REACT_APP_API_URL;
 const bucketUrl = process.env.REACT_APP_BUCKET_URL;
 
-const CareCard = ({ reservation }: any) => {
+export default function CareCard({ reservation }: any) {
   const navigate = useNavigate();
   const accessToken = getCookieValue('access_token');
 
@@ -197,8 +197,7 @@ const CareCard = ({ reservation }: any) => {
       </SecondLine>
     </CareCardContainer>
   );
-};
-export default CareCard;
+}
 
 const CareCardContainer = styled.div`
   padding: 12px;

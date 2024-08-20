@@ -1,12 +1,13 @@
 import { PulseLoader } from 'react-spinners';
 import styled from 'styled-components';
 
-const LoadingFallback = () => (
-  <Container>
-    <Loader loading={true} />
-  </Container>
-);
-export default LoadingFallback;
+export default function LoadingFallback() {
+  return (
+    <Container>
+      <Loader loading={true} />
+    </Container>
+  );
+}
 
 const Container = styled.div`
   display: flex;

@@ -30,7 +30,7 @@ type InfoType = {
   monthTotalReservation: number | null;
 } | null;
 
-const MySchedule = () => {
+export default function MySchedule() {
   const { memberId } = useSelector((state: IUser) => state.user);
 
   const [info, setInfo] = useState<InfoType>(null);
@@ -175,7 +175,7 @@ const MySchedule = () => {
       )}
     </Container>
   );
-};
+}
 
 const Container = styled.div`
   margin-top: 60px;
@@ -255,4 +255,3 @@ const Image = styled.img`
   width: 120px;
   margin-bottom: 20px;
 `;
-export default MySchedule;

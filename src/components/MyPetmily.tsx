@@ -13,7 +13,7 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 const BucketUrl = process.env.REACT_APP_BUCKET_URL;
 const apiUrl = process.env.REACT_APP_API_URL;
 
-const MyPetmily = () => {
+export default function MyPetmily() {
   const token = getCookieValue('access_token');
   const [petmily, setPetmily] = useState<any[]>([]);
 
@@ -107,7 +107,7 @@ const MyPetmily = () => {
       </CardsContainer>
     </PetmilyContainer>
   );
-};
+}
 
 // petmily 카드 컨테이너
 const PetmilyContainer = styled.div`
@@ -241,4 +241,3 @@ const AdditionalInfo = styled.div`
   width: 100%;
   margin-top: 10px;
 `;
-export default MyPetmily;

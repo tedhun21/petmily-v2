@@ -19,7 +19,7 @@ const filters = [
   { text: '완료', value: `&condition=finish` },
 ];
 
-const Care = () => {
+export default function Care() {
   const navigate = useNavigate();
   const accessToken = getCookieValue('access_token');
 
@@ -119,9 +119,7 @@ const Care = () => {
       </CareContainer>
     </MainContainer>
   );
-};
-
-export default Care;
+}
 
 const MainContainer = styled.main`
   height: 100%;

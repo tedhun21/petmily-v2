@@ -26,7 +26,7 @@ interface Petsitter {
   possibleLocation: string;
 }
 
-const ViewPetsitters = () => {
+export default function ViewPetsitters() {
   const dispatch = useDispatch();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [filterType, setFilterType] = useState('전체 펫시터'); // 필터 타입 상태 관리
@@ -219,9 +219,7 @@ const ViewPetsitters = () => {
       </Drawer>
     </MainContainer>
   );
-};
-
-export default ViewPetsitters;
+}
 
 const MainContainer = styled.div`
   display: flex;

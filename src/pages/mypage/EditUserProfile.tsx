@@ -36,7 +36,7 @@ type IEditUser = yup.InferType<typeof schema>;
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
-const EditUserProfile = () => {
+export default function EditUserProfile() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -238,7 +238,7 @@ const EditUserProfile = () => {
       </MainContainer>
     </>
   );
-};
+}
 
 const Info = styled.div`
   ${(props) => props.theme.fontSize.s16h24};
@@ -288,5 +288,3 @@ export const ErrorMsg = styled.div`
   margin-top: 5px;
   ${(props) => props.theme.fontSize.s14h21}
 `;
-
-export default EditUserProfile;

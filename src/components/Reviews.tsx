@@ -10,7 +10,7 @@ import Rating from '@mui/material/Rating';
 const apiUrl = process.env.REACT_APP_API_URL;
 const bucketUrl = process.env.REACT_APP_BUCKET_URL;
 
-const Reviews = () => {
+export default function Reviews() {
   const [reviews, setReviews] = useState<any[]>([]);
 
   const { petsitterId } = useParams();
@@ -82,9 +82,7 @@ const Reviews = () => {
       </CustomCarousel>
     </MainContainer>
   );
-};
-
-export default Reviews;
+}
 
 const MainContainer = styled.div`
   display: flex;

@@ -34,7 +34,7 @@ export interface IPet {
   species: string;
 }
 
-const ReservationStepFour = () => {
+export default function ReservationStepFour() {
   const navigate = useNavigate();
 
   const [isChecked, setIsChecked] = useState(false);
@@ -296,9 +296,7 @@ const ReservationStepFour = () => {
       </ButtonContainer>
     </MainContainer>
   );
-};
-
-export default ReservationStepFour;
+}
 
 const MainContainer = styled.div`
   display: flex;

@@ -33,7 +33,7 @@ interface JournalImgProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   isDefault?: boolean;
 }
 
-const ViewJournal = () => {
+export default function ViewJournal() {
   const [journal, setJournal] = useState<JournalType | null>(null);
   const [showAll, setShowAll] = useState(false);
 
@@ -167,7 +167,7 @@ const ViewJournal = () => {
       )}
     </MainContainer>
   );
-};
+}
 
 const MainContainer = styled.div`
   padding: 12px;
@@ -278,4 +278,3 @@ const Content = styled.div`
 
   /* letter-spacing: 0.2px; */
 `;
-export default ViewJournal;

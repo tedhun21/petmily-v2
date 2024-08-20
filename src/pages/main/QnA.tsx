@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Collapse, Divider, List, ListItemButton, ListItemText, Typography } from '@mui/material';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 
-const QnA = () => {
+export default function QnA() {
   const [open, setOpen] = useState<{ [key: string]: boolean }>({});
 
   const handleClick = (id: string) => {
@@ -541,9 +541,7 @@ const QnA = () => {
       </Collapse>
     </MainContainer>
   );
-};
-
-export default QnA;
+}
 
 const MainContainer = styled.div`
   display: flex;

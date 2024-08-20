@@ -11,7 +11,7 @@ import jwt_decode from 'jwt-decode';
 const apiUrl = process.env.REACT_APP_API_URL;
 const bucketUrl = process.env.REACT_APP_BUCKET_URL;
 
-const CreateReview = () => {
+export default function CreateReview() {
   const navigate = useNavigate();
   const { reservationId: careReservationId } = useParams();
 
@@ -285,9 +285,7 @@ const CreateReview = () => {
       </ButtonContainer>
     </MainContainer>
   );
-};
-
-export default CreateReview;
+}
 
 const MainContainer = styled.main`
   display: flex;

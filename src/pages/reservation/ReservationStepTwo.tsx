@@ -15,7 +15,7 @@ import { deleteCookie } from 'hooks/deleteCookie';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
-const ReservationStepTwo = () => {
+export default function ReservationStepTwo() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -217,9 +217,7 @@ const ReservationStepTwo = () => {
       </Drawer>
     </MainContainer>
   );
-};
-
-export default ReservationStepTwo;
+}
 
 const MainContainer = styled.div`
   display: flex;

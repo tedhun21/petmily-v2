@@ -19,7 +19,7 @@ interface PetsitterProps {
 }
 const bucketUrl = process.env.REACT_APP_BUCKET_URL;
 
-const PetsitterCard = ({ petsitter }: PetsitterProps) => {
+export default function PetsitterCard({ petsitter }: PetsitterProps) {
   const { reservationDate, reservationTimeStart, reservationTimeEnd } = useSelector(
     (state: IReservation) => state.reservation,
   );
@@ -65,9 +65,7 @@ const PetsitterCard = ({ petsitter }: PetsitterProps) => {
       </FilterBodyBox>
     </StyledLink>
   );
-};
-
-export default PetsitterCard;
+}
 
 const FilterBodyBox = styled.div``;
 

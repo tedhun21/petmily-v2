@@ -35,7 +35,7 @@ import Login from '@pages/login/Login';
 import Mypage from '@pages/mypage/Mypage';
 import Reviews from '@components/Reviews';
 import Reservation from '@pages/reservation/Reservation';
-import Care from '@pages/care/Cares';
+import Care from '@pages/care/Care';
 import Signup from '@pages/login/Signup';
 import OAuthBranch from '@pages/login/OAuthBranch';
 import EditUserProfile from '@pages/mypage/EditUserProfile';

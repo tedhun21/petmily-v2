@@ -44,7 +44,7 @@ const apiUrl = process.env.REACT_APP_API_URL;
 const defaultDogProfile = '/imgs/PetProfile.png';
 const defaultCatProfile = '/imgs/CatProfile.png';
 
-const RegisterPet = () => {
+export default function RegisterPet() {
   const navigate = useNavigate();
 
   const { register, handleSubmit, setValue, formState } = useForm<IRegisterPet>({
@@ -264,7 +264,7 @@ const RegisterPet = () => {
       </MainContainer>
     </>
   );
-};
+}
 
 export const MainContainer = styled.main`
   display: flex;
@@ -366,4 +366,3 @@ export const ErrorMsg = styled.div`
   margin-top: 5px;
   ${(props) => props.theme.fontSize.s14h21}
 `;
-export default RegisterPet;
