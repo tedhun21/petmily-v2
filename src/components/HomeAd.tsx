@@ -18,11 +18,9 @@ export default function HomeAd() {
 
 const AdContainer = styled.div`
   display: flex;
-
   width: 100%;
   height: auto;
   justify-content: space-around;
-  margin-top: 24px;
 `;
 
 const Image = styled.img`
@@ -39,7 +37,6 @@ const TextContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-left: 36px;
   gap: 24px;
 `;
 
