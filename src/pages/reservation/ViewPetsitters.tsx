@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import { deleteReservation } from 'store/reservationSlice';
 import { deleteUser } from 'store/userSlice';
-import { deleteCookie } from '../../utils/deleteCookie';
+
 import { useDispatch } from 'react-redux';
 import PetsitterCard from '@components/PetsitterCard';
 
@@ -12,8 +12,7 @@ import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Box, Divider, Drawer, List, ListItem, ListItemText, ListSubheader } from '@mui/material';
 import { FormatListBulleted } from '@mui/icons-material';
-import { getCookieValue } from '../../utils/getCookie';
-import { refreshAccessToken } from '../../utils/refreshAccessToken';
+import { deleteCookie, getCookie, refreshAccessToken } from 'utils/cookie';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 const bucketUrl = process.env.REACT_APP_BUCKET_URL;
@@ -62,7 +61,7 @@ export default function ViewPetsitters() {
       getAllPetsitters();
     } else if (filterType === '내가 찜한 펫시터') {
       const getFavoritePetsitters = async () => {
-        const accessToken = getCookieValue('access_token');
+        const accessToken = getCookie('access_token');
         try {
           const response = await axios.get(`${apiUrl}/members/favorite`, {
             headers: { Authorization: `Bearer ${accessToken}` },

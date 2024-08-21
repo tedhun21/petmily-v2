@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import { getCookieValue } from '../utils/getCookie';
+import { getCookie } from 'utils/cookie';
 
 // 펫 이미지 없을 때 디폴트 이미지 수정
 // 펫밀리 카드 디자인 수정
@@ -15,7 +15,7 @@ const BucketUrl = process.env.REACT_APP_BUCKET_URL;
 const apiUrl = process.env.REACT_APP_API_URL;
 
 export default function MyPetmily() {
-  const token = getCookieValue('access_token');
+  const token = getCookie('access_token');
   const [petmily, setPetmily] = useState<any[]>([]);
 
   useEffect(() => {

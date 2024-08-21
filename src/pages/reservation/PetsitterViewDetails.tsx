@@ -12,8 +12,7 @@ import Divider from '@mui/material/Divider';
 import Reviews from '@components/Reviews';
 import PossibleReservationTime from '@components/PossibleReservationTime';
 import dayjs from 'dayjs';
-import { getCookieValue } from '../../utils/getCookie';
-import { refreshAccessToken } from '../../utils/refreshAccessToken';
+import { getCookie, refreshAccessToken } from 'utils/cookie';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 const bucketUrl = process.env.REACT_APP_BUCKET_URL;
@@ -84,7 +83,7 @@ export default function PetsitterViewDetails() {
 
   const handleBookmarkClick = async () => {
     // 찜하기 버튼 클릭 시 동작
-    const accessToken = getCookieValue('access_token');
+    const accessToken = getCookie('access_token');
     if (isLogin) {
       try {
         const response = await axios.put(
@@ -156,7 +155,7 @@ export default function PetsitterViewDetails() {
   //해당 펫시터가 찜한 펫시터인지 확인
   useEffect(() => {
     const fetchBookmarkStatus = async () => {
-      const accessToken = getCookieValue('access_token');
+      const accessToken = getCookie('access_token');
       if (isLogin) {
         try {
           const response = await axios.get(`${apiUrl}/members/favorite/${petsitterId}`, {

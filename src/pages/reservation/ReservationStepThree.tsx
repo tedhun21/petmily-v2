@@ -13,7 +13,7 @@ import { IUser } from 'store/userSlice';
 
 import axios from 'axios';
 import { useNavigate } from 'react-router';
-import { getCookieValue } from '../../utils/getCookie';
+import { getCookie } from 'utils/cookie';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 const bucketUrl = process.env.REACT_APP_BUCKET_URL || '';
@@ -105,7 +105,7 @@ export default function ReservationStepFour() {
   const reservationTimeEndFormat = timeFormat(reservationTimeEnd);
 
   const SendReservation = async () => {
-    const token = getCookieValue('access_token');
+    const token = getCookie('access_token');
     const petsitterIdNumber = parseInt(petsitterId, 10);
     const requestBody = {
       body,

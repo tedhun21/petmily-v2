@@ -5,15 +5,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import { SyntheticEvent } from 'react';
-import { getCookieValue } from '../utils/getCookie';
-import { refreshAccessToken } from '../utils/refreshAccessToken';
+import { getCookie, refreshAccessToken } from 'utils/cookie';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 const bucketUrl = process.env.REACT_APP_BUCKET_URL;
 
 export default function CareCard({ reservation }: any) {
   const navigate = useNavigate();
-  const accessToken = getCookieValue('access_token');
+  const accessToken = getCookie('access_token');
 
   const { memberId, petsitterBoolean } = useSelector((state: IUser) => state.user);
 
