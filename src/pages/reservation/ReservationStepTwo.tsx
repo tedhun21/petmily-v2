@@ -10,9 +10,7 @@ import { IReservation, deleteReservation } from 'store/reservationSlice';
 
 import PetsitterCard from '@components/PetsitterCard';
 import { deleteUser } from 'store/userSlice';
-import { deleteCookie } from '../../utils/deleteCookie';
-import { refreshAccessToken } from '../../utils/refreshAccessToken';
-import { getCookieValue } from '../../utils/getCookie';
+import { deleteCookie, getCookie, refreshAccessToken } from 'utils/cookie';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -56,7 +54,7 @@ export default function ReservationStepTwo() {
   useEffect(() => {
     if (filterType === '요청한 예약 날짜에 맞는 펫시터') {
       const getProperPetsitters = async () => {
-        const accessToken = getCookieValue('access_token');
+        const accessToken = getCookie('access_token');
         try {
           const response = await axios.post(
             `${apiUrl}/reservations/petsitters`,
@@ -100,7 +98,7 @@ export default function ReservationStepTwo() {
       getProperPetsitters();
     } else if (filterType === '내가 찜한 펫시터') {
       const getFavoritePetsitters = async () => {
-        const accessToken = getCookieValue('access_token');
+        const accessToken = getCookie('access_token');
         try {
           const response = await axios.get(`${apiUrl}/members/favorite`, {
             headers: { Authorization: `Bearer ${accessToken}` },

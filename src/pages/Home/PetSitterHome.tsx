@@ -5,10 +5,10 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { IUser } from 'store/userSlice';
-import { getCookieValue } from '../../utils/getCookie';
+import { getCookie } from 'utils/cookie';
 
 const apiUrl = process.env.REACT_APP_API_URL;
-const token = getCookieValue('access_token');
+const token = getCookie('access_token');
 export default function PetSitterHome() {
   const { memberId, petsitterBoolean, petsitterId } = useSelector((state: IUser) => state.user);
 

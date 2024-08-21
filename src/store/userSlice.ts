@@ -20,48 +20,46 @@ export const userSlice = createSlice({
   name: 'user',
   initialState: {
     isLogin: false,
-    memberId: '',
-    petsitterId: '',
-    name: '',
-    phone: '',
-    address: '',
-    email: '',
-    nickName: '',
-    body: '',
-    photo: '',
-    petsitterBoolean: '',
+    id: null,
+    username: null,
+    phone: null,
+    address: null,
+    email: null,
+    nickname: null,
+    body: null,
+    photo: null,
+    isPetsitter: false,
   },
   reducers: {
-    login: (state) => {
+    loginUser: (state) => {
       state.isLogin = true;
     },
     setUser: (state, action) => {
-      state.memberId = action.payload.memberId;
-      state.petsitterId = action.payload.petsitterId;
-      state.name = action.payload.name;
+      console.log(action);
+      state.id = action.payload.id;
+      state.username = action.payload.username;
       state.phone = action.payload.phone;
       state.address = action.payload.address;
       state.email = action.payload.email;
-      state.nickName = action.payload.nickName;
+      state.nickname = action.payload.nickname;
       state.body = action.payload.body;
       state.photo = action.payload.photo && action.payload.photo.url;
-      state.petsitterBoolean = action.payload.petsitterBoolean;
+      state.isPetsitter = action.payload.isPetsitter;
     },
     deleteUser: (state) => {
       state.isLogin = false;
-      state.memberId = '';
-      state.petsitterId = '';
-      state.name = '';
-      state.phone = '';
-      state.address = '';
-      state.email = '';
-      state.nickName = '';
-      state.body = '';
-      state.photo = '';
-      state.petsitterBoolean = '';
+      state.id = null;
+      state.username = null;
+      state.phone = null;
+      state.address = null;
+      state.email = null;
+      state.nickname = null;
+      state.body = null;
+      state.photo = null;
+      state.isPetsitter = false;
     },
   },
 });
 
-export const { login, setUser, deleteUser } = userSlice.actions;
+export const { loginUser, setUser, deleteUser } = userSlice.actions;
 export default userSlice.reducer;

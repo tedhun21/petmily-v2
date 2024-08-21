@@ -8,7 +8,7 @@ import { SyntheticEvent, useEffect, useState } from 'react';
 
 import AddIcon from '@mui/icons-material/Add';
 import { useParams } from 'react-router-dom';
-import { getCookieValue } from '../../utils/getCookie';
+import { getCookie } from 'utils/cookie';
 
 const BucketUrl = process.env.REACT_APP_BUCKET_URL || '';
 const apiUrl = process.env.REACT_APP_API_URL;
@@ -78,7 +78,7 @@ export default function ViewJournal() {
   }
 
   useEffect(() => {
-    const token = getCookieValue('access_token');
+    const token = getCookie('access_token');
 
     const fetchJournal = async () => {
       try {

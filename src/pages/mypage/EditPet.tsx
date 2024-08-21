@@ -19,7 +19,7 @@ import { StyledButton, ErrorMsg, InfoText } from './EditUserProfile';
 import { TextField } from '@mui/material';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { getCookieValue } from '../../utils/getCookie';
+import { getCookie } from 'utils/cookie';
 
 //  중성화 수정 (등록할 때 중성화 하지 않은 펫만 가능)
 
@@ -73,7 +73,7 @@ export default function EditPet() {
   const { errors } = formState;
 
   useEffect(() => {
-    const token = getCookieValue('access_token');
+    const token = getCookie('access_token');
     const fetchPetData = async () => {
       try {
         const response = await axios.get(`${apiUrl}/pets/${petId}`, {
@@ -107,7 +107,7 @@ export default function EditPet() {
   };
 
   const onSubmit = async (data: IEditPet) => {
-    const token = getCookieValue('access_token');
+    const token = getCookie('access_token');
 
     const formData = new FormData();
 
@@ -152,7 +152,7 @@ export default function EditPet() {
 
   //  펫 삭제
   const deletePet = async () => {
-    const token = getCookieValue('access_token');
+    const token = getCookie('access_token');
     const isConfirmed = window.confirm('정말 펫을 삭제하시겠습니까?');
     if (!isConfirmed) return;
     else {

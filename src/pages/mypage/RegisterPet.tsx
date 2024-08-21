@@ -10,7 +10,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import axios from 'axios';
 import { InfoText } from './EditUserProfile';
-import { getCookieValue } from '../../utils/getCookie';
+import { getCookie } from 'utils/cookie';
 
 // 버튼 수정
 // 라디오 간격
@@ -65,7 +65,7 @@ export default function RegisterPet() {
   };
 
   const onSubmit = async (data: IRegisterPet) => {
-    const token = getCookieValue('access_token');
+    const token = getCookie('access_token');
 
     const formData = new FormData();
 

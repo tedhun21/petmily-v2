@@ -12,12 +12,12 @@ import PersonPinIcon from '@mui/icons-material/PersonPin';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import PetsIcon from '@mui/icons-material/Pets';
 import CircularProgress from '@mui/joy/CircularProgress';
-import { getCookieValue } from '../utils/getCookie';
+import { getCookie } from 'utils/cookie';
 
 // 디자인 수정
 
 const apiUrl = process.env.REACT_APP_API_URL;
-const token = getCookieValue('access_token');
+const token = getCookie('access_token');
 
 type InfoType = {
   petsitterId: number;
