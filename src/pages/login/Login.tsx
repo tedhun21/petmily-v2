@@ -185,6 +185,7 @@ export const SubmitButton = styled.button`
   background-color: ${({ theme }) => theme.colors.mainBlue};
   border: none;
   color: white;
+  cursor: pointer;
 
   ${({ theme }) => theme.fontSize.s16h24};
   font-weight: ${({ theme }) => theme.fontWeights.bold};

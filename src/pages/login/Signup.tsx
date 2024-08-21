@@ -1,19 +1,20 @@
-import styled, { keyframes } from 'styled-components';
-import { ErrorMessage, SubmitButton } from './Login';
-import GoogleOAuthButton from '@components/buttons/OAuthButton';
-import { useForm } from 'react-hook-form';
 import { useState } from 'react';
-import { Modal, Sheet } from '@mui/joy';
-import DaumPostcode from 'react-daum-postcode';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+
+import { useForm } from 'react-hook-form';
+import styled, { keyframes } from 'styled-components';
+import GoogleOAuthButton from '@components/buttons/OAuthButton';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-const apiUrl = process.env.REACT_APP_API_URL;
+import { Modal, Sheet } from '@mui/joy';
+import DaumPostcode from 'react-daum-postcode';
+
+import { ErrorMessage, SubmitButton } from './Login';
+import { createUser } from './api';
 
 const schema = yup.object().shape({
-  name: yup
+  username: yup
     .string()
     .min(2, '이름은 2자 이상이어야 합니다.')
     .matches(/[가-힣]+/, '한글만 가능합니다.')
@@ -25,7 +26,7 @@ const schema = yup.object().shape({
   address: yup.string().required('주소는 필수입니다.'),
   detailAddress: yup.string().required('상세주소는 필수입니다.'),
   email: yup.string().email('이메일 형식을 지켜주세요.').required('ID는 필수입니다.'),
-  nickName: yup
+  nickname: yup
     .string()
     .min(2, '닉네임은 2자 이상부터 가능합니다.')
     .matches(/^[^!@#$%^&*()_+{}[\]:;<>,.?~|]+$/, '특수문자가 없어야 합니다.')
@@ -39,7 +40,7 @@ const schema = yup.object().shape({
     return yup.string().oneOf([yup.ref('password'), ''], '비밀번호가 서로 다릅니다.');
   }),
   photo: yup.string(),
-  petsitterBoolean: yup.boolean(),
+  isPetsitter: yup.boolean().default(false),
 });
 type IFormSignupInputs = yup.InferType<typeof schema>;
 
@@ -85,7 +86,7 @@ export default function Signup() {
   const onSubmit = async (data: IFormSignupInputs) => {
     setIsSignupLoading(true);
 
-    const { name, phone, address, detailAddress, email, nickName, password, petsitterBoolean } = data;
+    const { username, phone, address, detailAddress, email, nickname, password, isPetsitter } = data;
 
     if (data.password !== data.passwordConfirm) {
       setError('password', { type: 'dismatch', message: '비밀번호가 서로 다릅니다.' });
@@ -94,24 +95,19 @@ export default function Signup() {
       return;
     }
 
-    try {
-      const { data, status } = await axios.post(`${apiUrl}/auth/local/register`, {
-        name,
-        phone,
-        address: `${address} ${detailAddress}`,
-        email,
-        nickName,
-        password,
-        petsitterBoolean,
-      });
+    const res = await createUser({
+      username,
+      phone,
+      address: `${address} ${detailAddress}`,
+      email,
+      nickname,
+      password,
+      isPetsitter,
+    });
 
-      if (status === 200) {
-        alert('가입을 축하합니다.');
-        navigate('/login');
-      }
-    } catch (e) {
-      console.log(e);
-      alert('회원 가입에 실패하였습니다. 다시 시도해 주세요.');
+    if (res?.status === 200) {
+      window.alert('회원가입 완료되었습니다.');
+      navigate('/login');
     }
 
     setIsSignupLoading(false);
@@ -129,10 +125,10 @@ export default function Signup() {
             <SignupInputStyle
               placeholder="이름"
               type="text"
-              {...register('name', { required: true })}
-              error={errors.name ? true : false}
+              {...register('username', { required: true })}
+              error={errors.username ? true : false}
             />
-            {errors.name?.message && <ErrorMessage>{errors.name?.message}</ErrorMessage>}
+            {errors.username?.message && <ErrorMessage>{errors.username?.message}</ErrorMessage>}
           </InputFormWrapper>
           <InputFormWrapper>
             <SignupInputStyle
@@ -173,10 +169,10 @@ export default function Signup() {
           <InputFormWrapper>
             <SignupInputStyle
               placeholder="닉네임"
-              {...register('nickName', { required: true })}
-              error={errors.nickName ? true : false}
+              {...register('nickname', { required: true })}
+              error={errors.nickname ? true : false}
             />
-            {errors.nickName?.message && <ErrorMessage>{errors.nickName?.message}</ErrorMessage>}
+            {errors.nickname?.message && <ErrorMessage>{errors.nickname?.message}</ErrorMessage>}
           </InputFormWrapper>
           <InputFormWrapper>
             <SignupInputStyle
@@ -198,7 +194,7 @@ export default function Signup() {
           </InputFormWrapper>
           <CheckBoxWrapper>
             <CheckBoxLabel htmlFor="isPetsitter">펫시터로 가입하기</CheckBoxLabel>
-            <input type="checkbox" id="isPetsitter" {...register('petsitterBoolean')} />
+            <input type="checkbox" id="isPetsitter" {...register('isPetsitter')} />
           </CheckBoxWrapper>
           <ButtonContainer>
             <div style={{ position: 'relative' }}>
