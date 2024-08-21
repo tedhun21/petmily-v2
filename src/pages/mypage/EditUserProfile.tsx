@@ -9,13 +9,14 @@ import axios from 'axios';
 import UploadProfileImg from '../../components/UploadProfileImg';
 import { useState } from 'react';
 import { IUser, deleteUser } from 'store/userSlice';
-import { deleteCookie } from '../../utils/deleteCookie';
+
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { TextField } from '@mui/material';
 import DaumPostcode from 'react-daum-postcode';
 import { Modal, Sheet } from '@mui/joy';
-import { getCookieValue } from '../../utils/getCookie';
+
+import { deleteCookie, getCookie } from 'utils/cookie';
 
 // 버튼 수정
 
@@ -83,7 +84,7 @@ export default function EditUserProfile() {
   };
 
   const onSubmit = async (data: IEditUser) => {
-    const token = getCookieValue('access_token');
+    const token = getCookie('access_token');
 
     const formData = new FormData();
 
@@ -130,7 +131,7 @@ export default function EditUserProfile() {
   };
 
   const deleteAccount = async () => {
-    const token = getCookieValue('access_token');
+    const token = getCookie('access_token');
     const isConfirmed = window.confirm('정말 탈퇴하시겠습니까?');
     if (!isConfirmed) return;
 

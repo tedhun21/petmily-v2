@@ -5,8 +5,8 @@ import { useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import { IUser } from 'store/userSlice';
 import styled, { keyframes } from 'styled-components';
-import { getCookieValue } from '../../utils/getCookie';
-import { refreshAccessToken } from '../../utils/refreshAccessToken';
+
+import { getCookie, refreshAccessToken } from 'utils/cookie';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 const bucketUrl = process.env.REACT_APP_BUCKET_URL;
@@ -61,7 +61,7 @@ export default function CreateJournal() {
   // 일지 등록
   const handleSubmit = async () => {
     setIsRegisterLoading(true);
-    const accessToken = getCookieValue('access_token');
+    const accessToken = getCookie('access_token');
 
     const formData = new FormData();
 
@@ -114,7 +114,7 @@ export default function CreateJournal() {
 
   // 일지 수정
   const handleEditSubmit = async () => {
-    const accessToken = getCookieValue('access_token');
+    const accessToken = getCookie('access_token');
     setIsRegisterLoading(true);
 
     const formData = new FormData();
@@ -157,7 +157,7 @@ export default function CreateJournal() {
       alert('권한이 없습니다.');
       navigate('/');
     } else {
-      const accessToken = getCookieValue('access_token');
+      const accessToken = getCookie('access_token');
       try {
         axios
           .get(`${apiUrl}/reservations/${reservationId}`, { headers: { Authorization: `Bearer ${accessToken}` } })
@@ -177,7 +177,7 @@ export default function CreateJournal() {
   useEffect(() => {
     if (reservation?.journalId) {
       const fetchData = async () => {
-        const accessToken = getCookieValue('access_token');
+        const accessToken = getCookie('access_token');
         try {
           const response = await axios.get(`${apiUrl}/journals/${reservation.journalId}`, {
             headers: {

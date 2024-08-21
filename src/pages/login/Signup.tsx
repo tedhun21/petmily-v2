@@ -1,5 +1,5 @@
 import styled, { keyframes } from 'styled-components';
-import { ErrorMessage, SubmitButtonStyle } from './Login';
+import { ErrorMessage, SubmitButton } from './Login';
 import GoogleOAuthButton from '@components/buttons/OAuthButton';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
@@ -202,7 +202,7 @@ export default function Signup() {
           </CheckBoxWrapper>
           <ButtonContainer>
             <div style={{ position: 'relative' }}>
-              <SubmitButtonStyle type="submit">펫밀리 등록</SubmitButtonStyle>
+              <SubmitButton type="submit">펫밀리 등록</SubmitButton>
               {isSignupLoading && (
                 <LoadingContainer>
                   <Spinner />

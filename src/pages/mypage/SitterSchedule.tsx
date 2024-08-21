@@ -19,7 +19,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import DaumPostcode from 'react-daum-postcode';
 import { Modal, Sheet } from '@mui/joy';
 import { TextField } from '@mui/material';
-import { getCookieValue } from '../../utils/getCookie';
+import { getCookie } from 'utils/cookie';
 
 //  주소가 바뀌어야 수정 가능
 
@@ -44,7 +44,7 @@ type InfoType = {
 } | null;
 
 const apiUrl = process.env.REACT_APP_API_URL;
-const token = getCookieValue('access_token');
+const token = getCookie('access_token');
 
 const daysOfWeek = ['월', '화', '수', '목', '금'];
 

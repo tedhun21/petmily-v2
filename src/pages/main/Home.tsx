@@ -14,8 +14,7 @@ import { styled as styledMui } from '@mui/material/styles';
 import { IUser } from 'store/userSlice';
 import Footer from '@components/footer/Footer';
 import HomeAd from '@components/HomeAd';
-import { getCookieValue } from '../../utils/getCookie';
-import { refreshAccessToken } from '../../utils/refreshAccessToken';
+import { getCookie, refreshAccessToken } from 'utils/cookie';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 const bucketUrl = process.env.REACT_APP_BUCKET_URL;
@@ -36,7 +35,7 @@ export default function Home() {
   useEffect(() => {
     if (isLogin) {
       const getFavoritePetsitter = async () => {
-        const accessToken = getCookieValue('access_token');
+        const accessToken = getCookie('access_token');
         try {
           const response = await axios.get(`${apiUrl}/members/favorite`, {
             headers: { Authorization: `Bearer ${accessToken}` },

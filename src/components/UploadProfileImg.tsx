@@ -5,7 +5,7 @@ import axios, { AxiosError } from 'axios';
 
 import { useSelector } from 'react-redux';
 import { IUser } from 'store/userSlice';
-import { getCookieValue } from '../utils/getCookie';
+import { getCookie } from 'utils/cookie';
 
 //  DefaultUserProfile 이미지 안보임
 //  모달 디자인
@@ -68,7 +68,7 @@ export default function UploadProfileImg({ petId, setImageFile, currentImageUrl,
 
   const handleDelete = async () => {
     if (isImageOnServer) {
-      const token = getCookieValue('access_token');
+      const token = getCookie('access_token');
       try {
         let endpoint;
         // 펫 유저 사진 엔드 포인트 나누는 방법

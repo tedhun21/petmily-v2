@@ -10,7 +10,7 @@ import { useInView } from 'react-intersection-observer';
 import jwt_decode from 'jwt-decode';
 
 import { CircularProgress } from '@mui/material';
-import { getCookieValue } from '../../utils/getCookie';
+import { getCookie } from 'utils/cookie';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -22,7 +22,7 @@ const filters = [
 
 export default function Care() {
   const navigate = useNavigate();
-  const accessToken = getCookieValue('access_token');
+  const accessToken = getCookie('access_token');
 
   const { ref, inView } = useInView();
 

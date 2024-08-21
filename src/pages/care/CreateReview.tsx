@@ -5,8 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { IUser } from 'store/userSlice';
 import axios from 'axios';
-
-import { getCookieValue } from '../../utils/getCookie';
+import { getCookie } from 'utils/cookie';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -60,7 +59,7 @@ export default function CreateReview() {
 
   // 후기 등록
   const handleSubmit = async () => {
-    const accessToken = getCookieValue('access_token');
+    const accessToken = getCookie('access_token');
     setIsRegisterLoading(true);
 
     const formData = new FormData();
@@ -96,7 +95,7 @@ export default function CreateReview() {
 
   // 후기 수정
   const handleEditSubmit = async () => {
-    const accessToken = getCookieValue('access_token');
+    const accessToken = getCookie('access_token');
     setIsRegisterLoading(true);
 
     const formData = new FormData();
@@ -135,7 +134,7 @@ export default function CreateReview() {
 
   // 해당 예약 1개 조회
   useEffect(() => {
-    const accessToken = getCookieValue('access_token');
+    const accessToken = getCookie('access_token');
 
     if (!isLogin || petsitterBoolean || !careReservationId) {
       alert('권한이 없습니다.');

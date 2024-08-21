@@ -36,10 +36,7 @@ import isBetween from 'dayjs/plugin/isBetween';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteReservation, setReservation } from 'store/reservationSlice';
 import { IUser, deleteUser } from 'store/userSlice';
-
-import { deleteCookie } from '../../utils/deleteCookie';
-import { getCookieValue } from '../../utils/getCookie';
-import { refreshAccessToken } from '../../utils/refreshAccessToken';
+import { deleteCookie, getCookie, refreshAccessToken } from 'utils/cookie';
 
 interface IFormInput {
   address: string;
@@ -207,7 +204,7 @@ export default function Reservation() {
 
   // 펫등록 submit (access token 재발급 설정 완료)
   const handlePetSubmit = async () => {
-    const accessToken = getCookieValue('access_token');
+    const accessToken = getCookie('access_token');
 
     // const formData = new FormData();
 
@@ -337,7 +334,7 @@ export default function Reservation() {
   // 펫 정보 가져오기 (accessToken 재발급 설정 완료)
   useEffect(() => {
     const getPets = async () => {
-      const accessToken = getCookieValue('access_token');
+      const accessToken = getCookie('access_token');
       if (isLogin && accessToken) {
         try {
           const response = await axios.get(`${apiUrl}/pets`, { headers: { Authorization: `Bearer ${accessToken}` } });

@@ -5,16 +5,14 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 
-import { IUser, deleteUser, login, setUser } from 'store/userSlice';
-import { deleteCookie } from '../../utils/deleteCookie';
-import { getCookieValue } from '../../utils/getCookie';
-import { refreshAccessToken } from '../../utils/refreshAccessToken';
+import { IUser, deleteUser, loginUser, setUser } from 'store/userSlice';
+import { deleteCookie, getCookie, refreshAccessToken } from 'utils/cookie';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
 export default function NavHeader() {
-  const accessToken = getCookieValue('access_token');
-  const refreshToken = getCookieValue('refresh_token');
+  const accessToken = getCookie('access_token');
+  const refreshToken = getCookie('refresh_token');
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -79,7 +77,7 @@ export default function NavHeader() {
           const response = await axios.get(`${apiUrl}/members/my-page`, {
             headers: { Authorization: `Bearer ${accessToken}` },
           });
-          dispatch(login());
+          dispatch(loginUser());
           dispatch(setUser(response.data));
         } catch (error: any) {
           console.log(error);
@@ -91,7 +89,7 @@ export default function NavHeader() {
                   headers: { Authorization: `Bearer ${newAccessToken}` },
                 });
                 if (response) {
-                  dispatch(login());
+                  dispatch(loginUser());
                   dispatch(setUser(response.data));
                 }
               }
