@@ -4,7 +4,7 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Link } from 'react-router-dom';
 
 import HomeAd from '@components/HomeAd';
-import OffenPetsitter from './OffenPetsitter';
+import OffenPetsitter from './OffenPetsitters';
 
 import Footer from '@components/footer/Footer';
 
