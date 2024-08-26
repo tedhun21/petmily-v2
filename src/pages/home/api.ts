@@ -17,13 +17,17 @@ export async function getFavoritePetsitters({ page, size }: IPagination) {
       });
 
       return data;
-    } catch (error) {}
+    } catch (error) {
+      return null;
+    }
   }
 }
 
-export async function getNewestReview({ page, size }: IPagination) {
+export async function getNewestReviews({ page, size }: IPagination) {
   try {
     const { data } = await axios.get(`${API_URL}/reviews?page=${page}&size=${size}`);
     return data;
-  } catch (e) {}
+  } catch (e) {
+    return null;
+  }
 }

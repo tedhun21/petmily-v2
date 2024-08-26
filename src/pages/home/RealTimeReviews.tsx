@@ -1,32 +1,56 @@
+import { useState } from 'react';
+
 import styled from 'styled-components';
-import { ImageContainer, Title } from './Home';
-import { Carousel } from 'react-responsive-carousel';
+
 import { styled as styledMui } from '@mui/material/styles';
 import Rating from '@mui/material/Rating';
 import StarIcon from '@mui/icons-material/Star';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
 
-const apiUrl = process.env.REACT_APP_API_URL;
+import { Title } from 'commonStyle';
+import { getNewestReviews } from './api';
+import { useCustomQuery } from './hooks/useCustomQuery';
+import ReviewCard from './ReviewCard';
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
+
+const responsive = {
+  desktop: {
+    breakpoint: { max: 3000, min: 1024 },
+    items: 3,
+    slidesToSlide: 3, // optional, default to 1.
+  },
+  tablet: {
+    breakpoint: { max: 1024, min: 464 },
+    items: 2,
+    slidesToSlide: 2, // optional, default to 1.
+  },
+  mobile: {
+    breakpoint: { max: 464, min: 0 },
+    items: 1,
+    slidesToSlide: 1, // optional, default to 1.
+  },
+};
 
 export default function RealTimeReviews() {
-  const [newestReviews, setNewestReviews] = useState<any[]>([]);
+  const [page, setPage] = useState<number>(1);
+  const { data } = useCustomQuery({ queryFn: () => getNewestReviews({ page, size: 10 }) });
 
-  useEffect(() => {
-    const getNewestReview = async () => {
-      try {
-        const response = await axios(`${apiUrl}/reviews?page=1&size=10`);
-
-        setNewestReviews(response.data.reviews);
-      } catch (error) {
-        setNewestReviews([]);
-      }
-    };
-    getNewestReview();
-  }, []);
   return (
     <section>
       <Title>실시간 후기</Title>
+      {data?.results?.length > 0 ? (
+        <Carousel
+          infinite={true}
+          autoPlay={true}
+          autoPlaySpeed={8000}
+          centerMode={true}
+          transitionDuration={2000}
+          responsive={responsive}
+        >
+          {data?.results?.map((review: any) => <ReviewCard key={review.id} review={review} />)}
+        </Carousel>
+      ) : null}
+
       {/* <RealtimeReviewContainer>
         <CustomCarousel
           showThumbs={false}
@@ -68,10 +92,6 @@ export default function RealTimeReviews() {
     </section>
   );
 }
-
-const RemainContainer = styled.div`
-  flex-grow: 1;
-`;
 
 const AddressRatingContainer = styled.div`
   display: flex;
@@ -126,30 +146,4 @@ const ReservationButton = styled.button`
   margin-left: auto;
   margin-bottom: auto;
   cursor: pointer;
-`;
-
-const RealtimeReviewContainer = styled.div`
-  box-shadow: ${(props) => props.theme.shadow.dp01};
-  border-radius: 8px;
-`;
-
-const ReviewCard = styled.div`
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-  padding: 8px;
-`;
-
-const CustomCarousel = styled(Carousel)`
-  .carousel-slider {
-    overflow: visible;
-  }
-
-  .control-dots {
-    /* bottom: -8px !important; */
-  }
-
-  .dot {
-    background: #279eff !important;
-  }
 `;
