@@ -4,7 +4,6 @@ import { dateAgo } from 'utils/date';
 
 const BUCKET_URL = process.env.REACT_APP_BUCKET_URL;
 export default function ReviewCard({ review }: any) {
-  console.log(review);
   return (
     <ReviewContainer>
       <Card>

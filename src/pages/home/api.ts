@@ -31,3 +31,12 @@ export async function getNewestReviews({ page, size }: IPagination) {
     return null;
   }
 }
+
+export async function getReviewsWithPhoto({ photo, page, size }: { photo: boolean } & IPagination) {
+  try {
+    const { data } = await axios.get(`${API_URL}/reviews?page=${page}&size=${size}&photo=${photo}`);
+    return data;
+  } catch (e) {
+    return null;
+  }
+}

@@ -33,7 +33,7 @@ import BackHeader from '@components/headers/BackHeader';
 import Home from '@pages/home/Home';
 import Login from '@pages/login/Login';
 import Mypage from '@pages/mypage/Mypage';
-import Reviews from '@components/Reviews';
+import Reviews from '@pages/home/Reviews';
 import Reservation from '@pages/reservation/Reservation';
 import Care from '@pages/care/Care';
 import Signup from '@pages/login/Signup';

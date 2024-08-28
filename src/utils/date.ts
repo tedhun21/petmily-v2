@@ -64,3 +64,10 @@ export const dateAgo = (date: string) => {
   const agoTime = theDay.from(now);
   return agoTime;
 };
+
+export const dateFormat = (date: string) => {
+  const year = dayjs(date).format('YYYY');
+  const month = dayjs(date).format('MM');
+  const day = dayjs(date).format('DD');
+  return { year, month, day };
+};
