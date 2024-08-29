@@ -73,7 +73,6 @@ const router = createBrowserRouter(
       <Route element={<NavHeaderLayout />}>
         <Route path="" element={<Home />} />
         <Route path="reviews" element={<Reviews />} />
-        <Route path="mypage" element={<Mypage />} />
         <Route path="reservation" element={<Reservation />} />
         <Route path="care" element={<Care />} />
       </Route>
@@ -81,6 +80,7 @@ const router = createBrowserRouter(
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />
         <Route path="signup/branch" element={<OAuthBranch />} />
+        <Route path="mypage" element={<Mypage />} />
         <Route path="mypage/edit" element={<EditUserProfile />} />
         <Route path="mypage/register" element={<RegisterPet />} />
         <Route path="mypage/register" element={<RegisterPet />} />

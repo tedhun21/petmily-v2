@@ -1,53 +1,35 @@
 import styled from 'styled-components';
-import { useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { IUser } from 'store/userSlice';
+
+import { Link } from 'react-router-dom';
+
 import MySchedule from '@components/MySchedule';
 import MyPetmily from '@components/MyPetmily';
+import { useCustomQuery } from '@pages/home/hooks/useCustomQuery';
+import { getMe } from './api';
 
-const BucketUrl = process.env.REACT_APP_BUCKET_URL;
+const BUCKET_URL = process.env.REACT_APP_BUCKET_URL;
 
 export default function Mypage() {
-  const navigate = useNavigate();
-  const { isLogin, name, petsitterBoolean, photo } = useSelector((state: IUser) => state.user);
-
-  let PhotoUrl = 'imgs/DefaultUser.svg';
-
-  if (photo) {
-    PhotoUrl = `${BucketUrl}${photo}`;
-  }
-
-  useEffect(() => {
-    if (!isLogin) {
-      navigate('/');
-      alert('로그인 해주세요.');
-    }
-  }, [isLogin]);
+  const { data: me } = useCustomQuery({ queryFn: getMe });
 
   return (
     <MypageContainer>
       <MyProfileContianer>
         <MyProfile>
-          {isLogin && photo ? (
-            <MyPhoto src={PhotoUrl} alt="user profile image" />
+          {me?.photo ? (
+            <MyPhoto src={`${BUCKET_URL}${me.photo.url}`} alt="user profile image" />
           ) : (
             <MyPhoto src="imgs/DefaultUser.svg" alt="default profile image" />
           )}
           <TextField>
-            <NameText>{`${name} 님`}</NameText>
+            <NameText>{`${me?.nickname} 님`}</NameText>
             <HelloText>안녕하세요!</HelloText>
           </TextField>
         </MyProfile>
+        <StyledLink to="/mypage/edit">회원정보 수정</StyledLink>
       </MyProfileContianer>
 
-      <LinkContainer>
-        <StyledLink to="/mypage/edit">
-          <Title>회원정보 수정</Title>
-        </StyledLink>
-      </LinkContainer>
-
-      {petsitterBoolean ? <MySchedule /> : <MyPetmily />}
+      {me?.isPetsitter ? <MySchedule /> : <MyPetmily />}
     </MypageContainer>
   );
 }
@@ -64,9 +46,9 @@ const MypageContainer = styled.main`
 const MyProfileContianer = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
   height: auto;
-  margin-bottom: 30px;
 `;
 
 const MyProfile = styled.div`
@@ -98,23 +80,15 @@ const HelloText = styled.div`
   justify-content: space-between;
 `;
 
-const LinkContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  width: 100%;
-`;
-
 const StyledLink = styled(Link)`
-  color: #000;
-  font-size: 16px;
-  text-decoration: none;
-
-  &:hover {
-    color: ${(props) => props.theme.colors.mainBlue};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: ${(props) => props.theme.colors.mainBlue};
+  padding: 4px 8px;
+  border-radius: 8px;
+  color: white;
+  &:visited {
+    color: white;
   }
-`;
-
-const Title = styled.span`
-  margin-top: 10px;
-  font-size: 14px;
 `;

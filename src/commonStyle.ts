@@ -42,6 +42,7 @@ export const RoundedImageWrapper = styled.div`
 
 export const ImageCentered = styled.img`
   position: absolute;
+  object-fit: cover;
   top: 50%;
   left: 50%;
   width: 100%;
