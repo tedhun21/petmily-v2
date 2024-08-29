@@ -23,7 +23,7 @@ export function useCustomMutation<T>({ mutationFn, onSuccess }: UseCustomMutatio
         const result = await mutationFn(variables);
         setData(result);
 
-        if (onSuccess) {
+        if (result && onSuccess) {
           onSuccess(result);
         }
       } catch (err) {

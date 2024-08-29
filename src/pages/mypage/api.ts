@@ -44,3 +44,19 @@ export const deleteMe = async ({ id: userId }: { id: number }) => {
     }
   }
 };
+
+export const createPet = async ({ formData }: { formData: FormData }) => {
+  const access_token = getCookie('access_token');
+
+  if (access_token) {
+    try {
+      const { data } = await axios.post(`${API_URL}/pets`, formData, {
+        headers: { Authorization: `Bearer ${access_token}` },
+      });
+
+      return data;
+    } catch (e) {
+      return null;
+    }
+  }
+};

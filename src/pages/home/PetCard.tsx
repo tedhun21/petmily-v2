@@ -20,10 +20,10 @@ export default function PetCard({ pet }: any) {
 
 const PetWrapper = styled(Row)`
   align-items: center;
-  gap: 4px;
   padding: 4px 8px;
-  border-radius: 8px;
   border: 2px solid ${(props) => props.theme.colors.mainBlue};
+  border-radius: 8px;
+  gap: 4px;
 `;
 
 const PetImage = styled(RoundedImageWrapper)`

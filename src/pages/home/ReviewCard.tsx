@@ -57,7 +57,7 @@ const ContentContainer = styled(Column)`
 `;
 
 const ThreeLineParagraph = styled.p`
-  display: -webkit-box; /* Flexbox 컨테이너로 처리하여 줄 수 제한을 가능하게 함 */
+  display: box; /* Flexbox 컨테이너로 처리하여 줄 수 제한을 가능하게 함 */
   -webkit-box-orient: vertical; /* 수직으로 컨텐츠가 쌓이도록 설정 */
   -webkit-line-clamp: 3; /* 3줄까지만 표시 */
   overflow: hidden; /* 넘치는 텍스트는 숨김 */

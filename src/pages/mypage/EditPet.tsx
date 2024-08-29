@@ -1,13 +1,13 @@
 import styled from 'styled-components';
-import {
-  MainContainer,
-  PageTitle,
-  RegisterInputWrapper,
-  InputContainer,
-  RadioWrapper,
-  RadioLabel,
-  InputLabelStyle,
-} from './RegisterPet';
+// import {
+//   MainContainer,
+//   PageTitle,
+//   RegisterInputWrapper,
+//   InputContainer,
+//   RadioWrapper,
+//   RadioLabel,
+//   InputLabelStyle,
+// } from './RegisterPet';
 import UploadProfileImg from '../../components/UploadProfileImg';
 import Button from '@mui/material/Button';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -173,92 +173,93 @@ export default function EditPet() {
   };
 
   return (
-    <>
-      <PageTitle>Petmily 정보 수정</PageTitle>
-      <BtnContainer>
-        <StyledButton onClick={deletePet}>삭제</StyledButton>
-      </BtnContainer>
-      {isLoaded && (
-        <MainContainer>
-          <UploadProfileImg
-            petId={petId}
-            currentImageUrl={pet.photo}
-            setImageFile={handleImageFileChange}
-            defaultProfileImg="/imgs/PetProfile.png"
-          />
-          <InfoText>프로필 사진 선택</InfoText>
+    <div>hi</div>
+    //     <>
+    //       <PageTitle>Petmily 정보 수정</PageTitle>
+    //       <BtnContainer>
+    //         <StyledButton onClick={deletePet}>삭제</StyledButton>
+    //       </BtnContainer>
+    //       {isLoaded && (
+    //         <MainContainer>
+    //           <UploadProfileImg
+    //             petId={petId}
+    //             currentImageUrl={pet.photo}
+    //             setImageFile={handleImageFileChange}
+    //             defaultProfileImg="/imgs/PetProfile.png"
+    //           />
+    //           <InfoText>프로필 사진 선택</InfoText>
 
-          <InputContainer onSubmit={handleSubmit(onSubmit)}>
-            <RegisterInputWrapper>
-              <InputLabelStyle htmlFor="name">이름</InputLabelStyle>
-              <InputWrapper>
-                <TextField type="text" defaultValue={pet.name} {...register('name')} />
-                {errors.name && <ErrorMsg>{errors.name.message}</ErrorMsg>}
-              </InputWrapper>
-            </RegisterInputWrapper>
+    //           <InputContainer onSubmit={handleSubmit(onSubmit)}>
+    //             <RegisterInputWrapper>
+    //               <InputLabelStyle htmlFor="name">이름</InputLabelStyle>
+    //               <InputWrapper>
+    //                 <TextField type="text" defaultValue={pet.name} {...register('name')} />
+    //                 {errors.name && <ErrorMsg>{errors.name.message}</ErrorMsg>}
+    //               </InputWrapper>
+    //             </RegisterInputWrapper>
 
-            <RegisterInputWrapper>
-              <InputLabelStyle htmlFor="species">품종</InputLabelStyle>
-              <Info> {pet.species}</Info>
-            </RegisterInputWrapper>
+    //             <RegisterInputWrapper>
+    //               <InputLabelStyle htmlFor="species">품종</InputLabelStyle>
+    //               <Info> {pet.species}</Info>
+    //             </RegisterInputWrapper>
 
-            <RegisterInputWrapper>
-              <InputLabelStyle htmlFor="male">성별</InputLabelStyle>
-              <Info>{pet.male ? '남자아이' : '여자아이'}</Info>
-            </RegisterInputWrapper>
+    //             <RegisterInputWrapper>
+    //               <InputLabelStyle htmlFor="male">성별</InputLabelStyle>
+    //               <Info>{pet.male ? '남자아이' : '여자아이'}</Info>
+    //             </RegisterInputWrapper>
 
-            {!pet.neutering && (
-              <RegisterInputWrapper>
-                <InputLabelStyle htmlFor="neutering">중성화</InputLabelStyle>
-                <InputWrapper>
-                  <RadioWrapper>
-                    <input id="neuteringTrue" type="radio" value="true" {...register('neutering')} />
-                    <RadioLabel htmlFor="neuteringTrue">했음</RadioLabel>
-                  </RadioWrapper>
-                </InputWrapper>
-              </RegisterInputWrapper>
-            )}
+    //             {!pet.neutering && (
+    //               <RegisterInputWrapper>
+    //                 <InputLabelStyle htmlFor="neutering">중성화</InputLabelStyle>
+    //                 <InputWrapper>
+    //                   <RadioWrapper>
+    //                     <input id="neuteringTrue" type="radio" value="true" {...register('neutering')} />
+    //                     <RadioLabel htmlFor="neuteringTrue">했음</RadioLabel>
+    //                   </RadioWrapper>
+    //                 </InputWrapper>
+    //               </RegisterInputWrapper>
+    //             )}
 
-            <RegisterInputWrapper>
-              <InputLabelStyle htmlFor="weight">몸무게 (kg)</InputLabelStyle>
-              <InputWrapper>
-                <TextField type="text" defaultValue={pet.weight} {...register('weight')} />
-                {errors.weight && <ErrorMsg>{errors.weight.message}</ErrorMsg>}
-              </InputWrapper>
-            </RegisterInputWrapper>
+    //             <RegisterInputWrapper>
+    //               <InputLabelStyle htmlFor="weight">몸무게 (kg)</InputLabelStyle>
+    //               <InputWrapper>
+    //                 <TextField type="text" defaultValue={pet.weight} {...register('weight')} />
+    //                 {errors.weight && <ErrorMsg>{errors.weight.message}</ErrorMsg>}
+    //               </InputWrapper>
+    //             </RegisterInputWrapper>
 
-            <RegisterInputWrapper>
-              <InputLabelStyle htmlFor="age">나이</InputLabelStyle>
-              <InputWrapper>
-                <TextField type="text" defaultValue={pet.age} {...register('age')} />
-                {errors.age && <ErrorMsg>{errors.age.message}</ErrorMsg>}
-              </InputWrapper>
-            </RegisterInputWrapper>
+    //             <RegisterInputWrapper>
+    //               <InputLabelStyle htmlFor="age">나이</InputLabelStyle>
+    //               <InputWrapper>
+    //                 <TextField type="text" defaultValue={pet.age} {...register('age')} />
+    //                 {errors.age && <ErrorMsg>{errors.age.message}</ErrorMsg>}
+    //               </InputWrapper>
+    //             </RegisterInputWrapper>
 
-            <RegisterInputWrapper>
-              <InputLabelStyle htmlFor="body">나의 펫소개</InputLabelStyle>
-              <InputWrapper>
-                <TextField
-                  id="outlined-multiline-flexible"
-                  multiline
-                  minRows={3}
-                  sx={{
-                    width: '100%',
-                    fontSize: 14,
-                  }}
-                  defaultValue={pet.body}
-                  {...register('body')}
-                />
-                {errors.body && <ErrorMsg>{errors.body.message}</ErrorMsg>}
-              </InputWrapper>
-            </RegisterInputWrapper>
-            <Button type="submit" variant="contained" sx={{ backgroundColor: '#279eff', mt: 5 }}>
-              수정하기
-            </Button>
-          </InputContainer>
-        </MainContainer>
-      )}
-    </>
+    //             <RegisterInputWrapper>
+    //               <InputLabelStyle htmlFor="body">나의 펫소개</InputLabelStyle>
+    //               <InputWrapper>
+    //                 <TextField
+    //                   id="outlined-multiline-flexible"
+    //                   multiline
+    //                   minRows={3}
+    //                   sx={{
+    //                     width: '100%',
+    //                     fontSize: 14,
+    //                   }}
+    //                   defaultValue={pet.body}
+    //                   {...register('body')}
+    //                 />
+    //                 {errors.body && <ErrorMsg>{errors.body.message}</ErrorMsg>}
+    //               </InputWrapper>
+    //             </RegisterInputWrapper>
+    //             <Button type="submit" variant="contained" sx={{ backgroundColor: '#279eff', mt: 5 }}>
+    //               수정하기
+    //             </Button>
+    //           </InputContainer>
+    //         </MainContainer>
+    //       )}
+    //     </>
   );
 }
 

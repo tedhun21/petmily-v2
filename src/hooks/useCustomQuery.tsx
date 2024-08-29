@@ -10,8 +10,6 @@ export function useCustomQuery<T>({ queryFn, enabled }: UseCustomQueryOptions<T>
   const [data, setData] = useState<T | undefined>(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
-
-
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {

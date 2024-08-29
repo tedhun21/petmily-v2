@@ -8,10 +8,11 @@ import StarIcon from '@mui/icons-material/Star';
 
 import { Title } from 'commonStyle';
 import { getNewestReviews } from './api';
-import { useCustomQuery } from './hooks/useCustomQuery';
+
 import ReviewCard from './ReviewCard';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
+import { useCustomQuery } from 'hooks/useCustomQuery';
 
 const responsive = {
   desktop: {
@@ -112,14 +113,14 @@ const StyledRating = styledMui(Rating)({
 
 const ReviewText = styled.div`
   display: block;
+  display: box;
   overflow: hidden;
   padding-top: 12px;
-  max-height: 100px;
   line-height: 1.2;
   text-align: left;
-  text-overflow: ellipsis;
   white-space: normal; /* 줄 바꿈 허용 */
-  display: -webkit-box;
+  max-height: 100px;
+  text-overflow: ellipsis;
   -webkit-line-clamp: 3; /* 원하는 줄 수 설정 */
   -webkit-box-orient: vertical;
   word-wrap: break-word; /* 긴 단어를 여러 줄로 줄 바꿈하기 위해 필요한 추가 속성 */

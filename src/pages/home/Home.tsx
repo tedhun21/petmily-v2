@@ -10,10 +10,6 @@ import Footer from '@components/footer/Footer';
 import RealTimeReviews from './RealTimeReviews';
 import OffenPetsitters from './OffenPetsitters';
 export default function Home() {
-  // const onErrorImg = (e: SyntheticEvent<HTMLImageElement, Event>) => {
-  //   e.currentTarget.src = '/imgs/DefaultUser.svg';
-  // };
-
   return (
     <>
       <HomeContainer>

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { PageTitle, RegisterInputWrapper, InputContainer, InputLabelStyle } from './RegisterPet';
+import { PageTitle } from './RegisterPet';
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,7 +18,7 @@ import { Modal, Sheet } from '@mui/joy';
 
 import { deleteCookie } from 'utils/cookie';
 import { deleteMe, getMe, updateMe } from './api';
-import { useCustomQuery } from '@pages/home/hooks/useCustomQuery';
+import { useCustomQuery } from 'hooks/useCustomQuery';
 import { Row } from 'commonStyle';
 import { useCustomMutation } from 'hooks/useCustomMutation';
 import { Loading } from '@components/Loading';
@@ -41,7 +41,6 @@ export default function EditUserProfile() {
   const dispatch = useDispatch();
 
   const [previewImage, setPreviewImage] = useState(null);
-  console.log(previewImage);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -156,6 +155,7 @@ export default function EditUserProfile() {
           serverImageUrl={me?.photo.url}
           previewImage={previewImage}
           setPreviewImage={setPreviewImage}
+          defaultImage="/imgs/DefaultUserProfile.jpg"
         />
 
         <FormContainer onSubmit={handleSubmit(onSubmit)}>
@@ -215,7 +215,7 @@ export default function EditUserProfile() {
 const MainContainer = styled.section`
   display: flex;
   flex-direction: column;
-  padding: 0px 80px;
+  padding: 0 80px;
 `;
 
 const Info = styled.div`
