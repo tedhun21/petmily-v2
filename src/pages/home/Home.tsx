@@ -4,11 +4,11 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Link } from 'react-router-dom';
 
 import HomeAd from '@components/HomeAd';
-import OffenPetsitter from './OffenPetsitters';
 
 import Footer from '@components/footer/Footer';
 
 import RealTimeReviews from './RealTimeReviews';
+import OffenPetsitters from './OffenPetsitters';
 export default function Home() {
   // const onErrorImg = (e: SyntheticEvent<HTMLImageElement, Event>) => {
   //   e.currentTarget.src = '/imgs/DefaultUser.svg';
@@ -28,7 +28,7 @@ export default function Home() {
           <img src="/imgs/HomeSubAd.svg" alt="Advertising" />
         </AdSubContainer>
         <img src="/imgs/HomeTitleAd.svg" alt="Advertising" width="100%" />
-        <OffenPetsitter />
+        <OffenPetsitters />
         <RealTimeReviews />
       </HomeContainer>
       <Footer />
@@ -69,7 +69,6 @@ const PetsitterLink = styled(Link)`
   ${(props) => props.theme.fontSize.s16h24};
   font-weight: ${(props) => props.theme.fontWeights.bold};
   box-shadow: ${(props) => props.theme.shadow.dp01};
-
   color: ${(props) => props.theme.colors.black};
 
   &:visited {
@@ -91,11 +90,6 @@ const AdSubText = styled.div`
   ${(props) => props.theme.fontSize.s14h21};
   font-weight: 600;
   white-space: pre-line;
-`;
-
-export const Title = styled.h2`
-  ${(props) => props.theme.fontSize.s18h27};
-  font-weight: ${(props) => props.theme.fontWeights.bold};
 `;
 
 export const ImageContainer = styled.div`
