@@ -50,9 +50,9 @@ const OftenPetsitterbox = styled(Row)`
 `;
 
 const InfoContainer = styled(Column)`
-  flex: auto;
   display: flex;
   justify-content: space-between;
+  flex: auto;
 `;
 
 const UpperContainer = styled(Row)`
@@ -64,8 +64,8 @@ const ImageNameContainer = styled(Row)`
 `;
 const ImageWrapper = styled.div`
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   width: 60px;
   height: 60px;
 `;

@@ -1,3 +1,4 @@
+import { ImageCentered, RoundedImageWrapper } from 'commonStyle';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { IReservation } from 'store/reservationSlice';
@@ -31,13 +32,13 @@ export default function PetsitterCard({ petsitter }: PetsitterProps) {
     <StyledLink to={`/petsitters/${petsitter.petsitterId}`} key={petsitter.petsitterId}>
       <FilterBodyBox>
         <PetsitterContainer>
-          <ImageContainer>
+          <PetssiterImageWrapper>
             {petsitter.photo ? (
               <PetsitterImg src={`${bucketUrl}${petsitter?.photo}`} alt="petsitter photo" />
             ) : (
               <DefaultImg src="/imgs/PetsitterPhoto.svg" alt="default petsitter"></DefaultImg>
             )}
-          </ImageContainer>
+          </PetssiterImageWrapper>
           <PetsitterBody>
             <PetsitterWrap>
               <NameText>{petsitter.name}</NameText>
@@ -80,22 +81,12 @@ const PetsitterContainer = styled.div`
   cursor: pointer;
 `;
 
-const ImageContainer = styled.div`
-  overflow: hidden;
-  position: relative;
+const PetssiterImageWrapper = styled(RoundedImageWrapper)`
   width: 80px;
   height: 80px;
-  border-radius: 50%;
 `;
 
-const PetsitterImg = styled.img`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100%;
-  height: 100%;
-  transform: translate(-50%, -50%);
-`;
+const PetsitterImg = styled(ImageCentered)``;
 
 const DefaultImg = styled.img``;
 const PetsitterBody = styled.div`
@@ -110,7 +101,7 @@ const PetsitterWrap = styled.div`
 const NameText = styled.div`
   margin-right: 12px;
   font-weight: ${(props) => props.theme.fontWeights.extrabold};
-  font-size: ${(props) => props.theme.fontSize.s20h30};
+  font-size: ${(props) => props.theme.fontSize.s14h21};
 `;
 
 const Possiblebox = styled.div`

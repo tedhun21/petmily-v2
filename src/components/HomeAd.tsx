@@ -18,9 +18,9 @@ export default function HomeAd() {
 
 const AdContainer = styled.div`
   display: flex;
+  justify-content: space-around;
   width: 100%;
   height: auto;
-  justify-content: space-around;
 `;
 
 const Image = styled.img`
@@ -35,21 +35,21 @@ const TextWrapper = styled.div`
 const TextContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   gap: 24px;
 `;
 
 const AdText = styled.div`
   color: ${(props) => props.color || 'black'};
-  font-size: 18px;
   font-weight: ${(props) => props.theme.fontWeights.extrabold};
+  font-size: 18px;
 `;
 
 const InfoText = styled.div`
   color: #a9a9a9;
-  font-size: 14px;
   font-weight: ${(props) => props.theme.fontWeights.extrabold};
+  font-size: 14px;
 `;
 const GifContainer = styled.img`
   width: 300px;
