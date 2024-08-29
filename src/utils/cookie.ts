@@ -14,7 +14,8 @@ export function getCookie(cookieName: string) {
 }
 
 export function setCookie(cookie: string) {
-  document.cookie = `access_token=${cookie}; Max-age=3600; path=/;`;
+  const oneDayInSeconds = 24 * 60 * 60; // 하루를 초로 계산
+  document.cookie = `access_token=${cookie}; Max-age=${oneDayInSeconds}; path=/;`;
 }
 export function deleteCookie(cookieName: string) {
   document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;

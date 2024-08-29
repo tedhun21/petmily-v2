@@ -278,10 +278,9 @@ export const MainContainer = styled.main`
 
 export const PageTitle = styled.div`
   ${(props) => props.theme.fontSize.s20h30}
-  margin-top: 36px;
-  margin-left: 36px;
-  font-weight: 700;
+  padding:60px;
 `;
+
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;

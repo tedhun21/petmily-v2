@@ -26,15 +26,10 @@ export default function Mypage() {
             <HelloText>안녕하세요!</HelloText>
           </TextField>
         </MyProfile>
+        <StyledLink to="/mypage/edit">회원정보 수정</StyledLink>
       </MyProfileContianer>
 
-      <LinkContainer>
-        <StyledLink to="/mypage/edit">
-          <Title>회원정보 수정</Title>
-        </StyledLink>
-      </LinkContainer>
-
-      {/* {me?.isPetsitter ? <MySchedule /> : <MyPetmily />} */}
+      {me?.isPetsitter ? <MySchedule /> : <MyPetmily />}
     </MypageContainer>
   );
 }
@@ -51,9 +46,9 @@ const MypageContainer = styled.main`
 const MyProfileContianer = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
   height: auto;
-  margin-bottom: 30px;
 `;
 
 const MyProfile = styled.div`
@@ -85,23 +80,15 @@ const HelloText = styled.div`
   justify-content: space-between;
 `;
 
-const LinkContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  width: 100%;
-`;
-
 const StyledLink = styled(Link)`
-  color: #000;
-  font-size: 16px;
-  text-decoration: none;
-
-  &:hover {
-    color: ${(props) => props.theme.colors.mainBlue};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: ${(props) => props.theme.colors.mainBlue};
+  padding: 4px 8px;
+  border-radius: 8px;
+  color: white;
+  &:visited {
+    color: white;
   }
-`;
-
-const Title = styled.span`
-  margin-top: 10px;
-  font-size: 14px;
 `;
