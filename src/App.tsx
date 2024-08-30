@@ -83,7 +83,6 @@ const router = createBrowserRouter(
         <Route path="mypage" element={<Mypage />} />
         <Route path="mypage/edit" element={<EditUserProfile />} />
         <Route path="mypage/register" element={<RegisterPet />} />
-        <Route path="mypage/register" element={<RegisterPet />} />
         <Route path="mypage/:petId/edit" element={<EditPet />} />
         <Route path="search" element={<Search />} />
         <Route path="qna" element={<QnA />} />

@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { IUser } from 'store/userSlice';
-import { PetmilyCard } from './MyPetmily';
+// import { PetmilyCard } from '../pages/mypage/components/MyPetmily';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import PersonPinIcon from '@mui/icons-material/PersonPin';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
@@ -107,74 +107,75 @@ export default function MySchedule() {
   };
 
   return (
+    <div>hi</div>
     // 확인해보기
-    <Container>
-      <Text>나의 스케쥴</Text>
+    // <Container>
+    //   <Text>나의 스케쥴</Text>
 
-      {isLoading ? (
-        <CircularProgress variant="soft" sx={{ color: '#279eff' }} />
-      ) : info && info.possibleDay ? (
-        <PetmilyCard>
-          <ContentContainer>
-            <InfoWrapper>
-              <Paw />
-              <Info>
-                <InfoText>케어 가능 동물 </InfoText>
-                <UserText>{getPetTypeDisplayText(info.possiblePetType)}</UserText>
-              </Info>
-            </InfoWrapper>
+    //   {isLoading ? (
+    //     <CircularProgress variant="soft" sx={{ color: '#279eff' }} />
+    //   ) : info && info.possibleDay ? (
+    //     <PetmilyCard>
+    //       <ContentContainer>
+    //         <InfoWrapper>
+    //           <Paw />
+    //           <Info>
+    //             <InfoText>케어 가능 동물 </InfoText>
+    //             <UserText>{getPetTypeDisplayText(info.possiblePetType)}</UserText>
+    //           </Info>
+    //         </InfoWrapper>
 
-            <InfoWrapper>
-              <Location />
-              <Info>
-                <InfoText>케어 가능 지역 </InfoText>
-                <UserText>{info.possibleLocation}</UserText>
-              </Info>
-            </InfoWrapper>
+    //         <InfoWrapper>
+    //           <Location />
+    //           <Info>
+    //             <InfoText>케어 가능 지역 </InfoText>
+    //             <UserText>{info.possibleLocation}</UserText>
+    //           </Info>
+    //         </InfoWrapper>
 
-            <InfoWrapper>
-              <Calendar />
-              <Info>
-                <InfoText>케어 가능 요일 </InfoText>
-                <UserText>{sortDaysInOrder(info.possibleDay)}</UserText>
-              </Info>
-            </InfoWrapper>
+    //         <InfoWrapper>
+    //           <Calendar />
+    //           <Info>
+    //             <InfoText>케어 가능 요일 </InfoText>
+    //             <UserText>{sortDaysInOrder(info.possibleDay)}</UserText>
+    //           </Info>
+    //         </InfoWrapper>
 
-            <InfoWrapper>
-              <Time />
-              <Info>
-                <InfoText>케어 가능 시간 </InfoText>
-                <UserText>
-                  {info.possibleTimeStart.slice(0, -3)} ~ {info.possibleTimeEnd.slice(0, -3)}
-                </UserText>
-              </Info>
-            </InfoWrapper>
-          </ContentContainer>
-          <ButtonContainer>
-            <Link to={`/petsitters/${memberId}/schedule`}>
-              <Button variant="contained" sx={{ backgroundColor: '#279eff', mt: 5 }}>
-                나의 일정 관리
-              </Button>
-            </Link>
-          </ButtonContainer>
-        </PetmilyCard>
-      ) : (
-        <ContentContainer>
-          <NoContentContaier>
-            <Image src="/imgs/NoSchedule.png" alt="No schedule" />
-            <InfoText>등록된 일정이 없습니다.</InfoText>
-            <InfoText>활동 가능한 일정을 등록하시면, 더 많은 펫밀리를 만날 수 있어요!</InfoText>
-          </NoContentContaier>
-          <ButtonContainer>
-            <Link to={`/petsitters/${memberId}/schedule`}>
-              <Button variant="contained" sx={{ backgroundColor: '#279eff', mt: 5 }}>
-                등록하러 가기
-              </Button>
-            </Link>
-          </ButtonContainer>
-        </ContentContainer>
-      )}
-    </Container>
+    //         <InfoWrapper>
+    //           <Time />
+    //           <Info>
+    //             <InfoText>케어 가능 시간 </InfoText>
+    //             <UserText>
+    //               {info.possibleTimeStart.slice(0, -3)} ~ {info.possibleTimeEnd.slice(0, -3)}
+    //             </UserText>
+    //           </Info>
+    //         </InfoWrapper>
+    //       </ContentContainer>
+    //       <ButtonContainer>
+    //         <Link to={`/petsitters/${memberId}/schedule`}>
+    //           <Button variant="contained" sx={{ backgroundColor: '#279eff', mt: 5 }}>
+    //             나의 일정 관리
+    //           </Button>
+    //         </Link>
+    //       </ButtonContainer>
+    //     </PetmilyCard>
+    //   ) : (
+    //     <ContentContainer>
+    //       <NoContentContaier>
+    //         <Image src="/imgs/NoSchedule.png" alt="No schedule" />
+    //         <InfoText>등록된 일정이 없습니다.</InfoText>
+    //         <InfoText>활동 가능한 일정을 등록하시면, 더 많은 펫밀리를 만날 수 있어요!</InfoText>
+    //       </NoContentContaier>
+    //       <ButtonContainer>
+    //         <Link to={`/petsitters/${memberId}/schedule`}>
+    //           <Button variant="contained" sx={{ backgroundColor: '#279eff', mt: 5 }}>
+    //             등록하러 가기
+    //           </Button>
+    //         </Link>
+    //       </ButtonContainer>
+    //     </ContentContainer>
+    //   )}
+    // </Container>
   );
 }
 

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 import MySchedule from '@components/MySchedule';
-import MyPetmily from '@components/MyPetmily';
+import MyPetmily from '@pages/mypage/components/MyPetmily';
 import { useCustomQuery } from 'hooks/useCustomQuery';
 import { getMe } from './api';
 
@@ -36,6 +36,9 @@ export default function Mypage() {
 
 // 전체 페이지
 const MypageContainer = styled.main`
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
   width: 100%;
   height: 100%;
   padding: 36px;
