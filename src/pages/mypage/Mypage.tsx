@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 import MySchedule from '@components/MySchedule';
-import MyPetmily from '@components/MyPetmily';
-import { useCustomQuery } from '@pages/home/hooks/useCustomQuery';
+import MyPetmily from '@pages/mypage/components/MyPetmily';
+import { useCustomQuery } from 'hooks/useCustomQuery';
 import { getMe } from './api';
 
 const BUCKET_URL = process.env.REACT_APP_BUCKET_URL;
@@ -36,6 +36,9 @@ export default function Mypage() {
 
 // 전체 페이지
 const MypageContainer = styled.main`
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
   width: 100%;
   height: 100%;
   padding: 36px;
@@ -45,8 +48,8 @@ const MypageContainer = styled.main`
 // 유저 컨테이너
 const MyProfileContianer = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
   height: auto;
 `;
@@ -84,10 +87,11 @@ const StyledLink = styled(Link)`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${(props) => props.theme.colors.mainBlue};
   padding: 4px 8px;
   border-radius: 8px;
   color: white;
+  background-color: ${(props) => props.theme.colors.mainBlue};
+
   &:visited {
     color: white;
   }

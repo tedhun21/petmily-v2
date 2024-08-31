@@ -6,10 +6,11 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Rating from '@mui/material/Rating';
 import { useInView } from 'react-intersection-observer';
 import { CircularProgress } from '@mui/material';
-import { useCustomQuery } from './hooks/useCustomQuery';
+
 import { getReviewsWithPhoto } from './api';
 import { Title } from 'commonStyle';
 import ReviewPhotoCard from './ReviewPhotoCard';
+import { useCustomQuery } from 'hooks/useCustomQuery';
 
 const bucketUrl = process.env.REACT_APP_BUCKET_URL;
 
@@ -90,5 +91,5 @@ const ReviewContainer = styled.section`
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 8px 0px;
+  padding: 8px 0;
 `;

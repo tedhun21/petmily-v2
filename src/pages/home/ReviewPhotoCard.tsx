@@ -84,9 +84,9 @@ const ReviewCard = styled.article`
 `;
 
 const TitleContainer = styled(Row)`
-  gap: 4px;
-  width: 100%;
   justify-content: space-between;
+  width: 100%;
+  gap: 4px;
 `;
 
 const ClientInfo = styled(Row)`
@@ -104,12 +104,12 @@ const StyledCarousel = styled(Carousel)`
 `;
 
 const ReviewPhotoContainer = styled.div`
+  overflow: hidden;
+  position: relative;
   width: 100%;
   height: 340px;
-  position: relative;
-  overflow: hidden;
-  object-fit: cover;
   border-radius: 20px;
+  object-fit: cover;
 `;
 
 const ReviewPhoto = styled.img`
@@ -134,8 +134,8 @@ const DateWrapper = styled(Row)`
 `;
 
 const PetsitterWrapper = styled(Row)`
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
 `;
 
 const ClientImage = styled(RoundedImageWrapper)`
@@ -146,9 +146,9 @@ const ClientImage = styled(RoundedImageWrapper)`
 const ReviewParagraph = styled.p``;
 
 const PetsitterContainer = styled(Column)`
+  padding: 12px;
   border: 2px solid ${(props) => props.theme.colors.mainBlue};
   border-radius: 16px;
-  padding: 12px;
   gap: 8px;
 `;
 

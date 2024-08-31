@@ -35,8 +35,8 @@ export const Title = styled.h2`
 `;
 
 export const RoundedImageWrapper = styled.div`
-  overflow: hidden;
   position: relative;
+  overflow: hidden;
   border-radius: 50%;
 `;
 

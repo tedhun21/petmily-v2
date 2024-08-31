@@ -7,7 +7,7 @@ export const defaultTheme = {
     mainBlue: '#279EFF',
     subBlue: '#1D8CE7',
     darkBlue: '#096DBE',
-    skyBlue: '#36313D',
+    skyBlue: '#78C1F3',
     paleBlue: '#9AC5F4',
     red: '#FF6161',
   },

@@ -2,11 +2,11 @@ import { useState } from 'react';
 
 import styled from 'styled-components';
 
-import { useCustomQuery } from './hooks/useCustomQuery';
 import { getFavoritePetsitters } from './api';
 
 import OftenPetsitterCard from './OftenPetsitterCard';
 import { Title } from 'commonStyle';
+import { useCustomQuery } from 'hooks/useCustomQuery';
 
 export default function OffenPetsitters() {
   const [page, setPage] = useState<number>(1);
