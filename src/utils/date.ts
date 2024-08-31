@@ -78,9 +78,9 @@ export const dateFormat = (date: string) => {
   return { year, month, day };
 };
 
-export const reservationDisableDate = (day: Dayjs) => {
+export const reservationDisableDate = (day: string) => {
   // 날짜에 할당된 숫자 구하기 (0이면 일요일, 1이면 월요일)
-  const dayOfWeek = day.day();
+  const dayOfWeek = dayjs(day).day();
   // 일요일,월요일면 주말
   const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
 
@@ -91,7 +91,11 @@ export const reservationDisableDate = (day: Dayjs) => {
   return !dayjs(dayjs(day).format('YYYY-MM-DD')).isBetween(nowDate, nowAddThreeMonth, 'day', '[)') || isWeekend;
 };
 
-export const checkInDisableTime = (value: Dayjs, view: 'hours' | 'minutes' | 'seconds', reservationDate: string) => {
+export const checkInDisableTime = (
+  value: Dayjs,
+  view: 'hours' | 'minutes' | 'seconds',
+  reservationDate: string | null,
+) => {
   const currentTime = dayjs();
 
   // 오늘 reservationDate와 다르면 활성화
