@@ -31,12 +31,12 @@ import { Modal, Sheet } from '@mui/joy';
 import DaumPostcode from 'react-daum-postcode';
 
 import dayjs, { Dayjs } from 'dayjs';
-import isBetween from 'dayjs/plugin/isBetween';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteReservation, setReservation } from 'store/reservationSlice';
 import { IUser, deleteUser } from 'store/userSlice';
 import { deleteCookie, getCookie, refreshAccessToken } from 'utils/cookie';
+import { checkInDisableTime, checkOutDisableTime, reservationDisableDate } from 'utils/date';
 
 interface IFormInput {
   address: string;
@@ -51,11 +51,6 @@ export default function Reservation() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // time 설정
-  const now = new Date();
-  const nowDate = dayjs(now).format('YYYY-MM-DD');
-  const nowTime = dayjs(now).format('HH:mm:ss');
-
   // modal
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPetModalOpen, setIsPetModalOpen] = useState(false);
@@ -63,9 +58,14 @@ export default function Reservation() {
 
   // submit state
   const { isLogin, petsitterBoolean } = useSelector((state: IUser) => state.user);
-  const [reservationDate, setReservationDate] = useState<any>('');
-  const [reservationTimeStart, setReservationTimeStart] = useState<any>('');
-  const [reservationTimeEnd, setReservationTimeEnd] = useState('');
+
+  // YYYY-MM-DD format
+  const [reservationDate, setReservationDate] = useState<any>(null);
+
+  // HH:mm format
+  const [reservationTimeStart, setReservationTimeStart] = useState<string | null>(null);
+  const [reservationTimeEnd, setReservationTimeEnd] = useState<any>(null);
+
   const [checkedPetId, setCheckedPetId] = useState<any[]>([]);
   const [checkedPets, setCheckedPets] = useState<any[]>([]);
 
@@ -90,10 +90,6 @@ export default function Reservation() {
 
   const [pets, setPets] = useState([]);
 
-  /// Time
-  now.setMonth(now.getMonth() + 3);
-  const modifiedNow = now.toISOString().slice(0, 10);
-
   const {
     register,
     setValue,
@@ -112,11 +108,11 @@ export default function Reservation() {
   };
 
   // Time handler
-  const handleStartTime = (newTime: any) => {
-    setReservationTimeStart(dayjs(newTime).format('HH:mm:ss'));
+  const handleStartTime = (newTime: Dayjs | null) => {
+    setReservationTimeStart(dayjs(newTime).format('HH:mm'));
   };
   const handleEndTime = (newTime: any) => {
-    setReservationTimeEnd(dayjs(newTime).format('HH:mm:ss'));
+    setReservationTimeEnd(dayjs(newTime).format('HH:mm'));
   };
 
   // Address handler
@@ -320,16 +316,16 @@ export default function Reservation() {
     }
   };
 
-  useEffect(() => {
-    if (!isLogin) {
-      navigate('/');
-      alert('로그인을 해주세요.');
-    }
-    if (petsitterBoolean) {
-      navigate('/');
-      alert('고객만 이용 가능한 서비스입니다.');
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!isLogin) {
+  //     navigate('/');
+  //     alert('로그인을 해주세요.');
+  //   }
+  //   if (petsitterBoolean) {
+  //     navigate('/');
+  //     alert('고객만 이용 가능한 서비스입니다.');
+  //   }
+  // }, []);
 
   // 펫 정보 가져오기 (accessToken 재발급 설정 완료)
   useEffect(() => {
@@ -372,7 +368,9 @@ export default function Reservation() {
   return (
     <MainContainer>
       <StatusHeader>
-        <BackImg src="/imgs/BackArrow.svg" onClick={handleBackClick} />
+        <button onClick={handleBackClick}>
+          <img src="/imgs/BackArrow.svg" alt="backArrow" />
+        </button>
         <StatusTitleText>예약</StatusTitleText>
         <PageNumberText>1/2</PageNumberText>
       </StatusHeader>
@@ -380,21 +378,13 @@ export default function Reservation() {
         <Container>
           <ScheduleText>언제 펫시터가 필요하신가요?</ScheduleText>
           <LocalizationProvider dateAdapter={AdapterDayjs} dateFormats={{ monthShort: `M` }}>
-            <DemoContainer sx={{ paddingTop: 1 }} components={['DatePicker']}>
+            <DemoContainer components={['DatePicker']}>
               <DatePicker
                 label="날짜를 입력해주세요"
                 format="YYYY-MM-DD"
                 value={reservationDate}
                 onChange={handleDateChange}
-                shouldDisableDate={(day) => {
-                  dayjs.extend(isBetween);
-                  const dayOfWeek = dayjs(day as Dayjs).day();
-                  const isWeekend = dayOfWeek === 0 || dayOfWeek === 6; // 토요일, 일요일 선택 금지
-                  return (
-                    !dayjs(dayjs(day as Dayjs).format('YYYY-MM-DD')).isBetween(nowDate, modifiedNow, 'day', '[)') ||
-                    isWeekend
-                  );
-                }}
+                shouldDisableDate={reservationDisableDate}
                 onError={handleError}
               />
             </DemoContainer>
@@ -404,7 +394,7 @@ export default function Reservation() {
           <ScheduleText>방문시간</ScheduleText>
           <BasicTimePickerContainer>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DemoContainer components={['TimePicker']} sx={{ flex: 1, paddingTop: 1 }}>
+              <DemoContainer components={['TimePicker']} sx={{ flex: 1 }}>
                 <StyledTimePicker>
                   <TimePicker
                     label="Check In"
@@ -414,21 +404,7 @@ export default function Reservation() {
                     minTime={dayjs(new Date(0, 0, 0, 8))}
                     maxTime={dayjs(new Date(0, 0, 0, 21))}
                     ampm={false}
-                    shouldDisableTime={(value, view) => {
-                      const currentTime = dayjs();
-                      if (!currentTime.isSame(dayjs(reservationDate), 'date')) {
-                        return false;
-                      }
-                      if (view === 'hours') {
-                        if (value.hour() < currentTime.hour() + 2) {
-                          return true;
-                        }
-                      }
-                      if (view === 'minutes' && value.minute() % 30 !== 0) {
-                        return false;
-                      }
-                      return false;
-                    }}
+                    shouldDisableTime={(value, view) => checkInDisableTime(value, view, reservationDate)}
                     onChange={handleStartTime}
                     onError={handleError}
                   />
@@ -436,7 +412,7 @@ export default function Reservation() {
               </DemoContainer>
             </LocalizationProvider>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DemoContainer components={['TimePicker']} sx={{ flex: 1, paddingTop: 1 }}>
+              <DemoContainer components={['TimePicker']} sx={{ flex: 1 }}>
                 <StyledTimePicker>
                   <TimePicker
                     label="Check Out"
@@ -446,15 +422,7 @@ export default function Reservation() {
                     minTime={dayjs(new Date(0, 0, 0, 9))}
                     maxTime={dayjs(new Date(0, 0, 0, 22))}
                     ampm={false}
-                    shouldDisableTime={(value, view) => {
-                      if (view === 'hours' && value.hour() < +reservationTimeStart.split(':')[0] + 1) {
-                        return true;
-                      }
-                      if (view === 'minutes' && value.minute() % 30 !== 0) {
-                        return false;
-                      }
-                      return false;
-                    }}
+                    shouldDisableTime={(value, view) => checkOutDisableTime(value, view, reservationTimeStart)}
                     onChange={handleEndTime}
                     onError={handleError}
                   />
@@ -726,7 +694,7 @@ export default function Reservation() {
   );
 }
 
-const MainContainer = styled.div`
+const MainContainer = styled.main`
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -734,12 +702,11 @@ const MainContainer = styled.div`
 
 const StatusHeader = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
+  padding: 0px 20px;
   background-color: ${(props) => props.theme.textColors.secondary};
-  min-height: 48px;
-  gap: 120px;
-  position: relative;
+  height: 48px;
 
   /* &::after {
     content: '';
@@ -750,10 +717,6 @@ const StatusHeader = styled.div`
     height: 2px; // 밑줄의 두께 설정
     background-color: ${(props) => props.theme.colors.mainBlue};
   } */
-`;
-
-const BackImg = styled.img`
-  cursor: pointer;
 `;
 
 const StatusTitleText = styled.div`
