@@ -86,7 +86,7 @@ export default function RegisterPet() {
     <main>
       <PageTitle>나의 Petmily 등록</PageTitle>
 
-      <MainContainer>
+      <SectionContainer>
         <UploadProfileImg
           previewImage={previewImage}
           setPreviewImage={setPreviewImage}
@@ -174,12 +174,12 @@ export default function RegisterPet() {
             {isLoading ? <Loading size="28px" /> : <span>펫 등록하기</span>}
           </SubmitButton>
         </FormContainer>
-      </MainContainer>
+      </SectionContainer>
     </main>
   );
 }
 
-export const MainContainer = styled.main`
+export const SectionContainer = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -188,19 +188,19 @@ export const MainContainer = styled.main`
   background-color: white;
 `;
 
-export const PageTitle = styled.div`
+export const PageTitle = styled.h1`
   ${(props) => props.theme.fontSize.s20h30}
   padding:60px;
 `;
 
-const ButtonContainer = styled.div`
+export const ButtonContainer = styled.div`
   display: flex;
   overflow: hidden;
   width: 100%;
   border-radius: 8px;
 `;
 
-const TypeRadioLabel = styled.label<{ isSelected: boolean }>`
+export const TypeRadioLabel = styled.label<{ isSelected: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -252,12 +252,12 @@ export const InputContainer = styled.div`
   width: 100%;
 `;
 
-const InputWrapper = styled(Column)`
+export const InputWrapper = styled(Column)`
   flex: auto;
   width: 100%;
 `;
 
-export const RadioLabel = styled.label`
+const RadioLabel = styled.label`
   ${(props) => props.theme.fontSize.s14h21};
   margin-left: 8px;
   color: ${({ theme }) => theme.textColors.gray60};
@@ -273,19 +273,19 @@ export const RadioContainer = styled(Row)`
   gap: 4px;
 `;
 
-const RadioWrapper = styled(Row)`
+export const RadioWrapper = styled(Row)`
   gap: 8px;
 `;
 
-const GenderRadioLabel = styled.label`
+export const GenderRadioLabel = styled.label`
   ${(props) => props.theme.fontSize.s14h21}
 `;
 
-const UnitText = styled.span`
+export const UnitText = styled.span`
   padding: 8px;
 `;
 
-const PetTextarea = styled.textarea`
+export const PetTextarea = styled.textarea`
   flex: auto;
   width: 100%;
   padding: 8px;
@@ -300,7 +300,7 @@ export const ErrorMsg = styled.div`
   ${(props) => props.theme.fontSize.s14h21}
 `;
 
-const SubmitButton = styled.button`
+export const SubmitButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;

@@ -6,9 +6,10 @@ type MutationFn<T> = (variables: T) => Promise<any>;
 interface UseCustomMutationProps<T> {
   mutationFn: MutationFn<T>;
   onSuccess?: (data: any) => void;
+  onError?: (err: Error) => void;
 }
 
-export function useCustomMutation<T>({ mutationFn, onSuccess }: UseCustomMutationProps<T>) {
+export function useCustomMutation<T>({ mutationFn, onSuccess, onError }: UseCustomMutationProps<T>) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const [data, setData] = useState<any>(null);
@@ -28,6 +29,9 @@ export function useCustomMutation<T>({ mutationFn, onSuccess }: UseCustomMutatio
         }
       } catch (err) {
         setError(err as Error);
+        if (onError) {
+          onError(err as Error);
+        }
       } finally {
         setIsLoading(false);
       }

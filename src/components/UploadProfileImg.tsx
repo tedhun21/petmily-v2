@@ -30,7 +30,7 @@ export default function UploadProfileImg({ serverImageUrl, previewImage, setPrev
         ) : serverImageUrl ? (
           <ImageCentered src={`${BUCKET_URL}${serverImageUrl}`} />
         ) : (
-          <img src={`${defaultImage}`} alt="defaultPhoto" width="100%" height="100%" />
+          <ImageCentered src={`${defaultImage}`} alt="defaultPhoto" />
         )}
         <input
           hidden
