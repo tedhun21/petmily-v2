@@ -1,7 +1,7 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import axios from 'axios';
 
 import {
@@ -42,13 +42,15 @@ import { useCustomQuery } from 'hooks/useCustomQuery';
 import SelectPet from './SelectPet';
 
 interface IFormInput {
+  date: string | null;
+  startTime: Dayjs | null;
+  endTime: Dayjs | null;
   address: string;
   detailAddress: string;
   error: boolean;
 }
 
 const apiUrl = process.env.REACT_APP_API_URL;
-const bucketUrl = process.env.REACT_APP_BUCKET_URL;
 
 export default function Reservation() {
   const navigate = useNavigate();
@@ -58,13 +60,6 @@ export default function Reservation() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPetModalOpen, setIsPetModalOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-
-  // YYYY-MM-DD format
-  const [reservationDate, setReservationDate] = useState<string | null>(null);
-
-  // HH:mm format
-  const [reservationTimeStart, setReservationTimeStart] = useState<string | null>(null);
-  const [reservationTimeEnd, setReservationTimeEnd] = useState<string | null>(null);
 
   const [checkedPetId, setCheckedPetId] = useState<any[]>([]);
 
@@ -112,24 +107,21 @@ export default function Reservation() {
     setValue,
     clearErrors,
     handleSubmit,
+    control,
     formState: { errors },
-  } = useForm<IFormInput>();
+    watch,
+  } = useForm<IFormInput>({
+    defaultValues: {
+      date: null,
+      startTime: null,
+      endTime: null,
+      address: '',
+      detailAddress: '',
+    },
+  });
 
   const onErrorImg = (e: any) => {
     e.target.src = '/imgs/PetProfile.png';
-  };
-
-  // Date handler
-  const handleDateChange = (newDate: string | null) => {
-    setReservationDate(dayjs(newDate).format('YYYY-MM-DD'));
-  };
-
-  // Time handler
-  const handleStartTime = (newTime: Dayjs | null) => {
-    setReservationTimeStart(dayjs(newTime).format('HH:mm'));
-  };
-  const handleEndTime = (newTime: Dayjs | null) => {
-    setReservationTimeEnd(dayjs(newTime).format('HH:mm'));
   };
 
   // Address handler
@@ -138,12 +130,14 @@ export default function Reservation() {
     // 시.도 data.sido
     // 구.군 data.sigungu
     // 상세주소 앞 2단어 제외하고 저장 ('서울 강남구' 제외하고 저장)
-    const splitAddress = data.address.split(' ').splice(2).join(' ');
+
+    const { address, zonecode } = data;
+    setValue('address', `${zonecode} ${address}`);
 
     if (data) {
       clearErrors('address');
     }
-    setValue('address', data.zonecode + ' ' + data.sido + ' ' + data.sigungu + ' ' + splitAddress);
+
     setIsModalOpen(false);
   };
 
@@ -272,7 +266,16 @@ export default function Reservation() {
 
   // 예약 정보 리덕스로 저장
   const onSubmit = async (data: any) => {
-    // const { address, detailAddress } = data;
+    const { date, startTime, endTime, address, detailAddress } = data;
+
+    const formatteredStartTime = dayjs(startTime).format('HH:mm');
+    const formatteredEndTime = dayjs(endTime).format('HH:mm');
+
+    if (checkedPetId.length === 0 || checkedPetId.length > 3) {
+    }
+
+    dispatch(setReservation({ date, startTime, endTime, address, detailAddress, pets: checkedPetId }));
+    navigate('/reservation/step2');
     // if (!reservationTimeStart || !reservationTimeEnd) {
     //   alert('시간을 확인해주세요.');
     // } else if (checkedPetId.length === 0) {
@@ -320,7 +323,8 @@ export default function Reservation() {
   //   }
   // }, []);
 
-  console.log(checkedPetId);
+  console.log(watch());
+
   return (
     <MainContainer>
       <StatusHeader>
@@ -336,13 +340,22 @@ export default function Reservation() {
           <ScheduleText>언제 펫시터가 필요하신가요?</ScheduleText>
           <LocalizationProvider dateAdapter={AdapterDayjs} dateFormats={{ monthShort: `M` }}>
             <DemoContainer components={['DatePicker']}>
-              <DatePicker
-                label="날짜를 입력해주세요"
-                format="YYYY-MM-DD"
-                value={reservationDate}
-                onChange={handleDateChange}
-                shouldDisableDate={reservationDisableDate}
-                onError={handleError}
+              <Controller
+                name="date"
+                control={control}
+                render={({ field: { value, onChange } }) => (
+                  <DatePicker
+                    label="날짜를 입력해주세요"
+                    format="YYYY-MM-DD"
+                    value={value}
+                    onChange={(newDate) => {
+                      const formattedDate = newDate ? dayjs(newDate).format('YYYY-MM-DD') : null;
+                      onChange(formattedDate);
+                    }}
+                    shouldDisableDate={reservationDisableDate}
+                    onError={handleError}
+                  />
+                )}
               />
             </DemoContainer>
           </LocalizationProvider>
@@ -355,17 +368,25 @@ export default function Reservation() {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer components={['TimePicker']} sx={{ flex: 1 }}>
                 <StyledTimePicker>
-                  <TimePicker
-                    label="Check In"
-                    sx={{ flex: 1 }}
-                    minutesStep={30}
-                    skipDisabled={true}
-                    minTime={dayjs(new Date(0, 0, 0, 8))}
-                    maxTime={dayjs(new Date(0, 0, 0, 21))}
-                    ampm={false}
-                    shouldDisableTime={(value, view) => checkInDisableTime(value, view, reservationDate)}
-                    onChange={handleStartTime}
-                    onError={handleError}
+                  <Controller
+                    name="startTime"
+                    control={control}
+                    rules={{ required: '예약 시간을 확인해주세요' }}
+                    render={({ field: { value, onChange } }) => (
+                      <TimePicker
+                        label="Check In"
+                        sx={{ flex: 1 }}
+                        minutesStep={30}
+                        skipDisabled={true}
+                        minTime={dayjs(new Date(0, 0, 0, 8))}
+                        maxTime={dayjs(new Date(0, 0, 0, 21))}
+                        ampm={false}
+                        value={value}
+                        onChange={onChange}
+                        shouldDisableTime={(value, view) => checkInDisableTime(value, view, watch('date'))}
+                        onError={handleError}
+                      />
+                    )}
                   />
                 </StyledTimePicker>
               </DemoContainer>
@@ -373,17 +394,25 @@ export default function Reservation() {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer components={['TimePicker']} sx={{ flex: 1 }}>
                 <StyledTimePicker>
-                  <TimePicker
-                    label="Check Out"
-                    sx={{ flex: 1 }}
-                    minutesStep={30}
-                    skipDisabled={true}
-                    minTime={dayjs(new Date(0, 0, 0, 9))}
-                    maxTime={dayjs(new Date(0, 0, 0, 22))}
-                    ampm={false}
-                    shouldDisableTime={(value, view) => checkOutDisableTime(value, view, reservationTimeStart)}
-                    onChange={handleEndTime}
-                    onError={handleError}
+                  <Controller
+                    name="endTime"
+                    control={control}
+                    rules={{ required: '예약 시간을 확인해주세요' }}
+                    render={({ field: { value, onChange } }) => (
+                      <TimePicker
+                        label="Check Out"
+                        sx={{ flex: 1 }}
+                        minutesStep={30}
+                        skipDisabled={true}
+                        minTime={dayjs(new Date(0, 0, 0, 9))}
+                        maxTime={dayjs(new Date(0, 0, 0, 22))}
+                        ampm={false}
+                        value={value}
+                        onChange={onChange}
+                        shouldDisableTime={(value, view) => checkOutDisableTime(value, view, watch('startTime'))}
+                        onError={handleError}
+                      />
+                    )}
                   />
                 </StyledTimePicker>
               </DemoContainer>
@@ -394,27 +423,44 @@ export default function Reservation() {
         {/* 방문 주소 */}
         <Container>
           <ScheduleText>어디로 방문할까요?</ScheduleText>
-          <TextField
-            id="outlined-basic"
-            placeholder="주소를 입력해주세요"
-            fullWidth
-            {...register('address', { required: true })}
-            error={errors.address?.type === 'required'}
-            onClick={onToggleModal}
-            onKeyDown={onToggleModal}
+          <Controller
+            name="address"
+            control={control}
+            rules={{ required: '주소를 입력해주세요' }}
+            render={({ field: { value, onChange } }) => (
+              <TextField
+                id="outlined-basic"
+                placeholder="주소를 입력해주세요"
+                fullWidth
+                // {...register('address', { required: true })}
+                value={value}
+                onChange={onChange}
+                error={errors.address?.type === 'required'}
+                onClick={onToggleModal}
+                onKeyDown={onToggleModal}
+              />
+            )}
           />
-          <TextField label="상세주소를 입력해주세요" fullWidth {...register('detailAddress', { required: true })} />
-          {isModalOpen && (
-            <Modal
-              open={isModalOpen}
-              onClose={() => setIsModalOpen(false)}
-              sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-            >
-              <Sheet sx={{ width: '360px;' }}>
-                <DaumPostcode onComplete={handleComplete} />
-              </Sheet>
-            </Modal>
-          )}
+
+          <Controller
+            name="detailAddress"
+            control={control}
+            rules={{ required: '상세주소를 확인해주세요' }}
+            render={({ field: { value, onChange } }) => (
+              <TextField label="상세주소를 입력해주세요" fullWidth value={value} onChange={onChange} />
+            )}
+          />
+
+          {/* 다음 주소 모달 */}
+          <Modal
+            open={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+          >
+            <Sheet sx={{ width: '360px;' }}>
+              <DaumPostcode onComplete={handleComplete} />
+            </Sheet>
+          </Modal>
         </Container>
 
         {/* 맡기실 펫 */}

@@ -48,9 +48,9 @@ export default function ReservationStepFour() {
   } = useForm<IFormInput>();
 
   // 예약 정보 가져오기
-  const { reservationDate, reservationTimeStart, reservationTimeEnd, address, body, petId, pets } = useSelector(
-    (state: IReservation) => state.reservation,
-  );
+  // const { reservationDate, reservationTimeStart, reservationTimeEnd, address, body, petId, pets } = useSelector(
+  //   (state: IReservation) => state.reservation,
+  // );
   const { name, nickName, phone } = useSelector((state: IUser) => state.user);
   const dispatch = useDispatch();
 
@@ -101,38 +101,38 @@ export default function ReservationStepFour() {
     return `${hours}:${minutes}:00`;
   };
 
-  const reservationTimeStartFormat = timeFormat(reservationTimeStart);
-  const reservationTimeEndFormat = timeFormat(reservationTimeEnd);
+  // const reservationTimeStartFormat = timeFormat(reservationTimeStart);
+  // const reservationTimeEndFormat = timeFormat(reservationTimeEnd);
 
-  const SendReservation = async () => {
-    const token = getCookie('access_token');
-    const petsitterIdNumber = parseInt(petsitterId, 10);
-    const requestBody = {
-      body,
-      reservationDate,
-      reservationTimeStart: reservationTimeStartFormat,
-      reservationTimeEnd: reservationTimeEndFormat,
-      address,
-      phone,
-      petId,
-      petsitterId: petsitterIdNumber,
-    };
-    console.log(requestBody);
-    try {
-      const response = await axios.post(`${apiUrl}/reservations`, requestBody, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (response.status === 200) {
-        alert('예약 신청이 완료되었습니다!');
-        dispatch(deleteReservation());
-        navigate('/cares');
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const SendReservation = async () => {
+  //   const token = getCookie('access_token');
+  //   const petsitterIdNumber = parseInt(petsitterId, 10);
+  //   const requestBody = {
+  //     body,
+  //     reservationDate,
+  //     reservationTimeStart: reservationTimeStartFormat,
+  //     reservationTimeEnd: reservationTimeEndFormat,
+  //     address,
+  //     phone,
+  //     petId,
+  //     petsitterId: petsitterIdNumber,
+  //   };
+  //   console.log(requestBody);
+  //   try {
+  //     const response = await axios.post(`${apiUrl}/reservations`, requestBody, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+  //     if (response.status === 200) {
+  //       alert('예약 신청이 완료되었습니다!');
+  //       dispatch(deleteReservation());
+  //       navigate('/cares');
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   return (
     <MainContainer>
@@ -178,15 +178,15 @@ export default function ReservationStepFour() {
             <ReservationTimeTitle>예약 시간</ReservationTimeTitle>
           </TitleWrap>
           <ContentWrap>
-            <Address>{address}</Address>
+            {/* <Address>{address}</Address>
             <ReservationDay>{reservationDate}</ReservationDay>
-            <ReservationTime>{`${reservationTimeStart} ~ ${reservationTimeEnd}`}</ReservationTime>
+            <ReservationTime>{`${reservationTimeStart} ~ ${reservationTimeEnd}`}</ReservationTime> */}
           </ContentWrap>
         </ReservationResult>
 
         <PetCard>
           <PetCardTitle>맡기시는 반려동물</PetCardTitle>
-          <CustomCarousel
+          {/* <CustomCarousel
             showThumbs={false}
             showStatus={false}
             autoPlay={false}
@@ -211,7 +211,7 @@ export default function ReservationStepFour() {
                 </PetWrap>
               </DividerContainer>
             ))}
-          </CustomCarousel>
+          </CustomCarousel> */}
         </PetCard>
 
         <RequestContainer>
@@ -291,9 +291,9 @@ export default function ReservationStepFour() {
         </Dialog>
       </ConfirmContainer>
       <ButtonContainer>
-        <StyledButton type="submit" disabled={!isChecked || !isConfirmEnabled} onClick={SendReservation}>
+        {/* <StyledButton type="submit" disabled={!isChecked || !isConfirmEnabled} onClick={SendReservation}>
           예약하기
-        </StyledButton>
+        </StyledButton> */}
       </ButtonContainer>
     </MainContainer>
   );

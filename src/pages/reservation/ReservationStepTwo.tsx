@@ -8,7 +8,7 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { IReservation, deleteReservation } from 'store/reservationSlice';
 
-import PetsitterCard from '@components/PetsitterCard';
+import PetsitterCard from '@pages/reservation/PetsitterCard';
 import { deleteUser } from 'store/userSlice';
 import { deleteCookie, getCookie, refreshAccessToken } from 'utils/cookie';
 
@@ -18,9 +18,11 @@ export default function ReservationStepTwo() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { reservationDate, reservationTimeStart, reservationTimeEnd, address, petId, pets } = useSelector(
+  const { date, startTime, endTime, address, detailAddress, pets } = useSelector(
     (state: IReservation) => state.reservation,
   );
+
+  console.log(date, startTime, endTime, address, detailAddress, pets);
 
   const [properPetsitters, setProperPetsitters] = useState<number[]>([]);
 
@@ -44,124 +46,124 @@ export default function ReservationStepTwo() {
     setIsFilterOpen(false);
   };
 
-  useEffect(() => {
-    if (!reservationDate || !reservationTimeStart || !reservationTimeEnd || !address || !petId) {
-      alert('예약을 처음부터 해주세요.');
-      navigate('/reservation');
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!reservationDate || !reservationTimeStart || !reservationTimeEnd || !address || !petId) {
+  //     alert('예약을 처음부터 해주세요.');
+  //     navigate('/reservation');
+  //   }
+  // }, []);
 
-  useEffect(() => {
-    if (filterType === '요청한 예약 날짜에 맞는 펫시터') {
-      const getProperPetsitters = async () => {
-        const accessToken = getCookie('access_token');
-        try {
-          const response = await axios.post(
-            `${apiUrl}/reservations/petsitters`,
-            {
-              reservationDate,
-              reservationTimeStart,
-              reservationTimeEnd,
-              address,
-              petId,
-            },
-            { headers: { Authorization: `Bearer ${accessToken}` } },
-          );
-          if (response.status === 200) {
-            setProperPetsitters(response.data);
-          }
-        } catch (error: any) {
-          console.log(error);
-          if (error.response.status === 401) {
-            try {
-              const newAccessToken = await refreshAccessToken();
-              if (newAccessToken) {
-                const response = await axios.post(
-                  `${apiUrl}/reservations/petsitters`,
-                  {
-                    reservationDate,
-                    reservationTimeStart,
-                    reservationTimeEnd,
-                    address,
-                    petId,
-                  },
-                  { headers: { Authorization: `Bearer ${newAccessToken}` } },
-                );
-                setProperPetsitters(response.data);
-              }
-            } catch (error) {
-              console.log(error);
-            }
-          }
-        }
-      };
-      getProperPetsitters();
-    } else if (filterType === '내가 찜한 펫시터') {
-      const getFavoritePetsitters = async () => {
-        const accessToken = getCookie('access_token');
-        try {
-          const response = await axios.get(`${apiUrl}/members/favorite`, {
-            headers: { Authorization: `Bearer ${accessToken}` },
-          });
-          setProperPetsitters(response.data);
-        } catch (error: any) {
-          if (error.response.status === 401) {
-            try {
-              const newAccessToken = await refreshAccessToken();
-              if (newAccessToken) {
-                const response = await axios.get(`${apiUrl}/members/favorite`, {
-                  headers: { Authorization: `Bearer ${newAccessToken}` },
-                });
-                setProperPetsitters(response.data);
-              }
-            } catch (refreshError) {
-              console.log(refreshError);
-              alert('로그인 세션이 만료되었습니다. 다시 로그인해 주시기 바랍니다.');
-              dispatch(deleteUser());
-              dispatch(deleteReservation());
-              deleteCookie('access_token');
-              deleteCookie('refresh_token');
-            }
-          }
-          setProperPetsitters([]);
-        }
-      };
-      getFavoritePetsitters();
-    } else if (filterType === '새로 온 펫시터') {
-      const getNewPetsitters = async () => {
-        try {
-          const response = await axios.get(`${apiUrl}/members/search`);
-          setProperPetsitters(response.data.data);
-        } catch (error) {
-          setProperPetsitters([]);
-        }
-      };
-      getNewPetsitters();
-    } else if (filterType === '별점이 높은 펫시터') {
-      const getHighPetsitters = async () => {
-        try {
-          const response = await axios.get(`${apiUrl}/members/search?star=0`);
-          setProperPetsitters(response.data.data);
-        } catch (error) {
-          setProperPetsitters([]);
-        }
-      };
-      getHighPetsitters();
-    } else if (filterType === '리뷰가 많은 펫시터') {
-      const getManyReviewsPetsitters = async () => {
-        try {
-          const response = await axios.get(`${apiUrl}/members/search?reviewCount=0`);
-          setProperPetsitters(response.data.data);
-        } catch (error) {
-          setProperPetsitters([]);
-        }
-      };
-      getManyReviewsPetsitters();
-    }
-  }, [filterType]);
+  // useEffect(() => {
+  //   if (filterType === '요청한 예약 날짜에 맞는 펫시터') {
+  //     const getProperPetsitters = async () => {
+  //       const accessToken = getCookie('access_token');
+  //       try {
+  //         const response = await axios.post(
+  //           `${apiUrl}/reservations/petsitters`,
+  //           {
+  //             reservationDate,
+  //             reservationTimeStart,
+  //             reservationTimeEnd,
+  //             address,
+  //             petId,
+  //           },
+  //           { headers: { Authorization: `Bearer ${accessToken}` } },
+  //         );
+  //         if (response.status === 200) {
+  //           setProperPetsitters(response.data);
+  //         }
+  //       } catch (error: any) {
+  //         console.log(error);
+  //         if (error.response.status === 401) {
+  //           try {
+  //             const newAccessToken = await refreshAccessToken();
+  //             if (newAccessToken) {
+  //               const response = await axios.post(
+  //                 `${apiUrl}/reservations/petsitters`,
+  //                 {
+  //                   reservationDate,
+  //                   reservationTimeStart,
+  //                   reservationTimeEnd,
+  //                   address,
+  //                   petId,
+  //                 },
+  //                 { headers: { Authorization: `Bearer ${newAccessToken}` } },
+  //               );
+  //               setProperPetsitters(response.data);
+  //             }
+  //           } catch (error) {
+  //             console.log(error);
+  //           }
+  //         }
+  //       }
+  //     };
+  //     getProperPetsitters();
+  //   } else if (filterType === '내가 찜한 펫시터') {
+  //     const getFavoritePetsitters = async () => {
+  //       const accessToken = getCookie('access_token');
+  //       try {
+  //         const response = await axios.get(`${apiUrl}/members/favorite`, {
+  //           headers: { Authorization: `Bearer ${accessToken}` },
+  //         });
+  //         setProperPetsitters(response.data);
+  //       } catch (error: any) {
+  //         if (error.response.status === 401) {
+  //           try {
+  //             const newAccessToken = await refreshAccessToken();
+  //             if (newAccessToken) {
+  //               const response = await axios.get(`${apiUrl}/members/favorite`, {
+  //                 headers: { Authorization: `Bearer ${newAccessToken}` },
+  //               });
+  //               setProperPetsitters(response.data);
+  //             }
+  //           } catch (refreshError) {
+  //             console.log(refreshError);
+  //             alert('로그인 세션이 만료되었습니다. 다시 로그인해 주시기 바랍니다.');
+  //             dispatch(deleteUser());
+  //             dispatch(deleteReservation());
+  //             deleteCookie('access_token');
+  //             deleteCookie('refresh_token');
+  //           }
+  //         }
+  //         setProperPetsitters([]);
+  //       }
+  //     };
+  //     getFavoritePetsitters();
+  //   } else if (filterType === '새로 온 펫시터') {
+  //     const getNewPetsitters = async () => {
+  //       try {
+  //         const response = await axios.get(`${apiUrl}/members/search`);
+  //         setProperPetsitters(response.data.data);
+  //       } catch (error) {
+  //         setProperPetsitters([]);
+  //       }
+  //     };
+  //     getNewPetsitters();
+  //   } else if (filterType === '별점이 높은 펫시터') {
+  //     const getHighPetsitters = async () => {
+  //       try {
+  //         const response = await axios.get(`${apiUrl}/members/search?star=0`);
+  //         setProperPetsitters(response.data.data);
+  //       } catch (error) {
+  //         setProperPetsitters([]);
+  //       }
+  //     };
+  //     getHighPetsitters();
+  //   } else if (filterType === '리뷰가 많은 펫시터') {
+  //     const getManyReviewsPetsitters = async () => {
+  //       try {
+  //         const response = await axios.get(`${apiUrl}/members/search?reviewCount=0`);
+  //         setProperPetsitters(response.data.data);
+  //       } catch (error) {
+  //         setProperPetsitters([]);
+  //       }
+  //     };
+  //     getManyReviewsPetsitters();
+  //   }
+  // }, [filterType]);
 
   return (
-    <MainContainer id="steptwo-main">
+    <MainContainer>
       <StatusHeader>
         <BackImg src="/imgs/BackArrow.svg" onClick={handleBackClick} />
         <StatusTitleText>예약</StatusTitleText>
@@ -178,11 +180,11 @@ export default function ReservationStepTwo() {
         </TitleBox>
       </FilterContainer>
 
-      <Box>
+      {/* <Box>
         {Array.isArray(properPetsitters) &&
           properPetsitters.length > 0 &&
           properPetsitters.map((petsitter: any) => <PetsitterCard key={petsitter.petsitterId} petsitter={petsitter} />)}
-      </Box>
+      </Box> */}
 
       <Drawer
         anchor="bottom"

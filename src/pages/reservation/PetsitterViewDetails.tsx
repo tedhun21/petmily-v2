@@ -72,9 +72,9 @@ export default function PetsitterViewDetails() {
   const [petsitterData, setPetsitterData] = useState<any>();
 
   const { isLogin, memberId, petsitterBoolean } = useSelector((state: IUser) => state.user);
-  const { reservationDate, reservationTimeStart, reservationTimeEnd, address, petId, pets } = useSelector(
-    (state: IReservation) => state.reservation,
-  );
+  // const { reservationDate, reservationTimeStart, reservationTimeEnd, address, petId, pets } = useSelector(
+  //   (state: IReservation) => state.reservation,
+  // );
 
   const handleResetReservationClick = () => {
     setSelectedDates(null);
@@ -121,22 +121,22 @@ export default function PetsitterViewDetails() {
     }
   };
 
-  const handleOnSubmitButtonClick = () => {
-    // 선택된 날짜와 시간을 스토어에 저장
-    dispatch(
-      setReservation({
-        reservationDate: selectedDates ? selectedDates.format('YYYY-MM-DD') : '',
-        reservationTimeStart: selectedTimes.length > 0 ? selectedTimes[0] : '',
-        reservationTimeEnd: selectedTimes.length > 0 ? selectedTimes[selectedTimes.length - 1] : '',
-        address,
-        petId,
-        pets,
-      }),
-    );
-    dispatch(setPetsitterId(petsitterId));
+  // const handleOnSubmitButtonClick = () => {
+  //   // 선택된 날짜와 시간을 스토어에 저장
+  //   dispatch(
+  //     setReservation({
+  //       reservationDate: selectedDates ? selectedDates.format('YYYY-MM-DD') : '',
+  //       reservationTimeStart: selectedTimes.length > 0 ? selectedTimes[0] : '',
+  //       reservationTimeEnd: selectedTimes.length > 0 ? selectedTimes[selectedTimes.length - 1] : '',
+  //       address,
+  //       petId,
+  //       pets,
+  //     }),
+  //   );
+  //   dispatch(setPetsitterId(petsitterId));
 
-    navigate('/reservation/step3');
-  };
+  //   navigate('/reservation/step3');
+  // };
   //펫시터 데이터 가져오기
   useEffect(() => {
     const fetchPetsitterData = async () => {
@@ -259,7 +259,7 @@ export default function PetsitterViewDetails() {
         <StyledSubmitButton
           type="submit"
           disabled={!selectedDates || selectedTimes.length === 0}
-          onClick={handleOnSubmitButtonClick}
+          // onClick={handleOnSubmitButtonClick}
         >
           다음단계
         </StyledSubmitButton>

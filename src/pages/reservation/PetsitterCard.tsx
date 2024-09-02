@@ -21,50 +21,51 @@ interface PetsitterProps {
 const bucketUrl = process.env.REACT_APP_BUCKET_URL;
 
 export default function PetsitterCard({ petsitter }: PetsitterProps) {
-  const { reservationDate, reservationTimeStart, reservationTimeEnd } = useSelector(
-    (state: IReservation) => state.reservation,
-  );
+  // const { reservationDate, reservationTimeStart, reservationTimeEnd } = useSelector(
+  //   (state: IReservation) => state.reservation,
+  // );
 
-  const startTime = petsitter?.possibleTimeStart?.split(':')[0] + ':' + petsitter?.possibleTimeStart?.split(':')[1];
-  const endTime = petsitter?.possibleTimeEnd?.split(':')[0] + ':' + petsitter?.possibleTimeStart?.split(':')[1];
+  // const startTime = petsitter?.possibleTimeStart?.split(':')[0] + ':' + petsitter?.possibleTimeStart?.split(':')[1];
+  // const endTime = petsitter?.possibleTimeEnd?.split(':')[0] + ':' + petsitter?.possibleTimeStart?.split(':')[1];
 
   return (
-    <StyledLink to={`/petsitters/${petsitter.petsitterId}`} key={petsitter.petsitterId}>
-      <FilterBodyBox>
-        <PetsitterContainer>
-          <PetssiterImageWrapper>
-            {petsitter.photo ? (
-              <PetsitterImg src={`${bucketUrl}${petsitter?.photo}`} alt="petsitter photo" />
-            ) : (
-              <DefaultImg src="/imgs/PetsitterPhoto.svg" alt="default petsitter"></DefaultImg>
-            )}
-          </PetssiterImageWrapper>
-          <PetsitterBody>
-            <PetsitterWrap>
-              <NameText>{petsitter.name}</NameText>
-              <Possiblebox>예약가능</Possiblebox>
-            </PetsitterWrap>
-            <TimeWrap>
-              <TimgImg src="/icons/TimeIcon.svg" alt="TimeIcon" />
-              <TimeText>
-                {startTime} ~ {endTime}
-              </TimeText>
-            </TimeWrap>
-            <RatingReviewContainer>
-              <StarContainer>
-                <StarImg src="/imgs/Star.svg" alt="starIcon"></StarImg>
-                <div>{petsitter.star}</div>
-              </StarContainer>
-              <ReviewContainer>
-                <ReviewImg src="/imgs/ReviewIcon.svg" alt="reviewIcon"></ReviewImg>
-                <div>{petsitter.reviewCount}</div>
-              </ReviewContainer>
-            </RatingReviewContainer>
-          </PetsitterBody>
-          <ContainerArrow src="/icons/PetsitterContainerArrow.svg" alt="ArrowIcon" />
-        </PetsitterContainer>
-      </FilterBodyBox>
-    </StyledLink>
+    <div>hi</div>
+    // <StyledLink to={`/petsitters/${petsitter.petsitterId}`} key={petsitter.petsitterId}>
+    //   <FilterBodyBox>
+    //     <PetsitterContainer>
+    //       <PetssiterImageWrapper>
+    //         {petsitter.photo ? (
+    //           <PetsitterImg src={`${bucketUrl}${petsitter?.photo}`} alt="petsitter photo" />
+    //         ) : (
+    //           <DefaultImg src="/imgs/PetsitterPhoto.svg" alt="default petsitter"></DefaultImg>
+    //         )}
+    //       </PetssiterImageWrapper>
+    //       <PetsitterBody>
+    //         <PetsitterWrap>
+    //           <NameText>{petsitter.name}</NameText>
+    //           <Possiblebox>예약가능</Possiblebox>
+    //         </PetsitterWrap>
+    //         <TimeWrap>
+    //           <TimgImg src="/icons/TimeIcon.svg" alt="TimeIcon" />
+    //           <TimeText>
+    //             {startTime} ~ {endTime}
+    //           </TimeText>
+    //         </TimeWrap>
+    //         <RatingReviewContainer>
+    //           <StarContainer>
+    //             <StarImg src="/imgs/Star.svg" alt="starIcon"></StarImg>
+    //             <div>{petsitter.star}</div>
+    //           </StarContainer>
+    //           <ReviewContainer>
+    //             <ReviewImg src="/imgs/ReviewIcon.svg" alt="reviewIcon"></ReviewImg>
+    //             <div>{petsitter.reviewCount}</div>
+    //           </ReviewContainer>
+    //         </RatingReviewContainer>
+    //       </PetsitterBody>
+    //       <ContainerArrow src="/icons/PetsitterContainerArrow.svg" alt="ArrowIcon" />
+    //     </PetsitterContainer>
+    //   </FilterBodyBox>
+    // </StyledLink>
   );
 }
 

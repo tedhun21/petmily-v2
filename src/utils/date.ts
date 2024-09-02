@@ -91,15 +91,11 @@ export const reservationDisableDate = (day: string) => {
   return !dayjs(dayjs(day).format('YYYY-MM-DD')).isBetween(nowDate, nowAddThreeMonth, 'day', '[)') || isWeekend;
 };
 
-export const checkInDisableTime = (
-  value: Dayjs,
-  view: 'hours' | 'minutes' | 'seconds',
-  reservationDate: string | null,
-) => {
+export const checkInDisableTime = (value: Dayjs, view: 'hours' | 'minutes' | 'seconds', date: string | null) => {
   const currentTime = dayjs();
 
   // 오늘 reservationDate와 다르면 활성화
-  if (!currentTime.isSame(dayjs(reservationDate), 'date')) {
+  if (!currentTime.isSame(dayjs(date), 'date')) {
     return false;
   }
 
@@ -124,7 +120,7 @@ export const checkInDisableTime = (
 export const checkOutDisableTime = (
   value: Dayjs,
   view: 'hours' | 'minutes' | 'seconds',
-  reservationTimeStart: string | null,
+  reservationTimeStart: Dayjs | null,
 ) => {
   if (reservationTimeStart) {
     // start time + 1 시간보다 작은 시간만 비활성화

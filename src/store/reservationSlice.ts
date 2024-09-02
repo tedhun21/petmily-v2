@@ -12,55 +12,53 @@ export interface IPet {
 
 export interface IReservation {
   reservation: {
-    reservationDate: string;
-    reservationTimeStart: string;
-    reservationTimeEnd: string;
+    date: string;
+    startTime: string;
+    endTime: string;
     address: string;
     detailAddress: string;
     body: string;
-    petId: number[];
+    pets: number[];
     petsitterId: string;
-    pets: IPet[];
   };
 }
 
 export const reservationSlice = createSlice({
   name: 'reservation',
   initialState: {
-    reservationDate: '',
-    reservationTimeStart: '',
-    reservationTimeEnd: '',
+    date: '',
+    startTime: '',
+    endTime: '',
     address: '',
+    detailAddress: '',
     body: '',
-    petId: [],
-    petsitterId: '',
     pets: [],
+    petsitterId: '',
   },
   reducers: {
     setReservation: (state, action) => {
-      state.reservationDate = action.payload.reservationDate;
-      state.reservationTimeStart = action.payload.reservationTimeStart;
-      state.reservationTimeEnd = action.payload.reservationTimeEnd;
+      state.date = action.payload.date;
+      state.startTime = action.payload.startTime;
+      state.endTime = action.payload.endTime;
       state.address = action.payload.address;
-      state.petId = action.payload.petId;
+      state.detailAddress = action.payload.detailAddress;
       state.pets = action.payload.pets;
     },
     setPetsitterId: (state, action) => {
-      state.petsitterId = action.payload;
+      state.petsitterId = action.payload.petsitterId;
     },
-
     addBody: (state, action) => {
       state.body = action.payload.body;
     },
     deleteReservation: (state) => {
-      state.reservationDate = '';
-      state.reservationTimeStart = '';
-      state.reservationTimeEnd = '';
+      state.date = '';
+      state.startTime = '';
+      state.endTime = '';
       state.address = '';
+      state.detailAddress = '';
       state.body = '';
-      state.petId = [];
-      state.petsitterId = '';
       state.pets = [];
+      state.petsitterId = '';
     },
   },
 });

@@ -6,7 +6,7 @@ import { deleteReservation } from 'store/reservationSlice';
 import { deleteUser } from 'store/userSlice';
 
 import { useDispatch } from 'react-redux';
-import PetsitterCard from '@components/PetsitterCard';
+import PetsitterCard from '@pages/reservation/PetsitterCard';
 
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
