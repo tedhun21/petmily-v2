@@ -14,15 +14,9 @@ import { deleteCookie, getCookie, refreshAccessToken } from 'utils/cookie';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
-export default function ReservationStepTwo() {
+export default function Step2({ control, onNext }: any) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const { date, startTime, endTime, address, detailAddress, pets } = useSelector(
-    (state: IReservation) => state.reservation,
-  );
-
-  console.log(date, startTime, endTime, address, detailAddress, pets);
 
   const [properPetsitters, setProperPetsitters] = useState<number[]>([]);
 

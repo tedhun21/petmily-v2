@@ -34,7 +34,7 @@ import Home from '@pages/home/Home';
 import Login from '@pages/login/Login';
 import Mypage from '@pages/mypage/Mypage';
 import Reviews from '@pages/home/Reviews';
-import Reservation from '@pages/reservation/Reservation';
+import Reservation from '@pages/reservation/Step1';
 import Care from '@pages/care/Care';
 import Signup from '@pages/login/Signup';
 import OAuthBranch from '@pages/login/OAuthBranch';
@@ -48,7 +48,8 @@ import ViewJournal from '@pages/common/ViewJournal';
 import PetsitterViewDetails from '@pages/reservation/PetsitterViewDetails';
 import SitterSchedule from '@pages/mypage/SitterSchedule';
 import NotFound from '@pages/common/404';
-import ReservationStepTwo from '@pages/reservation/ReservationStepTwo';
+import ReservationStepTwo from '@pages/reservation/Step2';
+import FormWizard from '@pages/reservation/FormWizard';
 
 const NavHeaderLayout = () => {
   return (
@@ -74,8 +75,7 @@ const router = createBrowserRouter(
       <Route element={<NavHeaderLayout />}>
         <Route path="" element={<Home />} />
         <Route path="reviews" element={<Reviews />} />
-        <Route path="reservation" element={<Reservation />} />
-        <Route path="reservation/step2" element={<ReservationStepTwo />} />
+        <Route path="reservation" element={<FormWizard />} />
         <Route path="care" element={<Care />} />
       </Route>
       <Route element={<BackHeaderLayout />}>

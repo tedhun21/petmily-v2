@@ -1,7 +1,7 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useForm, useFormContext, useWatch } from 'react-hook-form';
 import axios from 'axios';
 
 import {
@@ -30,58 +30,33 @@ import { TimePicker } from '@mui/x-date-pickers';
 import { Modal, Sheet } from '@mui/joy';
 import DaumPostcode from 'react-daum-postcode';
 
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteReservation, setReservation } from 'store/reservationSlice';
-import { IUser, deleteUser } from 'store/userSlice';
-import { deleteCookie, getCookie, refreshAccessToken } from 'utils/cookie';
+
+import { getCookie } from 'utils/cookie';
 import { checkInDisableTime, checkOutDisableTime, reservationDisableDate } from 'utils/date';
 import { getMyPets } from './api';
 import { useCustomQuery } from 'hooks/useCustomQuery';
 import SelectPet from './SelectPet';
 
-interface IFormInput {
-  date: string | null;
-  startTime: Dayjs | null;
-  endTime: Dayjs | null;
-  address: string;
-  detailAddress: string;
-  error: boolean;
-}
-
 const apiUrl = process.env.REACT_APP_API_URL;
 
-export default function Reservation() {
+export default function Step1({ onNext }: any) {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
-  // modal
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isPetModalOpen, setIsPetModalOpen] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const {
+    setValue,
+    clearErrors,
+    control,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useFormContext();
 
-  const [checkedPetId, setCheckedPetId] = useState<any[]>([]);
+  const { date, startTime, endTime, address, detailAddress } = useWatch({ control });
 
-  // submit state error
-  const [pickerError, setPickerError] = useState();
-
-  // Modal 동물 등록
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [isCat, setIsCat] = useState('DOG');
-  const [name, setName] = useState('');
-  const [species, setSpecies] = useState('');
-  const [weight, setWeight] = useState('');
-  const [age, setAge] = useState('');
-  const [isMale, setIsMale] = useState('');
-  const [isNeutering, setIsNeutering] = useState('');
-
-  // 펫등록 에러
-  const [isNameError, setIsNameError] = useState(false);
-  const [isSpeciesError, setIsSpeciesError] = useState(false);
-  const [isWeightError, setIsWeightError] = useState(false);
-  const [isAgeError, setIsAgeError] = useState(false);
-
+  // 서버에서 오는 펫 정보
   const [pets, setPets] = useState<any[]>([]);
   const [page, setPage] = useState(1);
   const pageSize = 6;
@@ -92,6 +67,29 @@ export default function Reservation() {
     enabled: hasMoreData,
   });
 
+  // modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isPetModalOpen, setIsPetModalOpen] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const [checkedPetId, setCheckedPetId] = useState<any[]>([]);
+
+  // Modal 동물 등록
+  // const [imageFile, setImageFile] = useState<File | null>(null);
+  // const [isCat, setIsCat] = useState('DOG');
+  // const [name, setName] = useState('');
+  // const [species, setSpecies] = useState('');
+  // const [weight, setWeight] = useState('');
+  // const [age, setAge] = useState('');
+  // const [isMale, setIsMale] = useState('');
+  // const [isNeutering, setIsNeutering] = useState('');
+
+  // // 펫등록 에러
+  // const [isNameError, setIsNameError] = useState(false);
+  // const [isSpeciesError, setIsSpeciesError] = useState(false);
+  // const [isWeightError, setIsWeightError] = useState(false);
+  // const [isAgeError, setIsAgeError] = useState(false);
+
   useEffect(() => {
     if (isSuccess && data && data.results) {
       if (data.results.length < pageSize) {
@@ -101,24 +99,6 @@ export default function Reservation() {
       setPets((prev) => [...prev, ...data.results]);
     }
   }, [isSuccess, data]);
-
-  const {
-    register,
-    setValue,
-    clearErrors,
-    handleSubmit,
-    control,
-    formState: { errors },
-    watch,
-  } = useForm<IFormInput>({
-    defaultValues: {
-      date: null,
-      startTime: null,
-      endTime: null,
-      address: '',
-      detailAddress: '',
-    },
-  });
 
   const onErrorImg = (e: any) => {
     e.target.src = '/imgs/PetProfile.png';
@@ -151,18 +131,13 @@ export default function Reservation() {
   };
 
   // 펫등록 모달 handler
-  const handleGenderChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setIsMale(e.target.value);
-  };
+  // const handleGenderChange = (e: ChangeEvent<HTMLInputElement>) => {
+  //   setIsMale(e.target.value);
+  // };
 
-  const handleNeuteringChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setIsNeutering(e.target.value);
-  };
-
-  // picker 에러 핸들
-  const handleError = (error: any) => {
-    setPickerError(error);
-  };
+  // const handleNeuteringChange = (e: ChangeEvent<HTMLInputElement>) => {
+  //   setIsNeutering(e.target.value);
+  // };
 
   const handleImageClick = () => {
     if (fileInputRef.current) {
@@ -170,112 +145,95 @@ export default function Reservation() {
     }
   };
 
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const selectedFiles = e.target.files;
+  // const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+  //   const selectedFiles = e.target.files;
 
-    if (selectedFiles && selectedFiles.length > 0) {
-      const selectedFile: File = selectedFiles[0];
-      setImageFile(selectedFile);
-    }
-  };
-
-  const checkDisable = () => {
-    if (!name || !species || !weight || !age || !isMale || !isNeutering) {
-      return true;
-    } else {
-      return false;
-    }
-  };
+  //   if (selectedFiles && selectedFiles.length > 0) {
+  //     const selectedFile: File = selectedFiles[0];
+  //     setImageFile(selectedFile);
+  //   }
+  // };
 
   // 펫등록 submit (access token 재발급 설정 완료)
   const handlePetSubmit = async () => {
-    const accessToken = getCookie('access_token');
-
+    // const accessToken = getCookie('access_token');
+    // // const formData = new FormData();
+    // // formData.append('type', isCat);
+    // // formData.append('name', name);
+    // // formData.append('age', age);
+    // // formData.append('species', species);
+    // // formData.append('weight', weight);
+    // // formData.append('male', isMale);
+    // // formData.append('neutering', isNeutering);
+    // // if (imageFile) {
+    // //   formData.append('file', imageFile);
+    // // }
+    // const data = {
+    //   type: isCat,
+    //   name: name,
+    //   age: age,
+    //   species: species,
+    //   weight: weight,
+    //   male: isMale,
+    //   neutering: isNeutering,
+    // };
     // const formData = new FormData();
-
-    // formData.append('type', isCat);
-    // formData.append('name', name);
-    // formData.append('age', age);
-    // formData.append('species', species);
-    // formData.append('weight', weight);
-    // formData.append('male', isMale);
-    // formData.append('neutering', isNeutering);
     // if (imageFile) {
     //   formData.append('file', imageFile);
     // }
-
-    const data = {
-      type: isCat,
-      name: name,
-      age: age,
-      species: species,
-      weight: weight,
-      male: isMale,
-      neutering: isNeutering,
-    };
-
-    const formData = new FormData();
-
-    if (imageFile) {
-      formData.append('file', imageFile);
-    }
-
-    formData.append('data', JSON.stringify(data));
-
-    try {
-      const response = await axios.post(`${apiUrl}/pets`, formData, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-
-      if (response.status === 200) {
-        if (typeof response.data === 'string') {
-          alert('펫 등록되었습니다.');
-        }
-        setIsPetModalOpen(false);
-      }
-    } catch (error: any) {
-      console.log(error);
-      if (error.respose && error.response.status === 401) {
-        window.location.href = '/login';
-      }
-      // if (error.response && error.response.status === 401) {
-      //   try {
-      //     const newAccessToken = await refreshAccessToken();
-      //     if (newAccessToken) {
-      //       const response = await axios.post(`${apiUrl}/pets`, formData, {
-      //         headers: {
-      //           Authorization: `Bearer ${newAccessToken}`,
-      //           'Content-Type': 'multipart/form-data',
-      //         },
-      //       });
-      //       if (response.status === 201) {
-      //         alert('펫 등록되었습니다.');
-      //         setIsPetModalOpen(false);
-      //       }
-      //     }
-      //   } catch (error) {
-      //     // 에러 설정 해야함 (access token이 재발급 되지 않는 상황)
-      //     console.log(error);
-      //   }
-      // }
-    }
+    // formData.append('data', JSON.stringify(data));
+    // try {
+    //   const response = await axios.post(`${apiUrl}/pets`, formData, {
+    //     headers: {
+    //       Authorization: `Bearer ${accessToken}`,
+    //       'Content-Type': 'multipart/form-data',
+    //     },
+    //   });
+    //   if (response.status === 200) {
+    //     if (typeof response.data === 'string') {
+    //       alert('펫 등록되었습니다.');
+    //     }
+    //     setIsPetModalOpen(false);
+    //   }
+    // } catch (error: any) {
+    //   console.log(error);
+    //   if (error.respose && error.response.status === 401) {
+    //     window.location.href = '/login';
+    //   }
+    //   if (error.response && error.response.status === 401) {
+    //     try {
+    //       const newAccessToken = await refreshAccessToken();
+    //       if (newAccessToken) {
+    //         const response = await axios.post(`${apiUrl}/pets`, formData, {
+    //           headers: {
+    //             Authorization: `Bearer ${newAccessToken}`,
+    //             'Content-Type': 'multipart/form-data',
+    //           },
+    //         });
+    //         if (response.status === 201) {
+    //           alert('펫 등록되었습니다.');
+    //           setIsPetModalOpen(false);
+    //         }
+    //       }
+    //     } catch (error) {
+    //       // 에러 설정 해야함 (access token이 재발급 되지 않는 상황)
+    //       console.log(error);
+    //     }
+    //   }
+    // }
   };
 
   // 예약 정보 리덕스로 저장
-  const onSubmit = async (data: any) => {
-    const { date, startTime, endTime, address, detailAddress } = data;
-
-    const formatteredStartTime = dayjs(startTime).format('HH:mm');
-    const formatteredEndTime = dayjs(endTime).format('HH:mm');
-
+  const onSubmit = (data: any) => {
     if (checkedPetId.length === 0 || checkedPetId.length > 3) {
+      window.alert('펫은 최소 1마리 최대 3마리까지 가능합니다.');
+      return;
     }
 
-    dispatch(setReservation({ date, startTime, endTime, address, detailAddress, pets: checkedPetId }));
-    navigate('/reservation/step2');
+    if (date && startTime && endTime && address !== '' && detailAddress !== '') {
+      onNext();
+    }
+
     // if (!reservationTimeStart || !reservationTimeEnd) {
     //   alert('시간을 확인해주세요.');
     // } else if (checkedPetId.length === 0) {
@@ -312,19 +270,6 @@ export default function Reservation() {
     // }
   };
 
-  // useEffect(() => {
-  //   if (!isLogin) {
-  //     navigate('/');
-  //     alert('로그인을 해주세요.');
-  //   }
-  //   if (petsitterBoolean) {
-  //     navigate('/');
-  //     alert('고객만 이용 가능한 서비스입니다.');
-  //   }
-  // }, []);
-
-  console.log(watch());
-
   return (
     <MainContainer>
       <StatusHeader>
@@ -334,7 +279,7 @@ export default function Reservation() {
         <StatusTitleText>예약</StatusTitleText>
         <PageNumberText>1/2</PageNumberText>
       </StatusHeader>
-      <FormContainer onSubmit={handleSubmit(onSubmit)}>
+      <FormContainer>
         {/* 방문 날짜 */}
         <Container>
           <ScheduleText>언제 펫시터가 필요하신가요?</ScheduleText>
@@ -353,7 +298,6 @@ export default function Reservation() {
                       onChange(formattedDate);
                     }}
                     shouldDisableDate={reservationDisableDate}
-                    onError={handleError}
                   />
                 )}
               />
@@ -384,7 +328,6 @@ export default function Reservation() {
                         value={value}
                         onChange={onChange}
                         shouldDisableTime={(value, view) => checkInDisableTime(value, view, watch('date'))}
-                        onError={handleError}
                       />
                     )}
                   />
@@ -410,7 +353,6 @@ export default function Reservation() {
                         value={value}
                         onChange={onChange}
                         shouldDisableTime={(value, view) => checkOutDisableTime(value, view, watch('startTime'))}
-                        onError={handleError}
                       />
                     )}
                   />
@@ -476,7 +418,9 @@ export default function Reservation() {
         </SelectPetContainer>
 
         <ButtonContainer>
-          <StyledButton>다음단계</StyledButton>
+          <StyledButton type="button" onClick={onSubmit}>
+            다음단계
+          </StyledButton>
         </ButtonContainer>
       </FormContainer>
     </MainContainer>

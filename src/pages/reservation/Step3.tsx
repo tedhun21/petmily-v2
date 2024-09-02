@@ -35,7 +35,7 @@ export interface IPet {
   species: string;
 }
 
-export default function ReservationStepFour() {
+export default function Step3({ formData, onFormDataChange, onNext }: any) {
   const navigate = useNavigate();
 
   const [isChecked, setIsChecked] = useState(false);
