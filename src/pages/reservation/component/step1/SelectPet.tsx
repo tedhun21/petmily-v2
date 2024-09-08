@@ -1,62 +1,107 @@
-import { ImageCentered, RoundedImageWrapper } from 'commonStyle';
-import { useState } from 'react';
+import { useEffect } from 'react';
+import { useFormContext } from 'react-hook-form';
+
 import styled from 'styled-components';
+import { ImageCentered, RoundedImageWrapper } from 'commonStyle';
 
-export default function SelectPet({ pet, checkedPetId, setCheckedPetId }: any) {
-  const [checked, setChecked] = useState(false);
+const BUCKET_URL = process.env.REACT_APP_BUCKET_URL;
 
-  const handleCheck = () => {
-    if (!checked && checkedPetId.length >= 3) {
-      // 최대 3마리가 이미 선택된 경우 경고를 표시하거나 기능을 중지
-      alert('최대 3마리까지 선택할 수 있습니다.');
-      return;
+export default function SelectPet({ pet }: any) {
+  const { setValue, watch } = useFormContext();
+
+  const checkedPets = watch('checkedPets') || []; // 선택된 체크박스의 ID 배열을 가져옴
+  const petTypes = watch('petType') || [];
+
+  const isChecked = checkedPets.some((p: any) => p.id === pet.id); // pet.id로 체크 여부 판단
+
+  const handleCheckboxChange = () => {
+    if (isChecked) {
+      // 체크 해제 시 배열에서 pet 제거
+      const updatedCheckedPets = checkedPets.filter((p: any) => p.id !== pet.id);
+      setValue('checkedPets', updatedCheckedPets);
+    } else {
+      // 체크 시 배열에 pet 추가
+      setValue('checkedPets', [...checkedPets, pet]);
     }
-
-    setChecked((prev) => !prev);
-    setCheckedPetId((prev: any) => {
-      if (!checked) {
-        // 현재 체크되지 않은 상태에서 클릭하면, 체크된 상태가 되고 ID를 추가함
-        return [...prev, pet.id];
-      } else {
-        // 현재 체크된 상태에서 클릭하면, 체크 해제 상태가 되고 ID를 제거함
-        return prev.filter((id: number) => id !== pet.id);
-      }
-    });
   };
 
+  useEffect(() => {
+    const currentPetType = pet.type; // 현재 pet의 타입
+
+    if (isChecked) {
+      // 체크박스가 선택된 상태라면
+      if (!petTypes.includes(currentPetType)) {
+        // petType 배열에 현재 pet의 타입이 없다면 추가
+        setValue('petType', [...petTypes, currentPetType]);
+      }
+    } else {
+      // 체크박스가 해제된 상태라면
+      if (petTypes.includes(currentPetType)) {
+        // petType 배열에서 현재 pet의 타입을 제거
+        const updatedPetTypes = petTypes.filter((type: string) => type !== currentPetType);
+        setValue('petType', updatedPetTypes);
+      }
+    }
+  }, [isChecked, pet.type, petTypes, setValue]); // isChecked, pet.type, petTypes가 변경될 때마다 실행
+
   return (
-    <PetButton type="button" onClick={handleCheck}>
-      {checked ? <Check checked={checked}>✓</Check> : null}
-      <PetImageWrapper checked={checked}>
-        {pet.photo ? (
-          <ImageCentered src={pet.photo?.url} alt="petPhoto" />
-        ) : pet.type === 'DOG' ? (
-          <img src="/imgs/DogProfile.png" alt="dogProfile" />
-        ) : pet.type === 'CAT' ? (
-          <img src="/imgs/CatProfile.png" alt="catProfile" />
-        ) : null}
+    <PetLabel htmlFor={`checkedPet ${pet.id}`}>
+      <PetImageWrapper isChecked={isChecked}>
+        <ImageCentered
+          src={
+            pet.photo
+              ? `${BUCKET_URL}${pet.photo.url}`
+              : pet.type === 'DOG'
+              ? '/imgs/DogProfile.png'
+              : pet.type === 'CAT'
+              ? '/imgs/CatProfile.png'
+              : undefined
+          }
+          alt={
+            pet.photo
+              ? 'pet_photo'
+              : pet.type === 'DOG'
+              ? 'default_dog'
+              : pet.type === 'CAT'
+              ? 'default_cat'
+              : undefined
+          }
+        />
       </PetImageWrapper>
       <span>{pet.name}</span>
-    </PetButton>
+      {isChecked ? <Check isChecked={isChecked}>✓</Check> : null}
+      <input
+        id={`checkedPet ${pet.id}`}
+        key={pet.id}
+        value={pet.id}
+        type="checkbox"
+        checked={isChecked}
+        onChange={handleCheckboxChange} // 체크박스 클릭 시 처리
+        hidden
+      />
+    </PetLabel>
   );
 }
 
-const PetButton = styled.button`
+const PetLabel = styled.label`
   position: relative;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 `;
 
-const PetImageWrapper = styled(RoundedImageWrapper)<{ checked: boolean }>`
+const PetImageWrapper = styled(RoundedImageWrapper)<{ isChecked: boolean }>`
   display: flex;
   cursor: pointer;
   width: 80px;
   height: 80px;
-  filter: ${(props) => (props.checked ? 'brightness(1.05)' : 'brightness(1)')};
-  transform ${(props) => (props.checked ? 'scale(1)' : 'scale(0.95)')};
+  filter: ${(props) => (props.isChecked ? 'brightness(1.05)' : 'brightness(1)')};
+  transform ${(props) => (props.isChecked ? 'scale(1)' : 'scale(0.95)')};
   transition:
     transform 0.3s ease-in-out;
 `;
 
-const Check = styled.div<{ checked: boolean }>`
+const Check = styled.div<{ isChecked: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -70,8 +115,8 @@ const Check = styled.div<{ checked: boolean }>`
   right: 0;
   top: 0;
   border: 1px solid ${(props) => props.theme.colors.subBlue};
-  opacity: ${(props) => (props.checked ? 1 : 0)};
-  transform: ${(props) => (props.checked ? 'scale(1)' : 'scale(0.5)')};
+  opacity: ${(props) => (props.isChecked ? 1 : 0)};
+  transform: ${(props) => (props.isChecked ? 'scale(1)' : 'scale(0.5)')};
   transition:
     opacity 0.3s ease-in-out,
     transform 0.3s ease-in-out;

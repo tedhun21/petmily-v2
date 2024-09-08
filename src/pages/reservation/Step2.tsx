@@ -1,31 +1,43 @@
-import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import styled from 'styled-components';
 
-import { Box, Divider, Drawer, List, ListItem, ListItemText, ListSubheader } from '@mui/material';
-import { FormatListBulleted } from '@mui/icons-material';
-import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
-import { IReservation, deleteReservation } from 'store/reservationSlice';
+import { Drawer } from '@mui/material';
 
-import PetsitterCard from '@pages/reservation/PetsitterCard';
-import { deleteUser } from 'store/userSlice';
-import { deleteCookie, getCookie, refreshAccessToken } from 'utils/cookie';
+import { FiFilter } from 'react-icons/fi';
+import { Column, Row } from 'commonStyle';
+import { CgOptions } from 'react-icons/cg';
 
-const apiUrl = process.env.REACT_APP_API_URL;
+import { useCustomQuery } from 'hooks/useCustomQuery';
+import { getPetsitters } from './api';
+import { useFormContext } from 'react-hook-form';
+import PetsitterCard from './component/step2/PetsitterCard';
 
-export default function Step2({ control, onNext }: any) {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+const filterList = [
+  { id: 1, item: '예약 정보 기반 펫시터' },
+  { id: 2, item: '내가 찜한 펫시터' },
+  { id: 3, item: '별점이 높은 펫시터' },
+  { id: 4, item: '리뷰가 많은 펫시터' },
+  { id: 5, item: '새로 온 펫시터' },
+];
+
+export default function Step2({ onNext }: any) {
+  const { getValues } = useFormContext();
+
+  const { date, startTime, endTime, address, petType } = getValues();
 
   const [properPetsitters, setProperPetsitters] = useState<number[]>([]);
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [filterType, setFilterType] = useState('요청한 예약 날짜에 맞는 펫시터'); // 필터 타입 상태 관리
+  const [filterType, setFilterType] = useState(1);
 
-  const handleBackClick = () => {
-    navigate('/reservation');
-  };
+  const [page, setPage] = useState(1);
+  const pageSize = 20;
+  // let filter = {};
+
+  const { isSuccess, data } = useCustomQuery({
+    queryFn: () => getPetsitters({ date, startTime, endTime, address, petType, page, pageSize }),
+    enabled: !!date && !!startTime && !!endTime && !!address && !!petType,
+  });
 
   const handleFilterOpen = () => {
     setIsFilterOpen(true);
@@ -35,10 +47,22 @@ export default function Step2({ control, onNext }: any) {
     setIsFilterOpen(false);
   };
 
-  const handleFilterButtonClick = (filterText: string) => {
-    setFilterType(filterText);
+  const handleFilterButtonClick = (type: number) => {
+    setFilterType(type);
     setIsFilterOpen(false);
   };
+
+  useEffect(() => {
+    if (isSuccess && data) {
+      setProperPetsitters((prev) => [...prev, data.results]);
+    }
+  }, [isSuccess, data]);
+
+  // useEffect(() => {
+  //   if (filterType && getValues()) {
+  //     filter = getFilter(filterType, getValues());
+  //   }
+  // }, [filterType]);
 
   // useEffect(() => {
   //   if (!reservationDate || !reservationTimeStart || !reservationTimeEnd || !address || !petId) {
@@ -158,130 +182,110 @@ export default function Step2({ control, onNext }: any) {
 
   return (
     <MainContainer>
-      <StatusHeader>
-        <BackImg src="/imgs/BackArrow.svg" onClick={handleBackClick} />
-        <StatusTitleText>예약</StatusTitleText>
-        <PageNumberText>2/2</PageNumberText>
-      </StatusHeader>
-
       <FilterContainer>
-        <TitleBox>
-          <TitleWrap>
-            <TitleText>{filterType}</TitleText>
-            <ItemCountbox>{properPetsitters.length}</ItemCountbox>
-          </TitleWrap>
-          <FilterIcon src="/icons/FilterIcon.svg" alt="FilterIcon" onClick={handleFilterOpen} />
-        </TitleBox>
+        <TitleWrap>
+          <TitleText>{filterList.map((list: any) => list.id === filterType && list.item)}</TitleText>
+          <ItemCountbox>0</ItemCountbox>
+        </TitleWrap>
+        <FilterButton type="button" onClick={handleFilterOpen}>
+          <CgOptions size="24px" />
+        </FilterButton>
       </FilterContainer>
 
-      {/* <Box>
-        {Array.isArray(properPetsitters) &&
-          properPetsitters.length > 0 &&
-          properPetsitters.map((petsitter: any) => <PetsitterCard key={petsitter.petsitterId} petsitter={petsitter} />)}
-      </Box> */}
+      <PetsitterContainer>
+        {Array.isArray(properPetsitters[0]) &&
+          properPetsitters[0].length > 0 &&
+          properPetsitters.map((page: any) =>
+            page.map((petsitter: any) => <PetsitterCard key={petsitter.id} petsitter={petsitter} onNext={onNext} />),
+          )}
+      </PetsitterContainer>
 
       <Drawer
         anchor="bottom"
         open={isFilterOpen}
         onClose={handleFilterClose}
-        ModalProps={{ container: document.getElementById('steptwo-main'), style: { position: 'absolute' } }}
+        // ModalProps={{ container: document.getElementById('steptwo-main'), style: { position: 'absolute' } }}
       >
-        <List>
-          <ListSubheader sx={{ fontSize: '20px', display: 'flex', alignItems: 'center', color: 'primary.main' }}>
-            <FormatListBulleted sx={{ mr: 2 }} />
-            <span>필터</span>
-          </ListSubheader>
+        <>
+          <DrawerHeader>
+            <FiFilter size="28px" color="#279EFF" />
+            <HeaderTitle>필터</HeaderTitle>
+          </DrawerHeader>
           <Divider />
-
-          <ListItem onClick={() => handleFilterButtonClick('요청한 예약 날짜에 맞는 펫시터')}>
-            <ListItemText primary="요청한 예약 날짜에 맞는 펫시터" sx={{ ml: 5 }} />
-          </ListItem>
-          <ListItem onClick={() => handleFilterButtonClick('내가 찜한 펫시터')}>
-            <ListItemText primary="내가 찜한 펫시터" sx={{ ml: 5 }} />
-          </ListItem>
-          <ListItem onClick={() => handleFilterButtonClick('별점이 높은 펫시터')}>
-            <ListItemText primary="별점이 높은 펫시터" sx={{ ml: 5 }} />
-          </ListItem>
-          <ListItem onClick={() => handleFilterButtonClick('리뷰가 많은 펫시터')}>
-            <ListItemText primary="리뷰가 많은 펫시터" sx={{ ml: 5 }} />
-          </ListItem>
-          <ListItem onClick={() => handleFilterButtonClick('새로 온 펫시터')}>
-            <ListItemText primary="새로 온 펫시터" sx={{ ml: 5 }} />
-          </ListItem>
-        </List>
+          <ListContainer>
+            {filterList.map((filter) => (
+              <li key={filter.id}>
+                <ItemButton onClick={() => handleFilterButtonClick(filter.id)}>{filter.item}</ItemButton>
+              </li>
+            ))}
+          </ListContainer>
+        </>
       </Drawer>
     </MainContainer>
   );
 }
 
-const MainContainer = styled.div`
+const MainContainer = styled.main`
   display: flex;
   flex-direction: column;
-  position: relative;
-  bottom: 0;
-  width: 100%;
-  background-color: #fefdff;
+  padding: 12px;
 `;
 
-const StatusHeader = styled.div`
-  display: flex;
+const FilterContainer = styled(Row)`
+  padding: 8px;
+  justify-content: space-between;
   align-items: center;
-  justify-content: space-around;
-  position: relative;
-  background-color: ${(props) => props.theme.textColors.secondary};
-  min-height: 48px;
-  gap: 120px;
 `;
 
-const BackImg = styled.img`
-  cursor: pointer;
+const TitleWrap = styled(Row)`
+  gap: 4px;
+  align-items: center;
 `;
 
-const StatusTitleText = styled.div`
-  ${(props) => props.theme.fontSize.s12h18};
-  font-weight: ${(props) => props.theme.fontWeights.extrabold};
-`;
-
-const PageNumberText = styled.div`
-  ${(props) => props.theme.fontSize.s12h18};
-  font-weight: ${(props) => props.theme.fontWeights.light};
-`;
-
-const FilterContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-top: 20px;
-`;
-
-const TitleBox = styled.div`
-  display: flex;
-  position: relative;
-  margin-bottom: 36px;
-`;
-
-const TitleWrap = styled.div`
-  display: flex;
-  position: absolute;
-  left: 40px;
-`;
-
-const TitleText = styled.div`
+const TitleText = styled.span`
   font-weight: ${(props) => props.theme.fontWeights.extrabold};
   font-size: ${(props) => props.theme.fontSize.s20h30};
 `;
 
 const ItemCountbox = styled.div`
-  margin: 5px 0 5px 8px;
-  padding: 2px 5px;
+  display: flex;
+  justify-content: center;
+  align-itmes: center;
+  padding: 4px 8px;
   border-radius: 4px;
   color: ${(props) => props.theme.colors.white};
   font-size: 14px;
   background-color: ${(props) => props.theme.colors.mainBlue};
 `;
 
-const FilterIcon = styled.img`
-  position: absolute;
-  top: 6px;
-  right: 40px;
+const FilterButton = styled.button`
   cursor: pointer;
+`;
+
+const PetsitterContainer = styled(Column)`
+  gap: 8px;
+`;
+
+const DrawerHeader = styled(Row)`
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+`;
+
+const HeaderTitle = styled.span`
+  ${(props) => props.theme.fontSize.s18h27}
+  font-weight:${(props) => props.theme.fontWeights.bold}
+`;
+
+const Divider = styled.div`
+  border: 1px solid ${(props) => props.theme.colors.mainBlue};
+`;
+
+const ListContainer = styled.ul`
+  padding: 8px;
+`;
+
+const ItemButton = styled.button`
+  padding: 16px;
+  ${(props) => props.theme.fontSize.s16h24}
 `;

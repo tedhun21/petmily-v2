@@ -6,13 +6,13 @@ import { deleteReservation } from 'store/reservationSlice';
 import { deleteUser } from 'store/userSlice';
 
 import { useDispatch } from 'react-redux';
-import PetsitterCard from '@pages/reservation/PetsitterCard';
 
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Box, Divider, Drawer, List, ListItem, ListItemText, ListSubheader } from '@mui/material';
 import { FormatListBulleted } from '@mui/icons-material';
 import { deleteCookie, getCookie, refreshAccessToken } from 'utils/cookie';
+import PetsitterCard from './component/step2/PetsitterCard';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 const bucketUrl = process.env.REACT_APP_BUCKET_URL;

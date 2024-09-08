@@ -5,17 +5,11 @@ import Step2 from './Step2';
 import Step3 from './Step3';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Dayjs } from 'dayjs';
-
-interface IFormInput {
-  date: string | null;
-  startTime: Dayjs | null;
-  endTime: Dayjs | null;
-  address: string;
-  detailAddress: string;
-}
+import { IFormInput } from './api';
+import StatusHeader from './component/StatusHeader';
 
 export default function FormWizard() {
-  const methods = useForm({
+  const methods = useForm<IFormInput>({
     defaultValues: {
       date: null,
       startTime: null,
@@ -41,17 +35,18 @@ export default function FormWizard() {
         return <Step1 onNext={handleNextStep} />;
       case 2:
         return <Step2 onNext={handleNextStep} onPrevious={handlePreviousStep} />;
-      // case 3:
-      //   return (
-      //     <Step3 formData={formData} onPrevious={handlePreviousStep} onSubmit={() => alert('폼이 제출되었습니다!')} />
-      //   );
+      case 3:
+        return <Step3 onPrevious={handlePreviousStep} />;
       default:
         return null;
     }
   };
-  console.log(methods.watch());
+
+  // console.log(methods.watch());
+
   return (
     <FormProvider {...methods}>
+      <StatusHeader currentStep={currentStep} onPrevious={handlePreviousStep} />
       <AnimatePresence>
         <motion.div
           key={currentStep}

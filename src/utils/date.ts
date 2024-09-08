@@ -32,10 +32,6 @@ dayjs.updateLocale('en', {
   },
 });
 
-const now = new Date();
-const nowDate = dayjs(now).format('YYYY-MM-DD');
-const nowTime = dayjs(now).format('HH:mm:ss');
-
 export const parsePossibleDay = (data: string): string[] => {
   try {
     const parsed = JSON.parse(data);
@@ -84,24 +80,23 @@ export const reservationDisableDate = (day: string) => {
   // 일요일,월요일면 주말
   const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
 
+  const now = dayjs();
   // now로부터 3개월 이후에만 date 선택가능 범위
   const nowAddThreeMonth = dayjs(now).add(3, 'M').format('YYYY-MM-DD');
 
   // 3개월 이내와 주말 이외에만 예약 가능 (true면 비활성화, false는 활성화)
-  return !dayjs(dayjs(day).format('YYYY-MM-DD')).isBetween(nowDate, nowAddThreeMonth, 'day', '[)') || isWeekend;
+  return !dayjs(dayjs(day).format('YYYY-MM-DD')).isBetween(now, nowAddThreeMonth, 'day', '[)') || isWeekend;
 };
 
 export const checkInDisableTime = (value: Dayjs, view: 'hours' | 'minutes' | 'seconds', date: string | null) => {
   const currentTime = dayjs();
 
-  // 오늘 reservationDate와 다르면 활성화
-  if (!currentTime.isSame(dayjs(date), 'date')) {
-    return false;
-  }
+  if (date && dayjs.isDayjs(dayjs(date))) {
+    if (!currentTime.isSame(dayjs(date), 'date')) {
+      return false;
+    }
 
-  // 지금 현재 시 보다 늦으면 true
-  if (view === 'hours') {
-    if (value.hour() < currentTime.hour() + 2) {
+    if (view === 'hours' && value.hour() < currentTime.hour() + 2) {
       return true;
     }
   }
@@ -122,14 +117,10 @@ export const checkOutDisableTime = (
   view: 'hours' | 'minutes' | 'seconds',
   reservationTimeStart: Dayjs | null,
 ) => {
-  if (reservationTimeStart) {
-    // start time + 1 시간보다 작은 시간만 비활성화
-    if (view === 'hours') {
-      if (value.hour() < dayjs(reservationTimeStart, 'HH:mm').add(1, 'hour').get('hour')) {
-        return true;
-      }
+  if (reservationTimeStart && dayjs.isDayjs(reservationTimeStart)) {
+    if (view === 'hours' && value.hour() < reservationTimeStart.add(1, 'hour').hour()) {
+      return true;
     }
-
     // 30분 간격만 선택되게
     // if (view === 'minutes') {
     //   if (value.minute() % 30 !== 0) {
@@ -137,5 +128,6 @@ export const checkOutDisableTime = (
     //   }
     // }
   }
+
   return false;
 };

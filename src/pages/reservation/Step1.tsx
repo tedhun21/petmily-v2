@@ -1,8 +1,8 @@
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Controller, useForm, useFormContext, useWatch } from 'react-hook-form';
-import axios from 'axios';
+
+import styled from 'styled-components';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
 
 import {
   ButtonGroup,
@@ -26,21 +26,16 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers';
-
 import { Modal, Sheet } from '@mui/joy';
 import DaumPostcode from 'react-daum-postcode';
 
 import dayjs from 'dayjs';
 
-import { useDispatch, useSelector } from 'react-redux';
-
-import { getCookie } from 'utils/cookie';
 import { checkInDisableTime, checkOutDisableTime, reservationDisableDate } from 'utils/date';
 import { getMyPets } from './api';
 import { useCustomQuery } from 'hooks/useCustomQuery';
-import SelectPet from './SelectPet';
-
-const apiUrl = process.env.REACT_APP_API_URL;
+import SelectPet from './component/step1/SelectPet';
+import { Row } from 'commonStyle';
 
 export default function Step1({ onNext }: any) {
   const navigate = useNavigate();
@@ -49,12 +44,11 @@ export default function Step1({ onNext }: any) {
     setValue,
     clearErrors,
     control,
-    handleSubmit,
     watch,
     formState: { errors },
   } = useFormContext();
 
-  const { date, startTime, endTime, address, detailAddress } = useWatch({ control });
+  const { date, startTime, endTime, address, detailAddress, checkedPets } = useWatch({ control });
 
   // 서버에서 오는 펫 정보
   const [pets, setPets] = useState<any[]>([]);
@@ -71,8 +65,6 @@ export default function Step1({ onNext }: any) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPetModalOpen, setIsPetModalOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-
-  const [checkedPetId, setCheckedPetId] = useState<any[]>([]);
 
   // Modal 동물 등록
   // const [imageFile, setImageFile] = useState<File | null>(null);
@@ -223,9 +215,8 @@ export default function Step1({ onNext }: any) {
     // }
   };
 
-  // 예약 정보 리덕스로 저장
   const onSubmit = (data: any) => {
-    if (checkedPetId.length === 0 || checkedPetId.length > 3) {
+    if (checkedPets.length === 0 || checkedPets.length > 3) {
       window.alert('펫은 최소 1마리 최대 3마리까지 가능합니다.');
       return;
     }
@@ -233,52 +224,10 @@ export default function Step1({ onNext }: any) {
     if (date && startTime && endTime && address !== '' && detailAddress !== '') {
       onNext();
     }
-
-    // if (!reservationTimeStart || !reservationTimeEnd) {
-    //   alert('시간을 확인해주세요.');
-    // } else if (checkedPetId.length === 0) {
-    //   alert('맡기실 반려동물을 선택해주세요.');
-    // } else if (pickerError === 'invalidDate') {
-    //   alert('날짜를 확인해주세요.');
-    // } else if (pickerError === 'shouldDisableDate') {
-    //   alert('과거 날짜와 주말은 선택할 수 없습니다.');
-    // } else if (pickerError === 'minTime' || pickerError === 'maxTime') {
-    //   alert('시간은 8시부터 22시까지입니다');
-    // } else if (pickerError === 'shouldDisableTime-hours') {
-    //   alert('완료 시간은 시작 시간 이후여야 합니다.');
-    // } else if (pickerError === 'shouldDisableTime-minutes' || pickerError === 'minutesStep') {
-    //   alert('예약 시간은 정시 또는 30분 단위로 선택해야 합니다.');
-    // } else if (
-    //   reservationDate &&
-    //   reservationTimeStart &&
-    //   reservationTimeEnd &&
-    //   address &&
-    //   detailAddress &&
-    //   checkedPetId.length > 0
-    // ) {
-    //   dispatch(
-    //     setReservation({
-    //       reservationDate,
-    //       reservationTimeStart,
-    //       reservationTimeEnd,
-    //       address: `${address} ${detailAddress}`,
-    //       petId: checkedPetId,
-    //       pets: checkedPets,
-    //     }),
-    //   );
-    //   navigate('/reservation/step2');
-    // }
   };
 
   return (
     <MainContainer>
-      <StatusHeader>
-        <button onClick={handleBackClick}>
-          <img src="/imgs/BackArrow.svg" alt="backArrow" />
-        </button>
-        <StatusTitleText>예약</StatusTitleText>
-        <PageNumberText>1/2</PageNumberText>
-      </StatusHeader>
       <FormContainer>
         {/* 방문 날짜 */}
         <Container>
@@ -293,11 +242,9 @@ export default function Step1({ onNext }: any) {
                     label="날짜를 입력해주세요"
                     format="YYYY-MM-DD"
                     value={value}
-                    onChange={(newDate) => {
-                      const formattedDate = newDate ? dayjs(newDate).format('YYYY-MM-DD') : null;
-                      onChange(formattedDate);
-                    }}
+                    onChange={onChange}
                     shouldDisableDate={reservationDisableDate}
+                    sx={{ width: '100%' }}
                   />
                 )}
               />
@@ -319,7 +266,6 @@ export default function Step1({ onNext }: any) {
                     render={({ field: { value, onChange } }) => (
                       <TimePicker
                         label="Check In"
-                        sx={{ flex: 1 }}
                         minutesStep={30}
                         skipDisabled={true}
                         minTime={dayjs(new Date(0, 0, 0, 8))}
@@ -328,6 +274,7 @@ export default function Step1({ onNext }: any) {
                         value={value}
                         onChange={onChange}
                         shouldDisableTime={(value, view) => checkInDisableTime(value, view, watch('date'))}
+                        sx={{ width: '100%' }}
                       />
                     )}
                   />
@@ -344,7 +291,6 @@ export default function Step1({ onNext }: any) {
                     render={({ field: { value, onChange } }) => (
                       <TimePicker
                         label="Check Out"
-                        sx={{ flex: 1 }}
                         minutesStep={30}
                         skipDisabled={true}
                         minTime={dayjs(new Date(0, 0, 0, 9))}
@@ -353,6 +299,7 @@ export default function Step1({ onNext }: any) {
                         value={value}
                         onChange={onChange}
                         shouldDisableTime={(value, view) => checkOutDisableTime(value, view, watch('startTime'))}
+                        sx={{ width: '100%' }}
                       />
                     )}
                   />
@@ -409,11 +356,7 @@ export default function Step1({ onNext }: any) {
         <SelectPetContainer>
           <SelectTitle>맡기시는 반려동물</SelectTitle>
           <PetContainer>
-            {Array.isArray(pets) &&
-              pets.length > 0 &&
-              pets.map((pet: any) => (
-                <SelectPet key={pet.id} pet={pet} checkedPetId={checkedPetId} setCheckedPetId={setCheckedPetId} />
-              ))}
+            {Array.isArray(pets) && pets.length > 0 && pets.map((pet: any) => <SelectPet key={pet.id} pet={pet} />)}
           </PetContainer>
         </SelectPetContainer>
 
@@ -430,43 +373,13 @@ export default function Step1({ onNext }: any) {
 const MainContainer = styled.main`
   display: flex;
   flex-direction: column;
-  width: 100%;
-`;
-
-const StatusHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0px 20px;
-  background-color: ${(props) => props.theme.textColors.secondary};
-  height: 48px;
-
-  /* &::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: -2px; //컨테이너 하단에 위치하도록 설정
-    width: 120px; // 밑줄의 길이 설정
-    height: 2px; // 밑줄의 두께 설정
-    background-color: ${(props) => props.theme.colors.mainBlue};
-  } */
-`;
-
-const StatusTitleText = styled.div`
-  ${(props) => props.theme.fontSize.s12h18};
-  font-weight: ${(props) => props.theme.fontWeights.extrabold};
-`;
-
-const PageNumberText = styled.div`
-  ${(props) => props.theme.fontSize.s12h18};
-  font-weight: ${(props) => props.theme.fontWeights.light};
+  padding: 12px;
 `;
 
 const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding: 12px;
 `;
 
 const Container = styled.div`
@@ -481,8 +394,7 @@ const ScheduleText = styled.h2`
   white-space: pre-line;
 `;
 
-const BasicTimePickerContainer = styled.div`
-  display: flex;
+const BasicTimePickerContainer = styled(Row)`
   gap: 8px;
 `;
 
@@ -541,6 +453,7 @@ const StyledButton = styled.button`
   border: none;
   background-color: ${({ theme }) => theme.colors.mainBlue};
   color: white;
+  cursor: pointer;
   ${({ theme }) => theme.fontSize.s16h24};
 
   &:hover {
