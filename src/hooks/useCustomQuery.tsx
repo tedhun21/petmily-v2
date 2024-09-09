@@ -8,12 +8,13 @@ type UseCustomQueryOptions<T> = {
 
 export function useCustomQuery<T>({ queryFn, enabled }: UseCustomQueryOptions<T>) {
   const [data, setData] = useState<T | undefined>(undefined);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false); // Default to false, loading only when triggered
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    if (enabled === undefined || enabled === true) {
+    // Check if enabled is true
+    if (enabled) {
       setIsLoading(true);
       setIsSuccess(false);
       setError(null); // Reset error state on re-fetch
@@ -30,9 +31,9 @@ export function useCustomQuery<T>({ queryFn, enabled }: UseCustomQueryOptions<T>
           setIsSuccess(false);
         });
     } else {
-      setIsLoading(false); // If not enabled, ensure isLoading is false
+      setIsLoading(false); // Ensure isLoading is false if not enabled
     }
-  }, [enabled]);
+  }, [enabled]); // Added queryFn to dependencies array
 
   return { data, isLoading, isSuccess, error };
 }

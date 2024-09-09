@@ -1,10 +1,12 @@
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 
 import relativeTime from 'dayjs/plugin/relativeTime';
 import updateLocale from 'dayjs/plugin/updateLocale';
+import isBetween from 'dayjs/plugin/isBetween';
 
 dayjs.extend(relativeTime);
 dayjs.extend(updateLocale);
+dayjs.extend(isBetween);
 
 dayjs.updateLocale('en', {
   relativeTime: {
@@ -70,4 +72,62 @@ export const dateFormat = (date: string) => {
   const month = dayjs(date).format('MM');
   const day = dayjs(date).format('DD');
   return { year, month, day };
+};
+
+export const reservationDisableDate = (day: string) => {
+  // 날짜에 할당된 숫자 구하기 (0이면 일요일, 1이면 월요일)
+  const dayOfWeek = dayjs(day).day();
+  // 일요일,월요일면 주말
+  const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+
+  const now = dayjs();
+  // now로부터 3개월 이후에만 date 선택가능 범위
+  const nowAddThreeMonth = dayjs(now).add(3, 'M').format('YYYY-MM-DD');
+
+  // 3개월 이내와 주말 이외에만 예약 가능 (true면 비활성화, false는 활성화)
+  return !dayjs(dayjs(day).format('YYYY-MM-DD')).isBetween(now, nowAddThreeMonth, 'day', '[)') || isWeekend;
+};
+
+export const checkInDisableTime = (value: Dayjs, view: 'hours' | 'minutes' | 'seconds', date: string | null) => {
+  const currentTime = dayjs();
+
+  if (date && dayjs.isDayjs(dayjs(date))) {
+    if (!currentTime.isSame(dayjs(date), 'date')) {
+      return false;
+    }
+
+    if (view === 'hours' && value.hour() < currentTime.hour() + 2) {
+      return true;
+    }
+  }
+
+  // 30분만 활성화
+  // if (view === 'minutes') {
+  //   if (value.minute() % 30 !== 0) {
+  //     return false;
+  //   }
+  // }
+
+  // return 값이 true면 비활성화 false면 활성화
+  return false;
+};
+
+export const checkOutDisableTime = (
+  value: Dayjs,
+  view: 'hours' | 'minutes' | 'seconds',
+  reservationTimeStart: Dayjs | null,
+) => {
+  if (reservationTimeStart && dayjs.isDayjs(reservationTimeStart)) {
+    if (view === 'hours' && value.hour() < reservationTimeStart.add(1, 'hour').hour()) {
+      return true;
+    }
+    // 30분 간격만 선택되게
+    // if (view === 'minutes') {
+    //   if (value.minute() % 30 !== 0) {
+    //     return false;
+    //   }
+    // }
+  }
+
+  return false;
 };
