@@ -32,7 +32,7 @@ type InfoType = {
 } | null;
 
 export default function MySchedule() {
-  const { memberId } = useSelector((state: IUser) => state.user);
+  // const { memberId } = useSelector((state: IUser) => state.user);
 
   const [info, setInfo] = useState<InfoType>(null);
   const [isLoading, setIsLoading] = useState(true);

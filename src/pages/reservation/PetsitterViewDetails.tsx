@@ -71,7 +71,7 @@ export default function PetsitterViewDetails() {
 
   const [petsitterData, setPetsitterData] = useState<any>();
 
-  const { isLogin, memberId, petsitterBoolean } = useSelector((state: IUser) => state.user);
+  // const { isLogin, memberId, petsitterBoolean } = useSelector((state: IUser) => state.user);
   // const { reservationDate, reservationTimeStart, reservationTimeEnd, address, petId, pets } = useSelector(
   //   (state: IReservation) => state.reservation,
   // );
@@ -81,45 +81,45 @@ export default function PetsitterViewDetails() {
     setSelectedTimes([]);
   };
 
-  const handleBookmarkClick = async () => {
-    // 찜하기 버튼 클릭 시 동작
-    const accessToken = getCookie('access_token');
-    if (isLogin) {
-      try {
-        const response = await axios.put(
-          `${apiUrl}/members/favorite/${petsitterId}`,
-          {}, //추가적인 데이터 없음
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          },
-        );
+  // const handleBookmarkClick = async () => {
+  //   // 찜하기 버튼 클릭 시 동작
+  //   const accessToken = getCookie('access_token');
+  //   if (isLogin) {
+  //     try {
+  //       const response = await axios.put(
+  //         `${apiUrl}/members/favorite/${petsitterId}`,
+  //         {}, //추가적인 데이터 없음
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${accessToken}`,
+  //           },
+  //         },
+  //       );
 
-        setIsBookmarked(response.data.data);
-      } catch (error) {
-        console.error(error);
-      }
-    } else {
-      try {
-        const newAccessToken = await refreshAccessToken();
-        if (newAccessToken) {
-          const response = await axios.put(
-            `${apiUrl}/members/favorite/${petsitterId}`,
-            {}, //추가적인 데이터 없음
-            {
-              headers: {
-                Authorization: `Bearer ${newAccessToken}`,
-              },
-            },
-          );
-          setIsBookmarked(response.data.isBookmarked);
-        }
-      } catch (refreshError) {
-        console.error(refreshError);
-      }
-    }
-  };
+  //       setIsBookmarked(response.data.data);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   } else {
+  //     try {
+  //       const newAccessToken = await refreshAccessToken();
+  //       if (newAccessToken) {
+  //         const response = await axios.put(
+  //           `${apiUrl}/members/favorite/${petsitterId}`,
+  //           {}, //추가적인 데이터 없음
+  //           {
+  //             headers: {
+  //               Authorization: `Bearer ${newAccessToken}`,
+  //             },
+  //           },
+  //         );
+  //         setIsBookmarked(response.data.isBookmarked);
+  //       }
+  //     } catch (refreshError) {
+  //       console.error(refreshError);
+  //     }
+  //   }
+  // };
 
   // const handleOnSubmitButtonClick = () => {
   //   // 선택된 날짜와 시간을 스토어에 저장
@@ -137,6 +137,7 @@ export default function PetsitterViewDetails() {
 
   //   navigate('/reservation/step3');
   // };
+
   //펫시터 데이터 가져오기
   useEffect(() => {
     const fetchPetsitterData = async () => {
@@ -152,29 +153,30 @@ export default function PetsitterViewDetails() {
 
     fetchPetsitterData();
   }, [petsitterId]);
-  //해당 펫시터가 찜한 펫시터인지 확인
-  useEffect(() => {
-    const fetchBookmarkStatus = async () => {
-      const accessToken = getCookie('access_token');
-      if (isLogin) {
-        try {
-          const response = await axios.get(`${apiUrl}/members/favorite/${petsitterId}`, {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          });
-          setIsBookmarked(response.data);
-        } catch (error) {
-          console.error(error);
-        }
-      } else {
-        // 로그인이 되어있지 않은 경우에 대한 처리
-        // ...
-      }
-    };
 
-    fetchBookmarkStatus();
-  }, [isLogin, petsitterId]);
+  //해당 펫시터가 찜한 펫시터인지 확인
+  // useEffect(() => {
+  //   const fetchBookmarkStatus = async () => {
+  //     const accessToken = getCookie('access_token');
+  //     if (isLogin) {
+  //       try {
+  //         const response = await axios.get(`${apiUrl}/members/favorite/${petsitterId}`, {
+  //           headers: {
+  //             Authorization: `Bearer ${accessToken}`,
+  //           },
+  //         });
+  //         setIsBookmarked(response.data);
+  //       } catch (error) {
+  //         console.error(error);
+  //       }
+  //     } else {
+  //       // 로그인이 되어있지 않은 경우에 대한 처리
+  //       // ...
+  //     }
+  //   };
+
+  //   fetchBookmarkStatus();
+  // }, [isLogin, petsitterId]);
 
   return (
     <MainContainer>
@@ -210,10 +212,10 @@ export default function PetsitterViewDetails() {
         <RatingImg src="/imgs/Star.svg" alt="ratingImg" />
         {petsitterData?.star}
         <MiddleLineImg src="/imgs/MiddleLine.svg" alt="middleLine" />
-        <StyledButton variant="text" onClick={handleBookmarkClick}>
+        {/* <StyledButton variant="text" onClick={handleBookmarkClick}>
           <BookmarkIcon src={isBookmarked ? '/icons/Bookmark.svg' : '/imgs/BeforeBookmark.svg'} alt="bookmarkIcon" />
           찜하기
-        </StyledButton>
+        </StyledButton> */}
       </BookmarkContainer>
 
       <ViewDetailsContainer>

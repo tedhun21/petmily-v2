@@ -24,7 +24,7 @@ export default function CreateReview() {
   const [star, setStar] = useState<number | null>(review?.star || 5);
   const [reviewText, setReviewText] = useState('');
 
-  const { isLogin, memberId, email, petsitterBoolean } = useSelector((state: IUser) => state.user);
+  // const { isLogin, memberId, email, petsitterBoolean } = useSelector((state: IUser) => state.user);
 
   let year, month, day;
   if (reservation && reservation.reservationDay) {
@@ -133,44 +133,44 @@ export default function CreateReview() {
   };
 
   // 해당 예약 1개 조회
-  useEffect(() => {
-    const accessToken = getCookie('access_token');
+  // useEffect(() => {
+  //   const accessToken = getCookie('access_token');
 
-    if (!isLogin || petsitterBoolean || !careReservationId) {
-      alert('권한이 없습니다.');
-      navigate('/');
-    }
-    if (accessToken) {
-      try {
-        axios
-          .get(`${apiUrl}/reservations/${careReservationId}`, { headers: { Authorization: `Bearer ${accessToken}` } })
-          .then((res) => {
-            setReservation(res.data);
+  //   if (!isLogin || petsitterBoolean || !careReservationId) {
+  //     alert('권한이 없습니다.');
+  //     navigate('/');
+  //   }
+  //   if (accessToken) {
+  //     try {
+  //       axios
+  //         .get(`${apiUrl}/reservations/${careReservationId}`, { headers: { Authorization: `Bearer ${accessToken}` } })
+  //         .then((res) => {
+  //           setReservation(res.data);
 
-            // const photos = res?.data?.review?.photos;
+  //           // const photos = res?.data?.review?.photos;
 
-            // if (review) {
-            //   setReview(review);
-            //   setReviewText(review.body);
-            //   setStar(review.star);
+  //           // if (review) {
+  //           //   setReview(review);
+  //           //   setReviewText(review.body);
+  //           //   setStar(review.star);
 
-            //   if (photos) {
-            //     const modifiedReviewImages = photos.map((photoUrl: any) => {
-            //       if (photoUrl.includes('https://bucketUrl')) {
-            //         return photoUrl.replace('https://bucketUrl', bucketUrl);
-            //       }
-            //       return '';
-            //     });
+  //           //   if (photos) {
+  //           //     const modifiedReviewImages = photos.map((photoUrl: any) => {
+  //           //       if (photoUrl.includes('https://bucketUrl')) {
+  //           //         return photoUrl.replace('https://bucketUrl', bucketUrl);
+  //           //       }
+  //           //       return '';
+  //           //     });
 
-            //     setReviewImages(modifiedReviewImages);
-            //   }
-            // }
-          });
-      } catch (error: any) {
-        console.log(error);
-      }
-    }
-  }, []);
+  //           //     setReviewImages(modifiedReviewImages);
+  //           //   }
+  //           // }
+  //         });
+  //     } catch (error: any) {
+  //       console.log(error);
+  //     }
+  //   }
+  // }, []);
 
   // 리뷰 1개 조회
   useEffect(() => {

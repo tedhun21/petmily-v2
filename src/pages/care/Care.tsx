@@ -30,7 +30,7 @@ export default function Care() {
   const [page, setPage] = useState(1);
   const [isEnd, setIsEnd] = useState(false);
 
-  const { isLogin, memberId, email, petsitterBoolean } = useSelector((state: IUser) => state.user);
+  // const { isLogin, memberId, email, petsitterBoolean } = useSelector((state: IUser) => state.user);
   const [reservations, setReservations] = useState<any[]>([]);
 
   const handleFilter = (e: any) => {
@@ -40,58 +40,58 @@ export default function Care() {
     setPage(1);
   };
 
-  useEffect(() => {
-    if (!isLogin) {
-      alert('로그인을 해주세요.');
-      navigate('/');
-    } else if (!accessToken) {
-      alert('권한이 없습니다.');
-      navigate('/');
-    }
-    if (accessToken) {
-      const decoded: any = jwt_decode(accessToken);
-      if (decoded && decoded.id && memberId !== decoded.id && email !== decoded.email) {
-        alert('권한이 없습니다.');
-        navigate('/');
-      }
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!isLogin) {
+  //     alert('로그인을 해주세요.');
+  //     navigate('/');
+  //   } else if (!accessToken) {
+  //     alert('권한이 없습니다.');
+  //     navigate('/');
+  //   }
+  //   if (accessToken) {
+  //     const decoded: any = jwt_decode(accessToken);
+  //     if (decoded && decoded.id && memberId !== decoded.id && email !== decoded.email) {
+  //       alert('권한이 없습니다.');
+  //       navigate('/');
+  //     }
+  //   }
+  // }, []);
 
   // 예약 불러오기
-  useEffect(() => {
-    if (isLogin && inView) {
-      const getCares = async () => {
-        try {
-          const response = await axios.get(
-            `${apiUrl}/reservations?page=${page}&size=10${filters
-              .map((filterItem) => {
-                if (filter === filterItem.text) {
-                  return filterItem.value;
-                }
-                return '';
-              })
-              .join('')}`,
-            {
-              headers: {
-                Authorization: `Bearer ${accessToken}`,
-              },
-            },
-          );
+  // useEffect(() => {
+  //   if (isLogin && inView) {
+  //     const getCares = async () => {
+  //       try {
+  //         const response = await axios.get(
+  //           `${apiUrl}/reservations?page=${page}&size=10${filters
+  //             .map((filterItem) => {
+  //               if (filter === filterItem.text) {
+  //                 return filterItem.value;
+  //               }
+  //               return '';
+  //             })
+  //             .join('')}`,
+  //           {
+  //             headers: {
+  //               Authorization: `Bearer ${accessToken}`,
+  //             },
+  //           },
+  //         );
 
-          setReservations((prev) => [...prev, ...response.data.reservations]);
-          setPage((page) => page + 1);
-          if (response.data.pageInfo.totalPages === page || response.data.pageInfo.totalPages === 0) {
-            setIsEnd(true);
-          }
-        } catch (error: any) {
-          if (error) {
-            setIsEnd(true);
-          }
-        }
-      };
-      getCares();
-    }
-  }, [accessToken, filter, inView]);
+  //         setReservations((prev) => [...prev, ...response.data.reservations]);
+  //         setPage((page) => page + 1);
+  //         if (response.data.pageInfo.totalPages === page || response.data.pageInfo.totalPages === 0) {
+  //           setIsEnd(true);
+  //         }
+  //       } catch (error: any) {
+  //         if (error) {
+  //           setIsEnd(true);
+  //         }
+  //       }
+  //     };
+  //     getCares();
+  //   }
+  // }, [accessToken, filter, inView]);
 
   return (
     <MainContainer>

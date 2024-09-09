@@ -3,16 +3,15 @@ import { createSlice } from '@reduxjs/toolkit';
 export interface IUser {
   user: {
     isLogin: boolean;
-    memberId: number;
-    petsitterId: number;
-    name: string;
+    id: number;
+    username: string;
     phone: string;
     address: string;
     email: string;
-    nickName: string;
+    nickname: string;
     body: string;
     photo: string;
-    petsitterBoolean: string;
+    isPetsitter: string;
   };
 }
 
@@ -31,11 +30,8 @@ export const userSlice = createSlice({
     isPetsitter: false,
   },
   reducers: {
-    loginUser: (state) => {
+    loginUser: (state, action) => {
       state.isLogin = true;
-    },
-    setUser: (state, action) => {
-      console.log(action);
       state.id = action.payload.id;
       state.username = action.payload.username;
       state.phone = action.payload.phone;
@@ -46,7 +42,7 @@ export const userSlice = createSlice({
       state.photo = action.payload.photo && action.payload.photo.url;
       state.isPetsitter = action.payload.isPetsitter;
     },
-    deleteUser: (state) => {
+    logoutUser: (state) => {
       state.isLogin = false;
       state.id = null;
       state.username = null;
@@ -61,5 +57,5 @@ export const userSlice = createSlice({
   },
 });
 
-export const { loginUser, setUser, deleteUser } = userSlice.actions;
+export const { loginUser, logoutUser } = userSlice.actions;
 export default userSlice.reducer;

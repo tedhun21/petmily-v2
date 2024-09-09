@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 
 import UploadProfileImg from '../../components/UploadProfileImg';
 import { useEffect, useState } from 'react';
-import { IUser, deleteUser } from 'store/userSlice';
+import { IUser, logoutUser } from 'store/userSlice';
 
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -125,7 +125,7 @@ export default function EditUserProfile() {
   const handleLogout = () => {
     deleteCookie('access_token');
     // deleteCookie('refresh_token');
-    dispatch(deleteUser());
+    dispatch(logoutUser());
     alert('로그아웃되었습니다.');
     navigate('/');
   };

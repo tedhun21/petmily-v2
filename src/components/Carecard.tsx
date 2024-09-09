@@ -14,7 +14,7 @@ export default function CareCard({ reservation }: any) {
   const navigate = useNavigate();
   const accessToken = getCookie('access_token');
 
-  const { memberId, petsitterBoolean } = useSelector((state: IUser) => state.user);
+  // const { memberId, petsitterBoolean } = useSelector((state: IUser) => state.user);
 
   const [year, month, day] = reservation.reservationDate.split('-');
 
@@ -110,7 +110,7 @@ export default function CareCard({ reservation }: any) {
 
   return (
     <CareCardContainer>
-      <FirstLine>
+      {/* <FirstLine>
         <div>
           <PetsitterContainer>
             <PetsitterInfo>
@@ -194,7 +194,7 @@ export default function CareCard({ reservation }: any) {
             </>
           ) : null}
         </ButtonContainer>
-      </SecondLine>
+      </SecondLine> */}
     </CareCardContainer>
   );
 }

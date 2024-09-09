@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import { deleteReservation } from 'store/reservationSlice';
-import { deleteUser } from 'store/userSlice';
+import { logoutUser } from 'store/userSlice';
 
 import { useDispatch } from 'react-redux';
 
@@ -80,7 +80,7 @@ export default function ViewPetsitters() {
             } catch (refreshError) {
               console.log(refreshError);
               alert('로그인이 만료되었습니다. 다시 로그인 해주세요');
-              dispatch(deleteUser());
+              dispatch(logoutUser());
               dispatch(deleteReservation());
               deleteCookie('access_token');
               deleteCookie('refresh_token');

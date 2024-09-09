@@ -15,7 +15,7 @@ export default function CreateJournal() {
   const navigate = useNavigate();
   const { reservationId } = useParams();
 
-  const { isLogin, memberId, petsitterBoolean } = useSelector((state: IUser) => state.user);
+  // const { isLogin, memberId, petsitterBoolean } = useSelector((state: IUser) => state.user);
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [isRegisterLoading, setIsRegisterLoading] = useState(false);
@@ -152,26 +152,26 @@ export default function CreateJournal() {
   };
 
   // 해당 예약 1개 조회
-  useEffect(() => {
-    if (!isLogin || !petsitterBoolean) {
-      alert('권한이 없습니다.');
-      navigate('/');
-    } else {
-      const accessToken = getCookie('access_token');
-      try {
-        axios
-          .get(`${apiUrl}/reservations/${reservationId}`, { headers: { Authorization: `Bearer ${accessToken}` } })
-          .then((res) => {
-            setReservation(res.data);
-          });
-      } catch (error: any) {
-        console.log(error);
-        if (error.response.status === 404) {
-          alert(error.response.data.message);
-        }
-      }
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!isLogin || !petsitterBoolean) {
+  //     alert('권한이 없습니다.');
+  //     navigate('/');
+  //   } else {
+  //     const accessToken = getCookie('access_token');
+  //     try {
+  //       axios
+  //         .get(`${apiUrl}/reservations/${reservationId}`, { headers: { Authorization: `Bearer ${accessToken}` } })
+  //         .then((res) => {
+  //           setReservation(res.data);
+  //         });
+  //     } catch (error: any) {
+  //       console.log(error);
+  //       if (error.response.status === 404) {
+  //         alert(error.response.data.message);
+  //       }
+  //     }
+  //   }
+  // }, []);
 
   // 일지 조회
   useEffect(() => {
