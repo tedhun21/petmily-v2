@@ -1,51 +1,66 @@
-import { ImageCentered, RoundedImageWrapper, Row } from 'commonStyle';
+import { Column, ImageCentered, RoundedImageWrapper, Row } from 'commonStyle';
 import { MdOutlineRateReview } from 'react-icons/md';
 import { PiStarFill } from 'react-icons/pi';
 import styled from 'styled-components';
 
-const BUCKET_URL = process.env.REACT_APP_API_URL;
+const BUCKET_URL = process.env.REACT_APP_BUCKET_URL;
 
 export default function SelectedPetsitter({ petsitter }: any) {
+  console.log(petsitter);
+  const possibleLocation = petsitter.possibleLocation.slice(1, -1).split(',');
+  const possibleDay = petsitter.possibleDay.slice(1, -1).split(',');
+
   return (
     <PetsitterSection>
       <CardWrap>
         <PetsitterName>{petsitter?.nickname}</PetsitterName>
         <Petsitter>펫시터</Petsitter>
         <PetsitterImg>
-          {petsitter?.photo ? (
-            <ImageCentered src={`${BUCKET_URL}${petsitter?.photo.url}`} />
-          ) : (
-            <img src="/imgs/DefaultUserProfile.png" alt="petsitter_photo" width="100%" height="100%" />
-          )}
+          <ImageCentered
+            src={petsitter.photo ? `${BUCKET_URL}${petsitter?.photo.url}` : '/imgs/DefaultUserProfile.png'}
+            alt="petsitter_photo"
+          />
         </PetsitterImg>
       </CardWrap>
 
       <PetsitterCardBody>
         <Row>
-          <PiStarFill size="28px" color="#279EFF" />
-          <RatingCount>{petsitter?.star}</RatingCount>
+          <div>
+            <PiStarFill size="28px" color="#279EFF" />
+            <RatingCount>{petsitter?.average_rating}</RatingCount>
+          </div>
+          <div>
+            <MdOutlineRateReview size="28px" />
+            <ReviewCount>{petsitter?.reviewCount}</ReviewCount>
+          </div>
         </Row>
-        <Row>
-          <MdOutlineRateReview size="28px" />
-          <ReviewCount>{petsitter?.reviewCount}</ReviewCount>
-        </Row>
+        <PossibleContainer style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <PossibleWrapper>
+            <span>가능 장소</span>
+            <CapsuleWrapper>
+              {possibleLocation.map((location: any) => (
+                <Capsule key={location}>{location}</Capsule>
+              ))}
+            </CapsuleWrapper>
+          </PossibleWrapper>
+          <PossibleWrapper>
+            <span>가능 요일</span>
+            <CapsuleWrapper>
+              {possibleDay.map((day: any) => (
+                <Capsule key={day}>{day}</Capsule>
+              ))}
+            </CapsuleWrapper>
+          </PossibleWrapper>
+        </PossibleContainer>
       </PetsitterCardBody>
-      {/* <div style={{ backgroundColor: 'gray', width: '100%', height: '1px' }} /> */}
-      <div>
-        <span>가능 장소</span>
-        <span>{petsitter?.possibleLocation}</span>
-      </div>
-      <div>
-        <span>가능 요일</span>
-        <span>{petsitter?.possibleDay}</span>
-      </div>
     </PetsitterSection>
   );
 }
 
 const PetsitterSection = styled.section`
   position: relative;
-  border-radius: 8px;
+  border-radius: 12px;
+  overflow: hidden;
 
   box-shadow: ${(props) => props.theme.shadow.dp01};
 `;
@@ -54,7 +69,6 @@ const CardWrap = styled.div`
   display: flex;
   position: relative;
   padding: 12px 36px;
-  border-radius: 8px 8px 0 0;
   background-color: ${(props) => props.theme.colors.mainBlue};
 `;
 
@@ -78,9 +92,8 @@ const Petsitter = styled.h3`
   color: ${(props) => props.theme.textColors.primary};
 `;
 
-const PetsitterCardBody = styled.div`
-  display: flex;
-  justify-content: center;
+const PetsitterCardBody = styled(Column)`
+  padding: 24px;
   background-color: ${(props) => props.theme.colors.white};
 `;
 
@@ -96,10 +109,26 @@ const ReviewCount = styled.h4`
   ${(props) => props.theme.fontSize.s20h30};
   font-weight: ${(props) => props.theme.fontWeights.extrabold};
   color: #595959;
-  margin-top: -5px;
 `;
 
-const Possible = styled.h4`
+const PossibleContainer = styled(Column)`
+  gap: 8px;
+`;
+
+const PossibleWrapper = styled(Row)`
+  gap: 8px;
+`;
+
+const CapsuleWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+`;
+
+const Capsule = styled.span`
   ${(props) => props.theme.fontSize.s14h21};
-  font-weight: ${(props) => props.theme.fontWeights.normal};
+  padding: 0px 8px;
+  border: 1px solid #279eff;
+  border-radius: 20px;
+  // font-weight: ${(props) => props.theme.fontWeights.normal};
 `;

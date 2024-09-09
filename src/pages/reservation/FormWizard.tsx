@@ -36,7 +36,7 @@ export default function FormWizard() {
       case 2:
         return <Step2 onNext={handleNextStep} onPrevious={handlePreviousStep} />;
       case 3:
-        return <Step3 onPrevious={handlePreviousStep} />;
+        return <Step3 />;
       default:
         return null;
     }

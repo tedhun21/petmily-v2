@@ -59,7 +59,7 @@ export default function SelectedPets({ checkedPets }: any) {
 const PetSection = styled.section`
   display: flex;
   flex-direction: column;
-  border-radius: 8px;
+  border-radius: 12px;
   padding: 24px;
   gap: 8px;
   background-color: ${(props) => props.theme.colors.white};

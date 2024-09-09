@@ -7,8 +7,6 @@ import { useFormContext } from 'react-hook-form';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { TextField } from '@mui/material';
 
-import { useDispatch } from 'react-redux';
-
 import { GoChecklist } from 'react-icons/go';
 import { Column, Row } from 'commonStyle';
 
@@ -38,7 +36,7 @@ export interface IPet {
   species: string;
 }
 
-export default function Step3({ formData, onFormDataChange, onNext }: any) {
+export default function Step3() {
   const navigate = useNavigate();
 
   const [isChecked, setIsChecked] = useState(false);
@@ -85,33 +83,6 @@ export default function Step3({ formData, onFormDataChange, onNext }: any) {
     };
 
     createReservationMutate({ data: formattedData });
-    // const token = getCookie('access_token');
-    // const petsitterIdNumber = parseInt(petsitterId, 10);
-    // const requestBody = {
-    //   body,
-    //   reservationDate,
-    //   reservationTimeStart: reservationTimeStartFormat,
-    //   reservationTimeEnd: reservationTimeEndFormat,
-    //   address,
-    //   phone,
-    //   petId,
-    //   petsitterId: petsitterIdNumber,
-    // };
-    // console.log(requestBody);
-    // try {
-    //   const response = await axios.post(`${apiUrl}/reservations`, requestBody, {
-    //     headers: {
-    //       Authorization: `Bearer ${token}`,
-    //     },
-    //   });
-    //   if (response.status === 200) {
-    //     alert('예약 신청이 완료되었습니다!');
-    //     dispatch(deleteReservation());
-    //     navigate('/cares');
-    //   }
-    // } catch (error) {
-    //   console.error(error);
-    // }
   };
 
   return (
@@ -125,10 +96,11 @@ export default function Step3({ formData, onFormDataChange, onNext }: any) {
       </TitleContainer>
 
       <SelectedPetsitter petsitter={petsitter} />
+
       <ReservationResult>
         <ResultWrapper>
           <ReservationLabel>주소</ReservationLabel>
-          <ReservationSpan style={{ fontSize: '12px' }}>{`${address} ${detailAddress}`}</ReservationSpan>
+          <ReservationSpan>{`${address} ${detailAddress}`}</ReservationSpan>
         </ResultWrapper>
         <ResultWrapper>
           <ReservationLabel>예약 날짜</ReservationLabel>
@@ -212,7 +184,7 @@ const ReservationResult = styled.section`
   display: flex;
   flex-direction: column;
   padding: 24px;
-  border-radius: 8px;
+  border-radius: 12px;
   gap: 16px;
   background-color: ${(props) => props.theme.colors.white};
   box-shadow: ${(props) => props.theme.shadow.dp01};
@@ -244,7 +216,7 @@ const RequestContactSection = styled.section`
   display: flex;
   flex-direction: column;
   padding: 24px;
-  border-radius: 8px;
+  border-radius: 12px;
   gap: 16px;
   background-color: ${(props) => props.theme.colors.white};
   box-shadow: ${(props) => props.theme.shadow.dp01};

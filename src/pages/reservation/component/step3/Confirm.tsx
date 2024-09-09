@@ -1,9 +1,9 @@
-import { CheckBox } from '@mui/icons-material';
-import { Column, Row, Texts18h27, Texts20h30 } from 'commonStyle';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { FaRegCircleCheck, FaCircleCheck } from 'react-icons/fa6';
 import { Modal } from '@mui/material';
-import { useState } from 'react';
+
+import { Column, Texts18h27, Texts20h30 } from 'commonStyle';
 
 export default function Confirm({ isChecked, setIsChecked }: any) {
   const [open, setOpen] = useState(false);
@@ -19,7 +19,7 @@ export default function Confirm({ isChecked, setIsChecked }: any) {
     <ConfirmContainer>
       <Check>{isChecked ? <FaCircleCheck size="28px" color="279EFF" /> : <FaRegCircleCheck size="28px" />}</Check>
       <Column>
-        <ConfirmText>안내사항을 모두 확인하였습니다</ConfirmText>
+        <ConfirmText isChecked={isChecked}>안내사항을 모두 확인하였습니다</ConfirmText>
         <TermsButton type="button" onClick={handleOpen}>
           펫밀리 안내사항 보기
         </TermsButton>
@@ -28,10 +28,10 @@ export default function Confirm({ isChecked, setIsChecked }: any) {
       <Modal open={open} onClose={handleClose}>
         <TermsContainer>
           <TextCenter style={{ textAlign: 'center' }}>
-            <Texts20h30>안내사항</Texts20h30>
+            <Title>안내사항</Title>
           </TextCenter>
           <Container>
-            <Texts18h27>펫시터님께 미리 알려주세요!</Texts18h27>
+            <SubTitle>펫시터님께 미리 알려주세요!</SubTitle>
             <List>
               <Item>급식할 사료의 양</Item>
               <Column>
@@ -49,7 +49,7 @@ export default function Confirm({ isChecked, setIsChecked }: any) {
             </List>
           </Container>
           <Container>
-            <RedTitle>필수 확인 사항</RedTitle>
+            <RedSubTitle>필수 확인 사항</RedSubTitle>
             <List>
               <Item>돌봄 외 특수 서비스는 요청 불가</Item>
               <Item>1. 목욕/미용 및 주사를 맞히는 의료 행위</Item>
@@ -68,7 +68,7 @@ export default function Confirm({ isChecked, setIsChecked }: any) {
             </List>
           </Container>
           <Container>
-            <RedTitle>돌봄이 불가한 경우</RedTitle>
+            <RedSubTitle>돌봄이 불가한 경우</RedSubTitle>
             <List>
               <Item>펫시터님을 무는 등의 심한 공격성을 보이는 경우</Item>
               <Item>링웜, 허피스 등 전염성이 강한 질병이 있는 반려동물</Item>
@@ -77,7 +77,7 @@ export default function Confirm({ isChecked, setIsChecked }: any) {
             </List>
           </Container>
           <Container>
-            <RedTitle>산책이 불가한 경우</RedTitle>
+            <RedSubTitle>산책이 불가한 경우</RedSubTitle>
             <List>
               <Column>
                 <Item>인식표 미지참 / 산택 줄 길이 2M 초과시</Item>
@@ -103,7 +103,7 @@ const TermsContainer = styled(Column)`
   height: 600px;
   overflow: auto;
   border-radius: 16px;
-  padding: 16px;
+  padding: 24px;
   gap: 12px;
   background-color: ${(props) => props.theme.colors.white};
 `;
@@ -112,13 +112,21 @@ const TextCenter = styled.div`
   text-align: center;
 `;
 
+const Title = styled(Texts20h30)`
+  font-weight: ${(props) => props.theme.fontWeights.extrabold};
+`;
+
 const Container = styled(Column)`
   gap: 8px;
 `;
 
-const RedTitle = styled(Texts18h27)`
+const SubTitle = styled(Texts18h27)`
+  font-weight: ${(props) => props.theme.fontWeights.bold};
+`;
+
+const RedSubTitle = styled(Texts18h27)`
   color: red;
-  font-size: ${(props) => props.theme.fontWeights.bold};
+  font-weight: ${(props) => props.theme.fontWeights.bold};
 `;
 
 const List = styled.ul`
@@ -175,8 +183,9 @@ const Check = styled.div`
   top: 20px;
 `;
 
-const ConfirmText = styled.div`
-  ${(props) => props.theme.fontSize.s16h24}
+const ConfirmText = styled.div<{ isChecked: boolean }>`
+  color: ${(props) => (props.isChecked ? '#279EFF' : 'black')};
+  ${(props) => props.theme.fontSize.s16h24};
 `;
 
 const TermsButton = styled.button`
