@@ -10,7 +10,7 @@ import { getCookie } from 'utils/cookie';
 const apiUrl = process.env.REACT_APP_API_URL;
 const token = getCookie('access_token');
 export default function PetSitterHome() {
-  const { memberId, petsitterBoolean, petsitterId } = useSelector((state: IUser) => state.user);
+  // const { memberId, petsitterBoolean, petsitterId } = useSelector((state: IUser) => state.user);
 
   return (
     <MainContainer>

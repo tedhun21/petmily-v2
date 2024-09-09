@@ -65,7 +65,7 @@ export default function Login() {
 
       setCookie(jwt);
 
-      dispatch(loginUser());
+      // dispatch(loginUser());
 
       navigate('/');
     }

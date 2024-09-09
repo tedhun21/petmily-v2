@@ -1,15 +1,28 @@
 import styled from 'styled-components';
-
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Link } from 'react-router-dom';
 
 import HomeAd from '@components/HomeAd';
-
 import Footer from '@components/footer/Footer';
-
 import RealTimeReviews from './RealTimeReviews';
 import OffenPetsitters from './OffenPetsitters';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { getMe } from '@pages/common/api';
+import { useCustomQuery } from 'hooks/useCustomQuery';
+import { useEffect } from 'react';
+import { loginUser } from 'store/userSlice';
 export default function Home() {
+  const dispatch = useDispatch();
+  const isLogin = useSelector((state: any) => state.user.isLogin);
+
+  const { data: me } = useCustomQuery({ queryFn: getMe, enabled: !isLogin });
+
+  useEffect(() => {
+    if (me) {
+      dispatch(loginUser(me));
+    }
+  }, [me]);
+
   return (
     <>
       <HomeContainer>
@@ -40,17 +53,6 @@ const HomeContainer = styled.main`
   padding: 12px;
   gap: 20px;
 `;
-
-// const CustomLink = styled(Link)`
-//   margin-top: 16px;
-//   text-decoration: none;
-//   color: #a3a3a3;
-//   background-color: ${(props) => props.theme.lineColors.coolGray90};
-//   padding: 10px 12px;
-//   border-radius: 8px;
-//   font-weight: ${(props) => props.theme.fontWeights.bold};
-//   ${(props) => props.theme.fontSize.s12h18};
-// `;
 
 const LinkContainer = styled.div`
   display: flex;

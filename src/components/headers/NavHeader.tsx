@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 
-import { IUser, deleteUser, loginUser, setUser } from 'store/userSlice';
+import { IUser, loginUser } from 'store/userSlice';
 import { deleteCookie, getCookie, refreshAccessToken } from 'utils/cookie';
 
 const apiUrl = process.env.REACT_APP_API_URL;
@@ -17,7 +17,9 @@ export default function NavHeader() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { isLogin, memberId, petsitterBoolean } = useSelector((state: IUser) => state.user);
+  const { isLogin, id, isPetsitter } = useSelector((state: IUser) => state.user);
+
+  console.log(isLogin);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modalRef = useRef<HTMLDivElement | null>(null);
@@ -49,7 +51,7 @@ export default function NavHeader() {
     setIsModalOpen(false);
     deleteCookie('access_token');
     deleteCookie('refresh_token');
-    dispatch(deleteUser());
+    // dispatch(deleteUser());
 
     navigate('/');
     alert('로그아웃 되었습니다.');
@@ -70,46 +72,46 @@ export default function NavHeader() {
   }, [isModalOpen]);
 
   /// 유저 정보 가져오기
-  useEffect(() => {
-    if (accessToken || refreshToken) {
-      const getUser = async () => {
-        try {
-          const response = await axios.get(`${apiUrl}/members/my-page`, {
-            headers: { Authorization: `Bearer ${accessToken}` },
-          });
-          dispatch(loginUser());
-          dispatch(setUser(response.data));
-        } catch (error: any) {
-          console.log(error);
-          if (error.response.data.status === 401 || error.response.data.status === 500) {
-            try {
-              const newAccessToken = await refreshAccessToken();
-              if (newAccessToken) {
-                const response = await axios.get(`${apiUrl}/members/my-page`, {
-                  headers: { Authorization: `Bearer ${newAccessToken}` },
-                });
-                if (response) {
-                  dispatch(loginUser());
-                  dispatch(setUser(response.data));
-                }
-              }
-            } catch (refreshError) {
-              console.error(refreshError);
-              alert('로그인 세션이 만료되었습니다. 다시 로그인해 주시기 바랍니다.');
-              navigate('/');
-              dispatch(deleteUser());
-              deleteCookie('access_token');
-              deleteCookie('refresh_token');
-            }
-          }
-        }
-      };
+  // useEffect(() => {
+  //   if (accessToken || refreshToken) {
+  //     const getUser = async () => {
+  //       try {
+  //         const response = await axios.get(`${apiUrl}/members/my-page`, {
+  //           headers: { Authorization: `Bearer ${accessToken}` },
+  //         });
+  //         dispatch(loginUser());
+  //         dispatch(setUser(response.data));
+  //       } catch (error: any) {
+  //         console.log(error);
+  //         if (error.response.data.status === 401 || error.response.data.status === 500) {
+  //           try {
+  //             const newAccessToken = await refreshAccessToken();
+  //             if (newAccessToken) {
+  //               const response = await axios.get(`${apiUrl}/members/my-page`, {
+  //                 headers: { Authorization: `Bearer ${newAccessToken}` },
+  //               });
+  //               if (response) {
+  //                 dispatch(loginUser());
+  //                 dispatch(setUser(response.data));
+  //               }
+  //             }
+  //           } catch (refreshError) {
+  //             console.error(refreshError);
+  //             alert('로그인 세션이 만료되었습니다. 다시 로그인해 주시기 바랍니다.');
+  //             navigate('/');
+  //             dispatch(deleteUser());
+  //             deleteCookie('access_token');
+  //             deleteCookie('refresh_token');
+  //           }
+  //         }
+  //       }
+  //     };
 
-      getUser();
-    } else if (!accessToken && !refreshToken) {
-      dispatch(deleteUser());
-    }
-  }, [isLogin, accessToken]);
+  //     getUser();
+  //   } else if (!accessToken && !refreshToken) {
+  //     dispatch(deleteUser());
+  //   }
+  // }, [isLogin, accessToken]);
 
   return (
     <Container>

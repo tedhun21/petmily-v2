@@ -34,7 +34,6 @@ import Home from '@pages/home/Home';
 import Login from '@pages/login/Login';
 import Mypage from '@pages/mypage/Mypage';
 import Reviews from '@pages/home/Reviews';
-import Reservation from '@pages/reservation/Step1';
 import Care from '@pages/care/Care';
 import Signup from '@pages/login/Signup';
 import OAuthBranch from '@pages/login/OAuthBranch';
@@ -48,8 +47,9 @@ import ViewJournal from '@pages/common/ViewJournal';
 import PetsitterViewDetails from '@pages/reservation/PetsitterViewDetails';
 import SitterSchedule from '@pages/mypage/SitterSchedule';
 import NotFound from '@pages/common/404';
-import ReservationStepTwo from '@pages/reservation/Step2';
 import FormWizard from '@pages/reservation/FormWizard';
+import { Provider } from 'react-redux';
+import store from './store/index';
 
 const NavHeaderLayout = () => {
   return (
@@ -101,11 +101,13 @@ const router = createBrowserRouter(
 
 export default function App() {
   return (
-    <Container>
-      <Wrapper>
-        <RouterProvider router={router} />
-      </Wrapper>
-    </Container>
+    <Provider store={store}>
+      <Container>
+        <Wrapper>
+          <RouterProvider router={router} />
+        </Wrapper>
+      </Container>
+    </Provider>
   );
 }
 
