@@ -1,35 +1,21 @@
 import { useEffect, useRef, useState } from 'react';
-import NavBarButton from '../buttons/NavBarButton';
 import { Link, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
+import styled from 'styled-components';
 
-import { IUser, loginUser } from 'store/userSlice';
-import { deleteCookie, getCookie, refreshAccessToken } from 'utils/cookie';
-
-const apiUrl = process.env.REACT_APP_API_URL;
+import { IUser, logoutUser } from 'store/userSlice';
+import { deleteCookie } from 'utils/cookie';
+import { Column } from 'commonStyle';
+import NavBar from './components/NavBar';
 
 export default function NavHeader() {
-  const accessToken = getCookie('access_token');
-  const refreshToken = getCookie('refresh_token');
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { isLogin, id, isPetsitter } = useSelector((state: IUser) => state.user);
-
-  console.log(isLogin);
+  const { isLogin } = useSelector((state: IUser) => state.user);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modalRef = useRef<HTMLDivElement | null>(null);
-
-  const NavItem = [
-    { text: '홈', link: '/' },
-    { text: '예약하기', link: '/reservation' },
-    { text: '예약현황', link: `/cares` },
-    { text: '이용후기', link: '/reviews' },
-  ];
 
   const handleUserButton = (e: any) => {
     if (!isLogin) {
@@ -47,15 +33,15 @@ export default function NavHeader() {
     }
   };
 
+  // 로그아웃 클
   const handleLogout = () => {
     setIsModalOpen(false);
     deleteCookie('access_token');
-    deleteCookie('refresh_token');
-    // dispatch(deleteUser());
+
+    dispatch(logoutUser());
 
     navigate('/');
     alert('로그아웃 되었습니다.');
-    window.location.reload();
   };
 
   useEffect(() => {
@@ -71,54 +57,12 @@ export default function NavHeader() {
     return () => window.removeEventListener('click', handleOutsideClick);
   }, [isModalOpen]);
 
-  /// 유저 정보 가져오기
-  // useEffect(() => {
-  //   if (accessToken || refreshToken) {
-  //     const getUser = async () => {
-  //       try {
-  //         const response = await axios.get(`${apiUrl}/members/my-page`, {
-  //           headers: { Authorization: `Bearer ${accessToken}` },
-  //         });
-  //         dispatch(loginUser());
-  //         dispatch(setUser(response.data));
-  //       } catch (error: any) {
-  //         console.log(error);
-  //         if (error.response.data.status === 401 || error.response.data.status === 500) {
-  //           try {
-  //             const newAccessToken = await refreshAccessToken();
-  //             if (newAccessToken) {
-  //               const response = await axios.get(`${apiUrl}/members/my-page`, {
-  //                 headers: { Authorization: `Bearer ${newAccessToken}` },
-  //               });
-  //               if (response) {
-  //                 dispatch(loginUser());
-  //                 dispatch(setUser(response.data));
-  //               }
-  //             }
-  //           } catch (refreshError) {
-  //             console.error(refreshError);
-  //             alert('로그인 세션이 만료되었습니다. 다시 로그인해 주시기 바랍니다.');
-  //             navigate('/');
-  //             dispatch(deleteUser());
-  //             deleteCookie('access_token');
-  //             deleteCookie('refresh_token');
-  //           }
-  //         }
-  //       }
-  //     };
-
-  //     getUser();
-  //   } else if (!accessToken && !refreshToken) {
-  //     dispatch(deleteUser());
-  //   }
-  // }, [isLogin, accessToken]);
-
   return (
-    <Container>
+    <Header>
       <HeaderContatiner>
         <TopHeader>
           <Link to="/">
-            <img src="/imgs/Logo.svg" alt="logo"></img>
+            <img src="/imgs/Logo.svg" alt="logo" />
           </Link>
           <NotiUserContainer>
             <UserButton onClick={(e) => handleUserButton(e)}>
@@ -130,7 +74,7 @@ export default function NavHeader() {
             </UserButton>
           </NotiUserContainer>
           {isModalOpen && isLogin && (
-            <LoginNavModal ref={modalRef} onMouseLeave={() => setIsModalOpen(false)}>
+            <LoginNavModal ref={modalRef}>
               <MypageLink to="/mypage" onClick={() => setIsModalOpen(false)}>
                 마이페이지
               </MypageLink>
@@ -138,21 +82,14 @@ export default function NavHeader() {
             </LoginNavModal>
           )}
         </TopHeader>
-        <NavBar>
-          {NavItem.map((nav) => (
-            <NavBarButton key={nav.text} link={nav.link}>
-              {nav.text}
-            </NavBarButton>
-          ))}
-        </NavBar>
+        <NavBar />
       </HeaderContatiner>
-    </Container>
+    </Header>
   );
 }
 
-const Container = styled.header`
+const Header = styled.header`
   display: flex;
-  justify-content: center;
   position: sticky;
   top: 0;
   left: 0;
@@ -160,12 +97,11 @@ const Container = styled.header`
   width: 100%;
 `;
 
-const HeaderContatiner = styled.div`
-  display: flex;
-  flex-direction: column;
+const HeaderContatiner = styled(Column)`
   justify-content: space-between;
   width: 100%;
   height: 84px;
+  gap: 8px;
   padding: 12px 12px 0;
   background-color: white;
   max-width: 600px;
@@ -174,6 +110,7 @@ const HeaderContatiner = styled.div`
 
 const TopHeader = styled.div`
   display: flex;
+  flex: 1;
   justify-content: space-between;
 `;
 
@@ -234,6 +171,12 @@ const MypageLink = styled(Link)`
   color: black;
   ${({ theme }) => theme.fontSize.s14h21}
   cursor:pointer;
+  padding: 4px;
+  border-radius: 4px;
+
+  &:hover {
+    // background-color: ${(props) => props.theme.textColors.gray30};
+  }
 `;
 
 const LogoutButton = styled.button`
@@ -241,11 +184,4 @@ const LogoutButton = styled.button`
   background-color: white;
   cursor: pointer;
   ${({ theme }) => theme.fontSize.s14h21};
-`;
-
-const NavBar = styled.nav`
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  width: 100%;
 `;

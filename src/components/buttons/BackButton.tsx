@@ -1,13 +1,6 @@
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
-const StyledBackButton = styled.button`
-  position: relative;
-  z-index: 2;
-  border: none;
-  background-color: transparent;
-`;
-
 export default function BackButton() {
   const navigate = useNavigate();
   return (
@@ -16,3 +9,11 @@ export default function BackButton() {
     </StyledBackButton>
   );
 }
+
+const StyledBackButton = styled.button`
+  position: relative;
+  z-index: 2;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+`;
