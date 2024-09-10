@@ -33,7 +33,7 @@ const CustomLink = styled(Link)<{ isActive: boolean }>`
 `;
 
 const LinkLabel = styled.span`
-  ${(props) => props.theme.fontSize.s12h18};
+  ${(props) => props.theme.fontSize.s14h21};
   padding: 4px 8px;
 
   border-radius: 8px;

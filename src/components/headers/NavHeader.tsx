@@ -1,11 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
 
-import NavBarButton from './components/NavBarLink';
-import { IUser, loginUser } from 'store/userSlice';
-import { deleteCookie, getCookie, refreshAccessToken } from 'utils/cookie';
+import { IUser, logoutUser } from 'store/userSlice';
+import { deleteCookie } from 'utils/cookie';
 import { Column } from 'commonStyle';
 import NavBar from './components/NavBar';
 
@@ -13,9 +12,7 @@ export default function NavHeader() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { isLogin, id, isPetsitter } = useSelector((state: IUser) => state.user);
-
-  console.log(isLogin);
+  const { isLogin } = useSelector((state: IUser) => state.user);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modalRef = useRef<HTMLDivElement | null>(null);
@@ -36,15 +33,15 @@ export default function NavHeader() {
     }
   };
 
+  // 로그아웃 클
   const handleLogout = () => {
     setIsModalOpen(false);
     deleteCookie('access_token');
-    deleteCookie('refresh_token');
-    // dispatch(deleteUser());
+
+    dispatch(logoutUser());
 
     navigate('/');
     alert('로그아웃 되었습니다.');
-    window.location.reload();
   };
 
   useEffect(() => {
@@ -93,7 +90,6 @@ export default function NavHeader() {
 
 const Header = styled.header`
   display: flex;
-  justify-content: center;
   position: sticky;
   top: 0;
   left: 0;
@@ -105,7 +101,7 @@ const HeaderContatiner = styled(Column)`
   justify-content: space-between;
   width: 100%;
   height: 84px;
-  gap: 12px;
+  gap: 8px;
   padding: 12px 12px 0;
   background-color: white;
   max-width: 600px;
