@@ -7,20 +7,32 @@ import { IUser, logoutUser } from 'store/userSlice';
 import { deleteCookie } from 'utils/cookie';
 import { Column } from 'commonStyle';
 import NavBar from './components/NavBar';
+import useSWR, { useSWRConfig } from 'swr';
+import { getMe } from '@pages/common/api';
+
+const API_URL = process.env.REACT_APP_API_URL;
 
 export default function NavHeader() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { isLogin } = useSelector((state: IUser) => state.user);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modalRef = useRef<HTMLDivElement | null>(null);
 
+  const {
+    data: me,
+    error,
+    isLoading,
+  } = useSWR(`${API_URL}/users/me`, getMe, {
+    // revalidateIfStale: false, // 캐시된 데이터가 오래된 경우에도 새로 요청하지 않음
+    // revalidateOnFocus: false, // 포커스 시 다시 요청하지 않음
+    // revalidateOnReconnect: false, // 네트워크 재연결 시 다시 요청하지 않음
+  });
+
   const handleUserButton = (e: any) => {
-    if (!isLogin) {
+    if (!me) {
       navigate('/login');
-    } else if (isLogin) {
+    } else if (me) {
       e.stopPropagation();
       setIsModalOpen(true);
     }
@@ -38,10 +50,11 @@ export default function NavHeader() {
     setIsModalOpen(false);
     deleteCookie('access_token');
 
-    dispatch(logoutUser());
+    // dispatch(logoutUser());
 
-    navigate('/');
     alert('로그아웃 되었습니다.');
+    navigate('/');
+    window.location.reload();
   };
 
   useEffect(() => {
@@ -66,14 +79,14 @@ export default function NavHeader() {
           </Link>
           <NotiUserContainer>
             <UserButton onClick={(e) => handleUserButton(e)}>
-              {isLogin ? (
+              {me ? (
                 <img src="/icons/User.svg" alt="user_icon" width="24" />
               ) : (
                 <LoginNavLink to="/login">로그인/회원가입</LoginNavLink>
               )}
             </UserButton>
           </NotiUserContainer>
-          {isModalOpen && isLogin && (
+          {isModalOpen && me && (
             <LoginNavModal ref={modalRef}>
               <MypageLink to="/mypage" onClick={() => setIsModalOpen(false)}>
                 마이페이지

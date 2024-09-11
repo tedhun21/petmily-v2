@@ -11,7 +11,7 @@ export interface IUser {
     nickname: string;
     body: string;
     photo: string;
-    isPetsitter: string;
+    isPetsitter: boolean;
   };
 }
 
