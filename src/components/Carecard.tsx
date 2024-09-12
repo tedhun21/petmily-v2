@@ -6,6 +6,7 @@ import axios from 'axios';
 
 import { SyntheticEvent } from 'react';
 import { getCookie, refreshAccessToken } from 'utils/cookie';
+import { Row } from 'commonStyle';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 const bucketUrl = process.env.REACT_APP_BUCKET_URL;
@@ -14,115 +15,115 @@ export default function CareCard({ reservation }: any) {
   const navigate = useNavigate();
   const accessToken = getCookie('access_token');
 
-  // const { memberId, petsitterBoolean } = useSelector((state: IUser) => state.user);
+  const user = useSelector((state: IUser) => state.user);
 
-  const [year, month, day] = reservation.reservationDate.split('-');
+  console.log(user);
 
   const onErrorImg = (e: SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.src = '/imgs/DefaultUser.svg';
   };
 
   // 펫시터 예약 확정 (예약 신청 상태)
-  const handleSitterApproval = async () => {
-    try {
-      const response = await axios.patch(`${apiUrl}/reservations/${reservation.reservationId}/confirm`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
-      if (response) {
-        alert('예약이 확정되었습니다.');
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const handleSitterApproval = async () => {
+  //   try {
+  //     const response = await axios.patch(`${apiUrl}/reservations/${reservation.reservationId}/confirm`, {
+  //       headers: { Authorization: `Bearer ${accessToken}` },
+  //     });
+  //     if (response) {
+  //       alert('예약이 확정되었습니다.');
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   // 펫시터 예약 취소 (예약 확정 상태)
-  const handleSitterCancel = async () => {
-    try {
-      const response = await axios.patch(`${apiUrl}/reservations/${reservation.reservationId}/petsittercancel`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
-      if (response.status === 200) {
-        alert('예약이 취소되었습니다.');
-        window.location.reload();
-      }
-    } catch (error: any) {
-      console.log(error);
-      if (error.response.status === 404) {
-        alert(error.response.data.message);
-      }
-      if (error.status === 401) {
-        try {
-          const newAccessToken = await refreshAccessToken();
-          if (newAccessToken) {
-            const response = await axios.patch(`${apiUrl}/reservations/${reservation.reservationId}/petsittercancel`, {
-              headers: { Authorization: `Bearer ${newAccessToken}` },
-            });
-            if (response.status === 200) {
-              alert('예약이 취소되었습니다.');
-              window.location.reload();
-            }
-          }
-        } catch (error) {}
-      }
-    }
-  };
+  // const handleSitterCancel = async () => {
+  //   try {
+  //     const response = await axios.patch(`${apiUrl}/reservations/${reservation.reservationId}/petsittercancel`, {
+  //       headers: { Authorization: `Bearer ${accessToken}` },
+  //     });
+  //     if (response.status === 200) {
+  //       alert('예약이 취소되었습니다.');
+  //       window.location.reload();
+  //     }
+  //   } catch (error: any) {
+  //     console.log(error);
+  //     if (error.response.status === 404) {
+  //       alert(error.response.data.message);
+  //     }
+  //     if (error.status === 401) {
+  //       try {
+  //         const newAccessToken = await refreshAccessToken();
+  //         if (newAccessToken) {
+  //           const response = await axios.patch(`${apiUrl}/reservations/${reservation.reservationId}/petsittercancel`, {
+  //             headers: { Authorization: `Bearer ${newAccessToken}` },
+  //           });
+  //           if (response.status === 200) {
+  //             alert('예약이 취소되었습니다.');
+  //             window.location.reload();
+  //           }
+  //         }
+  //       } catch (error) {}
+  //     }
+  //   }
+  // };
 
   // 고객이 신청한거 취소 (access token 재발급 완료)
-  const handleClientCancel = async () => {
-    try {
-      const response = await axios.patch(
-        `${apiUrl}/reservations/${reservation.reservationId}/membercancel`,
-        {},
-        {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        },
-      );
+  // const handleClientCancel = async () => {
+  //   try {
+  //     const response = await axios.patch(
+  //       `${apiUrl}/reservations/${reservation.reservationId}/membercancel`,
+  //       {},
+  //       {
+  //         headers: { Authorization: `Bearer ${accessToken}` },
+  //       },
+  //     );
 
-      if (response.status === 200) {
-        alert('예약이 취소 되었습니다.');
-        window.location.reload();
-      }
-    } catch (error: any) {
-      console.log(error);
-      if (error.status === 401) {
-        try {
-          const newAccessToken = await refreshAccessToken();
-          if (newAccessToken) {
-            const response = await axios.patch(
-              `${apiUrl}/reservations/${reservation.reservationId}/membercancel`,
-              {},
-              {
-                headers: { Authorization: `Bearer ${newAccessToken}` },
-              },
-            );
-            if (response) {
-              alert('예약이 취소 되었습니다.');
-              window.location.reload();
-            }
-          }
-        } catch (error) {
-          console.log(error);
-        }
-      }
-    }
-  };
+  //     if (response.status === 200) {
+  //       alert('예약이 취소 되었습니다.');
+  //       window.location.reload();
+  //     }
+  //   } catch (error: any) {
+  //     console.log(error);
+  //     if (error.status === 401) {
+  //       try {
+  //         const newAccessToken = await refreshAccessToken();
+  //         if (newAccessToken) {
+  //           const response = await axios.patch(
+  //             `${apiUrl}/reservations/${reservation.reservationId}/membercancel`,
+  //             {},
+  //             {
+  //               headers: { Authorization: `Bearer ${newAccessToken}` },
+  //             },
+  //           );
+  //           if (response) {
+  //             alert('예약이 취소 되었습니다.');
+  //             window.location.reload();
+  //           }
+  //         }
+  //       } catch (error) {
+  //         console.log(error);
+  //       }
+  //     }
+  //   }
+  // };
 
   return (
     <CareCardContainer>
-      {/* <FirstLine>
+      <FirstLine>
         <div>
           <PetsitterContainer>
             <PetsitterInfo>
-              <div>{petsitterBoolean ? reservation.memberName : reservation.petsitterName}</div>
-              <div>{petsitterBoolean ? '고객님' : '펫시터님'}</div>
+              {/* <div>{isPesitter ? reservation.clinet.username : reservation.petsitter.username}</div>
+              <div>{isPesitter ? '고객님' : '펫시터님'}</div> */}
             </PetsitterInfo>
           </PetsitterContainer>
           <PetInfo>
-            <label htmlFor="petName">맡기실 펫 :</label>
-            <PetName id="petName">
+            <span>맡기실 펫 :</span>
+            <PetName>
               {reservation.pets.map((pet: any) => (
-                <div key={pet.petId}>{pet.name}</div>
+                <span key={pet.petId}>{pet.name}</span>
               ))}
             </PetName>
           </PetInfo>
@@ -134,8 +135,8 @@ export default function CareCard({ reservation }: any) {
             <Wrapper>
               <label htmlFor="time">예약시간 :</label>
               <div id="time">
-                {year.split('20')[1]}.{month}.{day} {reservation.reservationTimeStart.slice(0, 5)} ~{' '}
-                {year.split('20')[1]}.{month}.{day} {reservation.reservationTimeEnd.slice(0, 5)}
+                {/* {year.split('20')[1]}.{month}.{day} {reservation.reservationTimeStart.slice(0, 5)} ~{' '}
+                {year.split('20')[1]}.{month}.{day} {reservation.reservationTimeEnd.slice(0, 5)} */}
               </div>
             </Wrapper>
           </PlaceTimeWrapper>
@@ -152,7 +153,7 @@ export default function CareCard({ reservation }: any) {
       </FirstLine>
       <SecondLine>
         <ButtonContainer>
-          {petsitterBoolean && reservation.progress === 'RESERVATION_REQUEST' ? (
+          {/* {petsitterBoolean && reservation.progress === 'RESERVATION_REQUEST' ? (
             <>
               <ActiveButton onClick={handleSitterApproval}>예약확정</ActiveButton>
             </>
@@ -169,8 +170,8 @@ export default function CareCard({ reservation }: any) {
             <>
               <ActiveLink to={`/cares/${reservation.reservationId}/journal`}>케어일지</ActiveLink>
             </>
-          ) : null}
-          {!petsitterBoolean && reservation.progress == 'RESERVATION_REQUEST' ? (
+          ) : null} */}
+          {/* {!petsitterBoolean && reservation.progress == 'RESERVATION_REQUEST' ? (
             <>
               <InActiveButton>예약신청</InActiveButton>
               <ActiveButton onClick={handleClientCancel}>취소하기</ActiveButton>
@@ -192,15 +193,15 @@ export default function CareCard({ reservation }: any) {
               )}
               <ActiveLink to={`/cares/${reservation.reservationId}/review`}>후기</ActiveLink>
             </>
-          ) : null}
+          ) : null} */}
         </ButtonContainer>
-      </SecondLine> */}
+      </SecondLine>
     </CareCardContainer>
   );
 }
 
 const CareCardContainer = styled.div`
-  padding: 12px;
+  padding: 20px;
   box-shadow: ${(props) => props.theme.shadow.dp01};
   border-radius: 8px;
 `;
@@ -243,23 +244,23 @@ const PetsitterInfo = styled.div`
   }
 `;
 
-const PetInfo = styled.div`
+const PetInfo = styled(Row)`
   display: flex;
   gap: 4px;
+  align-items: center;
 
-  > label {
-    ${({ theme }) => theme.fontSize.s14h21}
-  }
-
-  > div {
+  > span {
     ${({ theme }) => theme.fontSize.s14h21}
   }
 `;
 
-const PetName = styled.div`
+const PetName = styled(Row)`
   display: flex;
-  ${({ theme }) => theme.fontSize.s12h18}
   gap: 8px;
+
+  > span {
+    ${({ theme }) => theme.fontSize.s12h18}
+  }
 `;
 
 const PlaceTimeWrapper = styled.div`

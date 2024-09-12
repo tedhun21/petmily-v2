@@ -5,23 +5,14 @@ import HomeAd from '@components/HomeAd';
 import Footer from '@components/footer/Footer';
 import RealTimeReviews from './RealTimeReviews';
 import OffenPetsitters from './OffenPetsitters';
-import { useDispatch, useSelector } from 'react-redux';
 
 import { getMe } from '@pages/common/api';
-import { useCustomQuery } from 'hooks/useCustomQuery';
-import { useEffect } from 'react';
-import { loginUser } from 'store/userSlice';
+import useSWR from 'swr';
+
+const API_URL = process.env.REACT_APP_API_URL;
+
 export default function Home() {
-  const dispatch = useDispatch();
-  const isLogin = useSelector((state: any) => state.user.isLogin);
-
-  const { data: me } = useCustomQuery({ queryFn: getMe, enabled: !isLogin });
-
-  useEffect(() => {
-    if (me) {
-      dispatch(loginUser(me));
-    }
-  }, [me]);
+  const { data: me, error, isLoading } = useSWR(`${API_URL}/users/me`, getMe);
 
   return (
     <>

@@ -11,118 +11,52 @@ import jwt_decode from 'jwt-decode';
 
 import { CircularProgress } from '@mui/material';
 import { getCookie } from 'utils/cookie';
+import { motion, useAnimation, useScroll } from 'framer-motion';
+import Filter from './component/Filter';
 
-const apiUrl = process.env.REACT_APP_API_URL;
+import { getReservations } from './api';
 
-const filters = [
-  { text: '최신순', value: '' },
-  { text: '예정', value: `&condition=expected` },
-  { text: '완료', value: `&condition=finish` },
-];
+const API_URL = process.env.REACT_APP_API_URL;
 
 export default function Care() {
   const navigate = useNavigate();
-  const accessToken = getCookie('access_token');
 
   const { ref, inView } = useInView();
 
-  const [filter, setFilter] = useState('최신순');
-  const [page, setPage] = useState(1);
-  const [isEnd, setIsEnd] = useState(false);
+  const [filter, setFilter] = useState({ id: 1, label: '모두', value: 'all' });
 
-  // const { isLogin, memberId, email, petsitterBoolean } = useSelector((state: IUser) => state.user);
-  const [reservations, setReservations] = useState<any[]>([]);
+  const [isEnd, setIsEnd] = useState(false);
 
   const handleFilter = (e: any) => {
     setFilter(e);
-    setReservations([]);
-    setIsEnd(false);
-    setPage(1);
   };
-
-  // useEffect(() => {
-  //   if (!isLogin) {
-  //     alert('로그인을 해주세요.');
-  //     navigate('/');
-  //   } else if (!accessToken) {
-  //     alert('권한이 없습니다.');
-  //     navigate('/');
-  //   }
-  //   if (accessToken) {
-  //     const decoded: any = jwt_decode(accessToken);
-  //     if (decoded && decoded.id && memberId !== decoded.id && email !== decoded.email) {
-  //       alert('권한이 없습니다.');
-  //       navigate('/');
-  //     }
-  //   }
-  // }, []);
-
-  // 예약 불러오기
-  // useEffect(() => {
-  //   if (isLogin && inView) {
-  //     const getCares = async () => {
-  //       try {
-  //         const response = await axios.get(
-  //           `${apiUrl}/reservations?page=${page}&size=10${filters
-  //             .map((filterItem) => {
-  //               if (filter === filterItem.text) {
-  //                 return filterItem.value;
-  //               }
-  //               return '';
-  //             })
-  //             .join('')}`,
-  //           {
-  //             headers: {
-  //               Authorization: `Bearer ${accessToken}`,
-  //             },
-  //           },
-  //         );
-
-  //         setReservations((prev) => [...prev, ...response.data.reservations]);
-  //         setPage((page) => page + 1);
-  //         if (response.data.pageInfo.totalPages === page || response.data.pageInfo.totalPages === 0) {
-  //           setIsEnd(true);
-  //         }
-  //       } catch (error: any) {
-  //         if (error) {
-  //           setIsEnd(true);
-  //         }
-  //       }
-  //     };
-  //     getCares();
-  //   }
-  // }, [accessToken, filter, inView]);
 
   return (
     <MainContainer>
-      <CareContainer>
-        <FilterContainer>
-          {filters.map((el, index) => (
-            <FilterButtonStyle key={index} onClick={() => handleFilter(el.text)} $filter={filter === el.text}>
-              {el.text}
-            </FilterButtonStyle>
-          ))}
-        </FilterContainer>
-        <CareCardContainer>
-          {Array.isArray(reservations) && reservations.length > 0 ? (
-            reservations.map((reservation) => <CareCard key={reservation.reservationId} reservation={reservation} />)
-          ) : !isEnd ? null : (
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              <div>등록된 예약이 없습니다.</div>
-            </div>
-          )}
-          {!isEnd ? (
+      <Filter filter={filter} handleFilter={handleFilter} />
+      <CareCardContainer>
+        {/* {data?.pages.map((page) =>
+          page.map((reservation: any) => <CareCard key={reservation.id} reservation={reservation} />),
+        )} */}
+        {/* {Array.isArray(reservations) && reservations.length > 0 ? (
+          reservations.map((reservation) => <CareCard key={reservation.reservationId} reservation={reservation} />)
+        ) : !isEnd ? null : (
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <div>등록된 예약이 없습니다.</div>
+          </div>
+        )} */}
+        {/* {!isEnd ? (
             <LoadingContainer ref={ref}>
               <CircularProgress />
             </LoadingContainer>
-          ) : null}
-        </CareCardContainer>
-      </CareContainer>
+          ) : null} */}
+      </CareCardContainer>
     </MainContainer>
   );
 }
 
 const MainContainer = styled.main`
+  position: relative;
   height: 100%;
   padding: 12px;
   background-color: white;
@@ -131,21 +65,11 @@ const MainContainer = styled.main`
 const CareContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding-top: 24px;
 `;
 
 const FilterContainer = styled.div`
   display: flex;
   gap: 8px;
-`;
-
-const FilterButtonStyle = styled.div<{ $filter: boolean | undefined }>`
-  padding: 4px 8px;
-  border: ${({ theme, $filter }) => ($filter ? 'none' : `1px solid ${theme.colors.mainBlue}`)};
-  border-radius: 4px;
-  color: ${({ $filter }) => ($filter ? 'white' : 'black')};
-  background-color: ${({ theme, $filter }) => ($filter ? theme.colors.mainBlue : 'white')};
-  cursor: pointer;
 `;
 
 const CareCardContainer = styled.div`

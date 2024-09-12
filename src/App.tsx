@@ -48,8 +48,9 @@ import PetsitterViewDetails from '@pages/reservation/PetsitterViewDetails';
 import SitterSchedule from '@pages/mypage/SitterSchedule';
 import NotFound from '@pages/common/404';
 import FormWizard from '@pages/reservation/FormWizard';
-import { Provider } from 'react-redux';
+import { Provider as ReduxProvider } from 'react-redux';
 import store from './store/index';
+import { SWRConfig } from 'swr';
 
 const NavHeaderLayout = () => {
   return (
@@ -76,7 +77,7 @@ const router = createBrowserRouter(
         <Route path="" element={<Home />} />
         <Route path="reviews" element={<Reviews />} />
         <Route path="reservation" element={<FormWizard />} />
-        <Route path="care" element={<Care />} />
+        <Route path="cares" element={<Care />} />
       </Route>
       <Route element={<BackHeaderLayout />}>
         <Route path="login" element={<Login />} />
@@ -101,13 +102,15 @@ const router = createBrowserRouter(
 
 export default function App() {
   return (
-    <Provider store={store}>
-      <Container>
-        <Wrapper>
-          <RouterProvider router={router} />
-        </Wrapper>
-      </Container>
-    </Provider>
+    <ReduxProvider store={store}>
+      <SWRConfig value={{ provider: () => new Map() }}>
+        <Container>
+          <Wrapper>
+            <RouterProvider router={router} />
+          </Wrapper>
+        </Container>
+      </SWRConfig>
+    </ReduxProvider>
   );
 }
 
