@@ -14,16 +14,13 @@ const BUCKET_URL = process.env.REACT_APP_BUCKET_URL;
 export default function Me() {
   const navigate = useNavigate();
 
-  // const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
-  // const open = Boolean(anchorEl);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modalRef = useRef<HTMLDivElement | null>(null);
 
   const { data: me } = useSWR(`${API_URL}/users/me`, getMe, {
-    // revalidateIfStale: false, // 캐시된 데이터가 오래된 경우에도 새로 요청하지 않음
-    // revalidateOnFocus: false, // 포커스 시 다시 요청하지 않음
-    // revalidateOnReconnect: false, // 네트워크 재연결 시 다시 요청하지 않음
+    revalidateIfStale: false, // 캐시된 데이터가 오래된 경우에도 새로 요청하지 않음
+    revalidateOnFocus: false, // 포커스 시 다시 요청하지 않음
+    revalidateOnReconnect: false, // 네트워크 재연결 시 다시 요청하지 않음
   });
 
   const handleMenuOpen = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -40,8 +37,6 @@ export default function Me() {
   // 로그아웃 클
   const handleLogout = () => {
     deleteCookie('access_token');
-
-    // dispatch(logoutUser());
 
     alert('로그아웃 되었습니다.');
     navigate('/');
@@ -163,14 +158,3 @@ const LogoutButton = styled.button`
   cursor: pointer;
   ${({ theme }) => theme.fontSize.s14h21};
 `;
-
-// {
-//   isModalOpen && (
-//     <LoginNavModal ref={modalRef}>
-//       <MypageLink to="/mypage" onClick={() => setIsModalOpen(false)}>
-//         마이페이지
-//       </MypageLink>
-//       <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
-//     </LoginNavModal>
-//   );
-// }
