@@ -1,31 +1,37 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
-import { IUser } from 'store/userSlice';
+
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import CareCard from '@components/Carecard';
+
+import CareCard from '@pages/care/component/Carecard';
 
 import { useInView } from 'react-intersection-observer';
-import jwt_decode from 'jwt-decode';
 
 import { CircularProgress } from '@mui/material';
-import { getCookie } from 'utils/cookie';
-import { motion, useAnimation, useScroll } from 'framer-motion';
+
 import Filter from './component/Filter';
 
 import { getReservations } from './api';
 
+import useSWRInfinite from 'swr/infinite';
+import { Loading } from '@components/Loading';
+
 const API_URL = process.env.REACT_APP_API_URL;
 
 export default function Care() {
-  const navigate = useNavigate();
-
   const { ref, inView } = useInView();
 
   const [filter, setFilter] = useState({ id: 1, label: '모두', value: 'all' });
 
   const [isEnd, setIsEnd] = useState(false);
+
+  const getKey = (pageIndex: number, previousPageData: any) => {
+    if (previousPageData && !previousPageData.length) return null;
+    return `${API_URL}/reservations?page=${pageIndex + 1}&pageSize=20&status=${filter.value}`;
+  };
+  const { data, size, setSize, isLoading } = useSWRInfinite(getKey, getReservations);
+
+  // console.log(data);
 
   const handleFilter = (e: any) => {
     setFilter(e);
@@ -35,6 +41,15 @@ export default function Care() {
     <MainContainer>
       <Filter filter={filter} handleFilter={handleFilter} />
       <CareCardContainer>
+        {data && Array.isArray(data) && data[0]?.length > 0 ? (
+          data?.map((page: any) =>
+            page.map((reservation: any) => <CareCard key={reservation.id} reservation={reservation} />),
+          )
+        ) : isLoading ? (
+          <Loading size="40px" />
+        ) : (
+          <span>No Reservation</span>
+        )}
         {/* {data?.pages.map((page) =>
           page.map((reservation: any) => <CareCard key={reservation.id} reservation={reservation} />),
         )} */}
@@ -50,6 +65,7 @@ export default function Care() {
               <CircularProgress />
             </LoadingContainer>
           ) : null} */}
+        <button onClick={() => setSize(size + 1)}>Load More</button>
       </CareCardContainer>
     </MainContainer>
   );
