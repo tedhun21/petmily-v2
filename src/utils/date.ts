@@ -1,5 +1,6 @@
 import dayjs, { Dayjs } from 'dayjs';
 
+import 'dayjs/locale/ko';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import updateLocale from 'dayjs/plugin/updateLocale';
 import isBetween from 'dayjs/plugin/isBetween';
@@ -130,4 +131,8 @@ export const checkOutDisableTime = (
   }
 
   return false;
+};
+
+export const dayFormat = (date: string) => {
+  return dayjs(date).locale('ko').format('ddd');
 };

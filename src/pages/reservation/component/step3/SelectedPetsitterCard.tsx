@@ -6,7 +6,6 @@ import styled from 'styled-components';
 const BUCKET_URL = process.env.REACT_APP_BUCKET_URL;
 
 export default function SelectedPetsitter({ petsitter }: any) {
-  console.log(petsitter);
   const possibleLocation = petsitter.possibleLocation.slice(1, -1).split(',');
   const possibleDay = petsitter.possibleDay.slice(1, -1).split(',');
 

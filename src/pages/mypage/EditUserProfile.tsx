@@ -199,7 +199,7 @@ export default function EditUserProfile() {
             <TextArea {...register('body')} />
           </InputWrapper>
           <SubmitButton disabled={isLoading} type="submit">
-            {isLoading ? <Loading size="27px" /> : <span>수정하기</span>}
+            {isLoading ? <Loading /> : <span>수정하기</span>}
           </SubmitButton>
         </FormContainer>
 

@@ -231,7 +231,7 @@ export default function EditPet() {
             <PetTextarea rows={5} {...register('body')} />
           </InputContainer>
           <SubmitButton type="submit" disabled={isLoading}>
-            {isLoading ? <Loading size="28px" /> : <span>펫 수정하기</span>}
+            {isLoading ? <Loading /> : <span>펫 수정하기</span>}
           </SubmitButton>
         </FormContainer>
       </SectionContainer>

@@ -143,7 +143,7 @@ export default function Step3() {
 
           <ButtonContainer>
             <StyledButton type="submit" disabled={isLoading || !isChecked || watch('body') === ''}>
-              {isLoading ? <Loading size="27px" /> : <span>예약하기</span>}
+              {isLoading ? <Loading /> : <span>예약하기</span>}
             </StyledButton>
           </ButtonContainer>
         </CofirmButtonContainer>

@@ -13,3 +13,16 @@ export const getFilter = (filterType: number, values: any) => {
       return { page: 1, pageSize: 10 }; // 기본값
   }
 };
+
+export const formatProgress = (progress: string) => {
+  switch (progress) {
+    case 'PENDING':
+      return '대기중';
+    case 'CONFIRMED':
+      return '예약확정';
+    case 'CANCELED':
+      return '취소됨';
+    case 'FINISHED':
+      return '종료됨';
+  }
+};

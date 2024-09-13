@@ -49,3 +49,9 @@ export const ImageCentered = styled.img`
   height: 100%;
   transform: translate(-50%, -50%);
 `;
+
+export const CenterContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
