@@ -1,27 +1,27 @@
-import styled from 'styled-components';
-import { PageTitle } from './RegisterPet';
+import { useEffect, useState } from 'react';
+
 import { useNavigate } from 'react-router-dom';
-import Button from '@mui/material/Button';
-import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
+import useSWR from 'swr';
+import useSWRMutation from 'swr/mutation';
+import DaumPostcode from 'react-daum-postcode';
 
 import { useForm } from 'react-hook-form';
-
-import UploadProfileImg from '../../components/UploadProfileImg';
-import { useEffect, useState } from 'react';
-import { IUser, logoutUser } from 'store/userSlice';
-
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+
 import { TextField } from '@mui/material';
-import DaumPostcode from 'react-daum-postcode';
 import { Modal, Sheet } from '@mui/joy';
 
+import { deleteMe, updateMe } from './api';
+
+import { Row, Texts20h30 } from 'commonStyle';
+
+import UploadProfileImg from '../../components/UploadProfileImg';
 import { deleteCookie } from 'utils/cookie';
-import { deleteMe, getMe, updateMe } from './api';
-import { useCustomQuery } from 'hooks/useCustomQuery';
-import { Row } from 'commonStyle';
-import { useCustomMutation } from 'hooks/useCustomMutation';
+import { TitleContainer } from './RegisterPet';
 import { Loading } from '@components/Loading';
+import { getMe } from '@pages/common/api';
 
 const schema = yup.object().shape({
   nickname: yup
@@ -36,32 +36,30 @@ const schema = yup.object().shape({
 
 type IEditUser = yup.InferType<typeof schema>;
 
-export default function EditUserProfile() {
+const API_URL = process.env.REACT_APP_API_URL;
+
+export default function EditMe() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const [previewImage, setPreviewImage] = useState(null);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { isSuccess, data: me } = useCustomQuery({ queryFn: getMe });
-  const { mutate: updateMeMutate, isLoading } = useCustomMutation({
-    mutationFn: updateMe,
+  const { data: me, isLoading } = useSWR(`${API_URL}/users/me`, getMe);
+
+  const { trigger: updateTrigger, isMutating } = useSWRMutation(`${API_URL}/users/${me.id}`, updateMe, {
     onSuccess: () => {
-      window.alert('회원 정보가 수정되었습니다.');
-      navigate('/mypage');
+      window.alert('회원 수정되었습니다');
+      navigate('/me');
     },
   });
-  const { mutate: deleteMeMutate } = useCustomMutation({
-    mutationFn: deleteMe,
+
+  const { trigger: deleteTrigger } = useSWRMutation(`${API_URL}/users/${me.id}`, deleteMe, {
     onSuccess: () => {
-      window.alert('회원정보가 삭제되었습니다.');
+      window.alert('회원 삭제 되었습니다');
       deleteCookie('access_token');
       navigate('/');
     },
   });
-
-  // 프로필 사진 변경
 
   const {
     register,
@@ -87,6 +85,7 @@ export default function EditUserProfile() {
     setIsModalOpen(false);
   };
 
+  // 회원 정보 수정
   const onSubmit = async (data: IEditUser) => {
     const { nickname, phone, address, detailAddress, body } = data;
 
@@ -119,14 +118,14 @@ export default function EditUserProfile() {
       formData.append('file', previewImage);
     }
 
-    updateMeMutate({ id: me.id, formData });
+    await updateTrigger({ formData });
+
+    // updateMeMutate({ id: me.id, formData });
   };
 
   const handleLogout = () => {
     deleteCookie('access_token');
-    // deleteCookie('refresh_token');
-    dispatch(logoutUser());
-    alert('로그아웃되었습니다.');
+    window.alert('로그아웃되었습니다.');
     navigate('/');
   };
 
@@ -134,22 +133,24 @@ export default function EditUserProfile() {
     const isConfirmed = window.confirm('정말 탈퇴하시겠습니까?');
     if (!isConfirmed) return;
 
-    deleteMeMutate({ id: me.id });
+    await deleteTrigger();
   };
 
   useEffect(() => {
-    if (isSuccess && me) {
+    if (!isLoading && me) {
       setValue('nickname', me.nickname);
       setValue('phone', me.phone);
       setValue('address', me.address);
       setValue('detailAddress', me.detailAddress);
       setValue('body', me.body);
     }
-  }, [isSuccess, me]);
+  }, [isLoading, me]);
 
   return (
     <main>
-      <PageTitle>회원 정보 수정</PageTitle>
+      <TitleContainer>
+        <Texts20h30>회원 정보 수정</Texts20h30>
+      </TitleContainer>
       <MainContainer>
         <UploadProfileImg
           serverImageUrl={me?.photo.url}
@@ -198,7 +199,7 @@ export default function EditUserProfile() {
             <InputLabel htmlFor="body">나의 소개</InputLabel>
             <TextArea {...register('body')} />
           </InputWrapper>
-          <SubmitButton disabled={isLoading} type="submit">
+          <SubmitButton disabled={isMutating} type="submit">
             {isLoading ? <Loading /> : <span>수정하기</span>}
           </SubmitButton>
         </FormContainer>
@@ -216,11 +217,6 @@ const MainContainer = styled.section`
   display: flex;
   flex-direction: column;
   padding: 0 80px;
-`;
-
-const Info = styled.div`
-  ${(props) => props.theme.fontSize.s16h24};
-  width: 60%;
 `;
 
 export const InfoText = styled.div`

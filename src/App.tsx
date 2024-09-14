@@ -32,20 +32,20 @@ import BackHeader from '@components/headers/BackHeader';
 
 import Home from '@pages/home/Home';
 import Login from '@pages/login/Login';
-import Mypage from '@pages/mypage/Mypage';
+import Me from '@pages/me/Me';
 import Reviews from '@pages/home/Reviews';
 import Care from '@pages/care/Care';
 import Signup from '@pages/login/Signup';
 import OAuthBranch from '@pages/login/OAuthBranch';
-import EditUserProfile from '@pages/mypage/EditUserProfile';
-import RegisterPet from '@pages/mypage/RegisterPet';
-import EditPet from '@pages/mypage/EditPet';
+import EditMe from '@pages/me/EditMe';
+import RegisterPet from '@pages/me/RegisterPet';
+import EditPet from '@pages/me/EditPet';
 import Search from '@pages/home/Search';
 import QnA from '@pages/home/QnA';
 import ViewPetsitters from '@pages/reservation/ViewPetsitters';
 import ViewJournal from '@pages/common/ViewJournal';
 import PetsitterViewDetails from '@pages/reservation/PetsitterViewDetails';
-import SitterSchedule from '@pages/mypage/SitterSchedule';
+import SitterSchedule from '@pages/me/SitterSchedule';
 import NotFound from '@pages/common/404';
 import FormWizard from '@pages/reservation/FormWizard';
 import { Provider as ReduxProvider } from 'react-redux';
@@ -83,10 +83,9 @@ const router = createBrowserRouter(
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />
         <Route path="signup/branch" element={<OAuthBranch />} />
-        <Route path="mypage" element={<Mypage />} />
-        <Route path="mypage/edit" element={<EditUserProfile />} />
-        <Route path="mypage/register" element={<RegisterPet />} />
-        <Route path="mypage/:petId/edit" element={<EditPet />} />
+        <Route path="me/edit" element={<EditMe />} />
+        <Route path="me/register" element={<RegisterPet />} />
+        <Route path="me/:petId/edit" element={<EditPet />} />
         <Route path="search" element={<Search />} />
         <Route path="qna" element={<QnA />} />
         <Route path="petsitters" element={<ViewPetsitters />} />
@@ -95,6 +94,7 @@ const router = createBrowserRouter(
         <Route path="petsitters/:petsitterId" element={<PetsitterViewDetails />} />
         <Route path="petsitters/:memberId/schedule" element={<SitterSchedule />} />
       </Route>
+      <Route path="me" element={<Me />} />
       <Route path="*" element={<NotFound />} />
     </Route>,
   ),
@@ -103,7 +103,7 @@ const router = createBrowserRouter(
 export default function App() {
   return (
     <ReduxProvider store={store}>
-      <SWRConfig value={{ provider: () => new Map() }}>
+      <SWRConfig value={{ revalidateOnFocus: false, provider: () => new Map() }}>
         <Container>
           <Wrapper>
             <RouterProvider router={router} />

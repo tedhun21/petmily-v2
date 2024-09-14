@@ -23,7 +23,6 @@ export default function Reservations({ filter }: any) {
 
   const isEmpty = data?.[0]?.length === 0;
   const isEnd = data && data[data.length - 1]?.length < pageSize;
-  console.log('🚀 ~ Reservations ~ isEnd:', isEnd);
 
   useEffect(() => {
     if (isInView) {
@@ -47,7 +46,6 @@ export default function Reservations({ filter }: any) {
     );
   }
 
-  console.log(data);
   return (
     <CareCardContainer>
       {data &&

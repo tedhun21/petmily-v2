@@ -11,7 +11,7 @@ import { ImageCentered, RoundedImageWrapper } from 'commonStyle';
 const API_URL = process.env.REACT_APP_API_URL;
 const BUCKET_URL = process.env.REACT_APP_BUCKET_URL;
 
-export default function Me() {
+export default function MeButton() {
   const navigate = useNavigate();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -71,7 +71,7 @@ export default function Me() {
 
           {isModalOpen && me && (
             <LoginNavModal ref={modalRef}>
-              <MypageLink to="/mypage" onClick={() => setIsModalOpen(false)}>
+              <MypageLink to="/me" onClick={() => setIsModalOpen(false)}>
                 마이페이지
               </MypageLink>
               <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>

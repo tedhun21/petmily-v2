@@ -4,10 +4,13 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import useSWR from 'swr';
+import useSWRMutation from 'swr/mutation';
+
 import { PiCatBold, PiDogBold } from 'react-icons/pi';
 
 import UploadProfileImg from '../../components/UploadProfileImg';
-import { ErrorMsg } from './EditUserProfile';
+import { ErrorMsg } from './EditMe';
 
 import {
   ButtonContainer,
@@ -17,20 +20,20 @@ import {
   InputContainer,
   InputLabel,
   InputWrapper,
-  PageTitle,
   PetTextarea,
   RadioContainer,
   RadioWrapper,
   SectionContainer,
   SubmitButton,
+  TitleContainer,
   TypeRadioLabel,
   UnitText,
 } from './RegisterPet';
-import { Row } from 'commonStyle';
+import { Row, Texts20h30 } from 'commonStyle';
 import { Loading } from '@components/Loading';
-import { useCustomQuery } from 'hooks/useCustomQuery';
-import { useCustomMutation } from 'hooks/useCustomMutation';
-import { getPet, updatePet } from './api';
+import { getPet, updatePet, deletePet } from './api';
+import { FaXmark } from 'react-icons/fa6';
+import styled from 'styled-components';
 
 const schema = yup.object().shape({
   type: yup.string().oneOf(['DOG', 'CAT'], '강아지인가요 고양이인가요?').required('이 항목은 필수입니다.'),
@@ -56,26 +59,14 @@ const schema = yup.object().shape({
 
 type IEditPet = yup.InferType<typeof schema>;
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 // 펫 수정
 export default function EditPet() {
   const navigate = useNavigate();
 
   const { petId } = useParams();
   const [previewImage, setPreviewImage] = useState<File | null>(null);
-
-  const { data: pet } = useCustomQuery({ queryFn: () => getPet({ id: +petId! }) });
-
-  const { isLoading, mutate: updatePetMutate } = useCustomMutation({
-    mutationFn: updatePet,
-    onSuccess: () => {
-      window.alert('수정이 완료되었습니다.');
-      navigate('/mypage');
-    },
-    onError: async () => {
-      window.alert('수정 실패하였습니다.');
-      navigate(0);
-    },
-  });
 
   const {
     register,
@@ -87,12 +78,37 @@ export default function EditPet() {
     resolver: yupResolver(schema),
   });
 
+  const { data: pet } = useSWR(`${API_URL}/pets/${petId}`, getPet);
+
+  const { trigger: updateTrigger, isMutating } = useSWRMutation(`${API_URL}/pets/${petId}`, updatePet, {
+    onSuccess: () => {
+      window.alert('수정이 완료되었습니다');
+      navigate('/me');
+    },
+    onError: () => {
+      window.alert('수정 실패하였습니다');
+      navigate(0);
+    },
+  });
+
+  const { trigger: deleteTrigger } = useSWRMutation(`${API_URL}/pets/${petId}`, deletePet, {
+    onSuccess: () => {
+      window.alert('펫 정보가 삭제되었습니다');
+      navigate('/me');
+    },
+    onError: () => {
+      window.alert('펫 정보 삭제에 실패했습니다');
+      navigate(0);
+    },
+  });
+
   // handle pet type radio
   const handlePetType = (e: MouseEvent<HTMLInputElement>) => {
     const value = (e.target as HTMLInputElement).value as 'DOG' | 'CAT'; // 타입 캐스팅
     setValue('type', value);
   };
 
+  // 펫 수정
   const onSubmit = async (data: IEditPet) => {
     // FormData append
     const formData = new FormData();
@@ -101,30 +117,17 @@ export default function EditPet() {
       formData.append('file', previewImage);
     }
 
-    // useCustomMutation을 사용해서 api 통신
-    updatePetMutate({ id: pet.id, formData });
+    await updateTrigger({ formData });
+    // updatePetMutate({ id: pet.id, formData });
   };
 
-  //  펫 삭제
-  const deletePet = async () => {
-    // const token = getCookie('access_token');
-    // const isConfirmed = window.confirm('정말 펫을 삭제하시겠습니까?');
-    // if (!isConfirmed) return;
-    // else {
-    //   try {
-    //     const response = await axios.delete(`${apiUrl}/pets/${petId}`, {
-    //       headers: {
-    //         Authorization: `Bearer ${token}`,
-    //       },
-    //     });
-    //     if (response.data === 'Delete Pet Success') {
-    //       alert('펫이 삭제되었습니다.');
-    //       navigate('/mypage');
-    //     }
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // }
+  // 펫 삭제
+  const handleDeletePet = async () => {
+    const isConfirmed = window.confirm('정말 펫을 삭제하시겠습니까?');
+    if (!isConfirmed) return;
+    else {
+      await deleteTrigger();
+    }
   };
 
   // 펫 정보 가져와서 input 기본값 설정 (react hook form)
@@ -137,12 +140,18 @@ export default function EditPet() {
       setValue('species', pet.species);
       setValue('weight', pet.weight);
       setValue('gender', pet.gender);
+      setValue('body', pet.body);
     }
   }, [pet]);
 
   return (
     <main>
-      <PageTitle>Petmily 정보 수정</PageTitle>
+      <EditTitleContainer>
+        <Texts20h30>Petmily 정보 수정</Texts20h30>
+        <button onClick={handleDeletePet}>
+          <FaXmark color="#279EFF" size="28px" />
+        </button>
+      </EditTitleContainer>
       <SectionContainer>
         <UploadProfileImg
           previewImage={previewImage}
@@ -230,11 +239,17 @@ export default function EditPet() {
             <InputLabel>펫 소개</InputLabel>
             <PetTextarea rows={5} {...register('body')} />
           </InputContainer>
-          <SubmitButton type="submit" disabled={isLoading}>
-            {isLoading ? <Loading /> : <span>펫 수정하기</span>}
+          <SubmitButton type="submit" disabled={isMutating}>
+            {isMutating ? <Loading /> : <span>펫 수정하기</span>}
           </SubmitButton>
         </FormContainer>
       </SectionContainer>
     </main>
   );
 }
+
+const EditTitleContainer = styled(TitleContainer)`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;

@@ -10,10 +10,11 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { PiCatBold, PiDogBold } from 'react-icons/pi';
 
 import UploadProfileImg from '@components/UploadProfileImg';
-import { Column, Row } from 'commonStyle';
-import { useCustomMutation } from 'hooks/useCustomMutation';
+import { Column, Row, Texts20h30 } from 'commonStyle';
+
 import { createPet } from './api';
 import { Loading } from '@components/Loading';
+import useSWRMutation from 'swr/mutation';
 
 const schema = yup.object().shape({
   type: yup.string().oneOf(['DOG', 'CAT'], '강아지인가요 고양이인가요?').required('이 항목은 필수입니다.'),
@@ -39,8 +40,11 @@ const schema = yup.object().shape({
 
 type IRegisterPet = yup.InferType<typeof schema>;
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 export default function RegisterPet() {
   const navigate = useNavigate();
+  const [previewImage, setPreviewImage] = useState<File | null>(null);
 
   const {
     register,
@@ -55,13 +59,10 @@ export default function RegisterPet() {
     },
   });
 
-  const [previewImage, setPreviewImage] = useState<File | null>(null);
-
-  const { isLoading, mutate: createPetMutate } = useCustomMutation({
-    mutationFn: createPet,
+  const { trigger, isMutating } = useSWRMutation(`${API_URL}/pets`, createPet, {
     onSuccess: () => {
-      alert('펫밀리 등록이 완료되었습니다!');
-      navigate('/mypage');
+      window.alert('펫밀리 등록이 완료되었습니다');
+      navigate('/me');
     },
   });
 
@@ -79,13 +80,14 @@ export default function RegisterPet() {
       formData.append('file', previewImage);
     }
 
-    createPetMutate({ formData });
+    await trigger({ formData });
   };
 
   return (
     <main>
-      <PageTitle>나의 Petmily 등록</PageTitle>
-
+      <TitleContainer>
+        <Texts20h30>나의 Petmily 등록</Texts20h30>
+      </TitleContainer>
       <SectionContainer>
         <UploadProfileImg
           previewImage={previewImage}
@@ -93,6 +95,7 @@ export default function RegisterPet() {
           defaultImage={watch('type') === 'DOG' ? '/imgs/DogProfile.png' : '/imgs/CatProfile.png'}
         />
         <FormContainer onSubmit={handleSubmit(onSubmit)}>
+          {/* 타입 */}
           <ButtonContainer>
             <TypeRadioLabel isSelected={watch('type') === 'DOG'}>
               <input hidden type="radio" value="DOG" {...register('type')} onClick={handlePetType} />
@@ -170,8 +173,8 @@ export default function RegisterPet() {
             <InputLabel>펫 소개</InputLabel>
             <PetTextarea rows={5} {...register('body')} />
           </InputContainer>
-          <SubmitButton type="submit" disabled={isLoading}>
-            {isLoading ? <Loading /> : <span>펫 등록하기</span>}
+          <SubmitButton type="submit" disabled={isMutating}>
+            {isMutating ? <Loading /> : <span>펫 등록하기</span>}
           </SubmitButton>
         </FormContainer>
       </SectionContainer>
@@ -188,9 +191,8 @@ export const SectionContainer = styled.section`
   background-color: white;
 `;
 
-export const PageTitle = styled.h1`
-  ${(props) => props.theme.fontSize.s20h30}
-  padding:60px;
+export const TitleContainer = styled.div`
+  padding: 60px;
 `;
 
 export const ButtonContainer = styled.div`
@@ -206,6 +208,7 @@ export const TypeRadioLabel = styled.label<{ isSelected: boolean }>`
   justify-content: center;
   flex: 1;
   padding: 8px;
+  cursor: pointer;
   background-color: ${(props) => (props.isSelected ? props.theme.colors.mainBlue : props.theme.textColors.gray50)};
 
   /* Adding transition for smooth effect */
