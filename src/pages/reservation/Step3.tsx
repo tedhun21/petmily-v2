@@ -3,20 +3,20 @@ import { useNavigate } from 'react-router';
 
 import styled from 'styled-components';
 import { useFormContext } from 'react-hook-form';
+import useSWRMutation from 'swr/mutation';
 
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { TextField } from '@mui/material';
+import dayjs from 'dayjs';
 
 import { GoChecklist } from 'react-icons/go';
-import { Column, Row } from 'commonStyle';
 
-import dayjs from 'dayjs';
+import { Column, Row } from 'commonStyle';
 import SelectedPetsitter from './component/step3/SelectedPetsitterCard';
 import SelectedPets from './component/step3/SelectedPets';
 import Confirm from './component/step3/Confirm';
-import { useCustomMutation } from 'hooks/useCustomMutation';
-import { createReservation } from './api';
 import { Loading } from '@components/Loading';
+
+import { createrWithCookie } from 'api';
 
 interface IPetsitter {
   nickname: string;
@@ -36,6 +36,8 @@ export interface IPet {
   species: string;
 }
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 export default function Step3() {
   const navigate = useNavigate();
 
@@ -52,15 +54,13 @@ export default function Step3() {
   const { date, startTime, endTime, address, detailAddress, checkedPets, petsitter } = getValues();
 
   // reservation create
-  const {
-    isLoading,
-    data,
-    mutate: createReservationMutate,
-  } = useCustomMutation({
-    mutationFn: createReservation,
+  const { trigger, isMutating } = useSWRMutation(`${API_URL}/reservations`, createrWithCookie, {
     onSuccess: () => {
-      window.alert('에약 신청이 완료되었습니다');
+      window.alert('예약 신청이 완료되었습니다');
       navigate('/cares');
+    },
+    onError: () => {
+      window.alert('에약 신청에 실패했습니다.');
     },
   });
 
@@ -82,7 +82,8 @@ export default function Step3() {
       petsitterId: petsitter.id,
     };
 
-    createReservationMutate({ data: formattedData });
+    trigger({ formData: formattedData });
+    // createReservationMutate({ data: formattedData });
   };
 
   return (
@@ -142,8 +143,8 @@ export default function Step3() {
           <Confirm isChecked={isChecked} setIsChecked={setIsChecked} />
 
           <ButtonContainer>
-            <StyledButton type="submit" disabled={isLoading || !isChecked || watch('body') === ''}>
-              {isLoading ? <Loading /> : <span>예약하기</span>}
+            <StyledButton type="submit" disabled={isMutating || !isChecked || watch('body') === ''}>
+              {isMutating ? <Loading /> : <span>예약하기</span>}
             </StyledButton>
           </ButtonContainer>
         </CofirmButtonContainer>

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { Column } from 'commonStyle';
 import NavBar from './components/NavBar';
-import Me from './components/Me';
+import MeButton from './components/MeButton';
 
 export default function NavHeader() {
   return (
@@ -14,7 +14,7 @@ export default function NavHeader() {
           <Link to="/">
             <img src="/imgs/Logo.svg" alt="logo" />
           </Link>
-          <Me />
+          <MeButton />
         </TopHeader>
         <NavBar />
       </HeaderContatiner>
