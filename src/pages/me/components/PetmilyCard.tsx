@@ -1,4 +1,4 @@
-import { CenterContainer, ImageCentered, RoundedImageWrapper, Row } from 'commonStyle';
+import { CenterContainer, Column, ImageCentered, RoundedImageWrapper, Row, Texts12h18, Texts14h21 } from 'commonStyle';
 import styled from 'styled-components';
 
 import { CgGenderFemale, CgGenderMale } from 'react-icons/cg';
@@ -9,7 +9,7 @@ export default function PetmilyCard({ pet }: any) {
   return (
     <PetCard to={`/me/${pet.id}/edit`}>
       <UpperContainer>
-        <PetImageName>
+        <PetImageNameSpecies>
           <PetImage>
             {pet.photo ? (
               <ImageCentered src={`${BUCKET_URL}${pet.photo.url}`} />
@@ -19,29 +19,29 @@ export default function PetmilyCard({ pet }: any) {
               <img src="/imgs/CatProfile.png" alt="catPhoto" width="100%" height="100%" />
             ) : null}
           </PetImage>
-          <span>{pet.name}</span>
-        </PetImageName>
+          <PetNameSpecies>
+            <span>{pet.name}</span>
+            <Species>{pet.species}</Species>
+          </PetNameSpecies>
+        </PetImageNameSpecies>
       </UpperContainer>
 
       <LowerContainer>
         <PetPropWrapper>
-          <span>성별:</span>
           <CenterContainer>
             {pet.gender === 'MALE' ? (
-              <CgGenderMale size="16px" />
+              <CgGenderMale size="21px" color="white" />
             ) : pet.gender === 'FEMALE' ? (
-              <CgGenderFemale size="16px" />
+              <CgGenderFemale size="21px" color="white" />
             ) : null}
           </CenterContainer>
         </PetPropWrapper>
+
         <PetPropWrapper>
-          <span>품종: {pet.species}</span>
+          <span>{pet.age}살</span>
         </PetPropWrapper>
         <PetPropWrapper>
-          <span>나이: {pet.age}살</span>
-        </PetPropWrapper>
-        <PetPropWrapper>
-          <span>몸무게: {pet.weight}kg</span>
+          <span>{pet.weight}kg</span>
         </PetPropWrapper>
       </LowerContainer>
     </PetCard>
@@ -55,13 +55,14 @@ const PetCard = styled(Link)`
   width: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   gap: 8px;
   box-shadow: ${(props) => props.theme.shadow.dp01};
   text-decoration: none;
   color: inherit;
 
   &:hover {
-    box-shadow: ${(props) => props.theme.shadow.dp03};
+    box-shadow: ${(props) => props.theme.shadow.dp02};
   }
 
   &:active {
@@ -78,9 +79,17 @@ const UpperContainer = styled(Row)`
   justify-content: space-between;
 `;
 
-const PetImageName = styled(Row)`
+const PetImageNameSpecies = styled(Row)`
   gap: 8px;
   align-items: center;
+`;
+
+const PetNameSpecies = styled(Column)`
+  gap: 4px;
+`;
+
+const Species = styled(Texts12h18)`
+  color: ${(props) => props.theme.textColors.gray10};
 `;
 
 const PetImage = styled(RoundedImageWrapper)`
@@ -99,7 +108,12 @@ const PetPropWrapper = styled.li`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 2px solid ${(props) => props.theme.colors.subBlue};
-  border-radius: 8px;
-  padding: 8px;
+  background-color: ${(props) => props.theme.colors.subBlue};
+  border-radius: 16px;
+  padding: 4px 8px;
+
+  > span {
+    color: white;
+    ${(props) => props.theme.fontSize.s14h21};
+  }
 `;

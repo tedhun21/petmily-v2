@@ -1,15 +1,15 @@
-import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
+
+import { FormProvider, useForm } from 'react-hook-form';
+import { AnimatePresence, motion } from 'framer-motion';
+
 import Step1 from './Step1';
 import Step2 from './Step2';
 import Step3 from './Step3';
-import { FormProvider, useForm } from 'react-hook-form';
-import { Dayjs } from 'dayjs';
-import { IFormInput } from './api';
 import StatusHeader from './component/StatusHeader';
 
 export default function FormWizard() {
-  const methods = useForm<IFormInput>({
+  const methods = useForm({
     defaultValues: {
       date: null,
       startTime: null,

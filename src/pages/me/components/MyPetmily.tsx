@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { LuBadgePlus } from 'react-icons/lu';
 
 import { Row, Texts18h27 } from 'commonStyle';
-import PetContainer from './PetContainer';
+import MyPetContainer from './MyPetContainer';
 
 export default function MyPetmily() {
   return (
@@ -16,7 +16,7 @@ export default function MyPetmily() {
         </Link>
       </TitleContainer>
 
-      <PetContainer />
+      <MyPetContainer />
     </PetmilyContainer>
   );
 }

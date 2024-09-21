@@ -13,15 +13,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { TextField } from '@mui/material';
 import { Modal, Sheet } from '@mui/joy';
 
-import { deleteMe, updateMe } from './api';
-
 import { Row, Texts20h30 } from 'commonStyle';
 
 import UploadProfileImg from '../../components/UploadProfileImg';
 import { deleteCookie } from 'utils/cookie';
 import { TitleContainer } from './RegisterPet';
 import { Loading } from '@components/Loading';
-import { getMe } from '@pages/common/api';
+import { deleterWithCookie, getFethcerWithToken, updaterWithCookie } from 'api';
 
 const schema = yup.object().shape({
   nickname: yup
@@ -44,16 +42,16 @@ export default function EditMe() {
   const [previewImage, setPreviewImage] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { data: me, isLoading } = useSWR(`${API_URL}/users/me`, getMe);
+  const { data: me, isLoading } = useSWR(`${API_URL}/users/me`, getFethcerWithToken);
 
-  const { trigger: updateTrigger, isMutating } = useSWRMutation(`${API_URL}/users/${me.id}`, updateMe, {
+  const { trigger: updateTrigger, isMutating } = useSWRMutation(`${API_URL}/users/${me.id}`, updaterWithCookie, {
     onSuccess: () => {
       window.alert('회원 수정되었습니다');
       navigate('/me');
     },
   });
 
-  const { trigger: deleteTrigger } = useSWRMutation(`${API_URL}/users/${me.id}`, deleteMe, {
+  const { trigger: deleteTrigger } = useSWRMutation(`${API_URL}/users/${me.id}`, deleterWithCookie, {
     onSuccess: () => {
       window.alert('회원 삭제 되었습니다');
       deleteCookie('access_token');

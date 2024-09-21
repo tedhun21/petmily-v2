@@ -56,10 +56,10 @@ export const defaultTheme = {
   },
   shadow: {
     onlyBottom: '0px 4px 4px rgba(39,44, 86, 0.06)',
-    dp01: '0px 10px 34px 0px rgba(39, 44, 86, 0.08)',
-    dp02: '0px 4px 12px 0px rgba(39, 44, 86, 0.12)',
-    dp03: '0px 12px 60px 0px rgba(39, 44, 86, 0.10)',
-    dp04: '0px 35px 64px 0px rgba(39, 44, 86, 0.24)',
+    dp01: '0px 10px 34px 0px rgba(39, 44, 86, 0.1)',
+    dp02: '0px 4px 12px 0px rgba(39, 44, 86, 0.15)',
+    dp03: '0px 12px 60px 0px rgba(39, 44, 86, 0.2)',
+    dp04: '0px 35px 64px 0px rgba(39, 44, 86, 0.25)',
     inset: '0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset',
   },
 };

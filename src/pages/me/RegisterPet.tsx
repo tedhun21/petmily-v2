@@ -12,9 +12,9 @@ import { PiCatBold, PiDogBold } from 'react-icons/pi';
 import UploadProfileImg from '@components/UploadProfileImg';
 import { Column, Row, Texts20h30 } from 'commonStyle';
 
-import { createPet } from './api';
 import { Loading } from '@components/Loading';
 import useSWRMutation from 'swr/mutation';
+import { createrWithCookie } from 'api';
 
 const schema = yup.object().shape({
   type: yup.string().oneOf(['DOG', 'CAT'], '강아지인가요 고양이인가요?').required('이 항목은 필수입니다.'),
@@ -59,7 +59,7 @@ export default function RegisterPet() {
     },
   });
 
-  const { trigger, isMutating } = useSWRMutation(`${API_URL}/pets`, createPet, {
+  const { trigger, isMutating } = useSWRMutation(`${API_URL}/pets`, createrWithCookie, {
     onSuccess: () => {
       window.alert('펫밀리 등록이 완료되었습니다');
       navigate('/me');

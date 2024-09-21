@@ -4,9 +4,9 @@ import useSWR from 'swr';
 import styled from 'styled-components';
 import { useNavigate, Link } from 'react-router-dom';
 
-import { getMe } from '@pages/common/api';
 import { deleteCookie } from 'utils/cookie';
 import { ImageCentered, RoundedImageWrapper } from 'commonStyle';
+import { getFethcerWithToken } from 'api';
 
 const API_URL = process.env.REACT_APP_API_URL;
 const BUCKET_URL = process.env.REACT_APP_BUCKET_URL;
@@ -17,11 +17,7 @@ export default function MeButton() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modalRef = useRef<HTMLDivElement | null>(null);
 
-  const { data: me } = useSWR(`${API_URL}/users/me`, getMe, {
-    revalidateIfStale: false, // 캐시된 데이터가 오래된 경우에도 새로 요청하지 않음
-    revalidateOnFocus: false, // 포커스 시 다시 요청하지 않음
-    revalidateOnReconnect: false, // 네트워크 재연결 시 다시 요청하지 않음
-  });
+  const { data: me } = useSWR(`${API_URL}/users/me`, getFethcerWithToken);
 
   const handleMenuOpen = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation(); // 이벤트 전파를 막음

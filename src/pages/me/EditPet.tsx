@@ -31,9 +31,10 @@ import {
 } from './RegisterPet';
 import { Row, Texts20h30 } from 'commonStyle';
 import { Loading } from '@components/Loading';
-import { getPet, updatePet, deletePet } from './api';
+
 import { FaXmark } from 'react-icons/fa6';
 import styled from 'styled-components';
+import { deleterWithCookie, getFetcher, updaterWithCookie } from 'api';
 
 const schema = yup.object().shape({
   type: yup.string().oneOf(['DOG', 'CAT'], '강아지인가요 고양이인가요?').required('이 항목은 필수입니다.'),
@@ -78,9 +79,9 @@ export default function EditPet() {
     resolver: yupResolver(schema),
   });
 
-  const { data: pet } = useSWR(`${API_URL}/pets/${petId}`, getPet);
+  const { data: pet } = useSWR(`${API_URL}/pets/${petId}`, getFetcher);
 
-  const { trigger: updateTrigger, isMutating } = useSWRMutation(`${API_URL}/pets/${petId}`, updatePet, {
+  const { trigger: updateTrigger, isMutating } = useSWRMutation(`${API_URL}/pets/${petId}`, updaterWithCookie, {
     onSuccess: () => {
       window.alert('수정이 완료되었습니다');
       navigate('/me');
@@ -91,7 +92,7 @@ export default function EditPet() {
     },
   });
 
-  const { trigger: deleteTrigger } = useSWRMutation(`${API_URL}/pets/${petId}`, deletePet, {
+  const { trigger: deleteTrigger } = useSWRMutation(`${API_URL}/pets/${petId}`, deleterWithCookie, {
     onSuccess: () => {
       window.alert('펫 정보가 삭제되었습니다');
       navigate('/me');

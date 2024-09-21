@@ -32,13 +32,18 @@ import DaumPostcode from 'react-daum-postcode';
 import dayjs from 'dayjs';
 
 import { checkInDisableTime, checkOutDisableTime, reservationDisableDate } from 'utils/date';
-import { getMyPets } from './api';
-import { useCustomQuery } from 'hooks/useCustomQuery';
-import SelectPet from './component/step1/SelectPet';
+
 import { Row } from 'commonStyle';
+
+import PetContainer from './component/step1/PetContainer';
+
+const API_URL = process.env.REACT_APP_API_URL;
 
 export default function Step1({ onNext }: any) {
   const navigate = useNavigate();
+
+  // modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const {
     setValue,
@@ -49,52 +54,6 @@ export default function Step1({ onNext }: any) {
   } = useFormContext();
 
   const { date, startTime, endTime, address, detailAddress, checkedPets } = useWatch({ control });
-
-  // 서버에서 오는 펫 정보
-  const [pets, setPets] = useState<any[]>([]);
-  const [page, setPage] = useState(1);
-  const pageSize = 6;
-  const [hasMoreData, setHasMoreData] = useState(true);
-
-  const { isSuccess, data } = useCustomQuery({
-    queryFn: () => getMyPets({ page, pageSize }),
-    enabled: hasMoreData,
-  });
-
-  // modal
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isPetModalOpen, setIsPetModalOpen] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
-
-  // Modal 동물 등록
-  // const [imageFile, setImageFile] = useState<File | null>(null);
-  // const [isCat, setIsCat] = useState('DOG');
-  // const [name, setName] = useState('');
-  // const [species, setSpecies] = useState('');
-  // const [weight, setWeight] = useState('');
-  // const [age, setAge] = useState('');
-  // const [isMale, setIsMale] = useState('');
-  // const [isNeutering, setIsNeutering] = useState('');
-
-  // // 펫등록 에러
-  // const [isNameError, setIsNameError] = useState(false);
-  // const [isSpeciesError, setIsSpeciesError] = useState(false);
-  // const [isWeightError, setIsWeightError] = useState(false);
-  // const [isAgeError, setIsAgeError] = useState(false);
-
-  useEffect(() => {
-    if (isSuccess && data && data.results) {
-      if (data.results.length < pageSize) {
-        setHasMoreData(false);
-      }
-
-      setPets((prev) => [...prev, ...data.results]);
-    }
-  }, [isSuccess, data]);
-
-  const onErrorImg = (e: any) => {
-    e.target.src = '/imgs/PetProfile.png';
-  };
 
   // Address handler
   const handleComplete = (data: any) => {
@@ -116,103 +75,6 @@ export default function Step1({ onNext }: any) {
   // Address Modal
   const onToggleModal = () => {
     setIsModalOpen(true);
-  };
-
-  const handleBackClick = () => {
-    navigate('/');
-  };
-
-  // 펫등록 모달 handler
-  // const handleGenderChange = (e: ChangeEvent<HTMLInputElement>) => {
-  //   setIsMale(e.target.value);
-  // };
-
-  // const handleNeuteringChange = (e: ChangeEvent<HTMLInputElement>) => {
-  //   setIsNeutering(e.target.value);
-  // };
-
-  const handleImageClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-  };
-
-  // const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-  //   const selectedFiles = e.target.files;
-
-  //   if (selectedFiles && selectedFiles.length > 0) {
-  //     const selectedFile: File = selectedFiles[0];
-  //     setImageFile(selectedFile);
-  //   }
-  // };
-
-  // 펫등록 submit (access token 재발급 설정 완료)
-  const handlePetSubmit = async () => {
-    // const accessToken = getCookie('access_token');
-    // // const formData = new FormData();
-    // // formData.append('type', isCat);
-    // // formData.append('name', name);
-    // // formData.append('age', age);
-    // // formData.append('species', species);
-    // // formData.append('weight', weight);
-    // // formData.append('male', isMale);
-    // // formData.append('neutering', isNeutering);
-    // // if (imageFile) {
-    // //   formData.append('file', imageFile);
-    // // }
-    // const data = {
-    //   type: isCat,
-    //   name: name,
-    //   age: age,
-    //   species: species,
-    //   weight: weight,
-    //   male: isMale,
-    //   neutering: isNeutering,
-    // };
-    // const formData = new FormData();
-    // if (imageFile) {
-    //   formData.append('file', imageFile);
-    // }
-    // formData.append('data', JSON.stringify(data));
-    // try {
-    //   const response = await axios.post(`${apiUrl}/pets`, formData, {
-    //     headers: {
-    //       Authorization: `Bearer ${accessToken}`,
-    //       'Content-Type': 'multipart/form-data',
-    //     },
-    //   });
-    //   if (response.status === 200) {
-    //     if (typeof response.data === 'string') {
-    //       alert('펫 등록되었습니다.');
-    //     }
-    //     setIsPetModalOpen(false);
-    //   }
-    // } catch (error: any) {
-    //   console.log(error);
-    //   if (error.respose && error.response.status === 401) {
-    //     window.location.href = '/login';
-    //   }
-    //   if (error.response && error.response.status === 401) {
-    //     try {
-    //       const newAccessToken = await refreshAccessToken();
-    //       if (newAccessToken) {
-    //         const response = await axios.post(`${apiUrl}/pets`, formData, {
-    //           headers: {
-    //             Authorization: `Bearer ${newAccessToken}`,
-    //             'Content-Type': 'multipart/form-data',
-    //           },
-    //         });
-    //         if (response.status === 201) {
-    //           alert('펫 등록되었습니다.');
-    //           setIsPetModalOpen(false);
-    //         }
-    //       }
-    //     } catch (error) {
-    //       // 에러 설정 해야함 (access token이 재발급 되지 않는 상황)
-    //       console.log(error);
-    //     }
-    //   }
-    // }
   };
 
   const onSubmit = (data: any) => {
@@ -355,9 +217,7 @@ export default function Step1({ onNext }: any) {
         {/* 맡기실 펫 */}
         <SelectPetContainer>
           <SelectTitle>맡기시는 반려동물</SelectTitle>
-          <PetContainer>
-            {Array.isArray(pets) && pets.length > 0 && pets.map((pet: any) => <SelectPet key={pet.id} pet={pet} />)}
-          </PetContainer>
+          <PetContainer />
         </SelectPetContainer>
 
         <ButtonContainer>
@@ -414,12 +274,6 @@ const SelectPetContainer = styled.div`
 const SelectTitle = styled.h1`
   font-weight: ${({ theme }) => theme.fontWeights.extrabold};
   ${({ theme }) => theme.fontSize.s16h24};
-`;
-
-const PetContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
 `;
 
 // const AddPetImg = styled.img`

@@ -4,10 +4,10 @@ import styled from 'styled-components';
 import useSWRInfinite from 'swr/infinite';
 import { useInView } from 'framer-motion';
 
-import { getReservations } from '../api';
 import CareCard from './Carecard';
 import { Loading } from '@components/Loading';
 import { CenterContainer } from 'commonStyle';
+import { getInfiniteFetcherWithCookie } from 'api';
 
 const API_URL = process.env.REACT_APP_API_URL;
 export default function Reservations({ filter }: any) {
@@ -19,7 +19,7 @@ export default function Reservations({ filter }: any) {
     if (previousPageData && !previousPageData.length) return null;
     return `${API_URL}/reservations?page=${pageIndex + 1}&pageSize=${pageSize}&status=${filter.value}`;
   };
-  const { data, size, setSize, isLoading } = useSWRInfinite(getKey, getReservations);
+  const { data, size, setSize, isLoading } = useSWRInfinite(getKey, getInfiniteFetcherWithCookie);
 
   const isEmpty = data?.[0]?.length === 0;
   const isEnd = data && data[data.length - 1]?.length < pageSize;
@@ -50,8 +50,8 @@ export default function Reservations({ filter }: any) {
     <CareCardContainer>
       {data &&
         Array.isArray(data) &&
-        data?.map(
-          (page: any) => page?.map((reservation: any) => <CareCard key={reservation.id} reservation={reservation} />),
+        data?.map((page: any) =>
+          page?.map((reservation: any) => <CareCard key={reservation.id} reservation={reservation} />),
         )}
 
       {!isEnd && (

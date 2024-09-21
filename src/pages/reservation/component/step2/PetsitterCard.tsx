@@ -1,7 +1,5 @@
 import { Column, ImageCentered, RoundedImageWrapper, Row } from 'commonStyle';
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { IReservation } from 'store/reservationSlice';
+
 import styled from 'styled-components';
 
 import { IoMdTime } from 'react-icons/io';

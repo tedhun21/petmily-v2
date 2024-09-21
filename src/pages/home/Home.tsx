@@ -1,18 +1,19 @@
-import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import useSWR from 'swr';
 
 import HomeAd from '@components/HomeAd';
 import Footer from '@components/footer/Footer';
-import RealTimeReviews from './RealTimeReviews';
-import OffenPetsitters from './OffenPetsitters';
 
-import { getMe } from '@pages/common/api';
-import useSWR from 'swr';
+import { getFethcerWithToken } from 'api';
+import OffenPetsitters from './component/OffenPetsitters';
+import RealTimeReviews from './component/RealTimeReviews';
+import { Title } from 'commonStyle';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
 export default function Home() {
-  const { data: me, error, isLoading } = useSWR(`${API_URL}/users/me`, getMe);
+  const { data: me } = useSWR(`${API_URL}/users/me`, getFethcerWithToken);
 
   return (
     <>
@@ -28,8 +29,14 @@ export default function Home() {
           <img src="/imgs/HomeSubAd.svg" alt="Advertising" />
         </AdSubContainer>
         <img src="/imgs/HomeTitleAd.svg" alt="Advertising" width="100%" />
-        <OffenPetsitters />
-        <RealTimeReviews />
+        <section>
+          <Title>최근 이용한 펫시터 서비스</Title>
+          <OffenPetsitters />
+        </section>
+        <section>
+          <Title>실시간 후기</Title>
+          <RealTimeReviews />
+        </section>
       </HomeContainer>
       <Footer />
     </>
@@ -40,7 +47,6 @@ const HomeContainer = styled.main`
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-top: 16px;
   padding: 12px;
   gap: 20px;
 `;

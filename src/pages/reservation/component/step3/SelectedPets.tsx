@@ -19,19 +19,19 @@ export default function SelectedPets({ checkedPets }: any) {
                   pet.photo
                     ? `${BUCKET_URL}${pet.photo.url}`
                     : pet.type === 'DOG'
-                    ? '/imgs/DogProfile.png'
-                    : pet.type === 'CAT'
-                    ? '/imgs/CatProfile.png'
-                    : undefined
+                      ? '/imgs/DogProfile.png'
+                      : pet.type === 'CAT'
+                        ? '/imgs/CatProfile.png'
+                        : undefined
                 }
                 alt={
                   pet.photo
                     ? 'pet_photo'
                     : pet.type === 'DOG'
-                    ? 'default_dog'
-                    : pet.type === 'CAT'
-                    ? 'default_cat'
-                    : undefined
+                      ? 'default_dog'
+                      : pet.type === 'CAT'
+                        ? 'default_cat'
+                        : undefined
                 }
               />
             </PetImg>

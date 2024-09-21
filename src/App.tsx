@@ -33,7 +33,7 @@ import BackHeader from '@components/headers/BackHeader';
 import Home from '@pages/home/Home';
 import Login from '@pages/login/Login';
 import Me from '@pages/me/Me';
-import Reviews from '@pages/home/Reviews';
+
 import Care from '@pages/care/Care';
 import Signup from '@pages/login/Signup';
 import OAuthBranch from '@pages/login/OAuthBranch';
@@ -51,6 +51,7 @@ import FormWizard from '@pages/reservation/FormWizard';
 import { Provider as ReduxProvider } from 'react-redux';
 import store from './store/index';
 import { SWRConfig } from 'swr';
+import Reviews from '@pages/review/Reviews';
 
 const NavHeaderLayout = () => {
   return (

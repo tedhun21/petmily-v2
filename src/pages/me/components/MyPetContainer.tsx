@@ -8,8 +8,9 @@ import { useInView } from 'framer-motion';
 
 import { Loading } from '@components/Loading';
 import { CenterContainer } from 'commonStyle';
-import { getPets } from '../api';
+
 import PetmilyCard from './PetmilyCard';
+import { getInfiniteFetcherWithCookie } from 'api';
 
 type Pet = {
   id: number;
@@ -26,7 +27,7 @@ type Pet = {
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-export default function PetContainer() {
+export default function MyPetContainer() {
   const ref = useRef(null);
   const isInView = useInView(ref);
   const pageSize = 6;
@@ -36,7 +37,7 @@ export default function PetContainer() {
     return `${API_URL}/pets?page=${pageIndex + 1}&pageSize=${pageSize}`;
   };
 
-  const { data, size, setSize, isLoading } = useSWRInfinite(getKey, getPets);
+  const { data, size, setSize, isLoading } = useSWRInfinite(getKey, getInfiniteFetcherWithCookie);
 
   const isEmpty = data?.[0]?.length === 0;
   const isEnd = data && data[data.length - 1]?.length < pageSize;
