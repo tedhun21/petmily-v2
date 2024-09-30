@@ -19,7 +19,7 @@ export const getFetcher = async (url: string) => {
 };
 
 // get fetcher with token (getMe,)
-export const getFethcerWithToken = async (url: string) => {
+export const getFethcerWithCookie = async (url: string) => {
   const access_token = getCookie('access_token');
 
   if (access_token) {

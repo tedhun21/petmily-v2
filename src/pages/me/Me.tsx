@@ -7,13 +7,13 @@ import { FaArrowLeft } from 'react-icons/fa6';
 
 import MyPetmily from '@pages/me/components/MyPetmily';
 import MySchedule from '@components/MySchedule';
-import { getFethcerWithToken } from 'api';
+import { getFethcerWithCookie } from 'api';
 
 const API_URL = process.env.REACT_APP_API_URL;
 const BUCKET_URL = process.env.REACT_APP_BUCKET_URL;
 
 export default function Me() {
-  const { data: me } = useSWR(`${API_URL}/users/me`, getFethcerWithToken);
+  const { data: me } = useSWR(`${API_URL}/users/me`, getFethcerWithCookie);
 
   return (
     <>

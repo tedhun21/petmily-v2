@@ -19,7 +19,7 @@ import UploadProfileImg from '../../components/UploadProfileImg';
 import { deleteCookie } from 'utils/cookie';
 import { TitleContainer } from './RegisterPet';
 import { Loading } from '@components/Loading';
-import { deleterWithCookie, getFethcerWithToken, updaterWithCookie } from 'api';
+import { deleterWithCookie, getFethcerWithCookie, updaterWithCookie } from 'api';
 
 const schema = yup.object().shape({
   nickname: yup
@@ -42,7 +42,7 @@ export default function EditMe() {
   const [previewImage, setPreviewImage] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { data: me, isLoading } = useSWR(`${API_URL}/users/me`, getFethcerWithToken);
+  const { data: me, isLoading } = useSWR(`${API_URL}/users/me`, getFethcerWithCookie);
 
   const { trigger: updateTrigger, isMutating } = useSWRMutation(`${API_URL}/users/${me.id}`, updaterWithCookie, {
     onSuccess: () => {

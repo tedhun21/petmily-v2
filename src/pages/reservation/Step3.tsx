@@ -69,14 +69,14 @@ export default function Step3() {
     const formattedDate = dayjs(date).format('YYYY-MM-DD');
     const formattedStartTime = dayjs(startTime).format('HH:mm:ss');
     const formattedEndTime = dayjs(endTime).format('HH:mm:ss');
-    const formattedAddress = `${address} ${detailAddress}`;
     const formattedPetId = checkedPets.map((pet: any) => pet.id);
 
     const formattedData = {
       date: formattedDate,
       startTime: formattedStartTime,
       endTime: formattedEndTime,
-      address: formattedAddress,
+      address,
+      detailAddress,
       petId: formattedPetId,
       body,
       petsitterId: petsitter.id,
