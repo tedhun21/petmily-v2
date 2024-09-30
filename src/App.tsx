@@ -31,10 +31,11 @@ import BackHeader from '@components/headers/BackHeader';
 // const NotFound = lazy(() => import('@pages/common/404'));
 
 import Home from '@pages/home/Home';
-import Login from '@pages/login/Login';
+import Reviews from '@pages/review/Reviews';
 import Me from '@pages/me/Me';
-
 import Care from '@pages/care/Care';
+import Reservation from '@pages/care/Reservation';
+import Login from '@pages/login/Login';
 import Signup from '@pages/login/Signup';
 import OAuthBranch from '@pages/login/OAuthBranch';
 import EditMe from '@pages/me/EditMe';
@@ -47,11 +48,11 @@ import ViewJournal from '@pages/common/ViewJournal';
 import PetsitterViewDetails from '@pages/reservation/PetsitterViewDetails';
 import SitterSchedule from '@pages/me/SitterSchedule';
 import NotFound from '@pages/common/404';
+
 import FormWizard from '@pages/reservation/FormWizard';
 import { Provider as ReduxProvider } from 'react-redux';
 import store from './store/index';
 import { SWRConfig } from 'swr';
-import Reviews from '@pages/review/Reviews';
 
 const NavHeaderLayout = () => {
   return (
@@ -89,11 +90,11 @@ const router = createBrowserRouter(
         <Route path="me/:petId/edit" element={<EditPet />} />
         <Route path="search" element={<Search />} />
         <Route path="qna" element={<QnA />} />
-        <Route path="petsitters" element={<ViewPetsitters />} />
-        <Route path="mypage/:petId/edit" element={<EditPet />} />
-        <Route path="cares/journal/:journalId" element={<ViewJournal />} />
-        <Route path="petsitters/:petsitterId" element={<PetsitterViewDetails />} />
-        <Route path="petsitters/:memberId/schedule" element={<SitterSchedule />} />
+        <Route path="reservation/:id" element={<Reservation />} />
+        {/* <Route path="petsitters" element={<ViewPetsitters />} /> */}
+        <Route path="cares/journal/:id" element={<ViewJournal />} />
+        <Route path="petsitters/:id" element={<PetsitterViewDetails />} />
+        {/* <Route path="petsitters/:memberId/schedule" element={<SitterSchedule />} /> */}
       </Route>
       <Route path="me" element={<Me />} />
       <Route path="*" element={<NotFound />} />

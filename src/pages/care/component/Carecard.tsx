@@ -1,8 +1,9 @@
-import styled from 'styled-components';
+import { useState } from 'react';
+
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 import { Column, ImageCentered, RoundedImageWrapper, Row, Texts12h18, Texts14h21, Texts16h24 } from 'commonStyle';
-
 import { formatProgress } from 'utils/misc';
 import { dayFormat, timeRange } from 'utils/date';
 
@@ -12,12 +13,12 @@ export default function CareCard({ reservation }: any) {
   const { id, date, startTime, endTime, pets, petsitter, progress } = reservation;
 
   return (
-    <CardLink to={`/reservations/${id}`}>
+    <Card to={`/reservation/${id}`}>
       <FirstContainer>
         <PetsitterContainer>
           <PetsitterImage>
             <ImageCentered
-              src={petsitter.photo ? `${BUCKET_URL}${petsitter.photo.url}` : '/imgs/DefaultUserProfile.png'}
+              src={petsitter.photo ? `${BUCKET_URL}${petsitter.photo.url}` : '/imgs/DefaultUserProfile.jpg'}
             />
           </PetsitterImage>
           <PetsitterName>
@@ -47,11 +48,11 @@ export default function CareCard({ reservation }: any) {
           </PetWrapper>
         </Wrapper>
       </ReservationContainer>
-    </CardLink>
+    </Card>
   );
 }
 
-const CardLink = styled(Link)`
+const Card = styled(Link)`
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -61,7 +62,6 @@ const CardLink = styled(Link)`
   color: black;
 
   &:visited {
-    text-decoration: none;
     color: inherit;
   }
 
@@ -71,11 +71,13 @@ const CardLink = styled(Link)`
 `;
 
 const FirstContainer = styled(Row)`
+  width: 100%;
   justify-content: space-between;
 `;
 
 const PetsitterContainer = styled(Row)`
-  gap: 4px;
+  align-items: center;
+  gap: 8px;
 `;
 
 const PetsitterName = styled(Row)`

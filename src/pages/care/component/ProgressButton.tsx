@@ -2,14 +2,14 @@ import styled from 'styled-components';
 import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
 import { updateReservation } from '../api';
-import { getFethcerWithToken } from 'api';
+import { getFethcerWithCookie } from 'api';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
 export default function ProgressButton({ reservation }: any) {
   const {
     data: { isPetsitter, progress },
-  } = useSWR(`${API_URL}/users/me`, getFethcerWithToken);
+  } = useSWR(`${API_URL}/users/me`, getFethcerWithCookie);
 
   const { trigger } = useSWRMutation(`${API_URL}/reservations/${reservation.id}`, updateReservation);
 

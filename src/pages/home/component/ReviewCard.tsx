@@ -17,11 +17,11 @@ export default function ReviewCard({ review }: any) {
         <ClientImageName>
           <ClientImage>
             <ImageCentered
-              src={client.photo ? `${BUCKET_URL}${client.photo.url}` : '/imgs/DefaultUserProfile.jpg'}
+              src={client?.photo ? `${BUCKET_URL}${client?.photo.url}` : '/imgs/DefaultUserProfile.jpg'}
               alt="userPhoto"
             />
           </ClientImage>
-          <Texts14h21>{client.nickname} 고객님</Texts14h21>
+          <Texts14h21>{client?.nickname} 고객님</Texts14h21>
         </ClientImageName>
         <StarWrapper>
           <PiStarFill size="20px" color="#279EFF" />
