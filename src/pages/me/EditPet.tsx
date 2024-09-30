@@ -34,7 +34,7 @@ import { Loading } from '@components/Loading';
 
 import { FaXmark } from 'react-icons/fa6';
 import styled from 'styled-components';
-import { deleterWithCookie, getFetcher, updaterWithCookie } from 'api';
+import { deleterWithCookie, fetcher, updaterWithCookie } from 'api';
 
 const schema = yup.object().shape({
   type: yup.string().oneOf(['DOG', 'CAT'], '강아지인가요 고양이인가요?').required('이 항목은 필수입니다.'),
@@ -79,7 +79,7 @@ export default function EditPet() {
     resolver: yupResolver(schema),
   });
 
-  const { data: pet } = useSWR(`${API_URL}/pets/${petId}`, getFetcher);
+  const { data: pet } = useSWR(`${API_URL}/pets/${petId}`, fetcher);
 
   const { trigger: updateTrigger, isMutating } = useSWRMutation(`${API_URL}/pets/${petId}`, updaterWithCookie, {
     onSuccess: () => {

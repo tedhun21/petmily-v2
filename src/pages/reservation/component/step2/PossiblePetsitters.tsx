@@ -3,7 +3,7 @@ import useSWRInfinite from 'swr/infinite';
 
 import { CenterContainer, Column } from 'commonStyle';
 import { useFormContext } from 'react-hook-form';
-import { getInfiniteFetcher } from 'api';
+import { infiniteFetcher } from 'api';
 import { Loading } from '@components/Loading';
 import PetsitterCard from './PetsitterCard';
 import { useEffect, useRef } from 'react';
@@ -32,7 +32,7 @@ export default function PossiblePetsitters({ onNext }: any) {
       pageIndex + 1
     }&pageSize=${pageSize}`;
   };
-  const { data, size, setSize, isLoading } = useSWRInfinite(getKey, getInfiniteFetcher);
+  const { data, size, setSize, isLoading } = useSWRInfinite(getKey, infiniteFetcher);
 
   const isEmpty = data?.[0]?.length === 0;
   const isEnd = data && data[data.length - 1]?.length < pageSize;

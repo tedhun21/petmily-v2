@@ -16,7 +16,7 @@ import SelectedPets from './component/step3/SelectedPets';
 import Confirm from './component/step3/Confirm';
 import { Loading } from '@components/Loading';
 
-import { createrWithCookie } from 'api';
+import { posterWithCookie } from 'api';
 
 interface IPetsitter {
   nickname: string;
@@ -54,7 +54,7 @@ export default function Step3() {
   const { date, startTime, endTime, address, detailAddress, checkedPets, petsitter } = getValues();
 
   // reservation create
-  const { trigger, isMutating } = useSWRMutation(`${API_URL}/reservations`, createrWithCookie, {
+  const { trigger, isMutating } = useSWRMutation(`${API_URL}/reservations`, posterWithCookie, {
     onSuccess: () => {
       window.alert('예약 신청이 완료되었습니다');
       navigate('/cares');

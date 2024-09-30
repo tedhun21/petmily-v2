@@ -10,7 +10,7 @@ import { Loading } from '@components/Loading';
 import { CenterContainer } from 'commonStyle';
 
 import PetmilyCard from './PetmilyCard';
-import { getInfiniteFetcherWithCookie } from 'api';
+import { infiniteFetcherWithCookie } from 'api';
 
 type Pet = {
   id: number;
@@ -37,7 +37,7 @@ export default function MyPetContainer() {
     return `${API_URL}/pets?page=${pageIndex + 1}&pageSize=${pageSize}`;
   };
 
-  const { data, size, setSize, isLoading } = useSWRInfinite(getKey, getInfiniteFetcherWithCookie);
+  const { data, size, setSize, isLoading } = useSWRInfinite(getKey, infiniteFetcherWithCookie);
 
   const isEmpty = data?.[0]?.length === 0;
   const isEnd = data && data[data.length - 1]?.length < pageSize;

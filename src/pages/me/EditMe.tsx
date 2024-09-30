@@ -19,7 +19,7 @@ import UploadProfileImg from '../../components/UploadProfileImg';
 import { deleteCookie } from 'utils/cookie';
 import { TitleContainer } from './RegisterPet';
 import { Loading } from '@components/Loading';
-import { deleterWithCookie, getFethcerWithCookie, updaterWithCookie } from 'api';
+import { deleterWithCookie, fetcherWithCookie, updaterWithCookie } from 'api';
 
 const schema = yup.object().shape({
   nickname: yup
@@ -42,7 +42,7 @@ export default function EditMe() {
   const [previewImage, setPreviewImage] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { data: me, isLoading } = useSWR(`${API_URL}/users/me`, getFethcerWithCookie);
+  const { data: me, isLoading } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);
 
   const { trigger: updateTrigger, isMutating } = useSWRMutation(`${API_URL}/users/${me.id}`, updaterWithCookie, {
     onSuccess: () => {
@@ -74,12 +74,14 @@ export default function EditMe() {
   };
 
   const handleComplete = (data: any) => {
-    const splitAddress = data.address.split(' ').splice(2).join(' ');
     if (data) {
       clearErrors('address');
     }
-    // Set value using react-hook-form's setValue
+
+    const splitAddress = data.address.split(' ').splice(2).join(' ');
+
     setValue('address', `${data.zonecode} ${data.sido} ${data.sigungu} ${splitAddress}`);
+
     setIsModalOpen(false);
   };
 

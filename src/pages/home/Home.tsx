@@ -5,15 +5,15 @@ import useSWR from 'swr';
 import HomeAd from '@components/HomeAd';
 import Footer from '@components/footer/Footer';
 
-import { getFethcerWithCookie } from 'api';
-import OffenPetsitters from './component/OffenPetsitters';
+import { fetcherWithCookie } from 'api';
+import OffenPetsitters from './component/UsedPetsitters';
 import RealTimeReviews from './component/RealTimeReviews';
 import { Title } from 'commonStyle';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
 export default function Home() {
-  const { data: me } = useSWR(`${API_URL}/users/me`, getFethcerWithCookie);
+  const { data: me } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);
 
   return (
     <>

@@ -1,17 +1,15 @@
-import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 
+import useSWRMutation from 'swr/mutation';
 import styled, { keyframes } from 'styled-components';
-import GoogleOAuthButton from '@components/buttons/OAuthButton';
 
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { login } from './api';
+import { poster } from 'api';
 import { setCookie } from 'utils/cookie';
-import { loginUser } from 'store/userSlice';
+import GoogleOAuthButton from '@components/buttons/OAuthButton';
 
 const schema = yup.object().shape({
   email: yup.string().email('이메일 형식을 지켜주세요.').required('ID는 필수입니다.'),
@@ -23,15 +21,22 @@ const schema = yup.object().shape({
 });
 type IFormLoginInputs = yup.InferType<typeof schema>;
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 export default function Login() {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const expirationDate = new Date();
-  expirationDate.setDate(expirationDate.getDate() + 1);
+  const { trigger, isMutating } = useSWRMutation(`${API_URL}/auth/login`, poster, {
+    onSuccess: (data) => {
+      setCookie(data.access_token);
+      navigate('/');
+    },
+    onError: () => {
+      window.alert('로그인에 실패헸습니다. 다시 시도해 주세요');
+    },
+  });
 
-  const [isLoginLoading, setIsLoginLoading] = useState(false);
-  const [GuestLoginLoading, setGuestLoginLoading] = useState(false);
+  // const [GuestLoginLoading, setGuestLoginLoading] = useState(false);
 
   const {
     register,
@@ -42,57 +47,9 @@ export default function Login() {
   });
 
   const onSubmit = async (data: IFormLoginInputs) => {
-    setIsLoginLoading(true);
     const { email, password } = data;
-    // try {
-    //   const { data, status } = await axios.post(`${apiUrl}/auth/local`, { identifier: email, password });
-
-    //   if (status === 200) {
-    //     document.cookie = `access_token=${data.jwt}; Max-age=3600; path=/;`;
-    //     dispatch(login());
-    //     navigate('/');
-    //   }
-    // } catch (error: any) {
-    //   if (error.response.status === 400) {
-    //     alert('아이디와 비밀번호를 확인해주세요.');
-    //   }
-    // }
-    const res = await login({ email, password });
-    if (res?.status === 200) {
-      const {
-        data: { jwt },
-      } = res;
-
-      setCookie(jwt);
-
-      // dispatch(loginUser());
-
-      navigate('/');
-    }
-
-    setIsLoginLoading(false);
+    await trigger({ email, password });
   };
-
-  // 게스트 로그인
-  // const handleGuestLogin = async () => {
-  //   setGuestLoginLoading(true);
-
-  //   try {
-  //     const { data, status } = await axios.post(`${apiUrl}/auth/local`, {
-  //       identifier: 'guest@gmail.com',
-  //       password: 'asdf1234',
-  //     });
-
-  //     if (status === 200) {
-  //       document.cookie = `access_token=${data.jwt}; Max-age=3600; path=/;`;
-  //       dispatch(login());
-  //       navigate('/');
-  //     }
-  //   } catch (error) {
-  //     alert('게스트 로그인에 실패하였습니다.');
-  //   }
-  //   setGuestLoginLoading(false);
-  // };
 
   return (
     <MainContainer>
@@ -108,8 +65,8 @@ export default function Login() {
             {errors.password?.message && <ErrorMessage>{errors.password?.message}</ErrorMessage>}
           </div>
           <div style={{ position: 'relative' }}>
-            <SubmitButton type="submit" disabled={isLoginLoading}>
-              {isLoginLoading && (
+            <SubmitButton type="submit" disabled={isMutating}>
+              {isMutating && (
                 <LoadingContainer>
                   <Spinner />
                 </LoadingContainer>

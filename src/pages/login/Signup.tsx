@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useForm } from 'react-hook-form';
+import useSWRMutation from 'swr/mutation';
 import styled, { keyframes } from 'styled-components';
 import GoogleOAuthButton from '@components/buttons/OAuthButton';
 import * as yup from 'yup';
@@ -11,7 +12,7 @@ import { Modal, Sheet } from '@mui/joy';
 import DaumPostcode from 'react-daum-postcode';
 
 import { ErrorMessage, SubmitButton } from './Login';
-import { createUser } from './api';
+import { poster } from 'api';
 
 const schema = yup.object().shape({
   username: yup
@@ -44,73 +45,73 @@ const schema = yup.object().shape({
 });
 type IFormSignupInputs = yup.InferType<typeof schema>;
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 export default function Signup() {
   const navigate = useNavigate();
-  const [isSignupLoading, setIsSignupLoading] = useState(false);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const {
     register,
+    setValue,
     handleSubmit,
     setError,
     clearErrors,
     formState: { errors },
+    watch,
   } = useForm<IFormSignupInputs>({ resolver: yupResolver(schema) });
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const [sido, setSido] = useState('');
-  const [sigungu, setSigungu] = useState('');
-  const [remainAddress, setRemainAddress] = useState('');
-  const [zonecode, setZonecode] = useState('');
+  const { trigger, isMutating } = useSWRMutation(`${API_URL}/users`, poster, {
+    onSuccess: () => {
+      window.alert('회원 가입을 완료했습니다.');
+      navigate('/login');
+    },
+    onError: () => {
+      window.alert('회원 가입에 실패 했습니다. 다시 시도해주세요.');
+    },
+  });
 
   const onToggleModal = () => {
     setIsModalOpen(true);
   };
 
   const handleComplete = (data: any) => {
-    // 우편번호 저장
-    setZonecode(data.zonecode);
-    // 시.도 저장
-    setSido(data.sido);
-    // 구.군 저장
-    setSigungu(data.sigungu);
-    // 상세주소 앞 2단어 제외하고 저장 ('서울 강남구' 제외하고 저장)
-    const splitAddress = data.address.split(' ').splice(2).join(' ');
     if (data) {
       clearErrors('address');
     }
-    setRemainAddress(splitAddress);
+
+    const splitAddress = data.address.split(' ').splice(2).join(' ');
+
+    setValue('address', `${data.zonecode} ${data.sido} ${data.sigungu} ${splitAddress}`);
+
     setIsModalOpen(false);
   };
 
+  console.log(watch());
+
   const onSubmit = async (data: IFormSignupInputs) => {
-    setIsSignupLoading(true);
+    const { username, phone, address, detailAddress, email, nickname, password, passwordConfirm, isPetsitter } = data;
 
-    const { username, phone, address, detailAddress, email, nickname, password, isPetsitter } = data;
-
-    if (data.password !== data.passwordConfirm) {
+    if (password !== passwordConfirm) {
       setError('password', { type: 'dismatch', message: '비밀번호가 서로 다릅니다.' });
       setError('passwordConfirm', { type: 'dismatch', message: '비밀번호가 서로 다릅니다.' });
-      setIsSignupLoading(false);
+
       return;
     }
 
-    const res = await createUser({
+    const createData = {
       username,
       phone,
-      address: `${address} ${detailAddress}`,
+      address,
+      detailAddress,
       email,
       nickname,
       password,
-      isPetsitter,
-    });
+      role: isPetsitter ? 'Petsitter' : 'Client',
+    };
 
-    if (res?.status === 200) {
-      window.alert('회원가입 완료되었습니다.');
-      navigate('/login');
-    }
-
-    setIsSignupLoading(false);
+    await trigger(createData);
   };
 
   return (
@@ -141,7 +142,6 @@ export default function Signup() {
           <InputFormWrapper>
             <SignupInputStyle
               placeholder="주소"
-              value={zonecode ? `${zonecode} ${sido} ${sigungu} ${remainAddress}` : ''}
               {...register('address', { required: true })}
               onClick={onToggleModal}
               onKeyDown={onToggleModal}
@@ -198,8 +198,10 @@ export default function Signup() {
           </CheckBoxWrapper>
           <ButtonContainer>
             <div style={{ position: 'relative' }}>
-              <SubmitButton type="submit">펫밀리 등록</SubmitButton>
-              {isSignupLoading && (
+              <SubmitButton type="submit" disabled={isMutating}>
+                펫밀리 등록
+              </SubmitButton>
+              {isMutating && (
                 <LoadingContainer>
                   <Spinner />
                 </LoadingContainer>

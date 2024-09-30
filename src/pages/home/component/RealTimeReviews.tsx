@@ -6,7 +6,7 @@ import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import { CenterContainer } from 'commonStyle';
 import { Loading } from '@components/Loading';
 import ReviewCard from './ReviewCard';
-import { getInfiniteFetcher } from 'api';
+import { infiniteFetcher } from 'api';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -21,7 +21,7 @@ export default function RealTimeReviews() {
     return `${API_URL}/reviews?page=${pageIndex + 1}&pageSize=${pageSize}`;
   };
 
-  const { isLoading, data } = useSWRInfinite(getKey, getInfiniteFetcher);
+  const { isLoading, data } = useSWRInfinite(getKey, infiniteFetcher);
 
   const isEmpty = data?.[0]?.length === 0;
   const isEnd = data && data[data.length - 1]?.length < pageSize;

@@ -5,7 +5,7 @@ import { timeRange } from 'utils/date';
 import { Column, ImageCentered, RoundedImageWrapper, Row, Texts12h18, Texts18h27 } from 'commonStyle';
 
 const BUCKET_URL = process.env.REACT_APP_BUCKET_URL;
-export default function OftenPetsitterCard({ petsitter }: any) {
+export default function UsedPetsitterCard({ petsitter }: any) {
   const { nickname, star, photo, possibleDay, possibleStartTime, possibleEndTime } = petsitter;
 
   const parsedPossibleDay = JSON.parse(possibleDay);
