@@ -22,9 +22,6 @@ export default function ReviewPhotoCard({ review }: any) {
   const [isExpanded, setIsExpanded] = useState(false);
   const textRef = useRef<HTMLDivElement>(null);
   const {
-    star,
-    body,
-    photos,
     reservation: { startTime, endTime, pets, client, petsitter },
   } = review;
   const { year, month, day } = dateFormat(review.reservation.date);
@@ -43,9 +40,7 @@ export default function ReviewPhotoCard({ review }: any) {
         setIsTextOverflow(true);
       }
     }
-  }, [body]);
-
-  console.log(isTextOverflow);
+  }, [review.body]);
 
   return (
     <ReviewCard>
@@ -57,10 +52,10 @@ export default function ReviewPhotoCard({ review }: any) {
         modules={[Pagination]}
         style={{ width: '100%', borderRadius: '16px' }}
       >
-        {photos.map((photo: any) => (
-          <SwiperSlide key={photo.id}>
+        {review?.photos.map((photo: any, index: number) => (
+          <SwiperSlide key={index}>
             <ReviewImageContainer>
-              <ImageCentered src={`${BUCKET_URL}${photo.url}`} alt={`review_photo_${photo.id}`} />
+              <ImageCentered src={`${photo}`} alt={`review_photo_${index}`} />
             </ReviewImageContainer>
           </SwiperSlide>
         ))}
@@ -86,20 +81,20 @@ export default function ReviewPhotoCard({ review }: any) {
           <ClientInfo>
             <ClientImage>
               <ImageCentered
-                src={client.photo ? `${BUCKET_URL}${client.photo.url}` : '/imgs/DefaultUserProfile.jpg'}
+                src={client?.photo ? `${client.photo}` : '/imgs/DefaultUserProfile.jpg'}
                 alt="default_user"
               />
             </ClientImage>
-            <Texts16h24>{client.nickname} 고객님</Texts16h24>
+            <Texts16h24>{client?.nickname} 고객님</Texts16h24>
           </ClientInfo>
           <StarWrapper>
             <PiStarFill size="20px" color="#279EFF" />
-            <span>{star}</span>
+            <span>{review?.star}</span>
           </StarWrapper>
         </TitleContainer>
         <div>
           <ReviewText ref={textRef} isExpanded={isExpanded}>
-            {body}
+            {review?.body}
           </ReviewText>
           {isTextOverflow && !isExpanded && (
             <RestButton type="button" onClick={handleRestOpen}>
@@ -114,15 +109,11 @@ export default function ReviewPhotoCard({ review }: any) {
         <PetsitterInfo>
           <PetsitterImage>
             <ImageCentered
-              src={
-                petsitter.photo
-                  ? `${BUCKET_URL}${review.reservation.petsitter.photo.url}`
-                  : '/imgs/DefaultUserProfile.jpg'
-              }
+              src={petsitter?.photo ? `${petsitter.photo}` : '/imgs/DefaultUserProfile.jpg'}
               alt="petsitter_photo"
             />
           </PetsitterImage>
-          <span>{review.reservation.petsitter.nickname} 펫시터님</span>
+          <span>{petsitter?.nickname} 펫시터님</span>
         </PetsitterInfo>
         <PetsitterDetailLink to={``}>자세히 보기</PetsitterDetailLink>
       </PetsitterContainer>
@@ -169,6 +160,7 @@ const ReviewImageContainer = styled.div`
 const ClientImage = styled(RoundedImageWrapper)`
   width: 50px;
   height: 50px;
+  border: 2px solid ${(props) => props.theme.colors.mainBlue};
 `;
 
 const ReviewText = styled.p<{ isExpanded: boolean }>`
@@ -202,6 +194,7 @@ const PetsitterInfo = styled(Row)`
 const PetsitterImage = styled(RoundedImageWrapper)`
   width: 40px;
   height: 40px;
+  border: 2px solid ${(props) => props.theme.colors.mainBlue};
 `;
 
 const PetsitterDetailLink = styled(Link)`

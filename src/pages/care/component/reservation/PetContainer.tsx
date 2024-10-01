@@ -8,8 +8,6 @@ import styled from 'styled-components';
 import { Column, ImageCentered, RoundedImageWrapper, Row } from 'commonStyle';
 import { PetInfoCapsule, PetInfoContainer } from '@pages/care/Reservation';
 
-const BUCKET_URL = process.env.REACT_APP_BUCKET_URL;
-
 export default function PetContainer({ pets }: any) {
   return (
     <CustomSwiper
@@ -29,10 +27,10 @@ export default function PetContainer({ pets }: any) {
                 <ImageCentered
                   src={
                     pet.photo
-                      ? `${BUCKET_URL}${pet.photo.url}`
-                      : pet.type === 'DOG'
+                      ? `${pet.photo}`
+                      : pet.species === 'Dog'
                         ? '/imgs/DogProfile.png'
-                        : pet.type === 'CAT'
+                        : pet.species === 'Cat'
                           ? '/imgs/CatProfile.png'
                           : undefined
                   }
@@ -45,7 +43,7 @@ export default function PetContainer({ pets }: any) {
               <PetInfoCapsule>{pet.age}살</PetInfoCapsule>
               <PetInfoCapsule>{pet.gender}</PetInfoCapsule>
               <PetInfoCapsule>{pet.species}</PetInfoCapsule>
-              <PetInfoCapsule>{pet.type}</PetInfoCapsule>
+              <PetInfoCapsule>{pet.breed}</PetInfoCapsule>
               <PetInfoCapsule>{pet.weight}kg</PetInfoCapsule>
             </PetInfoContainer>
           </PetCard>

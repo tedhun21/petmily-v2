@@ -59,7 +59,6 @@ export default function Signup() {
     setError,
     clearErrors,
     formState: { errors },
-    watch,
   } = useForm<IFormSignupInputs>({ resolver: yupResolver(schema) });
 
   const { trigger, isMutating } = useSWRMutation(`${API_URL}/users`, poster, {
@@ -87,8 +86,6 @@ export default function Signup() {
 
     setIsModalOpen(false);
   };
-
-  console.log(watch());
 
   const onSubmit = async (data: IFormSignupInputs) => {
     const { username, phone, address, detailAddress, email, nickname, password, passwordConfirm, isPetsitter } = data;

@@ -4,8 +4,6 @@ import { TbGenderMale, TbGenderFemale } from 'react-icons/tb';
 
 import { ImageCentered, RoundedImageWrapper, Texts14h21 } from 'commonStyle';
 
-const BUCKET_URL = process.env.REACT_APP_API_URL;
-
 export default function SelectedPets({ checkedPets }: any) {
   return (
     <PetSection>
@@ -17,30 +15,22 @@ export default function SelectedPets({ checkedPets }: any) {
               <ImageCentered
                 src={
                   pet.photo
-                    ? `${BUCKET_URL}${pet.photo.url}`
-                    : pet.type === 'DOG'
+                    ? `${pet.photo}`
+                    : pet.species === 'Dog'
                       ? '/imgs/DogProfile.png'
-                      : pet.type === 'CAT'
+                      : pet.species === 'Cat'
                         ? '/imgs/CatProfile.png'
                         : undefined
                 }
-                alt={
-                  pet.photo
-                    ? 'pet_photo'
-                    : pet.type === 'DOG'
-                      ? 'default_dog'
-                      : pet.type === 'CAT'
-                        ? 'default_cat'
-                        : undefined
-                }
+                alt={'pet_photo'}
               />
             </PetImg>
             <div>
               <span>{pet.name}</span>
               <span>
-                {pet.gender === 'MALE' ? (
+                {pet.gender === 'Male' ? (
                   <TbGenderMale color="#279EFF" />
-                ) : pet.gender === 'FEMALE' ? (
+                ) : pet.gender === 'Female' ? (
                   <TbGenderFemale color="#279EFF" />
                 ) : null}
               </span>

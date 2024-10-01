@@ -10,16 +10,16 @@ import { Row } from 'commonStyle';
 import PossiblePetsitters from './component/step2/PossiblePetsitters';
 
 const filterList = [
-  { id: 1, item: '예약 정보 기반 펫시터' },
-  { id: 2, item: '내가 찜한 펫시터' },
-  { id: 3, item: '별점이 높은 펫시터' },
-  { id: 4, item: '리뷰가 많은 펫시터' },
-  { id: 5, item: '새로 온 펫시터' },
+  { id: 1, item: '예약 정보 기반 펫시터', ref: 'possible' },
+  { id: 2, item: '내가 찜한 펫시터', ref: 'favorite' },
+  { id: 3, item: '별점이 높은 펫시터', ref: 'star' },
+  { id: 4, item: '리뷰가 많은 펫시터', ref: 'review' },
+  { id: 5, item: '새로 온 펫시터', ref: 'new' },
 ];
 
 export default function Step2({ onNext }: any) {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [filterType, setFilterType] = useState(1);
+  const [filter, setFilter] = useState('possible');
 
   const handleFilterOpen = () => {
     setIsFilterOpen(true);
@@ -29,8 +29,8 @@ export default function Step2({ onNext }: any) {
     setIsFilterOpen(false);
   };
 
-  const handleFilterButtonClick = (type: number) => {
-    setFilterType(type);
+  const handleFilterButtonClick = (ref: string) => {
+    setFilter(ref);
     setIsFilterOpen(false);
   };
 
@@ -38,7 +38,7 @@ export default function Step2({ onNext }: any) {
     <MainContainer>
       <FilterContainer>
         <TitleWrap>
-          <TitleText>{filterList.map((list: any) => list.id === filterType && list.item)}</TitleText>
+          <TitleText>{filterList.map((list: any) => list.ref === filter && list.item)}</TitleText>
           <ItemCountbox>0</ItemCountbox>
         </TitleWrap>
         <FilterButton type="button" onClick={handleFilterOpen}>
@@ -46,7 +46,7 @@ export default function Step2({ onNext }: any) {
         </FilterButton>
       </FilterContainer>
 
-      <PossiblePetsitters onNext={onNext} />
+      <PossiblePetsitters filter={filter} onNext={onNext} />
 
       <Drawer
         anchor="bottom"
@@ -63,7 +63,7 @@ export default function Step2({ onNext }: any) {
           <ListContainer>
             {filterList.map((filter) => (
               <li key={filter.id}>
-                <ItemButton onClick={() => handleFilterButtonClick(filter.id)}>{filter.item}</ItemButton>
+                <ItemButton onClick={() => handleFilterButtonClick(filter.ref)}>{filter.item}</ItemButton>
               </li>
             ))}
           </ListContainer>

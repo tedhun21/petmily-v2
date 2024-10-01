@@ -1,11 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import styled from 'styled-components';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 
 import { TextField, Box } from '@mui/material';
-import { styled as styledMui } from '@mui/material/styles';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -19,15 +18,9 @@ import dayjs from 'dayjs';
 import { checkInDisableTime, checkOutDisableTime, reservationDisableDate } from 'utils/date';
 
 import { Row } from 'commonStyle';
-
 import PetContainer from './component/step1/PetContainer';
 
-const API_URL = process.env.REACT_APP_API_URL;
-
 export default function Step1({ onNext }: any) {
-  const navigate = useNavigate();
-
-  // modal
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const {
@@ -48,12 +41,11 @@ export default function Step1({ onNext }: any) {
     // 상세주소 앞 2단어 제외하고 저장 ('서울 강남구' 제외하고 저장)
 
     const { address, zonecode } = data;
-    setValue('address', `${zonecode} ${address}`);
-
     if (data) {
       clearErrors('address');
     }
 
+    setValue('address', `${zonecode} ${address}`);
     setIsModalOpen(false);
   };
 
@@ -260,24 +252,6 @@ const SelectTitle = styled.h1`
   font-weight: ${({ theme }) => theme.fontWeights.extrabold};
   ${({ theme }) => theme.fontSize.s16h24};
 `;
-
-// const AddPetImg = styled.img`
-//   width: 80px;
-//   height: 80px;
-//   background-color: ${({ theme }) => theme.textColors.secondary};
-//   border: 1px solid ${({ theme }) => theme.textColors.primary};
-//   border-radius: 50%;
-//   cursor: pointer;
-// `;
-
-// const PetButton = styledMui(Button)(({ value }) => ({
-//   width: '100%',
-//   backgroundColor: value === 'true' ? '#279EFF' : '#A6A6A6',
-
-//   ':hover': {
-//     backgroundColor: value === 'true' ? '#1D8CE7' : '#757575',
-//   },
-// }));
 
 const ButtonContainer = styled(Box)`
   display: flex;

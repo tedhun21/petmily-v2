@@ -1,59 +1,110 @@
-import { Row } from 'commonStyle';
-import { motion, useAnimation, useScroll } from 'framer-motion';
-import { useEffect } from 'react';
 import styled from 'styled-components';
+
+import { Row, Texts12h18 } from 'commonStyle';
 
 const filters = [
   { id: 1, label: '모두', value: 'all' },
   { id: 2, label: '예정', value: `expected` },
-  { id: 3, label: '완료', value: `finish` },
+  { id: 3, label: '완료', value: `done` },
 ];
 
-export default function Filter({ filter, handleFilter }: any) {
-  //   const controls = useAnimation();
-  //   const { scrollY } = useScroll();
+const orders = [
+  { id: 1, label: '최신순', value: 'desc' },
+  { id: 2, label: '오래된 순', value: 'asc' },
+];
 
-  //   console.log(scrollY);
-  //   useEffect(() => {
-  //     return scrollY.onChange((latest) => {
-  //       if (latest > 100) {
-  //         controls.start({ y: -100, opacity: 0, transition: { duration: 0.3 } }); // 스크롤 내리면 감추기
-  //       } else {
-  //         controls.start({ y: 0, opacity: 1, transition: { duration: 0.3 } }); // 스크롤 올리면 보이기
-  //       }
-  //     });
-  //   }, [scrollY, controls]);
-
+export default function Filter({ filter, order, handleFilter, handleOrder }: any) {
   return (
     <FilterContainer>
-      {filters.map((el) => (
-        <FilterButtonStyle key={el.id} onClick={() => handleFilter(el)} $filter={filter.label === el.label}>
-          {el.label}
-        </FilterButtonStyle>
-      ))}
+      <StatusFilters>
+        {filters.map((el) => (
+          <FilterRadio key={el.id}>
+            <input
+              type="radio"
+              id={`filter-${el.id}`}
+              name="status"
+              value={el.value}
+              checked={filter.value === el.value}
+              onChange={() => handleFilter(el)}
+            />
+            <CustomLabel htmlFor={`filter-${el.id}`} isSelected={filter.value === el.value}>
+              {el.label}
+            </CustomLabel>
+          </FilterRadio>
+        ))}
+      </StatusFilters>
+      <OrderFilters>
+        {orders.map((el, index) => (
+          <OrderRadio key={el.id}>
+            <input
+              type="radio"
+              id={`order-${el.id}`}
+              name="order"
+              value={el.value}
+              checked={order.value === el.value}
+              onChange={() => handleOrder(el)}
+            />
+            <CustomOrderLabel htmlFor={`order-${el.id}`} isSelected={order.value === el.value}>
+              {el.label}
+            </CustomOrderLabel>
+            {index === 0 && <Texts12h18>•</Texts12h18>}
+          </OrderRadio>
+        ))}
+      </OrderFilters>
     </FilterContainer>
-    //   <MotionFilterContainer animate={controls}>
-    // </MotionFilterContainer>
   );
 }
 
-// const MotionFilterContainer = styled(motion.div)`
-//   position: sticky;
-//   top: 0;
-//   width: 100%;
-//   background-color: white;
-//   z-index: 1000;
-// `;
-
 const FilterContainer = styled(Row)`
-  gap: 4px;
+  gap: 16px;
+  justify-content: space-between;
+  align-items: center;
 `;
 
-const FilterButtonStyle = styled.div<{ $filter: boolean }>`
+const StatusFilters = styled(Row)`
+  gap: 8px;
+`;
+
+const FilterRadio = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  input {
+    display: none; /* Hide the default radio button */
+  }
+`;
+
+const OrderFilters = styled(Row)`
+  gap: 8px;
+  align-items: flex-end;
+`;
+
+const OrderRadio = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  input {
+    display: none; /* Hide the default radio button */
+  }
+`;
+
+const CustomLabel = styled.label<{ isSelected: boolean }>`
   padding: 4px 8px;
-  border: ${({ theme, $filter }) => ($filter ? 'none' : `1px solid ${theme.colors.mainBlue}`)};
+  border: ${({ theme, isSelected }) => (isSelected ? 'none' : `1px solid ${theme.colors.mainBlue}`)};
   border-radius: 4px;
-  color: ${({ $filter }) => ($filter ? 'white' : 'black')};
-  background-color: ${({ theme, $filter }) => ($filter ? theme.colors.mainBlue : 'white')};
+  color: ${({ isSelected }) => (isSelected ? 'white' : 'black')};
+  background-color: ${({ theme, isSelected }) => (isSelected ? theme.colors.mainBlue : 'white')};
   cursor: pointer;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+`;
+
+const CustomOrderLabel = styled.label<{ isSelected: boolean }>`
+  cursor: pointer;
+  color: ${({ isSelected, theme }) => (isSelected ? theme.colors.mainBlue : 'black')};
+  font-weight: ${({ isSelected }) => (isSelected ? 'bold' : 'normal')};
+  ${(props) => props.theme.fontSize.s14h21}
 `;

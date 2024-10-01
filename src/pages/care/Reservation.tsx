@@ -18,12 +18,11 @@ export default function Reservation() {
   const { id } = useParams();
 
   const { data: reservation } = useSWR(`${API_URL}/reservations/${id}`, fetcherWithCookie);
-  console.log(reservation);
 
   return (
     <ReservationContainer>
       <Progress>
-        <span>{formatProgress(reservation?.progress)}...</span>
+        <span>{formatProgress(reservation?.status)}...</span>
       </Progress>
 
       <PetsitterCard petsitter={reservation?.petsitter} />

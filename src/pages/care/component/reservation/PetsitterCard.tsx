@@ -6,8 +6,6 @@ import { Column, ImageCentered, RoundedImageWrapper, Row } from 'commonStyle';
 import { PetInfoCapsule, PetInfoContainer } from '@pages/care/Reservation';
 import { timeRange } from 'utils/date';
 
-const BUCKET_URL = process.env.REACT_APP_BUCKET_URL;
-
 export default function PetsitterCard({ petsitter }: any) {
   const parsedPossibleDay = petsitter?.possibleDay && JSON.parse(petsitter?.possibleDay);
   return (
@@ -15,7 +13,7 @@ export default function PetsitterCard({ petsitter }: any) {
       <ImageName>
         <PetsitterImage>
           <ImageCentered
-            src={petsitter?.photo ? `${BUCKET_URL}${petsitter?.photo?.url}` : '/imgs/DefaultUserProfile.jpg'}
+            src={petsitter?.photo ? `${petsitter?.photo}` : '/imgs/DefaultUserProfile.jpg'}
             alt="petsitter_photo"
           />
         </PetsitterImage>

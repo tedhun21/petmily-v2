@@ -25,11 +25,11 @@ const schema = yup.object().shape({
   nickname: yup
     .string()
     .min(4, '닉네임은 4자 이상이어야 합니다.')
-    .matches(/^[a-zA-Z0-9\uac00-\ud7a3]+$/, '닉네임에는 한국어, 영어, 숫자만 허용됩니다.'),
+    .matches(/^[a-zA-Z0-9\uac00-\ud7a3\s]+$/, '닉네임에는 한국어, 영어, 숫자, 공백만 허용됩니다.'),
   phone: yup.string().matches(/^010\d{8}$/, '연락처는 010으로 시작하는 11자리 숫자여야 합니다.'),
   address: yup.string(),
   detailAddress: yup.string(),
-  body: yup.string(),
+  body: yup.string().nullable(),
 });
 
 type IEditUser = yup.InferType<typeof schema>;
@@ -39,19 +39,19 @@ const API_URL = process.env.REACT_APP_API_URL;
 export default function EditMe() {
   const navigate = useNavigate();
 
-  const [previewImage, setPreviewImage] = useState(null);
+  const [previewImage, setPreviewImage] = useState<File | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { data: me, isLoading } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);
 
-  const { trigger: updateTrigger, isMutating } = useSWRMutation(`${API_URL}/users/${me.id}`, updaterWithCookie, {
+  const { trigger: updateTrigger, isMutating } = useSWRMutation(`${API_URL}/users/${me?.id}`, updaterWithCookie, {
     onSuccess: () => {
       window.alert('회원 수정되었습니다');
       navigate('/me');
     },
   });
 
-  const { trigger: deleteTrigger } = useSWRMutation(`${API_URL}/users/${me.id}`, deleterWithCookie, {
+  const { trigger: deleteTrigger } = useSWRMutation(`${API_URL}/users/${me?.id}`, deleterWithCookie, {
     onSuccess: () => {
       window.alert('회원 삭제 되었습니다');
       deleteCookie('access_token');
@@ -108,10 +108,6 @@ export default function EditMe() {
 
     const formData = new FormData();
 
-    if (Object.keys(dataToSend).length === 0) {
-      return;
-    }
-
     formData.append('data', JSON.stringify(dataToSend));
 
     if (previewImage) {
@@ -119,8 +115,6 @@ export default function EditMe() {
     }
 
     await updateTrigger({ formData });
-
-    // updateMeMutate({ id: me.id, formData });
   };
 
   const handleLogout = () => {
@@ -153,7 +147,7 @@ export default function EditMe() {
       </TitleContainer>
       <MainContainer>
         <UploadProfileImg
-          serverImageUrl={me?.photo.url}
+          serverImageUrl={me?.photo}
           previewImage={previewImage}
           setPreviewImage={setPreviewImage}
           defaultImage="/imgs/DefaultUserProfile.jpg"

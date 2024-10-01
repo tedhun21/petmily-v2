@@ -4,15 +4,13 @@ import styled from 'styled-components';
 
 import { Column, ImageCentered, RoundedImageWrapper } from 'commonStyle';
 
-const BUCKET_URL = process.env.REACT_APP_BUCKET_URL;
-
 export default function UploadProfileImg({ serverImageUrl, previewImage, setPreviewImage, defaultImage }: any) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      setPreviewImage(URL.createObjectURL(file));
+      setPreviewImage(file);
     }
   };
 
@@ -25,13 +23,15 @@ export default function UploadProfileImg({ serverImageUrl, previewImage, setPrev
   return (
     <ImageContainer>
       <UserImageWrapper id="photoInput">
-        {previewImage ? (
-          <ImageCentered src={previewImage} />
-        ) : serverImageUrl ? (
-          <ImageCentered src={`${BUCKET_URL}${serverImageUrl}`} />
-        ) : (
-          <ImageCentered src={`${defaultImage}`} alt="defaultPhoto" />
-        )}
+        <ImageCentered
+          src={
+            previewImage
+              ? `${URL.createObjectURL(previewImage)}`
+              : serverImageUrl
+                ? `${serverImageUrl}`
+                : `${defaultImage}`
+          }
+        />
         <input
           hidden
           type="file"

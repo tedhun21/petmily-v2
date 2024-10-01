@@ -6,12 +6,12 @@ export const fetcher = async (url: string) => {
   try {
     const { data } = await axios.get(`${url}`);
     return data;
-  } catch (e) {
-    return null;
+  } catch (e: any) {
+    throw new Error(e);
   }
 };
 
-// get fetcher with token (getMe,)
+// get fetcher with token
 export const fetcherWithCookie = async (url: string) => {
   const access_token = getCookie('access_token');
 
@@ -19,8 +19,8 @@ export const fetcherWithCookie = async (url: string) => {
     try {
       const { data } = await axios.get(`${url}`, { headers: { Authorization: `Bearer ${access_token}` } });
       return data;
-    } catch (e) {
-      return null;
+    } catch (e: any) {
+      throw new Error(e);
     }
   }
 };
@@ -32,8 +32,8 @@ export const infiniteFetcher = async (url: string) => {
       data: { results },
     } = await axios.get(`${url}`);
     return results;
-  } catch (e) {
-    return null;
+  } catch (e: any) {
+    throw new Error(e);
   }
 };
 
@@ -47,8 +47,8 @@ export const infiniteFetcherWithCookie = async (url: string) => {
         data: { results },
       } = await axios.get(`${url}`, { headers: { Authorization: `Bearer ${access_token}` } });
       return results;
-    } catch (e) {
-      return null;
+    } catch (e: any) {
+      throw new Error(e);
     }
   }
 };
@@ -71,8 +71,8 @@ export const posterWithCookie = async (url: string, { arg: { formData } }: { arg
       const { data } = await axios.post(`${url}`, formData, { headers: { Authorization: `Bearer ${access_token}` } });
 
       return data;
-    } catch (e) {
-      return null;
+    } catch (e: any) {
+      throw new Error(e);
     }
   }
 };
@@ -83,8 +83,8 @@ export const updaterWithCookie = async (url: string, { arg: { formData } }: { ar
     try {
       const { data } = await axios.put(`${url}`, formData, { headers: { Authorization: `Bearer ${access_token}` } });
       return data;
-    } catch (e) {
-      return null;
+    } catch (e: any) {
+      throw new Error(e);
     }
   }
 };
@@ -98,8 +98,8 @@ export async function deleterWithCookie(url: string) {
         headers: { Authorization: `Bearer ${access_token}` },
       });
       return data;
-    } catch (e) {
-      return null;
+    } catch (e: any) {
+      throw new Error(e);
     }
   }
 }

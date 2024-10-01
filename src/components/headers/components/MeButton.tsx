@@ -58,10 +58,7 @@ export default function MeButton() {
         <UserWrapper>
           <UserButton type="button" onClick={handleMenuOpen}>
             <UserImage>
-              <ImageCentered
-                src={me.photo ? `${BUCKET_URL}${me.photo.url}` : '/imgs/DefatulUserProfile.svg'}
-                alt="user_photo"
-              />
+              <ImageCentered src={me.photo ? `${me.photo}` : '/imgs/DefaultUserProfile.jpg'} alt="user_photo" />
             </UserImage>
           </UserButton>
 

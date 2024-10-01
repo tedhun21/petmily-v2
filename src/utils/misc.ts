@@ -16,13 +16,61 @@ export const getFilter = (filterType: number, values: any) => {
 
 export const formatProgress = (progress: string) => {
   switch (progress) {
-    case 'PENDING':
+    case 'Pending':
       return '대기중';
-    case 'CONFIRMED':
+    case 'Accepted':
       return '예약확정';
-    case 'CANCELED':
+    case 'Canceled':
       return '취소됨';
-    case 'FINISHED':
-      return '종료됨';
+    case 'Completed':
+      return '완료됨';
   }
+};
+
+export const findPetsittersURL = (ref: string, query: any, pageIndex: number, pageSize: number) => {
+  const { date, startTime, endTime, address, petSpecies } = query;
+
+  let baseUrl = '';
+
+  switch (ref) {
+    case 'possible': {
+      baseUrl = `/possible?date=${date}&startTime=${startTime}&endTime=${endTime}&address=${address}&petSpecies=${petSpecies}`;
+      break;
+    }
+
+    case 'favorite': {
+      baseUrl = `/favorite`;
+      break;
+    }
+
+    case 'used': {
+      baseUrl = `/used`;
+      break;
+    }
+
+    case 'star': {
+      baseUrl = `/star`;
+      break;
+    }
+
+    case 'review': {
+      baseUrl = `/review`;
+      break;
+    }
+
+    case 'new': {
+      baseUrl = `/new`;
+      break;
+    }
+
+    default: {
+      return '';
+    }
+  }
+
+  // Check if there are existing query parameters to determine whether to use '?' or '&'
+  const hasQueryParams = baseUrl.includes('?');
+
+  // Directly add pagination to the URL
+  return `${baseUrl}${hasQueryParams ? '&' : '?'}page=${pageIndex + 1}&pageSize=${pageSize}`;
 };

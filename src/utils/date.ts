@@ -99,3 +99,24 @@ export const checkOutDisableTime = (
 export const dayFormat = (date: string) => {
   return dayjs(date).locale('ko').format('ddd');
 };
+
+export const formatKrDays = (day: string) => {
+  switch (day) {
+    case 'Mon':
+      return '월';
+    case 'Tue':
+      return '화';
+    case 'Wed':
+      return '수';
+    case 'Thu':
+      return '목';
+    case 'Fri':
+      return '금';
+    case 'Sat':
+      return '토';
+    case 'Sun':
+      return '일';
+    default:
+      return '';
+  }
+};

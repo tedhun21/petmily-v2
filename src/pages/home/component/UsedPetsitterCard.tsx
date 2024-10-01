@@ -6,9 +6,8 @@ import { Column, ImageCentered, RoundedImageWrapper, Row, Texts12h18, Texts18h27
 
 const BUCKET_URL = process.env.REACT_APP_BUCKET_URL;
 export default function UsedPetsitterCard({ petsitter }: any) {
-  const { nickname, star, photo, possibleDay, possibleStartTime, possibleEndTime } = petsitter;
+  const { nickname, star, photo, possibleDays, possibleStartTime, possibleEndTime } = petsitter;
 
-  const parsedPossibleDay = JSON.parse(possibleDay);
   const possibleTimeRange = timeRange(possibleStartTime, possibleEndTime);
 
   return (
@@ -32,9 +31,7 @@ export default function UsedPetsitterCard({ petsitter }: any) {
         <LowerContainer>
           <PossibleWrapper>
             <Texts12h18>가능 요일</Texts12h18>
-            <div>
-              {parsedPossibleDay?.map((day: string, index: number) => <Texts12h18 key={index}>{day}</Texts12h18>)}
-            </div>
+            <div>{possibleDays?.map((day: string, index: number) => <Texts12h18 key={index}>{day}</Texts12h18>)}</div>
           </PossibleWrapper>
           <PossibleWrapper>
             <Texts12h18>가능 시간</Texts12h18>
@@ -75,6 +72,7 @@ const ImageNameContainer = styled(Row)`
 const ImageWrapper = styled(RoundedImageWrapper)`
   width: 60px;
   height: 60px;
+  border: 2px solid ${(props) => props.theme.colors.mainBlue};
 `;
 
 const LowerContainer = styled.div`

@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { PiStarFill } from 'react-icons/pi';
 import { dateAgo } from 'utils/date';
 
-const BUCKET_URL = process.env.REACT_APP_BUCKET_URL;
 export default function ReviewCard({ review }: any) {
   const {
     reservation: { client },
@@ -16,10 +15,7 @@ export default function ReviewCard({ review }: any) {
       <ClientContainer>
         <ClientImageName>
           <ClientImage>
-            <ImageCentered
-              src={client?.photo ? `${BUCKET_URL}${client?.photo.url}` : '/imgs/DefaultUserProfile.jpg'}
-              alt="userPhoto"
-            />
+            <ImageCentered src={client?.photo ? `${client?.photo}` : '/imgs/DefaultUserProfile.jpg'} alt="user_photo" />
           </ClientImage>
           <Texts14h21>{client?.nickname} 고객님</Texts14h21>
         </ClientImageName>
@@ -59,6 +55,7 @@ const ClientImageName = styled(Row)`
 const ClientImage = styled(RoundedImageWrapper)`
   width: 46px;
   height: 46px;
+  border: 2px solid ${(props) => props.theme.colors.mainBlue};
 `;
 
 const ContentContainer = styled(Column)`

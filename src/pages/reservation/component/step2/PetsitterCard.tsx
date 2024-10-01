@@ -4,24 +4,13 @@ import styled from 'styled-components';
 
 import { IoMdTime } from 'react-icons/io';
 import { PiStarFill } from 'react-icons/pi';
+import { MdOutlineRateReview } from 'react-icons/md';
+
 import { timeRange } from 'utils/date';
 import { Modal } from '@mui/material';
 import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-interface PetsitterProps {
-  petsitter: {
-    memberId: number;
-    petsitterId: number;
-    name: string;
-    nickName: string;
-    photo: string | null;
-    star: number;
-    reviewCount: number;
-    possibleDay: string;
-    possibleTimeStart: string;
-    possibleTimeEnd: string;
-  };
-}
+
 const BUCKET_URL = process.env.REACT_APP_BUCKET_URL;
 
 export default function PetsitterCard({ petsitter, onNext }: any) {
@@ -44,11 +33,7 @@ export default function PetsitterCard({ petsitter, onNext }: any) {
       <Card onClick={handleOpen}>
         <InfoWrapper>
           <PetssiterImageWrapper>
-            {photo ? (
-              <ImageCentered src={`${BUCKET_URL}${photo.url}`} alt="petsitterPhoto" />
-            ) : (
-              <img src="/imgs/DefaultUserProfile.jpg" alt="defaultPetsitter" width="100%" height="100%" />
-            )}
+            <ImageCentered src={photo ? `${photo}` : '/imgs/DefaultUserProfile.jpg'} alt="petsitter_photo" />
           </PetssiterImageWrapper>
           <PetsitterBody>
             <PetsitterWrap>
@@ -65,13 +50,12 @@ export default function PetsitterCard({ petsitter, onNext }: any) {
                 <div>{petsitter.star}</div>
               </StarContainer>
               <ReviewContainer>
-                <ReviewImg src="/imgs/ReviewIcon.svg" alt="reviewIcon"></ReviewImg>
+                <MdOutlineRateReview size="16px" />
                 <div>{petsitter.reviewCount}</div>
               </ReviewContainer>
             </RatingReviewContainer>
           </PetsitterBody>
         </InfoWrapper>
-        <ContainerArrow src="/icons/PetsitterContainerArrow.svg" alt="ArrowIcon" />
       </Card>
       <Modal open={open} onClose={handleClose}>
         <ModalContainer>
@@ -139,7 +123,7 @@ const PetsitterWrap = styled(Row)`
 
 const NameText = styled.span`
   font-weight: ${(props) => props.theme.fontWeights.extrabold};
-  font-size: ${(props) => props.theme.fontSize.s14h21};
+  font-size: ${(props) => props.theme.fontSize.s16h24};
 `;
 
 const Possiblebox = styled.div`

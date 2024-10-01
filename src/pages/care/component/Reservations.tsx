@@ -10,14 +10,14 @@ import { CenterContainer } from 'commonStyle';
 import { infiniteFetcherWithCookie } from 'api';
 
 const API_URL = process.env.REACT_APP_API_URL;
-export default function Reservations({ filter }: any) {
+export default function Reservations({ filter, order }: any) {
   const ref = useRef(null);
   const isInView = useInView(ref);
   const pageSize = 10;
 
   const getKey = (pageIndex: number, previousPageData: any) => {
     if (previousPageData && !previousPageData.length) return null;
-    return `${API_URL}/reservations?page=${pageIndex + 1}&pageSize=${pageSize}&status=${filter.value}`;
+    return `${API_URL}/reservations?page=${pageIndex + 1}&pageSize=${pageSize}&status=${filter.value}&order=${order.value}`;
   };
   const { data, size, setSize, isLoading } = useSWRInfinite(getKey, infiniteFetcherWithCookie);
 

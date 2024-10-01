@@ -1,27 +1,30 @@
-import { CenterContainer, Column, ImageCentered, RoundedImageWrapper, Row, Texts12h18, Texts14h21 } from 'commonStyle';
+import { CenterContainer, Column, ImageCentered, RoundedImageWrapper, Row, Texts12h18 } from 'commonStyle';
 import styled from 'styled-components';
 
 import { CgGenderFemale, CgGenderMale } from 'react-icons/cg';
 import { Link } from 'react-router-dom';
 
-const BUCKET_URL = process.env.REACT_APP_BUCKET_URL;
 export default function PetmilyCard({ pet }: any) {
   return (
-    <PetCard to={`/me/${pet.id}/edit`}>
+    <PetCard to={`/me/${pet?.id}/edit`}>
       <UpperContainer>
         <PetImageNameSpecies>
           <PetImage>
-            {pet.photo ? (
-              <ImageCentered src={`${BUCKET_URL}${pet.photo.url}`} />
-            ) : pet.type === 'DOG' ? (
-              <img src="/imgs/DogProfile.png" alt="dogPhoto" width="100%" height="100%" />
-            ) : pet.type === 'CAT' ? (
-              <img src="/imgs/CatProfile.png" alt="catPhoto" width="100%" height="100%" />
-            ) : null}
+            <ImageCentered
+              src={
+                pet?.photo
+                  ? `${pet.photo}`
+                  : pet.species === 'Dog'
+                    ? '/imgs/DogProfile.png'
+                    : pet.species === 'Cat'
+                      ? '/imgs/CatProfile.png'
+                      : undefined
+              }
+            />
           </PetImage>
           <PetNameSpecies>
-            <span>{pet.name}</span>
-            <Species>{pet.species}</Species>
+            <span>{pet?.name}</span>
+            <Species>{pet?.species}</Species>
           </PetNameSpecies>
         </PetImageNameSpecies>
       </UpperContainer>
@@ -29,9 +32,9 @@ export default function PetmilyCard({ pet }: any) {
       <LowerContainer>
         <PetPropWrapper>
           <CenterContainer>
-            {pet.gender === 'MALE' ? (
+            {pet?.gender === 'Male' ? (
               <CgGenderMale size="21px" color="white" />
-            ) : pet.gender === 'FEMALE' ? (
+            ) : pet?.gender === 'Female' ? (
               <CgGenderFemale size="21px" color="white" />
             ) : null}
           </CenterContainer>
