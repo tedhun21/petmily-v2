@@ -21,15 +21,6 @@ function getLabelText(value: number) {
   return `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]}`;
 }
 
-const StyledRating = styled(Rating)({
-  '& .MuiRating-iconFilled': {
-    color: '#279EFF',
-  },
-  '& .MuiRating-iconHover': {
-    color: '#1D8CE7',
-  },
-});
-
 export default function CustomizedRating({ value, setValue }: any) {
   const [hover, setHover] = useState(-1);
 
@@ -61,3 +52,12 @@ export default function CustomizedRating({ value, setValue }: any) {
     </Box>
   );
 }
+
+const StyledRating = styled(Rating)({
+  '& .MuiRating-iconFilled': {
+    color: '#279EFF',
+  },
+  '& .MuiRating-iconHover': {
+    color: '#1D8CE7',
+  },
+});

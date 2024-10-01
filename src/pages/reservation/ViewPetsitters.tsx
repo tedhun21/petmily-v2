@@ -2,18 +2,17 @@ import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-import { getCookieValue } from 'hooks/getCookie';
-import { refreshAccessToken } from 'hooks/refreshAcessToken';
 import { deleteReservation } from 'store/reservationSlice';
-import { deleteUser } from 'store/userSlice';
-import { deleteCookie } from 'hooks/deleteCookie';
+import { logoutUser } from 'store/userSlice';
+
 import { useDispatch } from 'react-redux';
-import PetsitterCard from '@components/PetsitterCard';
 
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Box, Divider, Drawer, List, ListItem, ListItemText, ListSubheader } from '@mui/material';
 import { FormatListBulleted } from '@mui/icons-material';
+import { deleteCookie, getCookie, refreshAccessToken } from 'utils/cookie';
+import PetsitterCard from './component/step2/PetsitterCard';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 const bucketUrl = process.env.REACT_APP_BUCKET_URL;
@@ -26,7 +25,7 @@ interface Petsitter {
   possibleLocation: string;
 }
 
-const ViewPetsitters = () => {
+export default function ViewPetsitters() {
   const dispatch = useDispatch();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [filterType, setFilterType] = useState('전체 펫시터'); // 필터 타입 상태 관리
@@ -62,7 +61,7 @@ const ViewPetsitters = () => {
       getAllPetsitters();
     } else if (filterType === '내가 찜한 펫시터') {
       const getFavoritePetsitters = async () => {
-        const accessToken = getCookieValue('access_token');
+        const accessToken = getCookie('access_token');
         try {
           const response = await axios.get(`${apiUrl}/members/favorite`, {
             headers: { Authorization: `Bearer ${accessToken}` },
@@ -81,7 +80,7 @@ const ViewPetsitters = () => {
             } catch (refreshError) {
               console.log(refreshError);
               alert('로그인이 만료되었습니다. 다시 로그인 해주세요');
-              dispatch(deleteUser());
+              dispatch(logoutUser());
               dispatch(deleteReservation());
               deleteCookie('access_token');
               deleteCookie('refresh_token');
@@ -219,9 +218,7 @@ const ViewPetsitters = () => {
       </Drawer>
     </MainContainer>
   );
-};
-
-export default ViewPetsitters;
+}
 
 const MainContainer = styled.div`
   display: flex;

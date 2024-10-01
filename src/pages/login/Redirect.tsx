@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useEffect } from 'react';
 
-const Redirect = () => {
+export default function Redirect() {
   const apiUrl = process.env.REACT_APP_API_URL;
   const urlParams = new URLSearchParams(window.location.search);
   const idToken = urlParams.get('id_token');
@@ -17,6 +17,4 @@ const Redirect = () => {
     });
   }, []);
   return <div>hi</div>;
-};
-
-export default Redirect;
+}

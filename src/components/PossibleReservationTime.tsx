@@ -71,12 +71,12 @@ interface PossibleReservationTimeProps {
   setSelectedTimes: Dispatch<SetStateAction<string[]>>;
 }
 
-const PossibleReservationTime: React.FC<PossibleReservationTimeProps> = ({
+export default function PossibleReservationTime({
   selectedDate,
   setSelectedDate,
   selectedTimes,
   setSelectedTimes,
-}) => {
+}: PossibleReservationTimeProps) {
   const [bookedTimes, setBookedTimes] = useState<string[]>([]);
   const [possibleTimeStart, setPossibleTimeStart] = useState<number>(0); // 펫시터 가능시간
   const [possibleTimeEnd, setPossibleTimeEnd] = useState<number>(24); // 펫시터 가능시간
@@ -275,9 +275,7 @@ const PossibleReservationTime: React.FC<PossibleReservationTimeProps> = ({
       </LocalizationProvider>
     </MainContainer>
   );
-};
-
-export default PossibleReservationTime;
+}
 
 const MainContainer = styled.div`
   display: flex;

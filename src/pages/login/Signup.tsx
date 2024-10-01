@@ -1,19 +1,21 @@
-import styled, { keyframes } from 'styled-components';
-import { ErrorMessage, SubmitButtonStyle } from './Login';
-import GoogleOAuthButton from '@components/buttons/OAuthButton';
-import { useForm } from 'react-hook-form';
 import { useState } from 'react';
-import { Modal, Sheet } from '@mui/joy';
-import DaumPostcode from 'react-daum-postcode';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+
+import { useForm } from 'react-hook-form';
+import useSWRMutation from 'swr/mutation';
+import styled, { keyframes } from 'styled-components';
+import GoogleOAuthButton from '@components/buttons/OAuthButton';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-const apiUrl = process.env.REACT_APP_API_URL;
+import { Modal, Sheet } from '@mui/joy';
+import DaumPostcode from 'react-daum-postcode';
+
+import { ErrorMessage, SubmitButton } from './Login';
+import { poster } from 'api';
 
 const schema = yup.object().shape({
-  name: yup
+  username: yup
     .string()
     .min(2, '이름은 2자 이상이어야 합니다.')
     .matches(/[가-힣]+/, '한글만 가능합니다.')
@@ -25,7 +27,7 @@ const schema = yup.object().shape({
   address: yup.string().required('주소는 필수입니다.'),
   detailAddress: yup.string().required('상세주소는 필수입니다.'),
   email: yup.string().email('이메일 형식을 지켜주세요.').required('ID는 필수입니다.'),
-  nickName: yup
+  nickname: yup
     .string()
     .min(2, '닉네임은 2자 이상부터 가능합니다.')
     .matches(/^[^!@#$%^&*()_+{}[\]:;<>,.?~|]+$/, '특수문자가 없어야 합니다.')
@@ -39,82 +41,74 @@ const schema = yup.object().shape({
     return yup.string().oneOf([yup.ref('password'), ''], '비밀번호가 서로 다릅니다.');
   }),
   photo: yup.string(),
-  petsitterBoolean: yup.boolean(),
+  isPetsitter: yup.boolean().default(false),
 });
 type IFormSignupInputs = yup.InferType<typeof schema>;
 
-const Signup = () => {
+const API_URL = process.env.REACT_APP_API_URL;
+
+export default function Signup() {
   const navigate = useNavigate();
-  const [isSignupLoading, setIsSignupLoading] = useState(false);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const {
     register,
+    setValue,
     handleSubmit,
     setError,
     clearErrors,
     formState: { errors },
   } = useForm<IFormSignupInputs>({ resolver: yupResolver(schema) });
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const [sido, setSido] = useState('');
-  const [sigungu, setSigungu] = useState('');
-  const [remainAddress, setRemainAddress] = useState('');
-  const [zonecode, setZonecode] = useState('');
+  const { trigger, isMutating } = useSWRMutation(`${API_URL}/users`, poster, {
+    onSuccess: () => {
+      window.alert('회원 가입을 완료했습니다.');
+      navigate('/login');
+    },
+    onError: () => {
+      window.alert('회원 가입에 실패 했습니다. 다시 시도해주세요.');
+    },
+  });
 
   const onToggleModal = () => {
     setIsModalOpen(true);
   };
 
   const handleComplete = (data: any) => {
-    // 우편번호 저장
-    setZonecode(data.zonecode);
-    // 시.도 저장
-    setSido(data.sido);
-    // 구.군 저장
-    setSigungu(data.sigungu);
-    // 상세주소 앞 2단어 제외하고 저장 ('서울 강남구' 제외하고 저장)
-    const splitAddress = data.address.split(' ').splice(2).join(' ');
     if (data) {
       clearErrors('address');
     }
-    setRemainAddress(splitAddress);
+
+    const splitAddress = data.address.split(' ').splice(2).join(' ');
+
+    setValue('address', `${data.zonecode} ${data.sido} ${data.sigungu} ${splitAddress}`);
+
     setIsModalOpen(false);
   };
 
   const onSubmit = async (data: IFormSignupInputs) => {
-    setIsSignupLoading(true);
+    const { username, phone, address, detailAddress, email, nickname, password, passwordConfirm, isPetsitter } = data;
 
-    const { name, phone, address, detailAddress, email, nickName, password, petsitterBoolean } = data;
-
-    if (data.password !== data.passwordConfirm) {
+    if (password !== passwordConfirm) {
       setError('password', { type: 'dismatch', message: '비밀번호가 서로 다릅니다.' });
       setError('passwordConfirm', { type: 'dismatch', message: '비밀번호가 서로 다릅니다.' });
-      setIsSignupLoading(false);
+
       return;
     }
 
-    try {
-      const { data, status } = await axios.post(`${apiUrl}/auth/local/register`, {
-        name,
-        phone,
-        address: `${address} ${detailAddress}`,
-        email,
-        nickName,
-        password,
-        petsitterBoolean,
-      });
+    const createData = {
+      username,
+      phone,
+      address,
+      detailAddress,
+      email,
+      nickname,
+      password,
+      role: isPetsitter ? 'Petsitter' : 'Client',
+    };
 
-      if (status === 200) {
-        alert('가입을 축하합니다.');
-        navigate('/login');
-      }
-    } catch (e) {
-      console.log(e);
-      alert('회원 가입에 실패하였습니다. 다시 시도해 주세요.');
-    }
-
-    setIsSignupLoading(false);
+    await trigger(createData);
   };
 
   return (
@@ -129,10 +123,10 @@ const Signup = () => {
             <SignupInputStyle
               placeholder="이름"
               type="text"
-              {...register('name', { required: true })}
-              error={errors.name ? true : false}
+              {...register('username', { required: true })}
+              error={errors.username ? true : false}
             />
-            {errors.name?.message && <ErrorMessage>{errors.name?.message}</ErrorMessage>}
+            {errors.username?.message && <ErrorMessage>{errors.username?.message}</ErrorMessage>}
           </InputFormWrapper>
           <InputFormWrapper>
             <SignupInputStyle
@@ -145,7 +139,6 @@ const Signup = () => {
           <InputFormWrapper>
             <SignupInputStyle
               placeholder="주소"
-              value={zonecode ? `${zonecode} ${sido} ${sigungu} ${remainAddress}` : ''}
               {...register('address', { required: true })}
               onClick={onToggleModal}
               onKeyDown={onToggleModal}
@@ -173,10 +166,10 @@ const Signup = () => {
           <InputFormWrapper>
             <SignupInputStyle
               placeholder="닉네임"
-              {...register('nickName', { required: true })}
-              error={errors.nickName ? true : false}
+              {...register('nickname', { required: true })}
+              error={errors.nickname ? true : false}
             />
-            {errors.nickName?.message && <ErrorMessage>{errors.nickName?.message}</ErrorMessage>}
+            {errors.nickname?.message && <ErrorMessage>{errors.nickname?.message}</ErrorMessage>}
           </InputFormWrapper>
           <InputFormWrapper>
             <SignupInputStyle
@@ -198,12 +191,14 @@ const Signup = () => {
           </InputFormWrapper>
           <CheckBoxWrapper>
             <CheckBoxLabel htmlFor="isPetsitter">펫시터로 가입하기</CheckBoxLabel>
-            <input type="checkbox" id="isPetsitter" {...register('petsitterBoolean')} />
+            <input type="checkbox" id="isPetsitter" {...register('isPetsitter')} />
           </CheckBoxWrapper>
           <ButtonContainer>
             <div style={{ position: 'relative' }}>
-              <SubmitButtonStyle type="submit">펫밀리 등록</SubmitButtonStyle>
-              {isSignupLoading && (
+              <SubmitButton type="submit" disabled={isMutating}>
+                펫밀리 등록
+              </SubmitButton>
+              {isMutating && (
                 <LoadingContainer>
                   <Spinner />
                 </LoadingContainer>
@@ -226,9 +221,7 @@ const Signup = () => {
       )}
     </MainContainer>
   );
-};
-
-export default Signup;
+}
 
 const MainContainer = styled.main`
   display: flex;

@@ -5,13 +5,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { IUser } from 'store/userSlice';
 import axios from 'axios';
-import { getCookieValue } from 'hooks/getCookie';
-import jwt_decode from 'jwt-decode';
+import { getCookie } from 'utils/cookie';
 
 const apiUrl = process.env.REACT_APP_API_URL;
-const bucketUrl = process.env.REACT_APP_BUCKET_URL;
 
-const CreateReview = () => {
+export default function CreateReview() {
   const navigate = useNavigate();
   const { reservationId: careReservationId } = useParams();
 
@@ -26,7 +24,7 @@ const CreateReview = () => {
   const [star, setStar] = useState<number | null>(review?.star || 5);
   const [reviewText, setReviewText] = useState('');
 
-  const { isLogin, memberId, email, petsitterBoolean } = useSelector((state: IUser) => state.user);
+  // const { isLogin, memberId, email, petsitterBoolean } = useSelector((state: IUser) => state.user);
 
   let year, month, day;
   if (reservation && reservation.reservationDay) {
@@ -61,7 +59,7 @@ const CreateReview = () => {
 
   // 후기 등록
   const handleSubmit = async () => {
-    const accessToken = getCookieValue('access_token');
+    const accessToken = getCookie('access_token');
     setIsRegisterLoading(true);
 
     const formData = new FormData();
@@ -97,7 +95,7 @@ const CreateReview = () => {
 
   // 후기 수정
   const handleEditSubmit = async () => {
-    const accessToken = getCookieValue('access_token');
+    const accessToken = getCookie('access_token');
     setIsRegisterLoading(true);
 
     const formData = new FormData();
@@ -135,44 +133,44 @@ const CreateReview = () => {
   };
 
   // 해당 예약 1개 조회
-  useEffect(() => {
-    const accessToken = getCookieValue('access_token');
+  // useEffect(() => {
+  //   const accessToken = getCookie('access_token');
 
-    if (!isLogin || petsitterBoolean || !careReservationId) {
-      alert('권한이 없습니다.');
-      navigate('/');
-    }
-    if (accessToken) {
-      try {
-        axios
-          .get(`${apiUrl}/reservations/${careReservationId}`, { headers: { Authorization: `Bearer ${accessToken}` } })
-          .then((res) => {
-            setReservation(res.data);
+  //   if (!isLogin || petsitterBoolean || !careReservationId) {
+  //     alert('권한이 없습니다.');
+  //     navigate('/');
+  //   }
+  //   if (accessToken) {
+  //     try {
+  //       axios
+  //         .get(`${apiUrl}/reservations/${careReservationId}`, { headers: { Authorization: `Bearer ${accessToken}` } })
+  //         .then((res) => {
+  //           setReservation(res.data);
 
-            // const photos = res?.data?.review?.photos;
+  //           // const photos = res?.data?.review?.photos;
 
-            // if (review) {
-            //   setReview(review);
-            //   setReviewText(review.body);
-            //   setStar(review.star);
+  //           // if (review) {
+  //           //   setReview(review);
+  //           //   setReviewText(review.body);
+  //           //   setStar(review.star);
 
-            //   if (photos) {
-            //     const modifiedReviewImages = photos.map((photoUrl: any) => {
-            //       if (photoUrl.includes('https://bucketUrl')) {
-            //         return photoUrl.replace('https://bucketUrl', bucketUrl);
-            //       }
-            //       return '';
-            //     });
+  //           //   if (photos) {
+  //           //     const modifiedReviewImages = photos.map((photoUrl: any) => {
+  //           //       if (photoUrl.includes('https://bucketUrl')) {
+  //           //         return photoUrl.replace('https://bucketUrl', bucketUrl);
+  //           //       }
+  //           //       return '';
+  //           //     });
 
-            //     setReviewImages(modifiedReviewImages);
-            //   }
-            // }
-          });
-      } catch (error: any) {
-        console.log(error);
-      }
-    }
-  }, []);
+  //           //     setReviewImages(modifiedReviewImages);
+  //           //   }
+  //           // }
+  //         });
+  //     } catch (error: any) {
+  //       console.log(error);
+  //     }
+  //   }
+  // }, []);
 
   // 리뷰 1개 조회
   useEffect(() => {
@@ -285,9 +283,7 @@ const CreateReview = () => {
       </ButtonContainer>
     </MainContainer>
   );
-};
-
-export default CreateReview;
+}
 
 const MainContainer = styled.main`
   display: flex;

@@ -1,24 +1,30 @@
-import { useSelector } from 'react-redux';
-import { IUser } from 'store/userSlice';
-
-import BackButton from '@components/buttons/BackButton';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-const BackHeader = () => {
-  const { isLogin } = useSelector((state: IUser) => state.user);
+import { FaArrowLeft } from 'react-icons/fa6';
 
+export default function BackHeader() {
+  const navigate = useNavigate();
   return (
     <Container>
-      <BackButton></BackButton>
+      <StyledBackButton onClick={() => navigate(-1)}>
+        <FaArrowLeft color="#279EFF" size="24px" />
+      </StyledBackButton>
     </Container>
   );
-};
-
-export default BackHeader;
+}
 
 const Container = styled.header`
+  display: flex;
+  align-item: center;
   width: 100%;
   height: 64px;
-  padding: 12px;
-  background-color: white;
+  padding: 20px;
+`;
+
+const StyledBackButton = styled.button`
+  z-index: 2;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
 `;

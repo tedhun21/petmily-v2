@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 
-const NotFound = () => {
+export default function NotFound() {
   return (
     <Page>
       <Container>
@@ -31,7 +31,7 @@ const NotFound = () => {
       </Container>
     </Page>
   );
-};
+}
 
 const Page = styled.div`
   display: flex;
@@ -74,5 +74,3 @@ const Logo = styled.img`
   margin-top: 36px;
   margin-bottom: 36px;
 `;
-
-export default NotFound;

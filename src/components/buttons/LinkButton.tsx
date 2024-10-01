@@ -42,7 +42,7 @@ interface ButtonProps {
   onClick?: () => void; // onClick prop 추가
 }
 
-const LinkButton = ({ text, fontSize = '14', link, width, height, onClick }: ButtonProps) => {
+export default function LinkButton({ text, fontSize = '14', link, width, height, onClick }: ButtonProps) {
   const navigate = useNavigate();
   const handleClick = () => {
     if (link) {
@@ -58,6 +58,4 @@ const LinkButton = ({ text, fontSize = '14', link, width, height, onClick }: But
       <a href={link}>{text}</a>
     </StyledLinkButton>
   );
-};
-
-export default LinkButton;
+}

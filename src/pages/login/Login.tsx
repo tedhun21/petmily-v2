@@ -1,13 +1,15 @@
-import styled, { keyframes } from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
-import GoogleOAuthButton from '@components/buttons/OAuthButton';
-import { useForm } from 'react-hook-form';
-import axios from 'axios';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { login } from 'store/userSlice';
+
+import useSWRMutation from 'swr/mutation';
+import styled, { keyframes } from 'styled-components';
+
 import * as yup from 'yup';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+
+import { poster } from 'api';
+import { setCookie } from 'utils/cookie';
+import GoogleOAuthButton from '@components/buttons/OAuthButton';
 
 const schema = yup.object().shape({
   email: yup.string().email('이메일 형식을 지켜주세요.').required('ID는 필수입니다.'),
@@ -19,16 +21,22 @@ const schema = yup.object().shape({
 });
 type IFormLoginInputs = yup.InferType<typeof schema>;
 
-const Login = () => {
-  const apiUrl = process.env.REACT_APP_API_URL;
-  const dispatch = useDispatch();
+const API_URL = process.env.REACT_APP_API_URL;
+
+export default function Login() {
   const navigate = useNavigate();
 
-  const expirationDate = new Date();
-  expirationDate.setDate(expirationDate.getDate() + 1);
+  const { trigger, isMutating } = useSWRMutation(`${API_URL}/auth/login`, poster, {
+    onSuccess: (data) => {
+      setCookie(data.access_token);
+      navigate('/');
+    },
+    onError: () => {
+      window.alert('로그인에 실패헸습니다. 다시 시도해 주세요');
+    },
+  });
 
-  const [isLoginLoading, setIsLoginLoading] = useState(false);
-  const [GuestLoginLoading, setGuestLoginLoading] = useState(false);
+  // const [GuestLoginLoading, setGuestLoginLoading] = useState(false);
 
   const {
     register,
@@ -39,91 +47,58 @@ const Login = () => {
   });
 
   const onSubmit = async (data: IFormLoginInputs) => {
-    setIsLoginLoading(true);
     const { email, password } = data;
-    try {
-      const { data, status } = await axios.post(`${apiUrl}/auth/local`, { identifier: email, password });
-
-      if (status === 200) {
-        document.cookie = `access_token=${data.jwt}; Max-age=3600; path=/;`;
-        dispatch(login());
-        navigate('/');
-      }
-    } catch (error: any) {
-      if (error.response.status === 400) {
-        alert('아이디와 비밀번호를 확인해주세요.');
-      }
-    }
-    setIsLoginLoading(false);
-  };
-
-  // 게스트 로그인
-  const handleGuestLogin = async () => {
-    setGuestLoginLoading(true);
-
-    try {
-      const { data, status } = await axios.post(`${apiUrl}/auth/local`, {
-        identifier: 'guest@gmail.com',
-        password: 'asdf1234',
-      });
-
-      if (status === 200) {
-        document.cookie = `access_token=${data.jwt}; Max-age=3600; path=/;`;
-        dispatch(login());
-        navigate('/');
-      }
-    } catch (error) {
-      alert('게스트 로그인에 실패하였습니다.');
-    }
-    setGuestLoginLoading(false);
+    await trigger({ email, password });
   };
 
   return (
     <MainContainer>
-      <LoginContainer onSubmit={handleSubmit(onSubmit)}>
-        <img src="/imgs/Logo.svg" alt="logo" width="150px" height="48px" />
-        <InputForm>
+      <img src="/imgs/Logo.svg" alt="logo" width="150px" height="48px" />
+      <LoginContainer>
+        <InputFormContainer onSubmit={handleSubmit(onSubmit)}>
           <div>
-            <LoginInputStyle type="email" placeholder="아이디" {...register('email', { required: true })} />
+            <LoginInput type="email" placeholder="아이디" {...register('email', { required: true })} />
             {errors.email?.message && <ErrorMessage>{errors.email?.message}</ErrorMessage>}
           </div>
           <div>
-            <LoginInputStyle type="password" placeholder="비밀번호" {...register('password', { required: true })} />
+            <LoginInput type="password" placeholder="비밀번호" {...register('password', { required: true })} />
             {errors.password?.message && <ErrorMessage>{errors.password?.message}</ErrorMessage>}
           </div>
           <div style={{ position: 'relative' }}>
-            <SubmitButtonStyle type="submit">
-              {isLoginLoading && (
+            <SubmitButton type="submit" disabled={isMutating}>
+              {isMutating && (
                 <LoadingContainer>
                   <Spinner />
                 </LoadingContainer>
               )}
               로 그 인
-            </SubmitButtonStyle>
-            <SubmitButtonStyle type="button" onClick={handleGuestLogin} disabled={GuestLoginLoading}>
+            </SubmitButton>
+            {/* <SubmitButtonStyle type="button" onClick={handleGuestLogin} disabled={GuestLoginLoading}>
               {GuestLoginLoading && (
                 <LoadingContainer>
                   <Spinner />
                 </LoadingContainer>
               )}
               Guest 로 그 인
-            </SubmitButtonStyle>
+            </SubmitButtonStyle> */}
           </div>
           <GoogleOAuthButton>Log in with Google</GoogleOAuthButton>
-        </InputForm>
+        </InputFormContainer>
         <CustomLink to="/signup">회원가입하기</CustomLink>
       </LoginContainer>
     </MainContainer>
   );
-};
-
-export default Login;
+}
 
 const MainContainer = styled.main`
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
   width: 100%;
+  height: 80%;
   background-color: white;
+  gap: 60px;
 `;
 
 const LoginContainer = styled.div`
@@ -131,20 +106,31 @@ const LoginContainer = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-top: 100px;
   max-width: 360px;
 `;
 
-const InputForm = styled.form`
+const InputFormContainer = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: center;
   width: 100%;
-  margin-top: 32px;
   gap: 12px;
 `;
 
-export const SubmitButtonStyle = styled.button`
+const LoginInput = styled.input`
+  width: 100%;
+  height: 32px;
+  padding: 16px 8px;
+  border-radius: 8px;
+  border: 1px solid ${({ theme }) => theme.colors.mainBlue};
+  ${({ theme }) => theme.fontSize.s14h21};
+
+  &:hover {
+    border: 1px solid ${({ theme }) => theme.colors.darkBlue};
+  }
+`;
+
+export const SubmitButton = styled.button`
   //
   position: relative;
   //
@@ -156,6 +142,7 @@ export const SubmitButtonStyle = styled.button`
   background-color: ${({ theme }) => theme.colors.mainBlue};
   border: none;
   color: white;
+  cursor: pointer;
 
   ${({ theme }) => theme.fontSize.s16h24};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
@@ -175,15 +162,6 @@ const CustomLink = styled(Link)`
   color: ${({ theme }) => theme.colors.mainBlue};
   font-size: ${({ theme }) => theme.fontSize.s14h21};
   text-decoration-line: none;
-`;
-
-const LoginInputStyle = styled.input`
-  width: 100%;
-  height: 32px;
-  padding: 8px;
-  border-radius: 8px;
-  border: 1px solid ${({ theme }) => theme.colors.mainBlue};
-  ${({ theme }) => theme.fontSize.s14h21};
 `;
 
 export const ErrorMessage = styled.p`

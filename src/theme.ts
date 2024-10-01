@@ -3,11 +3,12 @@ import { css } from 'styled-components';
 export const defaultTheme = {
   colors: {
     black: '#000000',
+    gray: '#F2F2F2',
     white: '#ffffff',
     mainBlue: '#279EFF',
     subBlue: '#1D8CE7',
     darkBlue: '#096DBE',
-    skyBlue: '#36313D',
+    skyBlue: '#78C1F3',
     paleBlue: '#9AC5F4',
     red: '#FF6161',
   },
@@ -55,10 +56,10 @@ export const defaultTheme = {
   },
   shadow: {
     onlyBottom: '0px 4px 4px rgba(39,44, 86, 0.06)',
-    dp01: '0px 10px 34px 0px rgba(39, 44, 86, 0.08)',
-    dp02: '0px 4px 12px 0px rgba(39, 44, 86, 0.12)',
-    dp03: '0px 12px 60px 0px rgba(39, 44, 86, 0.10)',
-    dp04: 'box-shadow: 0px 35px 64px 0px rgba(39, 44, 86, 0.24)',
+    dp01: '0px 10px 34px 0px rgba(39, 44, 86, 0.1)',
+    dp02: '0px 4px 12px 0px rgba(39, 44, 86, 0.15)',
+    dp03: '0px 12px 60px 0px rgba(39, 44, 86, 0.2)',
+    dp04: '0px 35px 64px 0px rgba(39, 44, 86, 0.25)',
     inset: '0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset',
   },
 };

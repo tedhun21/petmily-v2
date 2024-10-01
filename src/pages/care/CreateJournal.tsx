@@ -1,20 +1,21 @@
 import axios from 'axios';
-import { getCookieValue } from 'hooks/getCookie';
-import { refreshAccessToken } from 'hooks/refreshAcessToken';
+
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import { IUser } from 'store/userSlice';
 import styled, { keyframes } from 'styled-components';
 
+import { getCookie, refreshAccessToken } from 'utils/cookie';
+
 const apiUrl = process.env.REACT_APP_API_URL;
 const bucketUrl = process.env.REACT_APP_BUCKET_URL;
 
-const CreateJournal = () => {
+export default function CreateJournal() {
   const navigate = useNavigate();
   const { reservationId } = useParams();
 
-  const { isLogin, memberId, petsitterBoolean } = useSelector((state: IUser) => state.user);
+  // const { isLogin, memberId, petsitterBoolean } = useSelector((state: IUser) => state.user);
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [isRegisterLoading, setIsRegisterLoading] = useState(false);
@@ -60,7 +61,7 @@ const CreateJournal = () => {
   // 일지 등록
   const handleSubmit = async () => {
     setIsRegisterLoading(true);
-    const accessToken = getCookieValue('access_token');
+    const accessToken = getCookie('access_token');
 
     const formData = new FormData();
 
@@ -113,7 +114,7 @@ const CreateJournal = () => {
 
   // 일지 수정
   const handleEditSubmit = async () => {
-    const accessToken = getCookieValue('access_token');
+    const accessToken = getCookie('access_token');
     setIsRegisterLoading(true);
 
     const formData = new FormData();
@@ -151,32 +152,32 @@ const CreateJournal = () => {
   };
 
   // 해당 예약 1개 조회
-  useEffect(() => {
-    if (!isLogin || !petsitterBoolean) {
-      alert('권한이 없습니다.');
-      navigate('/');
-    } else {
-      const accessToken = getCookieValue('access_token');
-      try {
-        axios
-          .get(`${apiUrl}/reservations/${reservationId}`, { headers: { Authorization: `Bearer ${accessToken}` } })
-          .then((res) => {
-            setReservation(res.data);
-          });
-      } catch (error: any) {
-        console.log(error);
-        if (error.response.status === 404) {
-          alert(error.response.data.message);
-        }
-      }
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!isLogin || !petsitterBoolean) {
+  //     alert('권한이 없습니다.');
+  //     navigate('/');
+  //   } else {
+  //     const accessToken = getCookie('access_token');
+  //     try {
+  //       axios
+  //         .get(`${apiUrl}/reservations/${reservationId}`, { headers: { Authorization: `Bearer ${accessToken}` } })
+  //         .then((res) => {
+  //           setReservation(res.data);
+  //         });
+  //     } catch (error: any) {
+  //       console.log(error);
+  //       if (error.response.status === 404) {
+  //         alert(error.response.data.message);
+  //       }
+  //     }
+  //   }
+  // }, []);
 
   // 일지 조회
   useEffect(() => {
     if (reservation?.journalId) {
       const fetchData = async () => {
-        const accessToken = getCookieValue('access_token');
+        const accessToken = getCookie('access_token');
         try {
           const response = await axios.get(`${apiUrl}/journals/${reservation.journalId}`, {
             headers: {
@@ -286,9 +287,7 @@ const CreateJournal = () => {
       </ButtonContainer>
     </MainContainer>
   );
-};
-
-export default CreateJournal;
+}
 
 const MainContainer = styled.main`
   display: flex;
