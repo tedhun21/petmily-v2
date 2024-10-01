@@ -42,8 +42,6 @@ export default function FormWizard() {
     }
   };
 
-  // console.log(methods.watch());
-
   return (
     <FormProvider {...methods}>
       <StatusHeader currentStep={currentStep} onPrevious={handlePreviousStep} />

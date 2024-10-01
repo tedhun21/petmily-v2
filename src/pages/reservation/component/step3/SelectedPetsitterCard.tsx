@@ -2,27 +2,25 @@ import { Column, ImageCentered, RoundedImageWrapper, Row } from 'commonStyle';
 import { MdOutlineRateReview } from 'react-icons/md';
 import { PiStarFill } from 'react-icons/pi';
 import styled from 'styled-components';
-
-const BUCKET_URL = process.env.REACT_APP_BUCKET_URL;
+import { formatKrDays } from 'utils/date';
 
 export default function SelectedPetsitter({ petsitter }: any) {
-  const possibleLocation = petsitter.possibleLocation.slice(1, -1).split(',');
-  const possibleDay = petsitter.possibleDay.slice(1, -1).split(',');
-
   return (
     <PetsitterSection>
-      <CardWrap>
-        <PetsitterName>{petsitter?.nickname}</PetsitterName>
-        <Petsitter>펫시터</Petsitter>
+      <CardTitleContainer>
+        <NameWrapper>
+          <PetsitterName>{petsitter?.nickname}</PetsitterName>
+          <Petsitter>펫시터</Petsitter>
+        </NameWrapper>
         <PetsitterImg>
           <ImageCentered
-            src={petsitter.photo ? `${BUCKET_URL}${petsitter?.photo.url}` : '/imgs/DefaultUserProfile.png'}
+            src={petsitter.photo ? `${petsitter?.photo}` : '/imgs/DefaultUserProfile.jpg'}
             alt="petsitter_photo"
           />
         </PetsitterImg>
-      </CardWrap>
+      </CardTitleContainer>
 
-      <PetsitterCardBody>
+      <CardBodyContainer>
         <Row>
           <div>
             <PiStarFill size="28px" color="#279EFF" />
@@ -37,21 +35,17 @@ export default function SelectedPetsitter({ petsitter }: any) {
           <PossibleWrapper>
             <span>가능 장소</span>
             <CapsuleWrapper>
-              {possibleLocation.map((location: any) => (
-                <Capsule key={location}>{location}</Capsule>
-              ))}
+              {petsitter?.possibleLocations.map((location: any) => <Capsule key={location}>{location}</Capsule>)}
             </CapsuleWrapper>
           </PossibleWrapper>
           <PossibleWrapper>
             <span>가능 요일</span>
             <CapsuleWrapper>
-              {possibleDay.map((day: any) => (
-                <Capsule key={day}>{day}</Capsule>
-              ))}
+              {petsitter?.possibleDays.map((day: any) => <Capsule key={day}>{formatKrDays(day)}</Capsule>)}
             </CapsuleWrapper>
           </PossibleWrapper>
         </PossibleContainer>
-      </PetsitterCardBody>
+      </CardBodyContainer>
     </PetsitterSection>
   );
 }
@@ -64,11 +58,16 @@ const PetsitterSection = styled.section`
   box-shadow: ${(props) => props.theme.shadow.dp01};
 `;
 
-const CardWrap = styled.div`
+const CardTitleContainer = styled.div`
   display: flex;
   position: relative;
   padding: 12px 36px;
   background-color: ${(props) => props.theme.colors.mainBlue};
+`;
+
+const NameWrapper = styled(Row)`
+  gap: 8px;
+  align-items: center;
 `;
 
 const PetsitterImg = styled(RoundedImageWrapper)`
@@ -91,7 +90,7 @@ const Petsitter = styled.h3`
   color: ${(props) => props.theme.textColors.primary};
 `;
 
-const PetsitterCardBody = styled(Column)`
+const CardBodyContainer = styled(Column)`
   padding: 24px;
   background-color: ${(props) => props.theme.colors.white};
 `;
@@ -125,9 +124,10 @@ const CapsuleWrapper = styled.div`
 `;
 
 const Capsule = styled.span`
-  ${(props) => props.theme.fontSize.s14h21};
-  padding: 0px 8px;
-  border: 1px solid #279eff;
-  border-radius: 20px;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 16px;
+  background-color: ${(props) => props.theme.colors.mainBlue};
   // font-weight: ${(props) => props.theme.fontWeights.normal};
+  ${(props) => props.theme.fontSize.s14h21};
 `;

@@ -6,7 +6,7 @@ import { useNavigate, Link } from 'react-router-dom';
 
 import { deleteCookie } from 'utils/cookie';
 import { ImageCentered, RoundedImageWrapper } from 'commonStyle';
-import { getFethcerWithCookie } from 'api';
+import { fetcherWithCookie } from 'api';
 
 const API_URL = process.env.REACT_APP_API_URL;
 const BUCKET_URL = process.env.REACT_APP_BUCKET_URL;
@@ -17,7 +17,7 @@ export default function MeButton() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modalRef = useRef<HTMLDivElement | null>(null);
 
-  const { data: me } = useSWR(`${API_URL}/users/me`, getFethcerWithCookie);
+  const { data: me } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);
 
   const handleMenuOpen = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation(); // 이벤트 전파를 막음
@@ -58,10 +58,7 @@ export default function MeButton() {
         <UserWrapper>
           <UserButton type="button" onClick={handleMenuOpen}>
             <UserImage>
-              <ImageCentered
-                src={me.photo ? `${BUCKET_URL}${me.photo.url}` : '/imgs/DefatulUserProfile.svg'}
-                alt="user_photo"
-              />
+              <ImageCentered src={me.photo ? `${me.photo}` : '/imgs/DefaultUserProfile.jpg'} alt="user_photo" />
             </UserImage>
           </UserButton>
 

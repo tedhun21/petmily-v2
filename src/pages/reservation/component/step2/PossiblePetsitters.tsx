@@ -3,18 +3,19 @@ import useSWRInfinite from 'swr/infinite';
 
 import { CenterContainer, Column } from 'commonStyle';
 import { useFormContext } from 'react-hook-form';
-import { getInfiniteFetcher } from 'api';
+import { infiniteFetcher, infiniteFetcherWithCookie } from 'api';
 import { Loading } from '@components/Loading';
 import PetsitterCard from './PetsitterCard';
 import { useEffect, useRef } from 'react';
 import { useInView } from 'framer-motion';
 import dayjs from 'dayjs';
+import { findPetsittersURL } from 'utils/misc';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-export default function PossiblePetsitters({ onNext }: any) {
+export default function PossiblePetsitters({ filter, onNext }: any) {
   const { getValues } = useFormContext();
-  const { date, startTime, endTime, address, petType } = getValues();
+  const { date, startTime, endTime, address, petSpecies } = getValues();
 
   const ref = useRef(null);
   const isInView = useInView(ref);
@@ -25,14 +26,29 @@ export default function PossiblePetsitters({ onNext }: any) {
     const formattedDate = dayjs(date).format('YYYY-MM-DD');
     const formattedStartTime = dayjs(startTime).format('HH:mm:ss');
     const formattedEndTime = dayjs(endTime).format('HH:mm:ss');
-    const formattedAddress = address.split(' ').slice(1, 2);
+    const formattedAddress = address.split(' ').slice(1, 3).join(' ');
+    const formattedPetSpecies = JSON.stringify(petSpecies);
+
+    const url = findPetsittersURL(
+      filter,
+      {
+        date: formattedDate,
+        startTime: formattedStartTime,
+        endTime: formattedEndTime,
+        address: formattedAddress,
+        petSpecies: formattedPetSpecies,
+      },
+      pageIndex,
+      pageSize,
+    );
 
     if (previousPageData && !previousPageData.length) return null;
-    return `${API_URL}/user/possiblePetsitter?date=${formattedDate}&startTime=${formattedStartTime}&endTime=${formattedEndTime}&address=${formattedAddress}&petType=${petType}&page=${
-      pageIndex + 1
-    }&pageSize=${pageSize}`;
+    return `${API_URL}/users/petsitters${url}`;
   };
-  const { data, size, setSize, isLoading } = useSWRInfinite(getKey, getInfiniteFetcher);
+  const { data, size, setSize, isLoading } = useSWRInfinite(
+    getKey,
+    filter === 'possible' || filter === 'favorite' ? infiniteFetcherWithCookie : infiniteFetcher,
+  );
 
   const isEmpty = data?.[0]?.length === 0;
   const isEnd = data && data[data.length - 1]?.length < pageSize;

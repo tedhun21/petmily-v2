@@ -7,13 +7,14 @@ import { FaArrowLeft } from 'react-icons/fa6';
 
 import MyPetmily from '@pages/me/components/MyPetmily';
 import MySchedule from '@components/MySchedule';
-import { getFethcerWithCookie } from 'api';
+import { fetcherWithCookie } from 'api';
+import { ImageCentered, RoundedImageWrapper } from 'commonStyle';
 
 const API_URL = process.env.REACT_APP_API_URL;
 const BUCKET_URL = process.env.REACT_APP_BUCKET_URL;
 
 export default function Me() {
-  const { data: me } = useSWR(`${API_URL}/users/me`, getFethcerWithCookie);
+  const { data: me } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);
 
   return (
     <>
@@ -23,15 +24,17 @@ export default function Me() {
       <MypageContainer>
         <MyProfileContianer>
           <MyProfile>
-            {me?.photo ? (
-              <MyPhoto src={`${BUCKET_URL}${me.photo.url}`} alt="user profile image" />
-            ) : (
-              <MyPhoto src="imgs/DefaultUser.svg" alt="default profile image" />
-            )}
-            <TextField>
+            <MyImage>
+              <ImageCentered
+                src={me?.photo ? `${me?.photo}` : 'imgs/DefaultUserProfile.jpg'}
+                alt="user profile image"
+              />
+            </MyImage>
+
+            <TextWrapper>
               <NameText>{`${me?.nickname} 님`}</NameText>
               <HelloText>안녕하세요!</HelloText>
-            </TextField>
+            </TextWrapper>
           </MyProfile>
           <EditLink to="/me/edit">
             <span>회원정보 수정</span>
@@ -70,16 +73,16 @@ const MyProfileContianer = styled.div`
 
 const MyProfile = styled.div`
   display: flex;
+  gap: 8px;
 `;
 
-const MyPhoto = styled.img`
+const MyImage = styled(RoundedImageWrapper)`
   width: 60px;
   height: 60px;
-  margin-right: 20px;
-  border-radius: 50%;
+  border: 2px solid ${(props) => props.theme.colors.mainBlue};
 `;
 
-const TextField = styled.div`
+const TextWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;

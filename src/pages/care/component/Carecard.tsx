@@ -7,26 +7,22 @@ import { Column, ImageCentered, RoundedImageWrapper, Row, Texts12h18, Texts14h21
 import { formatProgress } from 'utils/misc';
 import { dayFormat, timeRange } from 'utils/date';
 
-const BUCKET_URL = process.env.REACT_APP_BUCKET_URL;
-
 export default function CareCard({ reservation }: any) {
-  const { id, date, startTime, endTime, pets, petsitter, progress } = reservation;
+  const { id, date, startTime, endTime, pets, status, petsitter } = reservation;
 
   return (
     <Card to={`/reservation/${id}`}>
       <FirstContainer>
         <PetsitterContainer>
           <PetsitterImage>
-            <ImageCentered
-              src={petsitter.photo ? `${BUCKET_URL}${petsitter.photo.url}` : '/imgs/DefaultUserProfile.jpg'}
-            />
+            <ImageCentered src={petsitter?.photo ? `${petsitter.photo}` : '/imgs/DefaultUserProfile.jpg'} />
           </PetsitterImage>
           <PetsitterName>
-            <Texts16h24>{petsitter.nickname}</Texts16h24>
+            <Texts16h24>{petsitter?.nickname}</Texts16h24>
             <Texts14h21>펫시터님</Texts14h21>
           </PetsitterName>
         </PetsitterContainer>
-        <PropgressSpan>{formatProgress(progress)}</PropgressSpan>
+        <PropgressSpan>{formatProgress(status)}</PropgressSpan>
       </FirstContainer>
       <ReservationContainer>
         <Wrapper>

@@ -10,20 +10,7 @@ import { Loading } from '@components/Loading';
 import { CenterContainer } from 'commonStyle';
 
 import PetmilyCard from './PetmilyCard';
-import { getInfiniteFetcherWithCookie } from 'api';
-
-type Pet = {
-  id: number;
-  type: 'DOG' | 'CAT';
-  name: string;
-  age: number;
-  gender: 'MALE' | 'FEMALE';
-  species: string;
-  neutering: boolean;
-  weight: number;
-  body?: string;
-  photo?: string;
-};
+import { infiniteFetcherWithCookie } from 'api';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -37,7 +24,7 @@ export default function MyPetContainer() {
     return `${API_URL}/pets?page=${pageIndex + 1}&pageSize=${pageSize}`;
   };
 
-  const { data, size, setSize, isLoading } = useSWRInfinite(getKey, getInfiniteFetcherWithCookie);
+  const { data, size, setSize, isLoading } = useSWRInfinite(getKey, infiniteFetcherWithCookie);
 
   const isEmpty = data?.[0]?.length === 0;
   const isEnd = data && data[data.length - 1]?.length < pageSize;
@@ -61,9 +48,7 @@ export default function MyPetContainer() {
       <NoPetsContainer>
         <div>등록된 펫밀리가 없습니다.</div>
         <div>프로필을 등록하면 빠른 예약이 가능해요!</div>
-        <Link to="/me/register">
-          <button>등록하러 가기</button>
-        </Link>
+        <StyledLink to="/me/register">등록하러 가기</StyledLink>
       </NoPetsContainer>
     );
   }
@@ -99,5 +84,28 @@ const NoPetsContainer = styled.div`
 
   & > div {
     margin-bottom: 30px;
+  }
+`;
+
+const StyledLink = styled(Link)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 8px;
+  color: white;
+  background-color: ${(props) => props.theme.colors.mainBlue};
+
+  &:hover {
+    background-color: ${(props) => props.theme.colors.subBlue};
+  }
+
+  &:active {
+    background-color: ${(props) => props.theme.colors.darkBlue};
+    box-shadow: ${(props) => props.theme.shadow.inset};
+  }
+
+  > span {
+    color: inherit;
   }
 `;

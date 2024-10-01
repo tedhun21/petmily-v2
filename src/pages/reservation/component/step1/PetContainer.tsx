@@ -7,7 +7,7 @@ import SelectPet from './SelectPet';
 import { CenterContainer } from 'commonStyle';
 import { Loading } from '@components/Loading';
 
-import { getInfiniteFetcherWithCookie } from 'api';
+import { infiniteFetcherWithCookie } from 'api';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -20,7 +20,7 @@ export default function PetContainer() {
   };
 
   // 내가 가진 펫 가져오기
-  const { data, size, setSize, isLoading } = useSWRInfinite(getKey, getInfiniteFetcherWithCookie);
+  const { data, size, setSize, isLoading } = useSWRInfinite(getKey, infiniteFetcherWithCookie);
 
   const isEmpty = data?.[0]?.length === 0;
   const isEnd = data && data[data.length - 1]?.length < pageSize;

@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import Maps from './component/Maps';
 
 import { formatProgress } from 'utils/misc';
-import { getFethcerWithCookie } from 'api';
+import { fetcherWithCookie } from 'api';
 
 import PetsitterCard from './component/reservation/PetsitterCard';
 import PetContainer from './component/reservation/PetContainer';
@@ -17,13 +17,12 @@ const API_URL = process.env.REACT_APP_API_URL;
 export default function Reservation() {
   const { id } = useParams();
 
-  const { data: reservation } = useSWR(`${API_URL}/reservations/${id}`, getFethcerWithCookie);
-  console.log(reservation);
+  const { data: reservation } = useSWR(`${API_URL}/reservations/${id}`, fetcherWithCookie);
 
   return (
     <ReservationContainer>
       <Progress>
-        <span>{formatProgress(reservation?.progress)}...</span>
+        <span>{formatProgress(reservation?.status)}...</span>
       </Progress>
 
       <PetsitterCard petsitter={reservation?.petsitter} />

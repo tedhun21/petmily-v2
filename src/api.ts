@@ -1,66 +1,69 @@
 import axios from 'axios';
-import dayjs from 'dayjs';
 import { getCookie } from 'utils/cookie';
 
-interface IPagination {
-  page: number;
-  pageSize: number;
-}
-const API_URL = process.env.REACT_APP_API_URL;
-
 // get fetcher
-export const getFetcher = async (url: string) => {
+export const fetcher = async (url: string) => {
   try {
     const { data } = await axios.get(`${url}`);
     return data;
-  } catch (e) {
-    return null;
+  } catch (e: any) {
+    throw new Error(e);
   }
 };
 
-// get fetcher with token (getMe,)
-export const getFethcerWithCookie = async (url: string) => {
+// get fetcher with token
+export const fetcherWithCookie = async (url: string) => {
   const access_token = getCookie('access_token');
 
   if (access_token) {
     try {
       const { data } = await axios.get(`${url}`, { headers: { Authorization: `Bearer ${access_token}` } });
       return data;
-    } catch (e) {
-      return null;
+    } catch (e: any) {
+      throw new Error(e);
     }
   }
 };
 
 // infinite fetcher
-export const getInfiniteFetcher = async (url: string) => {
+export const infiniteFetcher = async (url: string) => {
   try {
     const {
       data: { results },
     } = await axios.get(`${url}`);
     return results;
-  } catch (e) {
-    return null;
+  } catch (e: any) {
+    throw new Error(e);
   }
 };
 
 // infinite fetcher with token
-export const getInfiniteFetcherWithCookie = async (url: string) => {
+export const infiniteFetcherWithCookie = async (url: string) => {
   const access_token = getCookie('access_token');
+
   if (access_token) {
     try {
       const {
         data: { results },
       } = await axios.get(`${url}`, { headers: { Authorization: `Bearer ${access_token}` } });
       return results;
-    } catch (e) {
-      return null;
+    } catch (e: any) {
+      throw new Error(e);
     }
   }
 };
 
+export const poster = async (url: string, { arg }: { arg: any }) => {
+  try {
+    const { data } = await axios.post(`${url}`, arg);
+    return data;
+  } catch (e: any) {
+    throw new Error(e);
+  }
+};
+
 // create with Cookie
-export const createrWithCookie = async (url: string, { arg: { formData } }: { arg: { formData: any } }) => {
+export const posterWithCookie = async (url: string, { arg: { formData } }: { arg: { formData: any } }) => {
   const access_token = getCookie('access_token');
 
   if (access_token) {
@@ -68,8 +71,8 @@ export const createrWithCookie = async (url: string, { arg: { formData } }: { ar
       const { data } = await axios.post(`${url}`, formData, { headers: { Authorization: `Bearer ${access_token}` } });
 
       return data;
-    } catch (e) {
-      return null;
+    } catch (e: any) {
+      throw new Error(e);
     }
   }
 };
@@ -80,8 +83,8 @@ export const updaterWithCookie = async (url: string, { arg: { formData } }: { ar
     try {
       const { data } = await axios.put(`${url}`, formData, { headers: { Authorization: `Bearer ${access_token}` } });
       return data;
-    } catch (e) {
-      return null;
+    } catch (e: any) {
+      throw new Error(e);
     }
   }
 };
@@ -95,8 +98,8 @@ export async function deleterWithCookie(url: string) {
         headers: { Authorization: `Bearer ${access_token}` },
       });
       return data;
-    } catch (e) {
-      return null;
+    } catch (e: any) {
+      throw new Error(e);
     }
   }
 }

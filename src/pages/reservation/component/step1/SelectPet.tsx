@@ -4,13 +4,11 @@ import { useFormContext } from 'react-hook-form';
 import styled from 'styled-components';
 import { ImageCentered, RoundedImageWrapper } from 'commonStyle';
 
-const BUCKET_URL = process.env.REACT_APP_BUCKET_URL;
-
 export default function SelectPet({ pet }: any) {
   const { setValue, watch } = useFormContext();
 
   const checkedPets = watch('checkedPets') || []; // 선택된 체크박스의 ID 배열을 가져옴
-  const petTypes = watch('petType') || [];
+  const petSpecies = watch('petSpecies') || [];
 
   const isChecked = checkedPets.some((p: any) => p.id === pet.id); // pet.id로 체크 여부 판단
 
@@ -26,23 +24,23 @@ export default function SelectPet({ pet }: any) {
   };
 
   useEffect(() => {
-    const currentPetType = pet.type; // 현재 pet의 타입
+    const currentPetSpecies = pet.species; // 현재 pet의 타입
 
     if (isChecked) {
       // 체크박스가 선택된 상태라면
-      if (!petTypes.includes(currentPetType)) {
-        // petType 배열에 현재 pet의 타입이 없다면 추가
-        setValue('petType', [...petTypes, currentPetType]);
+      if (!petSpecies.includes(currentPetSpecies)) {
+        // petSpecies 배열에 현재 pet의 Species가 없다면 추가
+        setValue('petSpecies', [...petSpecies, currentPetSpecies]);
       }
     } else {
       // 체크박스가 해제된 상태라면
-      if (petTypes.includes(currentPetType)) {
-        // petType 배열에서 현재 pet의 타입을 제거
-        const updatedPetTypes = petTypes.filter((type: string) => type !== currentPetType);
-        setValue('petType', updatedPetTypes);
+      if (petSpecies.includes(currentPetSpecies)) {
+        // petSpecies 배열에서 현재 pet의 Species를 제거
+        const updatedPetTypes = petSpecies.filter((species: string) => species !== currentPetSpecies);
+        setValue('petSpecies', updatedPetTypes);
       }
     }
-  }, [isChecked, pet.type, petTypes, setValue]); // isChecked, pet.type, petTypes가 변경될 때마다 실행
+  }, [isChecked]); // isChecked, pet.type, petTypes가 변경될 때마다 실행
 
   return (
     <PetLabel htmlFor={`checkedPet ${pet.id}`}>
@@ -50,22 +48,14 @@ export default function SelectPet({ pet }: any) {
         <ImageCentered
           src={
             pet.photo
-              ? `${BUCKET_URL}${pet.photo.url}`
-              : pet.type === 'DOG'
+              ? `${pet.photo}`
+              : pet.species === 'Dog'
                 ? '/imgs/DogProfile.png'
-                : pet.type === 'CAT'
+                : pet.species === 'Cat'
                   ? '/imgs/CatProfile.png'
                   : undefined
           }
-          alt={
-            pet.photo
-              ? 'pet_photo'
-              : pet.type === 'DOG'
-                ? 'default_dog'
-                : pet.type === 'CAT'
-                  ? 'default_cat'
-                  : undefined
-          }
+          alt="pet_photo"
         />
       </PetImageWrapper>
       <span>{pet.name}</span>

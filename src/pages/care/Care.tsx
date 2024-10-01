@@ -7,15 +7,20 @@ import Reservations from './component/Reservations';
 
 export default function Care() {
   const [filter, setFilter] = useState({ id: 1, label: '모두', value: 'all' });
+  const [order, setOrder] = useState({ id: 1, label: '최신순', value: 'desc' });
 
   const handleFilter = (e: any) => {
     setFilter(e);
   };
 
+  const handleOrder = (e: any) => {
+    setOrder(e);
+  };
+
   return (
     <MainContainer>
-      <Filter filter={filter} handleFilter={handleFilter} />
-      <Reservations filter={filter} />
+      <Filter filter={filter} order={order} handleFilter={handleFilter} handleOrder={handleOrder} />
+      <Reservations filter={filter} order={order} />
     </MainContainer>
   );
 }

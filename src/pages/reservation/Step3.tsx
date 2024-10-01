@@ -16,25 +16,9 @@ import SelectedPets from './component/step3/SelectedPets';
 import Confirm from './component/step3/Confirm';
 import { Loading } from '@components/Loading';
 
-import { createrWithCookie } from 'api';
-
-interface IPetsitter {
-  nickname: string;
-  star: number;
-  reviewCount: number;
-  possibleLocation: string;
-  possibleDay: string;
-  photo: { id: number; url: string };
-}
-
-export interface IPet {
-  name: string;
-  age: number;
-  petId: number;
-  male: boolean;
-  photo: string;
-  species: string;
-}
+import { fetcherWithCookie, posterWithCookie } from 'api';
+import useSWR from 'swr';
+import { timeRange } from 'utils/date';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -53,8 +37,10 @@ export default function Step3() {
 
   const { date, startTime, endTime, address, detailAddress, checkedPets, petsitter } = getValues();
 
+  const { data: me } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);
+
   // reservation create
-  const { trigger, isMutating } = useSWRMutation(`${API_URL}/reservations`, createrWithCookie, {
+  const { trigger, isMutating } = useSWRMutation(`${API_URL}/reservations`, posterWithCookie, {
     onSuccess: () => {
       window.alert('예약 신청이 완료되었습니다');
       navigate('/cares');
@@ -80,10 +66,10 @@ export default function Step3() {
       petId: formattedPetId,
       body,
       petsitterId: petsitter.id,
+      status: 'Pending',
     };
 
-    trigger({ formData: formattedData });
-    // createReservationMutate({ data: formattedData });
+    await trigger({ formData: formattedData });
   };
 
   return (
@@ -109,7 +95,7 @@ export default function Step3() {
         </ResultWrapper>
         <ResultWrapper>
           <ReservationLabel>예약 시간</ReservationLabel>
-          <ReservationSpan>{`${dayjs(startTime).format('HH:mm')} ~ ${dayjs(endTime).format('HH:mm')}`}</ReservationSpan>
+          <ReservationSpan>{timeRange(startTime, endTime)}</ReservationSpan>
         </ResultWrapper>
       </ReservationResult>
 
@@ -133,7 +119,7 @@ export default function Step3() {
           <ContactContainer>
             <RequestText>연락처</RequestText>
             <TextContainer>
-              <ContactText>010-8131-0409</ContactText>
+              <ContactText>{me?.phone}</ContactText>
               <ContactSubText>프로필 번호로 카카오 알림톡 전송</ContactSubText>
             </TextContainer>
           </ContactContainer>

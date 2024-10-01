@@ -1,30 +1,30 @@
 import styled from 'styled-components';
 import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
-import { updateReservation } from '../api';
-import { getFethcerWithCookie } from 'api';
+
+import { fetcherWithCookie } from 'api';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
 export default function ProgressButton({ reservation }: any) {
   const {
-    data: { isPetsitter, progress },
-  } = useSWR(`${API_URL}/users/me`, getFethcerWithCookie);
+    data: { isPetsitter, status },
+  } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);
 
-  const { trigger } = useSWRMutation(`${API_URL}/reservations/${reservation.id}`, updateReservation);
+  // const { trigger } = useSWRMutation(`${API_URL}/reservations/${reservation.id}`, updateReservation);
 
   // 예약 취소
-  const handleCancel = async () => {
-    await trigger(
-      { action: 'cancel' },
-      {
-        optimisticData: (currentData: any) => ({ ...currentData, progress: 'CANCELED' }),
-        rollbackOnError: true,
-        populateCache: true,
-        revalidate: false,
-      },
-    );
-  };
+  // const handleCancel = async () => {
+  //   await trigger(
+  //     { action: 'cancel' },
+  //     {
+  //       optimisticData: (currentData: any) => ({ ...currentData, progress: 'CANCELED' }),
+  //       rollbackOnError: true,
+  //       populateCache: true,
+  //       revalidate: false,
+  //     },
+  //   );
+  // };
   // 예약 확정
   const handleConfirm = () => {
     // trigger({ action: 'confirm' });
@@ -51,8 +51,8 @@ export default function ProgressButton({ reservation }: any) {
       // 고객
       switch (reservation.progress) {
         case 'PENDING':
-          // "PENDING" => "CANCELED"
-          return <ActiveButton onClick={handleCancel}>취소</ActiveButton>;
+        // "PENDING" => "CANCELED"
+        // return <ActiveButton onClick={handleCancel}>취소</ActiveButton>;
         case 'CONFIRMED':
           return <InActiveButton>진행중</InActiveButton>;
         case 'CANCELED':

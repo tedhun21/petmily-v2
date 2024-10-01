@@ -1,20 +1,14 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import useSWR from 'swr';
 
 import HomeAd from '@components/HomeAd';
-import Footer from '@components/footer/Footer';
+// import Footer from '@components/footer/Footer';
 
-import { getFethcerWithCookie } from 'api';
-import OffenPetsitters from './component/OffenPetsitters';
-import RealTimeReviews from './component/RealTimeReviews';
 import { Title } from 'commonStyle';
-
-const API_URL = process.env.REACT_APP_API_URL;
+import RealTimeReviews from './component/RealTimeReviews';
+import UsedPetsitters from './component/UsedPetsitters';
 
 export default function Home() {
-  const { data: me } = useSWR(`${API_URL}/users/me`, getFethcerWithCookie);
-
   return (
     <>
       <HomeContainer>
@@ -26,19 +20,18 @@ export default function Home() {
         </LinkContainer>
         <AdSubContainer>
           <AdSubText>{'첫 만남\n 50% 할인 쿠폰'}</AdSubText>
-          <img src="/imgs/HomeSubAd.svg" alt="Advertising" />
         </AdSubContainer>
         <img src="/imgs/HomeTitleAd.svg" alt="Advertising" width="100%" />
         <section>
           <Title>최근 이용한 펫시터 서비스</Title>
-          <OffenPetsitters />
+          <UsedPetsitters />
         </section>
         <section>
           <Title>실시간 후기</Title>
           <RealTimeReviews />
         </section>
       </HomeContainer>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }
