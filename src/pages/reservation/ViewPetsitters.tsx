@@ -7,8 +7,8 @@ import { logoutUser } from 'store/userSlice';
 
 import { useDispatch } from 'react-redux';
 
-import { Carousel } from 'react-responsive-carousel';
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
+// import { Carousel } from 'react-responsive-carousel';
+// import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Box, Divider, Drawer, List, ListItem, ListItemText, ListSubheader } from '@mui/material';
 import { FormatListBulleted } from '@mui/icons-material';
 import { deleteCookie, getCookie, refreshAccessToken } from 'utils/cookie';
@@ -130,7 +130,7 @@ export default function ViewPetsitters() {
       </StatusHeader>
       <HotPetsitterText>별점이 높은 펫시터</HotPetsitterText>
       <HotIntroContainer>
-        <StyledCarousel
+        {/* <StyledCarousel
           showThumbs={false}
           showStatus={false}
           autoPlay={false}
@@ -170,7 +170,7 @@ export default function ViewPetsitters() {
               </HotFaceBox>
             </HotWrap>
           ))}
-        </StyledCarousel>
+        </StyledCarousel> */}
       </HotIntroContainer>
 
       <FilterContainer>
@@ -349,15 +349,15 @@ const ReviewImg = styled.img`
   padding-top: 2px;
 `;
 
-const StyledCarousel = styled(Carousel)`
-  .carousel-slider {
-    overflow: visible;
-  }
+// const StyledCarousel = styled(Carousel)`
+//   .carousel-slider {
+//     overflow: visible;
+//   }
 
-  .dot {
-    background: #279eff !important;
-  }
-`;
+//   .dot {
+//     background: #279eff !important;
+//   }
+// `;
 
 const FilterContainer = styled.div`
   display: flex;

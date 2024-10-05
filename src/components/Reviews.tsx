@@ -3,8 +3,8 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
-import { Carousel } from 'react-responsive-carousel';
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
+// import { Carousel } from 'react-responsive-carousel';
+// import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Rating from '@mui/material/Rating';
 
 const apiUrl = process.env.REACT_APP_API_URL;
@@ -44,7 +44,7 @@ export default function Reviews() {
         <Title>후기</Title>
         <ReviewsCount>{`${(reviews && reviews.length) || 0}개`}</ReviewsCount>
       </TitleContainer>
-      <CustomCarousel
+      {/* <CustomCarousel
         showThumbs={false}
         showStatus={false}
         autoPlay={false}
@@ -79,7 +79,7 @@ export default function Reviews() {
               <Description>{review.body}</Description>
             </ReviewsWrap>
           ))}
-      </CustomCarousel>
+      </CustomCarousel> */}
     </MainContainer>
   );
 }
@@ -149,19 +149,19 @@ const Description = styled.div`
   margin: 12px 0 24px;
 `;
 
-const CustomCarousel = styled(Carousel)`
-  .carousel-slider {
-    overflow: transparent;
-  }
+// const CustomCarousel = styled(Carousel)`
+//   .carousel-slider {
+//     overflow: transparent;
+//   }
 
-  .control-dots {
-    top: 100px !important;
-  }
+//   .control-dots {
+//     top: 100px !important;
+//   }
 
-  .dot {
-    background: #279eff !important;
-  }
-`;
+//   .dot {
+//     background: #279eff !important;
+//   }
+// `;
 
 const StyledRating = styled(Rating)`
   & .MuiRating-iconFilled {

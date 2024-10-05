@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import { Carousel } from 'react-responsive-carousel';
+// import { Carousel } from 'react-responsive-carousel';
 import AvatarGroup from '@mui/joy/AvatarGroup';
 import { Avatar } from '@mui/material';
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
+// import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import axios from 'axios';
 import { SyntheticEvent, useEffect, useState } from 'react';
 
@@ -134,7 +134,7 @@ export default function ViewJournal() {
               <Date>{formatDate(journal.lastModifiedAt)} 수정</Date>
             </DateWrapper>
           </Head>
-          <StyledCarousel showStatus={false}>
+          {/* <StyledCarousel showStatus={false}>
             {journal.photos && journal.photos.length > 0
               ? journal.photos.map((photo, index) => (
                   <ImgWrapper key={index}>
@@ -150,7 +150,7 @@ export default function ViewJournal() {
                     <JournalImg src="/imgs/Signupforpetsitter.png" alt="default journal" isDefault={true} />
                   </ImgWrapper>,
                 ]}
-          </StyledCarousel>
+          </StyledCarousel> */}
           <JournalContent>
             <SitterContainer>
               <Profile>
@@ -219,20 +219,20 @@ const Date = styled.div`
   font-size: 14px;
 `;
 
-const StyledCarousel = styled(Carousel)`
-  height: 400px;
+// const StyledCarousel = styled(Carousel)`
+//   height: 400px;
 
-  .carousel .slider-wrapper.axis-horizontal .slider .slide {
-    overflow: visible !important;
-    height: 400px;
-  }
+//   .carousel .slider-wrapper.axis-horizontal .slider .slide {
+//     overflow: visible !important;
+//     height: 400px;
+//   }
 
-  .dot {
-    background: #279eff !important;
-  }
+//   .dot {
+//     background: #279eff !important;
+//   }
 
-  margin-bottom: 8px;
-`;
+//   margin-bottom: 8px;
+// `;
 
 const ImgWrapper = styled.div`
   position: relative;
