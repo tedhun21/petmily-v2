@@ -4,13 +4,13 @@ import styled from 'styled-components';
 import useSWRInfinite from 'swr/infinite';
 import { useInView } from 'framer-motion';
 
-import CareCard from './Carecard';
 import { Loading } from '@components/Loading';
 import { CenterContainer } from 'commonStyle';
 import { infiniteFetcherWithCookie } from 'api';
+import CareCard from './Carecard';
 
 const API_URL = process.env.REACT_APP_API_URL;
-export default function Reservations({ filter, order }: any) {
+export default function CareContainer({ filter, order }: any) {
   const ref = useRef(null);
   const isInView = useInView(ref);
   const pageSize = 10;

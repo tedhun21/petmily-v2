@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -8,39 +6,37 @@ import { formatProgress } from 'utils/misc';
 import { dayFormat, timeRange } from 'utils/date';
 
 export default function CareCard({ reservation }: any) {
-  const { id, date, startTime, endTime, pets, status, petsitter } = reservation;
-
   return (
-    <Card to={`/reservation/${id}`}>
+    <Card to={`/cares/${reservation?.id}`}>
       <FirstContainer>
         <PetsitterContainer>
           <PetsitterImage>
-            <ImageCentered src={petsitter?.photo ? `${petsitter.photo}` : '/imgs/DefaultUserProfile.jpg'} />
+            <ImageCentered
+              src={reservation?.petsitter?.photo ? `${reservation?.petsitter.photo}` : '/imgs/DefaultUserProfile.jpg'}
+            />
           </PetsitterImage>
           <PetsitterName>
-            <Texts16h24>{petsitter?.nickname}</Texts16h24>
+            <Texts16h24>{reservation?.petsitter?.nickname}</Texts16h24>
             <Texts14h21>펫시터님</Texts14h21>
           </PetsitterName>
         </PetsitterContainer>
-        <PropgressSpan>{formatProgress(status)}</PropgressSpan>
+        <PropgressSpan>{formatProgress(reservation?.status)}</PropgressSpan>
       </FirstContainer>
       <ReservationContainer>
         <Wrapper>
           <Texts14h21>일시:</Texts14h21>
           <Texts12h18>
-            {date} ({dayFormat(date)})
+            {reservation?.date} ({dayFormat(reservation?.date)})
           </Texts12h18>
         </Wrapper>
         <Wrapper>
           <Texts14h21>시간:</Texts14h21>
-          <Texts12h18>{timeRange(startTime, endTime)}</Texts12h18>
+          <Texts12h18>{timeRange(reservation?.startTime, reservation?.endTime)}</Texts12h18>
         </Wrapper>
         <Wrapper>
           <Texts14h21>맡기실 펫:</Texts14h21>
           <PetWrapper>
-            {pets.map((pet: any) => (
-              <Texts12h18 key={pet.id}>{pet.name}</Texts12h18>
-            ))}
+            {reservation?.pets.map((pet: any) => <Texts12h18 key={pet.id}>{pet.name}</Texts12h18>)}
           </PetWrapper>
         </Wrapper>
       </ReservationContainer>

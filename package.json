@@ -40,8 +40,8 @@
     "yup": "^1.2.0"
   },
   "scripts": {
-    "start:dev": "cross-env NODE_ENV=dev craco start",
-    "start:prod": "cross-env NODE_NEV=prod carco start",
+    "start:dev": "cross-env NODE_ENV=development craco start",
+    "start:prod": "cross-env NODE_ENV=production carco start",
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject",
