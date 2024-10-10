@@ -39,7 +39,7 @@ export default function CustomizedRating({ value, setValue }: any) {
         precision={1}
         getLabelText={getLabelText}
         onChange={(_, newValue) => {
-          setValue(newValue);
+          setValue('star', newValue);
         }}
         onChangeActive={(_, newHover) => {
           setHover(newHover);

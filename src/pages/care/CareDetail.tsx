@@ -3,20 +3,20 @@ import useSWR from 'swr';
 
 import styled from 'styled-components';
 
-import Maps from './component/Maps';
-
 import { formatProgress } from 'utils/misc';
 import { fetcherWithCookie } from 'api';
 
-import PetsitterCard from './component/reservation/PetsitterCard';
-import PetContainer from './component/reservation/PetContainer';
-import DetailReservation from './component/reservation/DetailReservation';
+import PetsitterCard from './component/care/PetsitterCard';
+import PetContainer from './component/care/PetContainer';
+import DetailReservation from './component/care/DetailReservation';
+import ProgressButton from './component/care/ProgressButton';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-export default function Reservation() {
+export default function CareDetail() {
   const { id } = useParams();
 
+  const { data: me } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);
   const { data: reservation } = useSWR(`${API_URL}/reservations/${id}`, fetcherWithCookie);
 
   return (
@@ -34,6 +34,8 @@ export default function Reservation() {
       <span>{reservation?.address}</span>
 
       <DetailReservation reservation={reservation} />
+
+      <ProgressButton meRole={me?.role} reservation={reservation} />
     </ReservationContainer>
   );
 }

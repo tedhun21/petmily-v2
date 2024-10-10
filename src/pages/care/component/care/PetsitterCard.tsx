@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { PiStarFill } from 'react-icons/pi';
 
 import { Column, ImageCentered, RoundedImageWrapper, Row } from 'commonStyle';
-import { PetInfoCapsule, PetInfoContainer } from '@pages/care/Reservation';
+import { PetInfoCapsule, PetInfoContainer } from '@pages/care/CareDetail';
 import { timeRange } from 'utils/date';
 
 export default function PetsitterCard({ petsitter }: any) {

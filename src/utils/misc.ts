@@ -14,8 +14,8 @@ export const getFilter = (filterType: number, values: any) => {
   }
 };
 
-export const formatProgress = (progress: string) => {
-  switch (progress) {
+export const formatProgress = (status: string) => {
+  switch (status) {
     case 'Pending':
       return '대기중';
     case 'Accepted':
