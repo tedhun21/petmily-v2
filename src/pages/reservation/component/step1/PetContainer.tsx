@@ -5,9 +5,9 @@ import { FiMoreHorizontal } from 'react-icons/fi';
 
 import SelectPet from './SelectPet';
 import { CenterContainer } from 'commonStyle';
-import { Loading } from '@components/Loading';
 
 import { infiniteFetcherWithCookie } from 'api';
+import Loading from '@components/Loading';
 
 const API_URL = process.env.REACT_APP_API_URL;
 

@@ -1,9 +1,9 @@
-import { Loading } from '@components/Loading';
 import { infiniteFetcher } from 'api';
 import { CenterContainer } from 'commonStyle';
 import styled from 'styled-components';
 import useSWRInfinite from 'swr/infinite';
 import ReviewPhotoCard from './ReviewPhotoCard';
+import Loading from '@components/Loading';
 
 const API_URL = process.env.REACT_APP_API_URL;
 export default function PhotoReviews() {

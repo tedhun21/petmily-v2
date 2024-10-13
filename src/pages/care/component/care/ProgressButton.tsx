@@ -3,8 +3,9 @@ import styled from 'styled-components';
 import useSWRMutation from 'swr/mutation';
 
 import { updaterWithCookie } from 'api';
-import { Loading } from '@components/Loading';
+
 import { useNavigate } from 'react-router-dom';
+import Loading from '@components/Loading';
 
 const API_URL = process.env.REACT_APP_API_URL;
 

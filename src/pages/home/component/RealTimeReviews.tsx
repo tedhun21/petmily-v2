@@ -4,13 +4,14 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 
 import { CenterContainer } from 'commonStyle';
-import { Loading } from '@components/Loading';
+
 import ReviewCard from './ReviewCard';
 import { infiniteFetcher } from 'api';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import Loading from '@components/Loading';
 
 const API_URL = process.env.REACT_APP_API_URL;
 export default function RealTimeReviews() {
