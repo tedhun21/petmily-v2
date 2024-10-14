@@ -18,8 +18,9 @@ import { Row, Texts20h30 } from 'commonStyle';
 import UploadProfileImg from '../../components/UploadProfileImg';
 import { deleteCookie } from 'utils/cookie';
 import { TitleContainer } from './RegisterPet';
-import { Loading } from '@components/Loading';
+
 import { deleterWithCookie, fetcherWithCookie, updaterWithCookie } from 'api';
+import Loading from '@components/Loading';
 
 const schema = yup.object().shape({
   nickname: yup

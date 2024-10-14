@@ -6,12 +6,12 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useInView } from 'framer-motion';
 
-import { Loading } from '@components/Loading';
 import { CenterContainer } from 'commonStyle';
 
 import PetmilyCard from './PetmilyCard';
 import { infiniteFetcherWithCookie } from 'api';
 
+import Loading from '@components/Loading';
 const API_URL = process.env.REACT_APP_API_URL;
 
 export default function MyPetContainer() {
@@ -61,7 +61,7 @@ export default function MyPetContainer() {
 
       {!isEnd && (
         <CenterContainer ref={ref}>
-          <Loading color="279EFF" />
+          <Loading color="#279EFF" />
         </CenterContainer>
       )}
     </CardContainer>

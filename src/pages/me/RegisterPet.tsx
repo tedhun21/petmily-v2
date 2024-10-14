@@ -12,9 +12,9 @@ import { PiCatBold, PiDogBold } from 'react-icons/pi';
 import UploadProfileImg from '@components/UploadProfileImg';
 import { Column, Row, Texts20h30 } from 'commonStyle';
 
-import { Loading } from '@components/Loading';
 import useSWRMutation from 'swr/mutation';
 import { posterWithCookie } from 'api';
+import Loading from '@components/Loading';
 
 const schema = yup.object().shape({
   type: yup.string().oneOf(['DOG', 'CAT'], '강아지인가요 고양이인가요?').required('이 항목은 필수입니다.'),

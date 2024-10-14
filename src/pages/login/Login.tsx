@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 
 import useSWRMutation from 'swr/mutation';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
@@ -10,6 +10,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { poster } from 'api';
 import { setCookie } from 'utils/cookie';
 import GoogleOAuthButton from '@components/buttons/OAuthButton';
+import Loading from '@components/Loading';
 
 const schema = yup.object().shape({
   email: yup.string().email('이메일 형식을 지켜주세요.').required('ID는 필수입니다.'),
@@ -28,7 +29,7 @@ export default function Login() {
 
   const { trigger, isMutating } = useSWRMutation(`${API_URL}/auth/login`, poster, {
     onSuccess: (data) => {
-      setCookie(data.access_token);
+      setCookie('access_token', data.access_token);
       navigate('/');
     },
     onError: () => {
@@ -55,7 +56,7 @@ export default function Login() {
     <MainContainer>
       <img src="/imgs/Logo.svg" alt="logo" width="150px" height="48px" />
       <LoginContainer>
-        <InputFormContainer onSubmit={handleSubmit(onSubmit)}>
+        <FormContainer onSubmit={handleSubmit(onSubmit)}>
           <div>
             <LoginInput type="email" placeholder="아이디" {...register('email', { required: true })} />
             {errors.email?.message && <ErrorMessage>{errors.email?.message}</ErrorMessage>}
@@ -64,26 +65,13 @@ export default function Login() {
             <LoginInput type="password" placeholder="비밀번호" {...register('password', { required: true })} />
             {errors.password?.message && <ErrorMessage>{errors.password?.message}</ErrorMessage>}
           </div>
-          <div style={{ position: 'relative' }}>
+          <div>
             <SubmitButton type="submit" disabled={isMutating}>
-              {isMutating && (
-                <LoadingContainer>
-                  <Spinner />
-                </LoadingContainer>
-              )}
-              로 그 인
+              {isMutating ? <Loading /> : '로 그 인'}
             </SubmitButton>
-            {/* <SubmitButtonStyle type="button" onClick={handleGuestLogin} disabled={GuestLoginLoading}>
-              {GuestLoginLoading && (
-                <LoadingContainer>
-                  <Spinner />
-                </LoadingContainer>
-              )}
-              Guest 로 그 인
-            </SubmitButtonStyle> */}
           </div>
           <GoogleOAuthButton>Log in with Google</GoogleOAuthButton>
-        </InputFormContainer>
+        </FormContainer>
         <CustomLink to="/signup">회원가입하기</CustomLink>
       </LoginContainer>
     </MainContainer>
@@ -109,7 +97,7 @@ const LoginContainer = styled.div`
   max-width: 360px;
 `;
 
-const InputFormContainer = styled.form`
+const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -131,18 +119,15 @@ const LoginInput = styled.input`
 `;
 
 export const SubmitButton = styled.button`
-  //
-  position: relative;
-  //
-
-  margin-top: 12px;
-  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
-  border-radius: 8px;
+  padding: 8px;
+  border-radius: 12px;
   background-color: ${({ theme }) => theme.colors.mainBlue};
   border: none;
   color: white;
-  cursor: pointer;
 
   ${({ theme }) => theme.fontSize.s16h24};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
@@ -169,30 +154,4 @@ export const ErrorMessage = styled.p`
   padding-left: 4px;
   color: ${({ theme }) => theme.colors.paleBlue};
   font-size: 12px;
-`;
-
-const LoadingContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  left: 20px;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 18px;
-  height: 18px;
-`;
-
-const spin = keyframes`
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-`;
-
-const Spinner = styled.div`
-  width: 100%;
-  height: 100%;
-  border: 2px solid rgb(255 255 255 / 60%);
-  border-radius: 50%;
-  animation: ${spin} 1.2s linear infinite;
-  border-top: 2px solid #fff;
 `;

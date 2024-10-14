@@ -4,30 +4,30 @@ interface Props {
   children: string;
 }
 
-export default function GoogleOAuthButton({ children }: Props) {
-  const apiUrl = process.env.REACT_APP_API_URL;
+const API_URL = process.env.REACT_APP_API_URL;
 
+export default function GoogleOAuthButton({ children }: Props) {
   const handleGooleOAuth = () => {
-    window.location.assign(`${apiUrl}/connect/google`);
+    window.location.assign(`${API_URL}/connect/google`);
   };
   return (
-    <GoogleOAuthButtonStyle onClick={handleGooleOAuth}>
-      <img src="/imgs/GoogleLogo.svg" alt="google logo" width="24" />
+    <GoogleOAuthButtonStyle type="button" onClick={handleGooleOAuth}>
+      <GoogleImage src="/imgs/GoogleLogo.svg" alt="google logo" width="24" />
       <div>{children}</div>
     </GoogleOAuthButtonStyle>
   );
 }
 
 const GoogleOAuthButtonStyle = styled.button`
+  position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   width: 100%;
-  height: 32px;
-  padding-right: 80px;
-  padding-left: 12px;
+
+  padding: 8px;
   border: 1px solid ${({ theme }) => theme.textColors.gray40};
-  border-radius: 8px;
+  border-radius: 12px;
   color: ${({ theme }) => theme.textColors.gray60};
   background-color: white;
   font-family: inherit;
@@ -45,4 +45,10 @@ const GoogleOAuthButtonStyle = styled.button`
     color: ${({ theme }) => theme.textColors.gray40};
     ${({ theme }) => theme.fontSize.s16h24};
   }
+`;
+
+const GoogleImage = styled.img`
+  position: absolute;
+  top: 8px;
+  left: 8px;
 `;

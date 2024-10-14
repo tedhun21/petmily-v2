@@ -16,7 +16,7 @@ import { formatProgress } from 'utils/misc';
 import { useForm } from 'react-hook-form';
 import { FaXmark } from 'react-icons/fa6';
 import useSWRMutation from 'swr/mutation';
-import { Loading } from '@components/Loading';
+import Loading from '@components/Loading';
 
 interface CreateReviewFormData {
   star: number;

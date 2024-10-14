@@ -33,7 +33,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useSWRMutation from 'swr/mutation';
-import { Loading } from '@components/Loading';
+import Loading from '@components/Loading';
 
 interface UpdateReviewFormData {
   star: number;

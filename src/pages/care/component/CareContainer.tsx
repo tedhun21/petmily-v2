@@ -4,10 +4,10 @@ import styled from 'styled-components';
 import useSWRInfinite from 'swr/infinite';
 import { useInView } from 'framer-motion';
 
-import { Loading } from '@components/Loading';
 import { CenterContainer } from 'commonStyle';
 import { infiniteFetcherWithCookie } from 'api';
 import CareCard from './Carecard';
+import Loading from '@components/Loading';
 
 const API_URL = process.env.REACT_APP_API_URL;
 export default function CareContainer({ filter, order }: any) {
@@ -56,7 +56,7 @@ export default function CareContainer({ filter, order }: any) {
 
       {!isEnd && (
         <CenterContainer ref={ref}>
-          <Loading color="279EFF" />
+          <Loading color="#279EFF" />
         </CenterContainer>
       )}
     </CareCardContainer>

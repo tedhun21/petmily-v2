@@ -30,11 +30,11 @@ import {
   UnitText,
 } from './RegisterPet';
 import { Row, Texts20h30 } from 'commonStyle';
-import { Loading } from '@components/Loading';
 
 import { FaXmark } from 'react-icons/fa6';
 import styled from 'styled-components';
 import { deleterWithCookie, fetcher, updaterWithCookie } from 'api';
+import Loading from '@components/Loading';
 
 const schema = yup.object().shape({
   species: yup.string().oneOf(['Dog', 'Cat'], '강아지인가요 고양이인가요?').required('이 항목은 필수입니다.'),

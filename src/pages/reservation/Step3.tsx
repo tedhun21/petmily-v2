@@ -14,11 +14,11 @@ import { Column, Row } from 'commonStyle';
 import SelectedPetsitter from './component/step3/SelectedPetsitterCard';
 import SelectedPets from './component/step3/SelectedPets';
 import Confirm from './component/step3/Confirm';
-import { Loading } from '@components/Loading';
 
 import { fetcherWithCookie, posterWithCookie } from 'api';
 import useSWR from 'swr';
 import { timeRange } from 'utils/date';
+import Loading from '@components/Loading';
 
 const API_URL = process.env.REACT_APP_API_URL;
 

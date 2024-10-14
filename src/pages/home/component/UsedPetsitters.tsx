@@ -4,13 +4,13 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
 
 import { CenterContainer } from 'commonStyle';
-import { Loading } from '@components/Loading';
 
 import { infiniteFetcherWithCookie } from 'api';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
 import UsedPetsitterCard from './UsedPetsitterCard';
+import Loading from '@components/Loading';
 
 const API_URL = process.env.REACT_APP_API_URL;
 

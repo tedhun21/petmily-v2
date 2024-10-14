@@ -37,7 +37,6 @@ import Cares from '@pages/care/Cares';
 import Care from '@pages/care/CareDetail';
 import Login from '@pages/login/Login';
 import Signup from '@pages/login/Signup';
-import OAuthBranch from '@pages/login/OAuthBranch';
 import EditMe from '@pages/me/EditMe';
 import RegisterPet from '@pages/me/RegisterPet';
 import EditPet from '@pages/me/EditPet';
@@ -57,6 +56,7 @@ import CareDetail from '@pages/care/CareDetail';
 import CreateJournal from '@pages/care/journal/CreateJournal';
 import CreateReview from '@pages/care/review/CreateReview';
 import EditReview from '@pages/care/review/EditReview';
+import Redirect from '@pages/login/Redirect';
 
 const NavHeaderLayout = () => {
   return (
@@ -88,7 +88,6 @@ const router = createBrowserRouter(
       <Route element={<BackHeaderLayout />}>
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />
-        <Route path="signup/branch" element={<OAuthBranch />} />
         <Route path="me/edit" element={<EditMe />} />
         <Route path="me/register" element={<RegisterPet />} />
         <Route path="me/:petId/edit" element={<EditPet />} />
@@ -104,6 +103,7 @@ const router = createBrowserRouter(
         {/* <Route path="petsitters/:memberId/schedule" element={<SitterSchedule />} /> */}
       </Route>
       <Route path="me" element={<Me />} />
+      <Route path="auth/connect/google/callback" element={<Redirect />} />
       <Route path="*" element={<NotFound />} />
     </Route>,
   ),

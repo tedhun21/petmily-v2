@@ -4,12 +4,13 @@ import useSWRInfinite from 'swr/infinite';
 import { CenterContainer, Column } from 'commonStyle';
 import { useFormContext } from 'react-hook-form';
 import { infiniteFetcher, infiniteFetcherWithCookie } from 'api';
-import { Loading } from '@components/Loading';
+
 import PetsitterCard from './PetsitterCard';
 import { useEffect, useRef } from 'react';
 import { useInView } from 'framer-motion';
 import dayjs from 'dayjs';
 import { findPetsittersURL } from 'utils/misc';
+import Loading from '@components/Loading';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
