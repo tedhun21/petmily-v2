@@ -17,6 +17,7 @@ import { useForm } from 'react-hook-form';
 import { FaXmark } from 'react-icons/fa6';
 import useSWRMutation from 'swr/mutation';
 import Loading from '@components/Loading';
+import { toast } from 'react-toastify';
 
 interface CreateReviewFormData {
   star: number;
@@ -31,7 +32,6 @@ export default function CreateReview() {
   const { id } = useParams();
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [reviewImages, setReviewImages] = useState([]);
 
   const { register, setValue, handleSubmit, watch } = useForm<CreateReviewFormData>({
     defaultValues: { star: 5, body: '', files: [] },
@@ -42,11 +42,11 @@ export default function CreateReview() {
 
   const { isMutating, trigger } = useSWRMutation(`${API_URL}/reviews`, posterWithCookie, {
     onSuccess: () => {
-      window.alert('리뷰 수정하였습니다.');
       navigate('/cares');
+      toast.success('리뷰를 작성하였습니다!');
     },
     onError: () => {
-      window.alert('리뷰 작성에 실패했습니다. 다시 시도해 주세요.');
+      toast.error('리뷰 작성에 실패했습니다. 다시 시도해 주세요.');
     },
   });
 
@@ -62,13 +62,12 @@ export default function CreateReview() {
 
     if (files && files.length > 0) {
       const newFiles = Array.from(files);
-      const totalFiles = selectedFiles.length + reviewImages.length + files.length;
+      const totalFiles = selectedFiles.length + files.length;
 
       if (totalFiles <= 5) {
-        console.log(newFiles);
         setValue('files', [...selectedFiles, ...newFiles]);
       } else {
-        window.alert('최대 5개의 이미지를 선택할 수 있습니다.');
+        toast.warning('최대 5개의 이미지를 선택할 수 있습니다!');
       }
     }
   };
@@ -79,10 +78,6 @@ export default function CreateReview() {
       'files',
       selectedFiles.filter((_, index) => index !== indexToRemove),
     );
-  };
-
-  const handleRemoveReviewImage = (indexToRemove: number) => {
-    setReviewImages(reviewImages.filter((_, index) => index !== indexToRemove));
   };
 
   const onSubmit = async (data: any) => {

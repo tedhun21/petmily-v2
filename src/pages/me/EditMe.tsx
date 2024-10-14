@@ -10,26 +10,30 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { TextField } from '@mui/material';
 import { Modal, Sheet } from '@mui/joy';
 
-import { Row, Texts20h30 } from 'commonStyle';
+import { Column, ErrorMessage, Row, Texts20h30 } from 'commonStyle';
 
 import UploadProfileImg from '../../components/UploadProfileImg';
 import { deleteCookie } from 'utils/cookie';
-import { TitleContainer } from './RegisterPet';
+import { TitleContainer } from './CreatePet';
 
 import { deleterWithCookie, fetcherWithCookie, updaterWithCookie } from 'api';
 import Loading from '@components/Loading';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const schema = yup.object().shape({
   nickname: yup
     .string()
     .min(4, '닉네임은 4자 이상이어야 합니다.')
     .matches(/^[a-zA-Z0-9\uac00-\ud7a3\s]+$/, '닉네임에는 한국어, 영어, 숫자, 공백만 허용됩니다.'),
-  phone: yup.string().matches(/^010\d{8}$/, '연락처는 010으로 시작하는 11자리 숫자여야 합니다.'),
-  address: yup.string(),
-  detailAddress: yup.string(),
+  phone: yup
+    .string()
+    .nullable()
+    .matches(/^010\d{8}$/, '연락처는 010으로 시작하는 11자리 숫자여야 합니다.'),
+  address: yup.string().nullable(),
+  detailAddress: yup.string().nullable(),
   body: yup.string().nullable(),
 });
 
@@ -40,6 +44,10 @@ const API_URL = process.env.REACT_APP_API_URL;
 export default function EditMe() {
   const navigate = useNavigate();
 
+  const notify = () => {
+    toast.success('Success Notification !', { position: 'top-center' });
+  };
+
   const [previewImage, setPreviewImage] = useState<File | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -47,14 +55,17 @@ export default function EditMe() {
 
   const { trigger: updateTrigger, isMutating } = useSWRMutation(`${API_URL}/users/${me?.id}`, updaterWithCookie, {
     onSuccess: () => {
-      window.alert('회원 수정되었습니다');
+      toast.success('회원 정보가 성공적으로 수정되었습니다!');
       navigate('/me');
+    },
+    onError: () => {
+      toast.error('회원 정보 수정에 실패했습니다!');
     },
   });
 
   const { trigger: deleteTrigger } = useSWRMutation(`${API_URL}/users/${me?.id}`, deleterWithCookie, {
     onSuccess: () => {
-      window.alert('회원 삭제 되었습니다');
+      toast.error('회원을 삭제하였습니다!');
       deleteCookie('access_token');
       navigate('/');
     },
@@ -120,7 +131,7 @@ export default function EditMe() {
 
   const handleLogout = () => {
     deleteCookie('access_token');
-    window.alert('로그아웃되었습니다.');
+    toast.success('로그아웃 되었습니다.');
     navigate('/');
   };
 
@@ -140,6 +151,8 @@ export default function EditMe() {
       setValue('body', me.body);
     }
   }, [isLoading, me]);
+
+  console.log(errors);
 
   return (
     <main>
@@ -165,15 +178,24 @@ export default function EditMe() {
           </InputWrapper>
           <InputWrapper>
             <InputLabel htmlFor="nickname">닉네임</InputLabel>
-            <Input {...register('nickname')} />
+            <InputError>
+              <Input {...register('nickname')} />
+              <ErrorMessage>{errors.nickname && errors.nickname.message}</ErrorMessage>
+            </InputError>
           </InputWrapper>
           <InputWrapper>
             <InputLabel htmlFor="phone">연락처</InputLabel>
-            <Input {...register('phone')} />
+            <InputError>
+              <Input {...register('phone')} />
+              <ErrorMessage>{errors.phone && errors.phone.message}</ErrorMessage>
+            </InputError>
           </InputWrapper>
           <InputWrapper>
             <InputLabel htmlFor="address">주소</InputLabel>
-            <Input onClick={onToggleModal} onKeyDown={onToggleModal} {...register('address')} />
+            <InputError>
+              <Input onClick={onToggleModal} onKeyDown={onToggleModal} {...register('address')} />
+              {errors.address && <ErrorMessage>{errors.address.message}</ErrorMessage>}
+            </InputError>
             {isModalOpen && (
               <Modal
                 open={isModalOpen}
@@ -188,7 +210,10 @@ export default function EditMe() {
           </InputWrapper>
           <InputWrapper>
             <InputLabel htmlFor="detailAddress">상세 주소</InputLabel>
-            <Input {...register('detailAddress')} />
+            <InputError>
+              <Input {...register('detailAddress')} />
+              {errors.detailAddress && <ErrorMessage>{errors.detailAddress.message}</ErrorMessage>}
+            </InputError>
           </InputWrapper>
           <InputWrapper>
             <InputLabel htmlFor="body">나의 소개</InputLabel>
@@ -237,8 +262,12 @@ const InputLabel = styled.label`
   width: 20%;
 `;
 
-const Input = styled.input`
+const InputError = styled(Column)`
   width: 80%;
+`;
+
+const Input = styled.input`
+  width: 100%;
   border: 2px solid ${(props) => props.theme.colors.mainBlue};
   border-radius: 8px;
   padding: 8px;
@@ -291,17 +320,4 @@ export const StyledButton = styled.button`
   &:hover {
     color: ${(props) => props.theme.colors.mainBlue};
   }
-`;
-
-// RegisterPet 같이 사용할 수 있게 수정
-export const StyledTextField = styled(TextField)`
-  ${(props) => props.theme.fontSize.s14h21}
-  width: 60%;
-`;
-
-export const ErrorMsg = styled.div`
-  color: red;
-  display: bolck;
-  margin-top: 5px;
-  ${(props) => props.theme.fontSize.s14h21}
 `;

@@ -7,9 +7,9 @@ import { useNavigate, Link } from 'react-router-dom';
 import { deleteCookie } from 'utils/cookie';
 import { ImageCentered, RoundedImageWrapper } from 'commonStyle';
 import { fetcherWithCookie } from 'api';
+import { toast } from 'react-toastify';
 
 const API_URL = process.env.REACT_APP_API_URL;
-const BUCKET_URL = process.env.REACT_APP_BUCKET_URL;
 
 export default function MeButton() {
   const navigate = useNavigate();
@@ -33,10 +33,9 @@ export default function MeButton() {
   // 로그아웃 클
   const handleLogout = () => {
     deleteCookie('access_token');
-
-    alert('로그아웃 되었습니다.');
+    toast.success('로그아웃 되었습니다.');
     navigate('/');
-    window.location.reload();
+    navigate(0);
   };
 
   useEffect(() => {

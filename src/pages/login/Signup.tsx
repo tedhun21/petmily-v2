@@ -11,8 +11,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Modal, Sheet } from '@mui/joy';
 import DaumPostcode from 'react-daum-postcode';
 
-import { ErrorMessage, SubmitButton } from './Login';
+import { SubmitButton } from './Login';
 import { poster } from 'api';
+import { ErrorMessage } from 'commonStyle';
+import { toast } from 'react-toastify';
 
 const schema = yup.object().shape({
   username: yup
@@ -63,11 +65,11 @@ export default function Signup() {
 
   const { trigger, isMutating } = useSWRMutation(`${API_URL}/users`, poster, {
     onSuccess: () => {
-      window.alert('회원 가입을 완료했습니다.');
       navigate('/login');
+      toast.success('회원 가입을 완료했습니다. 로그인 해주세요!');
     },
     onError: () => {
-      window.alert('회원 가입에 실패 했습니다. 다시 시도해주세요.');
+      toast.error('회원 가입에 실패 했습니다. 다시 시도해주세요.');
     },
   });
 

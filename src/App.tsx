@@ -38,7 +38,7 @@ import Care from '@pages/care/CareDetail';
 import Login from '@pages/login/Login';
 import Signup from '@pages/login/Signup';
 import EditMe from '@pages/me/EditMe';
-import RegisterPet from '@pages/me/RegisterPet';
+import CreatePet from '@pages/me/CreatePet';
 import EditPet from '@pages/me/EditPet';
 import Search from '@pages/home/Search';
 import QnA from '@pages/home/QnA';
@@ -57,6 +57,7 @@ import CreateJournal from '@pages/care/journal/CreateJournal';
 import CreateReview from '@pages/care/review/CreateReview';
 import EditReview from '@pages/care/review/EditReview';
 import Redirect from '@pages/login/Redirect';
+import { ToastContainer } from 'react-toastify';
 
 const NavHeaderLayout = () => {
   return (
@@ -89,7 +90,7 @@ const router = createBrowserRouter(
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />
         <Route path="me/edit" element={<EditMe />} />
-        <Route path="me/register" element={<RegisterPet />} />
+        <Route path="me/register" element={<CreatePet />} />
         <Route path="me/:petId/edit" element={<EditPet />} />
         <Route path="search" element={<Search />} />
         <Route path="qna" element={<QnA />} />
@@ -116,6 +117,7 @@ export default function App() {
         <Container>
           <Wrapper>
             <RouterProvider router={router} />
+            <ToastContainer position="top-center" autoClose={3000} />
           </Wrapper>
         </Container>
       </SWRConfig>
@@ -133,47 +135,10 @@ const Container = styled.div`
 
 const Wrapper = styled.div`
   display: flex;
+  position: relative;
   flex-direction: column;
   max-width: 600px;
   width: 100%;
   height: 100%;
   background-color: white;
 `;
-
-{
-  /* <Container>
-        <Wrapper>
-          <Suspense fallback={<LoadingFallback />}>
-            <Routes>
-              <Route path="/" element={<AddNavHeaderLayout />}>
-                <Route path="" element={<Home />} />
-                <Route path="/petsitter" element={<PetSitterHome />} />
-                <Route path="/reviews" element={<Reviews />} />
-                <Route path="mypage" element={<Mypage />} />
-                <Route path="reservation" element={<Reservation />} />
-                <Route path="reservation/step2" element={<ReservationStepTwo />} />
-                <Route path="cares" element={<Cares />} />
-                <Route path="cares/:reservationId/review" element={<CreateReview />} />
-                <Route path="cares/:reservationId/journal" element={<CreateJournal />} />
-              </Route>
-              <Route path="/" element={<BackHeaderLayout />}>
-                <Route path="login" element={<Login />} />
-                <Route path="signup" element={<Signup />} />
-                <Route path="signup/branch" element={<OAuthBranch />} />
-                <Route path="mypage/edit" element={<EditUserProfile />} />
-                <Route path="mypage/register" element={<RegisterPet />} />
-                <Route path="mypage/:petId/edit" element={<EditPet />} />
-                <Route path="search" element={<Search />} />
-                <Route path="qna" element={<QnA />} />
-                <Route path="petsitters" element={<ViewPetsitters />} />
-                <Route path="reservation/step3" element={<ReservationStepThree />} />
-                <Route path="cares/journal/:journalId" element={<ViewJournal />} />
-                <Route path="petsitters/:petsitterId" element={<PetsitterViewDetails />} />
-                <Route path="petsitters/:memberId/schedule" element={<SitterSchedule />} />
-              </Route>
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
-        </Wrapper>
-      </Container> */
-}

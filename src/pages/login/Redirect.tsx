@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { setCookie } from 'utils/cookie';
 import useSWRMutation from 'swr/mutation';
 import Loading from '@components/Loading';
+import { toast } from 'react-toastify';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -29,6 +30,7 @@ export default function Redirect() {
       onSuccess: (data) => {
         setCookie('access_token', data.newToken);
         navigate('/');
+        toast.success('환영합니다!');
       },
     },
   );
@@ -53,6 +55,7 @@ export default function Redirect() {
     if (me && access_token && (me.role === UserRole.CLIENT || me.role === UserRole.PETSITTER)) {
       setCookie('access_token', access_token);
       navigate('/');
+      toast.success('환영합니다!');
     }
   }, [me]);
 

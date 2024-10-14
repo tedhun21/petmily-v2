@@ -34,6 +34,7 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useSWRMutation from 'swr/mutation';
 import Loading from '@components/Loading';
+import { toast } from 'react-toastify';
 
 interface UpdateReviewFormData {
   star: number;
@@ -53,16 +54,15 @@ export default function EditReview() {
 
   const { isMutating, trigger } = useSWRMutation(`${API_URL}/reviews/${reservation?.review.id}`, updaterWithCookie, {
     onSuccess: () => {
-      window.alert('리뷰 작성하였습니다.');
       navigate('/cares');
+      toast.success('리뷰를 수정하였습니다!');
     },
     onError: () => {
-      window.alert('리뷰 작성에 실패했습니다. 다시 시도해 주세요.');
+      toast.error('리뷰 작성에 실패했습니다. 다시 시도해 주세요.');
     },
   });
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [reviewImages, setReviewImages] = useState([]);
 
   const { register, setValue, handleSubmit, watch } = useForm<UpdateReviewFormData>({
     defaultValues: { star: 0, body: '', files: [], photos: [], deleteFiles: [] },
@@ -83,12 +83,12 @@ export default function EditReview() {
 
     if (files && files.length > 0) {
       const newFiles = Array.from(files);
-      const totalFiles = selectedFiles.length + reviewImages.length + files.length;
+      const totalFiles = selectedFiles.length + imageUrls.length + files.length;
 
       if (totalFiles <= 5) {
         setValue('files', [...selectedFiles, ...newFiles]);
       } else {
-        window.alert('최대 5개의 이미지를 선택할 수 있습니다.');
+        toast.warning('최대 5개의 이미지를 선택할 수 있습니다.');
       }
     }
   };

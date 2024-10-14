@@ -55,3 +55,8 @@ export const CenterContainer = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
+export const ErrorMessage = styled.span`
+  color: ${({ theme }) => theme.colors.paleBlue};
+  ${(props) => props.theme.fontSize.s12h18}
+`;

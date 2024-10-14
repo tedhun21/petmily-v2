@@ -15,6 +15,7 @@ import { Column, Row, Texts20h30 } from 'commonStyle';
 import useSWRMutation from 'swr/mutation';
 import { posterWithCookie } from 'api';
 import Loading from '@components/Loading';
+import { toast } from 'react-toastify';
 
 const schema = yup.object().shape({
   type: yup.string().oneOf(['DOG', 'CAT'], '강아지인가요 고양이인가요?').required('이 항목은 필수입니다.'),
@@ -42,7 +43,7 @@ type IRegisterPet = yup.InferType<typeof schema>;
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-export default function RegisterPet() {
+export default function CreatePet() {
   const navigate = useNavigate();
   const [previewImage, setPreviewImage] = useState<File | null>(null);
 
@@ -61,8 +62,11 @@ export default function RegisterPet() {
 
   const { trigger, isMutating } = useSWRMutation(`${API_URL}/pets`, posterWithCookie, {
     onSuccess: () => {
-      window.alert('펫밀리 등록이 완료되었습니다');
       navigate('/me');
+      toast.success('펫밀리 등록이 완료되었습니다!');
+    },
+    onError: () => {
+      toast.error('펫밀리 등록에 실패했습니다. 다시 시도해주세요.');
     },
   });
 
