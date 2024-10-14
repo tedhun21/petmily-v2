@@ -27,7 +27,7 @@ const GoogleOAuthButtonStyle = styled.button`
 
   padding: 8px;
   border: 1px solid ${({ theme }) => theme.textColors.gray40};
-  border-radius: 8px;
+  border-radius: 12px;
   color: ${({ theme }) => theme.textColors.gray60};
   background-color: white;
   font-family: inherit;

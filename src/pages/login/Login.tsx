@@ -56,7 +56,7 @@ export default function Login() {
     <MainContainer>
       <img src="/imgs/Logo.svg" alt="logo" width="150px" height="48px" />
       <LoginContainer>
-        <InputFormContainer onSubmit={handleSubmit(onSubmit)}>
+        <FormContainer onSubmit={handleSubmit(onSubmit)}>
           <div>
             <LoginInput type="email" placeholder="아이디" {...register('email', { required: true })} />
             {errors.email?.message && <ErrorMessage>{errors.email?.message}</ErrorMessage>}
@@ -71,7 +71,7 @@ export default function Login() {
             </SubmitButton>
           </div>
           <GoogleOAuthButton>Log in with Google</GoogleOAuthButton>
-        </InputFormContainer>
+        </FormContainer>
         <CustomLink to="/signup">회원가입하기</CustomLink>
       </LoginContainer>
     </MainContainer>
@@ -97,7 +97,7 @@ const LoginContainer = styled.div`
   max-width: 360px;
 `;
 
-const InputFormContainer = styled.form`
+const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -124,7 +124,7 @@ export const SubmitButton = styled.button`
   align-items: center;
   width: 100%;
   padding: 8px;
-  border-radius: 8px;
+  border-radius: 12px;
   background-color: ${({ theme }) => theme.colors.mainBlue};
   border: none;
   color: white;

@@ -8,6 +8,7 @@ import { User, UserRole } from 'types/user';
 import { useNavigate } from 'react-router-dom';
 import { setCookie } from 'utils/cookie';
 import useSWRMutation from 'swr/mutation';
+import Loading from '@components/Loading';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -57,16 +58,20 @@ export default function Redirect() {
 
   return (
     <MainContainer>
-      <ImgContainer>
-        <ImageButton onClick={handleClientOAuth}>
-          <Image src="/imgs/Signupforclient.png" alt="보호자로 가입하기" />
-          <ClientSign>보호자로 가입하기</ClientSign>
-        </ImageButton>
-        <ImageButton onClick={handlePetsitterOAuth}>
-          <Image src="/imgs/Signupforpetsitter.png" alt="펫시터로 가입하기" />
-          <PetsitterSign>펫시터로 가입하기</PetsitterSign>
-        </ImageButton>
-      </ImgContainer>
+      {me && me.role === UserRole.USER ? (
+        <ImgContainer>
+          <ImageButton onClick={handleClientOAuth}>
+            <Image src="/imgs/Signupforclient.png" alt="보호자로 가입하기" />
+            <ClientSign>보호자로 가입하기</ClientSign>
+          </ImageButton>
+          <ImageButton onClick={handlePetsitterOAuth}>
+            <Image src="/imgs/Signupforpetsitter.png" alt="펫시터로 가입하기" />
+            <PetsitterSign>펫시터로 가입하기</PetsitterSign>
+          </ImageButton>
+        </ImgContainer>
+      ) : (
+        <Loading />
+      )}
     </MainContainer>
   );
 }
