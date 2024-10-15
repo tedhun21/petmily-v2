@@ -19,6 +19,7 @@ import { checkInDisableTime, checkOutDisableTime, reservationDisableDate } from 
 
 import { Row } from 'commonStyle';
 import PetContainer from './component/step1/PetContainer';
+import { toast } from 'react-toastify';
 
 export default function Step1({ onNext }: any) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -54,10 +55,9 @@ export default function Step1({ onNext }: any) {
     setIsModalOpen(true);
   };
 
-  const onSubmit = (data: any) => {
+  const onSubmit = () => {
     if (checkedPets.length === 0 || checkedPets.length > 3) {
-      window.alert('펫은 최소 1마리 최대 3마리까지 가능합니다.');
-      return;
+      return toast.warning('펫은 최소 1마리 최대 3마리까지 가능합니다.');
     }
 
     if (date && startTime && endTime && address !== '' && detailAddress !== '') {

@@ -19,6 +19,7 @@ import { fetcherWithCookie, posterWithCookie } from 'api';
 import useSWR from 'swr';
 import { timeRange } from 'utils/date';
 import Loading from '@components/Loading';
+import { toast } from 'react-toastify';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -42,11 +43,11 @@ export default function Step3() {
   // reservation create
   const { trigger, isMutating } = useSWRMutation(`${API_URL}/reservations`, posterWithCookie, {
     onSuccess: () => {
-      window.alert('예약 신청이 완료되었습니다');
       navigate('/cares');
+      toast.success('예약 신청이 완료되었습니다!');
     },
     onError: () => {
-      window.alert('에약 신청에 실패했습니다.');
+      toast.error('에약 신청에 실패했습니다.');
     },
   });
 

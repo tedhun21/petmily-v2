@@ -11,7 +11,6 @@ import { fetcherWithCookie } from 'api';
 import { ImageCentered, RoundedImageWrapper } from 'commonStyle';
 
 const API_URL = process.env.REACT_APP_API_URL;
-const BUCKET_URL = process.env.REACT_APP_BUCKET_URL;
 
 export default function Me() {
   const { data: me } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);
@@ -32,7 +31,7 @@ export default function Me() {
             </MyImage>
 
             <TextWrapper>
-              <NameText>{`${me?.nickname} 님`}</NameText>
+              {me?.nickname && <NameText>{`${me?.nickname} 님`}</NameText>}
               <HelloText>안녕하세요!</HelloText>
             </TextWrapper>
           </MyProfile>

@@ -11,6 +11,8 @@ import { poster } from 'api';
 import { setCookie } from 'utils/cookie';
 import GoogleOAuthButton from '@components/buttons/OAuthButton';
 import Loading from '@components/Loading';
+import { Column, ErrorMessage } from 'commonStyle';
+import { toast } from 'react-toastify';
 
 const schema = yup.object().shape({
   email: yup.string().email('이메일 형식을 지켜주세요.').required('ID는 필수입니다.'),
@@ -31,9 +33,10 @@ export default function Login() {
     onSuccess: (data) => {
       setCookie('access_token', data.access_token);
       navigate('/');
+      toast.success('환영합니다!');
     },
     onError: () => {
-      window.alert('로그인에 실패헸습니다. 다시 시도해 주세요');
+      toast.error('로그인에 실패헸습니다. 다시 시도해 주세요');
     },
   });
 
@@ -57,14 +60,14 @@ export default function Login() {
       <img src="/imgs/Logo.svg" alt="logo" width="150px" height="48px" />
       <LoginContainer>
         <FormContainer onSubmit={handleSubmit(onSubmit)}>
-          <div>
+          <InputError>
             <LoginInput type="email" placeholder="아이디" {...register('email', { required: true })} />
             {errors.email?.message && <ErrorMessage>{errors.email?.message}</ErrorMessage>}
-          </div>
-          <div>
+          </InputError>
+          <InputError>
             <LoginInput type="password" placeholder="비밀번호" {...register('password', { required: true })} />
             {errors.password?.message && <ErrorMessage>{errors.password?.message}</ErrorMessage>}
-          </div>
+          </InputError>
           <div>
             <SubmitButton type="submit" disabled={isMutating}>
               {isMutating ? <Loading /> : '로 그 인'}
@@ -149,9 +152,6 @@ const CustomLink = styled(Link)`
   text-decoration-line: none;
 `;
 
-export const ErrorMessage = styled.p`
-  margin-top: 4px;
-  padding-left: 4px;
-  color: ${({ theme }) => theme.colors.paleBlue};
-  font-size: 12px;
+const InputError = styled(Column)`
+  gap: 4px;
 `;

@@ -10,7 +10,6 @@ import useSWRMutation from 'swr/mutation';
 import { PiCatBold, PiDogBold } from 'react-icons/pi';
 
 import UploadProfileImg from '../../components/UploadProfileImg';
-import { ErrorMsg } from './EditMe';
 
 import {
   ButtonContainer,
@@ -28,13 +27,14 @@ import {
   TitleContainer,
   TypeRadioLabel,
   UnitText,
-} from './RegisterPet';
-import { Row, Texts20h30 } from 'commonStyle';
+} from './CreatePet';
+import { ErrorMessage, Row, Texts20h30 } from 'commonStyle';
 
 import { FaXmark } from 'react-icons/fa6';
 import styled from 'styled-components';
 import { deleterWithCookie, fetcher, updaterWithCookie } from 'api';
 import Loading from '@components/Loading';
+import { toast } from 'react-toastify';
 
 const schema = yup.object().shape({
   species: yup.string().oneOf(['Dog', 'Cat'], '강아지인가요 고양이인가요?').required('이 항목은 필수입니다.'),
@@ -82,23 +82,21 @@ export default function EditPet() {
 
   const { trigger: updateTrigger, isMutating } = useSWRMutation(`${API_URL}/pets/${petId}`, updaterWithCookie, {
     onSuccess: () => {
-      window.alert('수정이 완료되었습니다');
       navigate('/me');
+      toast.success('수정이 완료되었습니다!');
     },
     onError: () => {
-      window.alert('수정 실패하였습니다');
-      navigate(0);
+      toast.error('수정 실패하였습니다. 다시 시도해 주세요.');
     },
   });
 
   const { trigger: deleteTrigger } = useSWRMutation(`${API_URL}/pets/${petId}`, deleterWithCookie, {
     onSuccess: () => {
-      window.alert('펫 정보가 삭제되었습니다');
       navigate('/me');
+      toast.success('펫 정보가 삭제되었습니다!');
     },
     onError: () => {
-      window.alert('펫 정보 삭제에 실패했습니다');
-      navigate(0);
+      toast.error('펫 정보 삭제에 실패했습니다. 다시 시도해주세요.');
     },
   });
 
@@ -172,14 +170,14 @@ export default function EditPet() {
               <PiCatBold size="20px" color="white" />
             </TypeRadioLabel>
           </ButtonContainer>
-          {errors.species && <ErrorMsg>{errors.species.message}</ErrorMsg>}
+          {errors.species && <ErrorMessage>{errors.species.message}</ErrorMessage>}
 
           {/* 이름 */}
           <InputContainer>
             <InputLabel htmlFor="name">이름</InputLabel>
             <InputWrapper>
               <Input type="text" placeholder="e.g. 도기" {...register('name')} />
-              {errors.name && <ErrorMsg>{errors.name.message}</ErrorMsg>}
+              {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
             </InputWrapper>
           </InputContainer>
 
@@ -209,7 +207,7 @@ export default function EditPet() {
             <InputLabel>품종</InputLabel>
             <InputWrapper>
               <Input type="text" placeholder="e.g. 골든 리트리버 or 샴" {...register('breed')} />
-              {errors.breed && <ErrorMsg>{errors.breed.message}</ErrorMsg>}
+              {errors.breed && <ErrorMessage>{errors.breed.message}</ErrorMessage>}
             </InputWrapper>
           </InputContainer>
 
@@ -220,7 +218,7 @@ export default function EditPet() {
                 <Input type="number" min={0} placeholder="e.g. 5" {...register('age')} />
                 <UnitText>살</UnitText>
               </Row>
-              {errors.age && <ErrorMsg>{errors.age.message}</ErrorMsg>}
+              {errors.age && <ErrorMessage>{errors.age.message}</ErrorMessage>}
             </InputWrapper>
           </InputContainer>
 
@@ -231,7 +229,7 @@ export default function EditPet() {
                 <Input type="number" placeholder="e.g. 10" min={0} step={0.1} {...register('weight')} />
                 <UnitText>kg</UnitText>
               </Row>
-              {errors.weight && <ErrorMsg>{errors.weight.message}</ErrorMsg>}
+              {errors.weight && <ErrorMessage>{errors.weight.message}</ErrorMessage>}
             </InputWrapper>
           </InputContainer>
 
