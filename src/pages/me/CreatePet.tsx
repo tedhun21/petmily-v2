@@ -10,7 +10,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { PiCatBold, PiDogBold } from 'react-icons/pi';
 
 import UploadProfileImg from '@components/UploadProfileImg';
-import { Column, Row, Texts20h30 } from 'commonStyle';
+import { Column, ErrorMessage, Row, Texts20h30 } from 'commonStyle';
 
 import useSWRMutation from 'swr/mutation';
 import { posterWithCookie } from 'api';
@@ -18,7 +18,7 @@ import Loading from '@components/Loading';
 import { toast } from 'react-toastify';
 
 const schema = yup.object().shape({
-  type: yup.string().oneOf(['DOG', 'CAT'], '강아지인가요 고양이인가요?').required('이 항목은 필수입니다.'),
+  species: yup.string().oneOf(['Dog', 'Cat'], '강아지인가요 고양이인가요?').required('이 항목은 필수입니다.'),
   name: yup.string().max(50, '이름은 최대 50자를 초과할 수 없습니다.').required('이 항목은 필수입니다.'),
   age: yup
     .number()
@@ -27,14 +27,14 @@ const schema = yup.object().shape({
     .integer('나이는 정수로 입력해 주세요.')
     .min(1, '나이는 1살 이상이어야 합니다.')
     .max(100, '나이는 100살 이하이어야 합니다.'),
-  species: yup.string().max(50, '품종은 최대 50자를 초과할 수 없습니다.').required('이 항목은 필수입니다.'),
+  breed: yup.string().max(50, '품종은 최대 50자를 초과할 수 없습니다.').required('이 항목은 필수입니다.'),
   weight: yup
     .number()
     .typeError('몸무게는 숫자만 입력해 주세요.')
     .min(1, '몸무게는 1kg 이상이어야 합니다.')
     .max(100, '몸무게는 100kg 이하이어야 합니다.')
     .required('이 항목은 필수입니다.'),
-  gender: yup.string().oneOf(['MALE', 'FEMALE'], '성별을 선택해주세요.').required('이 항목은 필수입니다.'),
+  gender: yup.string().oneOf(['Male', 'Female'], '성별을 선택해주세요.').required('이 항목은 필수입니다.'),
   neutering: yup.boolean().required('이 항목은 필수입니다.'),
   body: yup.string().max(1000, '소개는 최대 1000자를 초과할 수 없습니다.'),
 });
@@ -56,7 +56,7 @@ export default function CreatePet() {
   } = useForm<IRegisterPet>({
     resolver: yupResolver(schema),
     defaultValues: {
-      type: 'DOG',
+      species: 'Dog',
     },
   });
 
@@ -71,11 +71,13 @@ export default function CreatePet() {
   });
 
   const handlePetType = (e: MouseEvent<HTMLInputElement>) => {
-    const value = (e.target as HTMLInputElement).value as 'DOG' | 'CAT'; // 타입 캐스팅
-    setValue('type', value);
+    const value = (e.target as HTMLInputElement).value as 'Dog' | 'Cat'; // 타입 캐스팅
+    setValue('species', value);
   };
 
+  // 제출 onSubmit
   const onSubmit = async (data: IRegisterPet) => {
+    console.log(data);
     const formData = new FormData();
 
     formData.append('data', JSON.stringify(data));
@@ -96,28 +98,28 @@ export default function CreatePet() {
         <UploadProfileImg
           previewImage={previewImage}
           setPreviewImage={setPreviewImage}
-          defaultImage={watch('type') === 'DOG' ? '/imgs/DogProfile.png' : '/imgs/CatProfile.png'}
+          defaultImage={watch('species') === 'Dog' ? '/imgs/DogProfile.png' : '/imgs/CatProfile.png'}
         />
         <FormContainer onSubmit={handleSubmit(onSubmit)}>
           {/* 타입 */}
           <ButtonContainer>
-            <TypeRadioLabel isSelected={watch('type') === 'DOG'}>
-              <input hidden type="radio" value="DOG" {...register('type')} onClick={handlePetType} />
+            <TypeRadioLabel isSelected={watch('species') === 'Dog'}>
+              <input hidden type="radio" value="Dog" {...register('species')} onClick={handlePetType} />
               <PiDogBold size="20px" color="white" />
             </TypeRadioLabel>
-            <TypeRadioLabel isSelected={watch('type') === 'CAT'}>
-              <input hidden type="radio" value="CAT" {...register('type')} onClick={handlePetType} />
+            <TypeRadioLabel isSelected={watch('species') === 'Cat'}>
+              <input hidden type="radio" value="Cat" {...register('species')} onClick={handlePetType} />
               <PiCatBold size="20px" color="white" />
             </TypeRadioLabel>
           </ButtonContainer>
-          {errors.type && <ErrorMsg>{errors.type.message}</ErrorMsg>}
+          {errors.species && <ErrorMessage>{errors.species.message}</ErrorMessage>}
 
           {/* 이름 */}
           <InputContainer>
             <InputLabel htmlFor="name">이름</InputLabel>
             <InputWrapper>
               <Input type="text" placeholder="e.g. 도기" {...register('name')} />
-              {errors.name && <ErrorMsg>{errors.name.message}</ErrorMsg>}
+              {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
             </InputWrapper>
           </InputContainer>
 
@@ -126,12 +128,12 @@ export default function CreatePet() {
             <InputLabel>성별</InputLabel>
             <RadioContainer>
               <RadioWrapper>
-                <input type="radio" value="MALE" {...register('gender')} />
-                <GenderRadioLabel htmlFor="MALE">남자 아이</GenderRadioLabel>
+                <input type="radio" value="Male" {...register('gender')} />
+                <GenderRadioLabel htmlFor="Male">남자 아이</GenderRadioLabel>
               </RadioWrapper>
               <RadioWrapper>
-                <input type="radio" value="FEMALE" {...register('gender')} />
-                <GenderRadioLabel htmlFor="FEMALE">여자 아이</GenderRadioLabel>
+                <input type="radio" value="Female" {...register('gender')} />
+                <GenderRadioLabel htmlFor="Female">여자 아이</GenderRadioLabel>
               </RadioWrapper>
             </RadioContainer>
           </InputContainer>
@@ -146,8 +148,8 @@ export default function CreatePet() {
           <InputContainer>
             <InputLabel>품종</InputLabel>
             <InputWrapper>
-              <Input type="text" placeholder="e.g. 골든 리트리버 or 샴" {...register('species')} />
-              {errors.species && <ErrorMsg>{errors.species.message}</ErrorMsg>}
+              <Input type="text" placeholder="e.g. 골든 리트리버 or 샴" {...register('breed')} />
+              {errors.breed && <ErrorMessage>{errors.breed.message}</ErrorMessage>}
             </InputWrapper>
           </InputContainer>
 
@@ -158,7 +160,7 @@ export default function CreatePet() {
                 <Input type="number" min={0} placeholder="e.g. 5" {...register('age')} />
                 <UnitText>살</UnitText>
               </Row>
-              {errors.age && <ErrorMsg>{errors.age.message}</ErrorMsg>}
+              {errors.age && <ErrorMessage>{errors.age.message}</ErrorMessage>}
             </InputWrapper>
           </InputContainer>
 
@@ -169,7 +171,7 @@ export default function CreatePet() {
                 <Input type="number" placeholder="e.g. 10" min={0} step={0.1} {...register('weight')} />
                 <UnitText>kg</UnitText>
               </Row>
-              {errors.weight && <ErrorMsg>{errors.weight.message}</ErrorMsg>}
+              {errors.weight && <ErrorMessage>{errors.weight.message}</ErrorMessage>}
             </InputWrapper>
           </InputContainer>
 
@@ -298,13 +300,6 @@ export const PetTextarea = styled.textarea`
   padding: 8px;
   border: 1px solid ${({ theme }) => theme.textColors.gray60};
   border-radius: 8px;
-`;
-
-export const ErrorMsg = styled.div`
-  color: red;
-  display: bolck;
-  margin-top: 5px;
-  ${(props) => props.theme.fontSize.s14h21}
 `;
 
 export const SubmitButton = styled.button`

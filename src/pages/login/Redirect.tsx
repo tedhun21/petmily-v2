@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import useSWR from 'swr';
 import { fetcherWithToken, updaterWithToken } from 'api';
 
-import { User, UserRole } from 'types/user';
+import { User, UserRole } from 'types/user.type';
 import { useNavigate } from 'react-router-dom';
 import { setCookie } from 'utils/cookie';
 import useSWRMutation from 'swr/mutation';
