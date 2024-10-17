@@ -107,9 +107,10 @@ export default function ProgressButton({ meRole, reservation }: any) {
         case 'Completed':
           return (
             <>
+              {reservation?.jounarl ? <Button>일지 보기</Button> : null}
               {reservation.review ? (
                 <Button disabled={false} onClick={handleLinkReview}>
-                  리뷰 보기
+                  리뷰 수정
                 </Button>
               ) : (
                 <Button disabled={isMutating} onClick={handleLinkCreateReview}>
@@ -127,7 +128,9 @@ export default function ProgressButton({ meRole, reservation }: any) {
 }
 
 const ButtonContainer = styled.div`
+  display: flex;
   width: 100%;
+  gap: 8px;
 `;
 
 // 1. 고객
@@ -142,7 +145,7 @@ const ButtonContainer = styled.div`
 // 1-3. progress === "CANCELED" => 취소됨 inActive
 // 1-4. progress === "FINISHED" => 일지 작성하기 active
 
-const Button = styled.button<{ disabled: boolean }>`
+const Button = styled.button<{ disabled?: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;

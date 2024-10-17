@@ -6,10 +6,10 @@ import styled from 'styled-components';
 import { formatProgress } from 'utils/misc';
 import { fetcherWithCookie } from 'api';
 
-import PetsitterCard from './component/care/PetsitterCard';
-import PetContainer from './component/care/PetContainer';
-import DetailReservation from './component/care/DetailReservation';
-import ProgressButton from './component/care/ProgressButton';
+import PetsitterCard from './component/care_detail/PetsitterCard';
+import PetContainer from './component/care_detail/PetContainer';
+import DetailReservation from './component/care_detail/DetailReservation';
+import ProgressButton from './component/care_detail/ProgressButton';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -19,20 +19,17 @@ export default function CareDetail() {
   const { data: me } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);
   const { data: reservation } = useSWR(`${API_URL}/reservations/${id}`, fetcherWithCookie);
 
+  console.log(reservation?.review);
+  console.log(reservation?.journal);
   return (
     <ReservationContainer>
       <Progress>
         <span>{formatProgress(reservation?.status)}...</span>
       </Progress>
-
       <PetsitterCard petsitter={reservation?.petsitter} />
-
       <PetContainer pets={reservation?.pets} />
-
       {/* <Maps location={reservation?.address} /> */}
-
       <span>{reservation?.address}</span>
-
       <DetailReservation reservation={reservation} />
 
       <ProgressButton meRole={me?.role} reservation={reservation} />
