@@ -29,6 +29,15 @@ const API_URL = process.env.REACT_APP_API_URL;
 export default function Login() {
   const navigate = useNavigate();
 
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm<IFormLoginInputs>({
+    resolver: yupResolver(schema),
+  });
+
   const { trigger, isMutating } = useSWRMutation(`${API_URL}/auth/login`, poster, {
     onSuccess: (data) => {
       setCookie('access_token', data.access_token);
@@ -42,17 +51,24 @@ export default function Login() {
 
   // const [GuestLoginLoading, setGuestLoginLoading] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<IFormLoginInputs>({
-    resolver: yupResolver(schema),
-  });
-
   const onSubmit = async (data: IFormLoginInputs) => {
     const { email, password } = data;
-    await trigger({ email, password });
+
+    try {
+      await trigger({ email, password }); // await를 사용하여 에러 처리
+    } catch (error: any) {
+      // 에러 처리
+      if (error.response) {
+        // not found
+        if (error.response.data.statusCode === 404) {
+          setError('email', { type: error.response.data.error, message: error.response.data.message });
+        }
+        // unauthorized
+        if (error.response.data.statusCode === 401) {
+          setError('password', { type: error.response.data.error, message: error.response.data.message });
+        }
+      }
+    }
   };
 
   return (
@@ -62,11 +78,11 @@ export default function Login() {
         <FormContainer onSubmit={handleSubmit(onSubmit)}>
           <InputError>
             <LoginInput type="email" placeholder="아이디" {...register('email', { required: true })} />
-            {errors.email?.message && <ErrorMessage>{errors.email?.message}</ErrorMessage>}
+            {errors?.email && <ErrorMessage>{errors.email?.message}</ErrorMessage>}
           </InputError>
           <InputError>
             <LoginInput type="password" placeholder="비밀번호" {...register('password', { required: true })} />
-            {errors.password?.message && <ErrorMessage>{errors.password?.message}</ErrorMessage>}
+            {errors?.password && <ErrorMessage>{errors.password?.message}</ErrorMessage>}
           </InputError>
           <div>
             <SubmitButton type="submit" disabled={isMutating}>
