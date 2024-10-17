@@ -6,8 +6,9 @@ import { useInView } from 'framer-motion';
 
 import { CenterContainer } from 'commonStyle';
 import { infiniteFetcherWithCookie } from 'api';
-import CareCard from './Carecard';
+
 import Loading from '@components/Loading';
+import CareCard from './CareCard';
 
 const API_URL = process.env.REACT_APP_API_URL;
 export default function CareContainer({ filter, order }: any) {
