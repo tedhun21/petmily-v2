@@ -1,10 +1,9 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import styled from 'styled-components';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 
-import { TextField, Box } from '@mui/material';
+import { TextField } from '@mui/material';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -56,8 +55,9 @@ export default function Step1({ onNext }: any) {
   };
 
   const onSubmit = () => {
-    if (checkedPets.length === 0 || checkedPets.length > 3) {
-      return toast.warning('펫은 최소 1마리 최대 3마리까지 가능합니다.');
+    if (checkedPets?.length === 0 || checkedPets?.length > 3) {
+      toast.warning('펫은 최소 1마리 최대 3마리까지 가능합니다.');
+      return;
     }
 
     if (date && startTime && endTime && address !== '' && detailAddress !== '') {
@@ -253,7 +253,7 @@ const SelectTitle = styled.h1`
   ${({ theme }) => theme.fontSize.s16h24};
 `;
 
-const ButtonContainer = styled(Box)`
+const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;

@@ -3,10 +3,11 @@ import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { AnimatePresence, motion } from 'framer-motion';
 
+import StatusHeader from './component/StatusHeader';
 import Step1 from './Step1';
 import Step2 from './Step2';
 import Step3 from './Step3';
-import StatusHeader from './component/StatusHeader';
+import Step4 from './Step4';
 
 export default function FormWizard() {
   const methods = useForm({
@@ -36,7 +37,9 @@ export default function FormWizard() {
       case 2:
         return <Step2 onNext={handleNextStep} onPrevious={handlePreviousStep} />;
       case 3:
-        return <Step3 />;
+        return <Step3 onNext={handleNextStep} onPrevious={handlePreviousStep} />;
+      case 4:
+        return <Step4 />;
       default:
         return null;
     }

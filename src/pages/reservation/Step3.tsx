@@ -1,141 +1,65 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router';
-
-import styled from 'styled-components';
+import { ImageCentered, RoundedImageWrapper, Texts18h27 } from 'commonStyle';
 import { useFormContext } from 'react-hook-form';
-import useSWRMutation from 'swr/mutation';
-
-import { TextField } from '@mui/material';
-import dayjs from 'dayjs';
-
-import { GoChecklist } from 'react-icons/go';
-
-import { Column, Row } from 'commonStyle';
-import SelectedPetsitter from './component/step3/SelectedPetsitterCard';
-import SelectedPets from './component/step3/SelectedPets';
-import Confirm from './component/step3/Confirm';
-
-import { fetcherWithCookie, posterWithCookie } from 'api';
-import useSWR from 'swr';
+import { PiCatBold, PiDogBold, PiStarFill } from 'react-icons/pi';
+import styled from 'styled-components';
 import { timeRange } from 'utils/date';
-import Loading from '@components/Loading';
-import { toast } from 'react-toastify';
 
-const API_URL = process.env.REACT_APP_API_URL;
+export default function Step3({ onNext, onPrevious }: any) {
+  const { getValues, watch } = useFormContext();
+  const { petsitter } = getValues();
 
-export default function Step3() {
-  const navigate = useNavigate();
-
-  const [isChecked, setIsChecked] = useState(false);
-
-  const {
-    register,
-    getValues,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useFormContext();
-
-  const { date, startTime, endTime, address, detailAddress, checkedPets, petsitter } = getValues();
-
-  const { data: me } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);
-
-  // reservation create
-  const { trigger, isMutating } = useSWRMutation(`${API_URL}/reservations`, posterWithCookie, {
-    onSuccess: () => {
-      navigate('/cares');
-      toast.success('예약 신청이 완료되었습니다!');
-    },
-    onError: () => {
-      toast.error('에약 신청에 실패했습니다.');
-    },
-  });
-
-  const onSubmit = async (data: any) => {
-    const { date, startTime, endTime, address, detailAddress, body, checkedPets, petsitter } = data;
-    const formattedDate = dayjs(date).format('YYYY-MM-DD');
-    const formattedStartTime = dayjs(startTime).format('HH:mm:ss');
-    const formattedEndTime = dayjs(endTime).format('HH:mm:ss');
-    const formattedPetId = checkedPets.map((pet: any) => pet.id);
-
-    const formattedData = {
-      date: formattedDate,
-      startTime: formattedStartTime,
-      endTime: formattedEndTime,
-      address,
-      detailAddress,
-      petId: formattedPetId,
-      body,
-      petsitterId: petsitter.id,
-      status: 'Pending',
-    };
-
-    await trigger({ formData: formattedData });
-  };
-
+  console.log(petsitter);
+  // console.log(watch());
   return (
     <MainContainer>
-      <TitleContainer>
-        {/* <CheckTitleText>{nickName}님</CheckTitleText> */}
-        <CheckTitleText>예약내역을 확인해주세요</CheckTitleText>
-        <CheckIconWrapper>
-          <GoChecklist size="32px" color="white" />
-        </CheckIconWrapper>
-      </TitleContainer>
+      <ImageNickname>
+        <ImageWrapper>
+          <ImageCentered src={petsitter?.photo ? `${petsitter.photo}` : '/imgs/DefaultUserProfile.jpg'} />
+        </ImageWrapper>
+        <Texts18h27>{petsitter?.nickname}</Texts18h27>
+      </ImageNickname>
 
-      <SelectedPetsitter petsitter={petsitter} />
+      <div>
+        <div>
+          <PiStarFill color="#279EFF" size="20px" />
+          <span>{petsitter?.star}</span>
+        </div>
+        <div>
+          <span>10,400</span>
+          <span>케어 횟수</span>
+        </div>
+        <div></div>
+      </div>
 
-      <ReservationResult>
-        <ResultWrapper>
-          <ReservationLabel>주소</ReservationLabel>
-          <ReservationSpan>{`${address} ${detailAddress}`}</ReservationSpan>
-        </ResultWrapper>
-        <ResultWrapper>
-          <ReservationLabel>예약 날짜</ReservationLabel>
-          <ReservationSpan>{dayjs(date).format('YYYY-MM-DD')}</ReservationSpan>
-        </ResultWrapper>
-        <ResultWrapper>
-          <ReservationLabel>예약 시간</ReservationLabel>
-          <ReservationSpan>{timeRange(startTime, endTime)}</ReservationSpan>
-        </ResultWrapper>
-      </ReservationResult>
+      <span>리뷰 보기</span>
 
-      <SelectedPets checkedPets={checkedPets} />
-
-      <FormContainer onSubmit={handleSubmit(onSubmit)}>
-        <RequestContactSection>
-          <RequestContainer>
-            <RequestText>요청사항</RequestText>
-            <StyledTextField
-              {...register('body', { required: true })}
-              id="outlined-basic"
-              label={'예) 산책중에 아무거나 잘 삼켜서 주의해주셔야 해요.'}
-              variant="outlined"
-              error={errors.body?.type === 'required'}
-              fullWidth
-              multiline
-            />
-          </RequestContainer>
-
-          <ContactContainer>
-            <RequestText>연락처</RequestText>
-            <TextContainer>
-              <ContactText>{me?.phone}</ContactText>
-              <ContactSubText>프로필 번호로 카카오 알림톡 전송</ContactSubText>
-            </TextContainer>
-          </ContactContainer>
-        </RequestContactSection>
-
-        <CofirmButtonContainer>
-          <Confirm isChecked={isChecked} setIsChecked={setIsChecked} />
-
-          <ButtonContainer>
-            <StyledButton type="submit" disabled={isMutating || !isChecked || watch('body') === ''}>
-              {isMutating ? <Loading /> : <span>예약하기</span>}
-            </StyledButton>
-          </ButtonContainer>
-        </CofirmButtonContainer>
-      </FormContainer>
+      <InfoContainer>
+        <InfoWrapper>
+          <span>가능한 펫 종류</span>
+          {Array.isArray(petsitter?.possiblePetSpecies) &&
+            petsitter?.possiblePetSpecies.length > 0 &&
+            petsitter?.possiblePetSpecies?.map((species: string, index: number) =>
+              species === 'Dog' ? (
+                <PiDogBold key={index} size="20px" color="#237EFF" />
+              ) : species === 'Cat' ? (
+                <PiCatBold key={index} size="20px" color="#237EFF" />
+              ) : null,
+            )}
+        </InfoWrapper>
+        <InfoWrapper>
+          <span>가능한 요일</span>
+          {petsitter?.possibleDays.map((day: string) => <span key={day}>{day}</span>)}
+        </InfoWrapper>
+        <InfoWrapper>
+          <span>가능한 시간</span>
+          <span>{timeRange(petsitter?.possibleStartTime, petsitter?.possibleEndTime)}</span>
+        </InfoWrapper>
+      </InfoContainer>
+      <ButtonContainer>
+        <StyledButton type="button" onClick={onNext}>
+          예약하러가기
+        </StyledButton>
+      </ButtonContainer>
     </MainContainer>
   );
 }
@@ -143,116 +67,37 @@ export default function Step3() {
 const MainContainer = styled.main`
   display: flex;
   flex-direction: column;
-  padding: 12px;
+`;
+
+const ImageNickname = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const ImageWrapper = styled(RoundedImageWrapper)`
+  width: 80px;
+  height: 80px;
+`;
+
+const InfoContainer = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
   gap: 8px;
 `;
 
-const CheckTitleText = styled.h1`
-  ${(props) => props.theme.fontSize.s20h30};
-  font-weight: ${(props) => props.theme.fontWeights.extrabold};
-`;
-
-const CheckIconWrapper = styled.div`
+const InfoWrapper = styled.li`
   display: flex;
-  justify-content: center;
-  align-itmems: center;
-  background-color: ${(props) => props.theme.colors.mainBlue};
+  flex-direction: column;
+  border: 2px solid ${(props) => props.theme.colors.mainBlue};
   padding: 8px;
-  border-radius: 50%;
-`;
-
-const TitleContainer = styled(Row)`
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-  padding: 12px;
-`;
-
-const ReservationResult = styled.section`
-  display: flex;
-  flex-direction: column;
-  padding: 24px;
-  border-radius: 12px;
-  gap: 16px;
-  background-color: ${(props) => props.theme.colors.white};
-  box-shadow: ${(props) => props.theme.shadow.dp01};
-`;
-
-const ResultWrapper = styled(Row)`
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const ReservationLabel = styled.span`
-  ${(props) => props.theme.fontSize.s16h24};
-  font-weight: ${(props) => props.theme.fontWeights.bold};
-  color: ${(props) => props.theme.textColors.gray30};
-  white-space: nowrap;
-`;
-
-const ReservationSpan = styled.span`
-  ${(props) => props.theme.fontSize.s14h21};
-`;
-
-const FormContainer = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-`;
-
-const RequestContactSection = styled.section`
-  display: flex;
-  flex-direction: column;
-  padding: 24px;
-  border-radius: 12px;
-  gap: 16px;
-  background-color: ${(props) => props.theme.colors.white};
-  box-shadow: ${(props) => props.theme.shadow.dp01};
-`;
-
-const RequestContainer = styled(Column)`
-  gap: 8px;
-`;
-
-const RequestText = styled.h2`
-  ${(props) => props.theme.fontSize.s16h24};
-  font-weight: ${(props) => props.theme.fontWeights.bold};
-`;
-
-const StyledTextField = styled(TextField)`
-  .MuiInputLabel-root {
-    color: #d9d9d9;
-    font-size: 14px;
-  }
-`;
-
-const ContactContainer = styled(Row)`
-  gap: 20px;
-`;
-
-const TextContainer = styled(Column)``;
-
-const ContactText = styled.span`
-  ${(props) => props.theme.fontSize.s14h21};
-  font-weight: ${(props) => props.theme.fontWeights.light};
-`;
-
-const ContactSubText = styled.div`
-  ${(props) => props.theme.fontSize.s12h18};
-  font-weight: ${(props) => props.theme.fontWeights.light};
-  color: ${(props) => props.theme.textColors.primary};
-`;
-
-const CofirmButtonContainer = styled.section`
-  display: flex;
-  flex-direction: column;
+  border-radius: 20px;
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 8px;
 `;
 
 const StyledButton = styled.button`
@@ -260,22 +105,16 @@ const StyledButton = styled.button`
   width: 100%;
   padding: 12px;
   border: none;
-  background-color: ${(props) => props.theme.colors.mainBlue};
+  background-color: ${({ theme }) => theme.colors.mainBlue};
   color: white;
   cursor: pointer;
-  ${(props) => props.theme.fontSize.s16h24};
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
+  ${({ theme }) => theme.fontSize.s16h24};
 
   &:hover {
-    background-color: ${(props) => props.theme.colors.subBlue};
+    background-color: ${({ theme }) => theme.colors.subBlue};
   }
-
   &:active {
-    background-color: ${(props) => props.theme.colors.darkBlue};
-    box-shadow: ${(props) => props.theme.shadow.inset};
+    background-color: ${({ theme }) => theme.colors.darkBlue};
+    box-shadow: ${({ theme }) => theme.shadow.inset};
   }
 `;

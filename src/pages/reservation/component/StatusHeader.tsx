@@ -18,7 +18,7 @@ export default function StatusHeader({ currentStep, onPrevious }: IStatusProps) 
         <IoArrowBackOutline size="16px" />
       </BackArrowButton>
       <Title>예약</Title>
-      <PageNumber>{currentStep}/3</PageNumber>
+      <PageNumber>{currentStep}/4</PageNumber>
     </Header>
   );
 }

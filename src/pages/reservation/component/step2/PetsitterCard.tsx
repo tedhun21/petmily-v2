@@ -30,7 +30,7 @@ export default function PetsitterCard({ petsitter, onNext }: any) {
 
   return (
     <>
-      <Card onClick={handleOpen}>
+      <Card onClick={handleNextStep}>
         <InfoWrapper>
           <PetssiterImageWrapper>
             <ImageCentered src={photo ? `${photo}` : '/imgs/DefaultUserProfile.jpg'} alt="petsitter_photo" />
@@ -57,7 +57,7 @@ export default function PetsitterCard({ petsitter, onNext }: any) {
           </PetsitterBody>
         </InfoWrapper>
       </Card>
-      <Modal open={open} onClose={handleClose}>
+      {/* <Modal open={open} onClose={handleClose}>
         <ModalContainer>
           <ImageContainer>
             <ModalPetsitterImageWrapper>
@@ -91,7 +91,7 @@ export default function PetsitterCard({ petsitter, onNext }: any) {
           </div>
           <NextStepButton onClick={handleNextStep}>예약하러가기</NextStepButton>
         </ModalContainer>
-      </Modal>
+      </Modal> */}
     </>
   );
 }
