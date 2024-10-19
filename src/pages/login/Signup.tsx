@@ -15,6 +15,7 @@ import { SubmitButton } from './Login';
 import { poster } from 'api';
 import { ErrorMessage } from 'commonStyle';
 import { toast } from 'react-toastify';
+import Loading from '@components/Loading';
 
 const schema = yup.object().shape({
   username: yup
@@ -108,9 +109,23 @@ export default function Signup() {
       nickname,
       password,
       role: isPetsitter ? 'Petsitter' : 'Client',
+      provider: 'local',
     };
 
-    await trigger(createData);
+    try {
+      await trigger(createData);
+    } catch (e: any) {
+      if (e.response) {
+        if (e.response.data.statusCode === 409) {
+          if (e.response.data.field === 'email') {
+            setError('email', { type: e.response.data.error, message: e.response.data.message });
+          }
+          if (e.response.data.field === 'nickname') {
+            setError('nickname', { type: e.response.data.error, message: e.response.data.message });
+          }
+        }
+      }
+    }
   };
 
   return (
@@ -196,16 +211,9 @@ export default function Signup() {
             <input type="checkbox" id="isPetsitter" {...register('isPetsitter')} />
           </CheckBoxWrapper>
           <ButtonContainer>
-            <div style={{ position: 'relative' }}>
-              <SubmitButton type="submit" disabled={isMutating}>
-                펫밀리 등록
-              </SubmitButton>
-              {isMutating && (
-                <LoadingContainer>
-                  <Spinner />
-                </LoadingContainer>
-              )}
-            </div>
+            <SubmitButton type="submit" disabled={isMutating}>
+              {isMutating ? <Loading /> : '펫밀리 등록'}
+            </SubmitButton>
             <GoogleOAuthButton>Sign up with Google</GoogleOAuthButton>
           </ButtonContainer>
         </InputFormContainer>

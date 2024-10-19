@@ -23,6 +23,7 @@ export default function Redirect() {
     fetcherWithToken(url, access_token),
   );
 
+  // 유저 role update
   const { trigger } = useSWRMutation(
     me ? `${API_URL}/users/${me.id}` : null,
     (url: string, { arg }: { arg: any }) => updaterWithToken(url, access_token, { arg }),
@@ -51,6 +52,7 @@ export default function Redirect() {
     await trigger({ formData });
   };
 
+  //
   useEffect(() => {
     if (me && access_token && (me.role === UserRole.CLIENT || me.role === UserRole.PETSITTER)) {
       setCookie('access_token', access_token);
