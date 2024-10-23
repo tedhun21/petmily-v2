@@ -1,38 +1,19 @@
-import { useState, useEffect, MouseEvent } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { MouseEvent, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import styled from 'styled-components';
 
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import useSWR from 'swr';
-import useSWRMutation from 'swr/mutation';
 
 import { PiCatBold, PiDogBold } from 'react-icons/pi';
 
-import UploadProfileImg from '../../components/UploadProfileImg';
+import UploadProfileImg from '@components/UploadProfileImg';
+import { Column, ErrorMessage, Row, Texts20h30 } from 'commonStyle';
 
-import {
-  ButtonContainer,
-  FormContainer,
-  GenderRadioLabel,
-  Input,
-  InputContainer,
-  InputLabel,
-  InputWrapper,
-  PetTextarea,
-  RadioContainer,
-  RadioWrapper,
-  SectionContainer,
-  SubmitButton,
-  TitleContainer,
-  TypeRadioLabel,
-  UnitText,
-} from './CreatePet';
-import { ErrorMessage, Row, Texts20h30 } from 'commonStyle';
-
-import { FaXmark } from 'react-icons/fa6';
-import styled from 'styled-components';
-import { deleterWithCookie, fetcher, updaterWithCookie } from 'api';
+import useSWRMutation from 'swr/mutation';
+import { posterWithCookie } from 'api';
 import Loading from '@components/Loading';
 import { toast } from 'react-toastify';
 
@@ -55,59 +36,47 @@ const schema = yup.object().shape({
     .required('이 항목은 필수입니다.'),
   gender: yup.string().oneOf(['Male', 'Female'], '성별을 선택해주세요.').required('이 항목은 필수입니다.'),
   neutering: yup.boolean().required('이 항목은 필수입니다.'),
-  body: yup.string().max(1000, '소개는 최대 1000자를 초과할 수 없습니다.').nullable(),
+  body: yup.string().max(1000, '소개는 최대 1000자를 초과할 수 없습니다.'),
 });
 
-type IEditPet = yup.InferType<typeof schema>;
+type IRegisterPet = yup.InferType<typeof schema>;
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-export default function EditPet() {
+export default function CreatePet() {
   const navigate = useNavigate();
-
-  const { petId } = useParams();
   const [previewImage, setPreviewImage] = useState<File | null>(null);
 
   const {
     register,
-    setValue,
     handleSubmit,
-    watch,
+    setValue,
     formState: { errors },
-  } = useForm<IEditPet>({
+    watch,
+  } = useForm<IRegisterPet>({
     resolver: yupResolver(schema),
+    defaultValues: {
+      species: 'Dog',
+    },
   });
 
-  const { data: pet } = useSWR(`${API_URL}/pets/${petId}`, fetcher);
-
-  const { trigger: updateTrigger, isMutating } = useSWRMutation(`${API_URL}/pets/${petId}`, updaterWithCookie, {
+  const { trigger, isMutating } = useSWRMutation(`${API_URL}/pets`, posterWithCookie, {
     onSuccess: () => {
       navigate('/me');
-      toast.success('수정이 완료되었습니다!');
+      toast.success('펫밀리 등록이 완료되었습니다!');
     },
     onError: () => {
-      toast.error('수정 실패하였습니다. 다시 시도해 주세요.');
+      toast.error('펫밀리 등록에 실패했습니다. 다시 시도해주세요.');
     },
   });
 
-  const { trigger: deleteTrigger } = useSWRMutation(`${API_URL}/pets/${petId}`, deleterWithCookie, {
-    onSuccess: () => {
-      navigate('/me');
-      toast.success('펫 정보가 삭제되었습니다!');
-    },
-    onError: () => {
-      toast.error('펫 정보 삭제에 실패했습니다. 다시 시도해주세요.');
-    },
-  });
-
-  // handle pet type radio
   const handlePetType = (e: MouseEvent<HTMLInputElement>) => {
     const value = (e.target as HTMLInputElement).value as 'Dog' | 'Cat'; // 타입 캐스팅
     setValue('species', value);
   };
 
-  // 펫 수정
-  const onSubmit = async (data: IEditPet) => {
+  // 제출 onSubmit
+  const onSubmit = async (data: IRegisterPet) => {
     const formData = new FormData();
 
     formData.append('data', JSON.stringify(data));
@@ -116,50 +85,22 @@ export default function EditPet() {
       formData.append('file', previewImage);
     }
 
-    await updateTrigger({ formData });
+    await trigger({ formData });
   };
-
-  // 펫 삭제
-  const handleDeletePet = async () => {
-    const isConfirmed = window.confirm('정말 펫을 삭제하시겠습니까?');
-    if (!isConfirmed) return;
-    else {
-      await deleteTrigger();
-    }
-  };
-
-  // 펫 정보 가져와서 input 기본값 설정 (react hook form)
-  useEffect(() => {
-    if (pet) {
-      setValue('species', pet.species);
-      setValue('name', pet.name);
-      setValue('age', pet.age);
-      setValue('neutering', pet.neutering);
-      setValue('breed', pet.breed);
-      setValue('weight', pet.weight);
-      setValue('gender', pet.gender);
-      setValue('body', pet.body);
-    }
-  }, [pet]);
 
   return (
     <main>
-      <EditTitleContainer>
-        <Texts20h30>Petmily 정보 수정</Texts20h30>
-        <button type="button" onClick={handleDeletePet}>
-          <FaXmark color="#279EFF" size="28px" />
-        </button>
-      </EditTitleContainer>
+      <TitleContainer>
+        <Texts20h30>나의 Petmily 등록</Texts20h30>
+      </TitleContainer>
       <SectionContainer>
         <UploadProfileImg
-          serverImageUrl={pet?.photo}
           previewImage={previewImage}
           setPreviewImage={setPreviewImage}
-          defaultImage={
-            watch('species') === 'Dog' ? '/imgs/DogProfile.png' : watch('species') === 'Cat' && '/imgs/CatProfile.png'
-          }
+          defaultImage={watch('species') === 'Dog' ? '/imgs/DogProfile.png' : '/imgs/CatProfile.png'}
         />
         <FormContainer onSubmit={handleSubmit(onSubmit)}>
+          {/* 타입 */}
           <ButtonContainer>
             <TypeRadioLabel isSelected={watch('species') === 'Dog'}>
               <input hidden type="radio" value="Dog" {...register('species')} onClick={handlePetType} />
@@ -238,16 +179,145 @@ export default function EditPet() {
             <PetTextarea rows={5} {...register('body')} />
           </InputContainer>
           <SubmitButton type="submit" disabled={isMutating}>
-            {isMutating ? <Loading /> : <span>펫 수정하기</span>}
+            {isMutating ? <Loading /> : <span>펫 등록하기</span>}
           </SubmitButton>
         </FormContainer>
       </SectionContainer>
     </main>
   );
 }
+export const TitleContainer = styled.div`
+  padding: 20px;
+`;
 
-const EditTitleContainer = styled(TitleContainer)`
+export const SectionContainer = styled.section`
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
+  height: 100%;
+  padding: 20px;
+  background-color: white;
+`;
+
+export const ButtonContainer = styled.div`
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+  border-radius: 8px;
+`;
+
+export const TypeRadioLabel = styled.label<{ isSelected?: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  padding: 8px;
+  cursor: pointer;
+  background-color: ${(props) => (props.isSelected ? props.theme.colors.mainBlue : props.theme.textColors.gray50)};
+
+  /* Adding transition for smooth effect */
+  transition:
+    background-color 0.3s ease-in-out,
+    transform 0.3s ease-in-out;
+
+  &:hover {
+    background-color: ${(props) => (props.isSelected ? '' : props.theme.colors.skyBlue)};
+  }
+`;
+
+export const FormContainer = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 24px;
+`;
+
+export const RegisterInputWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 20px;
+`;
+
+export const InputLabel = styled.label`
+  width: 20%;
+  ${(props) => props.theme.fontSize.s16h24};
+  white-space: nowrap;
+`;
+
+export const Input = styled.input`
+  width: 100%;
+  padding: 8px;
+  border: 1px solid ${({ theme }) => theme.textColors.gray60};
+  border-radius: 8px;
+`;
+
+export const InputContainer = styled.div`
+  display: flex;
+  width: 100%;
+`;
+
+export const InputWrapper = styled(Column)`
+  flex: auto;
+  width: 100%;
+`;
+
+const RadioLabel = styled.label`
+  ${(props) => props.theme.fontSize.s14h21};
+  margin-left: 8px;
+  color: ${({ theme }) => theme.textColors.gray60};
+
+  input:checked + & {
+    color: #279eff;
+  }
+`;
+
+export const RadioContainer = styled(Row)`
+  justify-content: space-around;
+  flex: auto;
+  gap: 4px;
+`;
+
+export const RadioWrapper = styled(Row)`
+  gap: 8px;
+`;
+
+export const GenderRadioLabel = styled.label`
+  ${(props) => props.theme.fontSize.s14h21}
+`;
+
+export const UnitText = styled.span`
+  padding: 8px;
+`;
+
+export const PetTextarea = styled.textarea`
+  flex: auto;
+  width: 100%;
+  padding: 8px;
+  border: 1px solid ${({ theme }) => theme.textColors.gray60};
+  border-radius: 8px;
+`;
+
+export const SubmitButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ${(props) => props.theme.colors.mainBlue};
+  cursor: pointer;
+  color: white;
+  width: 100%;
+  padding: 8px;
+  border-radius: 8px;
+  ${(props) => props.theme.fontSize.s18h27};
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.subBlue};
+  }
+
+  &:active {
+    background-color: ${({ theme }) => theme.colors.darkBlue};
+    box-shadow: ${({ theme }) => theme.shadow.inset};
+  }
 `;

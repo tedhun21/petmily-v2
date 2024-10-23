@@ -6,14 +6,16 @@ import useSWR from 'swr';
 import { FaArrowLeft } from 'react-icons/fa6';
 
 import MyPetmily from '@pages/me/components/MyPetmily';
-import MySchedule from '@components/MySchedule';
+import MySchedule from '@pages/me/components/MySchedule';
 import { fetcherWithCookie } from 'api';
-import { ImageCentered, RoundedImageWrapper } from 'commonStyle';
+import { ImageCentered, RoundedImageWrapper, Texts14h21 } from 'commonStyle';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
 export default function Me() {
   const { data: me } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);
+
+  console.log(me);
 
   return (
     <>
@@ -31,8 +33,12 @@ export default function Me() {
             </MyImage>
 
             <TextWrapper>
-              {me?.nickname && <NameText>{`${me?.nickname} 님`}</NameText>}
               <HelloText>안녕하세요!</HelloText>
+              {me?.nickname ? (
+                <NameText>{`${me?.nickname} 님`}</NameText>
+              ) : (
+                <Texts14h21>닉네임을 설정해주세요</Texts14h21>
+              )}
             </TextWrapper>
           </MyProfile>
           <EditLink to="/me/edit">
@@ -40,7 +46,7 @@ export default function Me() {
           </EditLink>
         </MyProfileContianer>
 
-        {me?.isPetsitter ? <MySchedule /> : <MyPetmily />}
+        {me?.role === 'Client' ? <MyPetmily /> : <MySchedule me={me} />}
       </MypageContainer>
     </>
   );

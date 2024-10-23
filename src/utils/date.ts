@@ -42,14 +42,15 @@ export const reservationDisableDate = (day: string) => {
   // 날짜에 할당된 숫자 구하기 (0이면 일요일, 1이면 월요일)
   const dayOfWeek = dayjs(day).day();
   // 일요일,월요일면 주말
-  const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+  // const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
 
   const now = dayjs();
   // now로부터 3개월 이후에만 date 선택가능 범위
   const nowAddThreeMonth = dayjs(now).add(3, 'M').format('YYYY-MM-DD');
 
   // 3개월 이내와 주말 이외에만 예약 가능 (true면 비활성화, false는 활성화)
-  return !dayjs(dayjs(day).format('YYYY-MM-DD')).isBetween(now, nowAddThreeMonth, 'day', '[)') || isWeekend;
+  return !dayjs(dayjs(day).format('YYYY-MM-DD')).isBetween(now, nowAddThreeMonth, 'day', '[)');
+  //  || isWeekend;
 };
 
 export const checkInDisableTime = (value: Dayjs, view: 'hours' | 'minutes' | 'seconds', date: string | null) => {
@@ -120,3 +121,13 @@ export const formatKrDays = (day: string) => {
       return '';
   }
 };
+
+export const weekdays = [
+  { id: 1, value: 'Mon', label: '월' },
+  { id: 2, value: 'Tue', label: '화' },
+  { id: 3, value: 'Wed', label: '수' },
+  { id: 4, value: 'Thu', label: '목' },
+  { id: 5, value: 'Fri', label: '금' },
+  { id: 6, value: 'Sat', label: '토' },
+  { id: 7, value: 'Sun', label: '일' },
+];

@@ -13,6 +13,7 @@ import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import PetsIcon from '@mui/icons-material/Pets';
 import CircularProgress from '@mui/joy/CircularProgress';
 import { getCookie } from 'utils/cookie';
+import { Texts18h27 } from 'commonStyle';
 
 // 디자인 수정
 
@@ -31,34 +32,11 @@ type InfoType = {
   monthTotalReservation: number | null;
 } | null;
 
-export default function MySchedule() {
+export default function MySchedule({ me }: any) {
   // const { memberId } = useSelector((state: IUser) => state.user);
 
   const [info, setInfo] = useState<InfoType>(null);
   const [isLoading, setIsLoading] = useState(true);
-
-  //   일정 확인용
-  useEffect(() => {
-    const fetchPetData = async () => {
-      setIsLoading(true);
-
-      try {
-        const response = await axios.get(`${apiUrl}/members/petsitters`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (response.data) {
-          setInfo(response.data);
-        }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchPetData();
-  }, []);
 
   // 케어가능 펫
   const getPetTypeDisplayText = (type: string) => {
@@ -107,86 +85,38 @@ export default function MySchedule() {
   };
 
   return (
-    <div>hi</div>
-    // 확인해보기
-    // <Container>
-    //   <Text>나의 스케쥴</Text>
-
-    //   {isLoading ? (
-    //     <CircularProgress variant="soft" sx={{ color: '#279eff' }} />
-    //   ) : info && info.possibleDay ? (
-    //     <PetmilyCard>
-    //       <ContentContainer>
-    //         <InfoWrapper>
-    //           <Paw />
-    //           <Info>
-    //             <InfoText>케어 가능 동물 </InfoText>
-    //             <UserText>{getPetTypeDisplayText(info.possiblePetType)}</UserText>
-    //           </Info>
-    //         </InfoWrapper>
-
-    //         <InfoWrapper>
-    //           <Location />
-    //           <Info>
-    //             <InfoText>케어 가능 지역 </InfoText>
-    //             <UserText>{info.possibleLocation}</UserText>
-    //           </Info>
-    //         </InfoWrapper>
-
-    //         <InfoWrapper>
-    //           <Calendar />
-    //           <Info>
-    //             <InfoText>케어 가능 요일 </InfoText>
-    //             <UserText>{sortDaysInOrder(info.possibleDay)}</UserText>
-    //           </Info>
-    //         </InfoWrapper>
-
-    //         <InfoWrapper>
-    //           <Time />
-    //           <Info>
-    //             <InfoText>케어 가능 시간 </InfoText>
-    //             <UserText>
-    //               {info.possibleTimeStart.slice(0, -3)} ~ {info.possibleTimeEnd.slice(0, -3)}
-    //             </UserText>
-    //           </Info>
-    //         </InfoWrapper>
-    //       </ContentContainer>
-    //       <ButtonContainer>
-    //         <Link to={`/petsitters/${memberId}/schedule`}>
-    //           <Button variant="contained" sx={{ backgroundColor: '#279eff', mt: 5 }}>
-    //             나의 일정 관리
-    //           </Button>
-    //         </Link>
-    //       </ButtonContainer>
-    //     </PetmilyCard>
-    //   ) : (
-    //     <ContentContainer>
-    //       <NoContentContaier>
-    //         <Image src="/imgs/NoSchedule.png" alt="No schedule" />
-    //         <InfoText>등록된 일정이 없습니다.</InfoText>
-    //         <InfoText>활동 가능한 일정을 등록하시면, 더 많은 펫밀리를 만날 수 있어요!</InfoText>
-    //       </NoContentContaier>
-    //       <ButtonContainer>
-    //         <Link to={`/petsitters/${memberId}/schedule`}>
-    //           <Button variant="contained" sx={{ backgroundColor: '#279eff', mt: 5 }}>
-    //             등록하러 가기
-    //           </Button>
-    //         </Link>
-    //       </ButtonContainer>
-    //     </ContentContainer>
-    //   )}
-    // </Container>
+    <ScheduleContainer>
+      <Texts18h27>나의 설정</Texts18h27>
+      <div>
+        {me?.possiblePetSpecies && (
+          <div>
+            <span>케어 가능 동물</span>
+          </div>
+        )}
+        {me?.possibleLocation && (
+          <div>
+            <span>케어 가능 지역</span>
+          </div>
+        )}
+        {me?.possibleDays && (
+          <div>
+            <span>케어 가능 요일</span>
+          </div>
+        )}
+        {me?.possibleStartTime && me?.possibleEndTime && (
+          <div>
+            <span>케어 가능 시간</span>
+          </div>
+        )}
+      </div>
+      <Texts18h27>나의 스케쥴</Texts18h27>
+    </ScheduleContainer>
   );
 }
 
-const Container = styled.div`
-  margin-top: 60px;
-`;
-
-const Text = styled.div`
-  margin-bottom: 30px;
-  font-weight: 900;
-  ${(props) => props.theme.fontSize.s18h27};
+const ScheduleContainer = styled.section`
+  display: flex;
+  flex-direction: column;
 `;
 
 const InfoWrapper = styled.div`
