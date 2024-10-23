@@ -328,7 +328,11 @@ export default function EditMe() {
                   </LocationList>
 
                   <InputContainer>
-                    <LocationInput value={newLocation} onChange={(e) => setNewLocation(e.target.value)} />
+                    <LocationInput
+                      placeholder="예) 서울시, 서울시 용산구"
+                      value={newLocation}
+                      onChange={(e) => setNewLocation(e.target.value)}
+                    />
                     <AddLocationButton type="button" onClick={handleAddLocation}>
                       <FaArrowUp size="16px" color="#279EFF" />
                     </AddLocationButton>
