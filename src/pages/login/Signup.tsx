@@ -110,6 +110,7 @@ export default function Signup() {
       password,
       role: isPetsitter ? 'Petsitter' : 'Client',
       provider: 'local',
+      verified: false,
     };
 
     try {
