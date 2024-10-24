@@ -1,8 +1,9 @@
-import { ImageCentered, RoundedImageWrapper, Texts18h27 } from 'commonStyle';
 import { useFormContext } from 'react-hook-form';
-import { PiCatBold, PiDogBold, PiStarFill } from 'react-icons/pi';
 import styled from 'styled-components';
-import { timeRange } from 'utils/date';
+import { PiStarFill } from 'react-icons/pi';
+
+import MyPetsitterSettings from '@pages/me/components/MyPetistterSetting';
+import { Column, ImageCentered, RoundedImageWrapper, Row, Texts18h27 } from 'commonStyle';
 
 export default function Step3({ onNext, onPrevious }: any) {
   const { getValues, watch } = useFormContext();
@@ -12,49 +13,30 @@ export default function Step3({ onNext, onPrevious }: any) {
   // console.log(watch());
   return (
     <MainContainer>
-      <ImageNickname>
-        <ImageWrapper>
-          <ImageCentered src={petsitter?.photo ? `${petsitter.photo}` : '/imgs/DefaultUserProfile.jpg'} />
-        </ImageWrapper>
-        <Texts18h27>{petsitter?.nickname}</Texts18h27>
-      </ImageNickname>
-
-      <div>
-        <div>
-          <PiStarFill color="#279EFF" size="20px" />
-          <span>{petsitter?.star}</span>
-        </div>
-        <div>
-          <span>10,400</span>
-          <span>케어 횟수</span>
-        </div>
-        <div></div>
-      </div>
+      <PetsitterInfo>
+        <ImageName>
+          <ImageWrapper>
+            <ImageCentered src={petsitter?.photo ? `${petsitter.photo}` : '/imgs/DefaultUserProfile.jpg'} />
+          </ImageWrapper>
+          <Texts18h27>{petsitter?.nickname}</Texts18h27>
+        </ImageName>
+        <InfoContainer>
+          <InfoWrapper>
+            <PiStarFill color="#279EFF" size="32px" />
+            <Texts18h27>{petsitter?.star}</Texts18h27>
+          </InfoWrapper>
+          <InfoWrapper>
+            <span>{petsitter?.reviewCount}</span>
+            <span>리뷰가 달린 케어</span>
+          </InfoWrapper>
+          <div></div>
+        </InfoContainer>
+      </PetsitterInfo>
 
       <span>리뷰 보기</span>
 
-      <InfoContainer>
-        <InfoWrapper>
-          <span>가능한 펫 종류</span>
-          {Array.isArray(petsitter?.possiblePetSpecies) &&
-            petsitter?.possiblePetSpecies.length > 0 &&
-            petsitter?.possiblePetSpecies?.map((species: string, index: number) =>
-              species === 'Dog' ? (
-                <PiDogBold key={index} size="20px" color="#237EFF" />
-              ) : species === 'Cat' ? (
-                <PiCatBold key={index} size="20px" color="#237EFF" />
-              ) : null,
-            )}
-        </InfoWrapper>
-        <InfoWrapper>
-          <span>가능한 요일</span>
-          {petsitter?.possibleDays.map((day: string) => <span key={day}>{day}</span>)}
-        </InfoWrapper>
-        <InfoWrapper>
-          <span>가능한 시간</span>
-          <span>{timeRange(petsitter?.possibleStartTime, petsitter?.possibleEndTime)}</span>
-        </InfoWrapper>
-      </InfoContainer>
+      <MyPetsitterSettings petsitter={petsitter} />
+
       <ButtonContainer>
         <StyledButton type="button" onClick={onNext}>
           예약하러가기
@@ -67,12 +49,15 @@ export default function Step3({ onNext, onPrevious }: any) {
 const MainContainer = styled.main`
   display: flex;
   flex-direction: column;
+  padding: 20px;
+  gap: 8px;
 `;
 
-const ImageNickname = styled.div`
+const PetsitterInfo = styled.div`
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
+  gap: 20px;
 `;
 
 const ImageWrapper = styled(RoundedImageWrapper)`
@@ -80,18 +65,17 @@ const ImageWrapper = styled(RoundedImageWrapper)`
   height: 80px;
 `;
 
-const InfoContainer = styled.ul`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+const ImageName = styled(Column)`
+  align-items: center;
 `;
 
-const InfoWrapper = styled.li`
-  display: flex;
-  flex-direction: column;
-  border: 2px solid ${(props) => props.theme.colors.mainBlue};
-  padding: 8px;
-  border-radius: 20px;
+const InfoContainer = styled(Column)`
+  align-items: center;
+  gap: 8px;
+`;
+const InfoWrapper = styled(Row)`
+  align-items: center;
+  gap: 4px;
 `;
 
 const ButtonContainer = styled.div`

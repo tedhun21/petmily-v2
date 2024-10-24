@@ -9,7 +9,7 @@ export default function MyPetsitterProfile({ me }: any) {
     <PetsitterContainer>
       <article>
         <Texts18h27>나의 설정</Texts18h27>
-        <MyPetsitterSettings me={me} />
+        <MyPetsitterSettings petsitter={me} />
       </article>
 
       <article>

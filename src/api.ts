@@ -88,7 +88,8 @@ export const posterWithCookie = async (url: string, { arg: { formData } }: { arg
 
       return data;
     } catch (e: any) {
-      throw new Error(e);
+      console.error(e);
+      throw e;
     }
   }
 };
