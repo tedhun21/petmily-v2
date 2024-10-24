@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { User } from 'types/user.type';
 import { getCookie } from 'utils/cookie';
 
 // get fetcher
@@ -22,7 +21,7 @@ export const fetcherWithToken = async (url: string, access_token: string | null)
       });
       return data;
     } catch (e: any) {
-      console.log(e);
+      throw new Error(e);
     }
   }
 };
@@ -74,7 +73,8 @@ export const poster = async (url: string, { arg }: { arg: any }) => {
     const { data } = await axios.post(`${url}`, arg);
     return data;
   } catch (e: any) {
-    throw new Error(e);
+    console.error(e);
+    throw e;
   }
 };
 
@@ -107,7 +107,7 @@ export const updaterWithToken = async (
       });
       return data;
     } catch (e: any) {
-      console.log(e);
+      throw new Error(e);
     }
   }
 };
