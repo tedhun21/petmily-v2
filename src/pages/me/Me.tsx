@@ -6,16 +6,15 @@ import useSWR from 'swr';
 import { FaArrowLeft } from 'react-icons/fa6';
 
 import MyPetmily from '@pages/me/components/MyPetmily';
-import MySchedule from '@pages/me/components/MySchedule';
+
 import { fetcherWithCookie } from 'api';
 import { ImageCentered, RoundedImageWrapper, Texts14h21 } from 'commonStyle';
+import MyPetsitterProfile from './components/MyPetsitterProfile';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
 export default function Me() {
   const { data: me } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);
-
-  console.log(me);
 
   return (
     <>
@@ -46,7 +45,7 @@ export default function Me() {
           </EditLink>
         </MyProfileContianer>
 
-        {me?.role === 'Client' ? <MyPetmily /> : <MySchedule me={me} />}
+        {me?.role === 'Client' ? <MyPetmily /> : <MyPetsitterProfile me={me} />}
       </MypageContainer>
     </>
   );
