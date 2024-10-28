@@ -3,14 +3,14 @@ import styled from 'styled-components';
 import { Species } from 'types/pet.type';
 import { timeRange, weekdays } from 'utils/date';
 
-export default function MyPetsitterSettings({ me }: any) {
+export default function MyPetsitterSettings({ petsitter }: any) {
   return (
     <InfoList>
-      {me?.possiblePetSpecies && (
+      {petsitter?.possiblePetSpecies && (
         <InfoItem>
           <span>케어 가능 동물</span>
           <ItemWrapper>
-            {me.possiblePetSpecies.map((species: Species) => (
+            {petsitter.possiblePetSpecies.map((species: Species) => (
               <ItemLabel key={species}>
                 {species === 'Dog' ? (
                   <PiDogBold size="20px" color="white" />
@@ -22,31 +22,31 @@ export default function MyPetsitterSettings({ me }: any) {
           </ItemWrapper>
         </InfoItem>
       )}
-      {me?.possibleLocations && (
+      {petsitter?.possibleLocations && (
         <InfoItem>
           <span>케어 가능 지역</span>
           <ItemWrapper>
-            {me.possibleLocations.map((location: string) => (
+            {petsitter.possibleLocations.map((location: string) => (
               <ItemLabel key={location}>{location}</ItemLabel>
             ))}
           </ItemWrapper>
         </InfoItem>
       )}
-      {me?.possibleDays && (
+      {petsitter?.possibleDays && (
         <InfoItem>
           <span>케어 가능 요일</span>
           <ItemWrapper>
-            {me.possibleDays.map((day: string) => {
+            {petsitter.possibleDays.map((day: string) => {
               const matchedDay = weekdays.find((weekday) => weekday.value === day);
               return <ItemLabel key={day}>{matchedDay ? matchedDay.label : day}</ItemLabel>;
             })}
           </ItemWrapper>
         </InfoItem>
       )}
-      {me?.possibleStartTime && me?.possibleEndTime && (
+      {petsitter?.possibleStartTime && petsitter?.possibleEndTime && (
         <InfoItem>
           <span>케어 가능 시간</span>
-          <ItemLabel>{timeRange(me?.possibleStartTime, me?.possibleEndTime)}</ItemLabel>
+          <ItemLabel>{timeRange(petsitter?.possibleStartTime, petsitter?.possibleEndTime)}</ItemLabel>
         </InfoItem>
       )}
     </InfoList>

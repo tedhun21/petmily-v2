@@ -46,9 +46,6 @@ export default function Step4() {
       navigate('/cares');
       toast.success('예약 신청이 완료되었습니다!');
     },
-    onError: () => {
-      toast.error('에약 신청에 실패했습니다.');
-    },
   });
 
   const onSubmit = async (data: any) => {
@@ -56,7 +53,7 @@ export default function Step4() {
     const formattedDate = dayjs(date).format('YYYY-MM-DD');
     const formattedStartTime = dayjs(startTime).format('HH:mm:ss');
     const formattedEndTime = dayjs(endTime).format('HH:mm:ss');
-    const formattedPetId = checkedPets.map((pet: any) => pet.id);
+    const formattedPetIds = checkedPets.map((pet: any) => pet.id);
 
     const formattedData = {
       date: formattedDate,
@@ -64,13 +61,17 @@ export default function Step4() {
       endTime: formattedEndTime,
       address,
       detailAddress,
-      petId: formattedPetId,
+      petIds: formattedPetIds,
       body,
       petsitterId: petsitter.id,
       status: 'Pending',
     };
 
-    await trigger({ formData: formattedData });
+    try {
+      await trigger({ formData: formattedData });
+    } catch (e) {
+      toast.error('에약 신청에 실패했습니다.');
+    }
   };
 
   return (
