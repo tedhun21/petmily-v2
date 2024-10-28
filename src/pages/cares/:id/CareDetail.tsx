@@ -6,10 +6,12 @@ import styled from 'styled-components';
 import { formatProgress } from 'utils/misc';
 import { fetcherWithCookie } from 'api';
 
-import PetsitterCard from './component/care_detail/PetsitterCard';
-import PetContainer from './component/care_detail/PetContainer';
-import DetailReservation from './component/care_detail/DetailReservation';
-import ProgressButton from './component/care_detail/ProgressButton';
+import PetsitterCard from './component/PetsitterCard';
+import PetContainer from './component/PetContainer';
+import DetailReservation from './component/DetailReservation';
+import ProgressButton from './component/ProgressButton';
+import ClientCard from './component/ClientCard';
+import { UserRole } from 'types/user.type';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -19,14 +21,18 @@ export default function CareDetail() {
   const { data: me } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);
   const { data: reservation } = useSWR(`${API_URL}/reservations/${id}`, fetcherWithCookie);
 
-  console.log(reservation?.review);
-  console.log(reservation?.journal);
+  console.log(reservation?.petsitter);
+
   return (
     <ReservationContainer>
       <Progress>
         <span>{formatProgress(reservation?.status)}...</span>
       </Progress>
-      <PetsitterCard petsitter={reservation?.petsitter} />
+      {me?.role === UserRole.PETSITTER ? (
+        <ClientCard client={reservation?.client} />
+      ) : me?.role === UserRole.CLIENT ? (
+        <PetsitterCard petsitter={reservation?.petsitter} />
+      ) : null}
       <PetContainer pets={reservation?.pets} />
       {/* <Maps location={reservation?.address} /> */}
       <span>{reservation?.address}</span>

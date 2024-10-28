@@ -1,74 +1,54 @@
-import { ImageCentered, Texts14h21, Title } from 'commonStyle';
-import {
-  Img,
-  ImgContainer,
-  ImgPreview,
-  ImgPreviewItem,
-  ImgSelectButton,
-  ImgSelectWrapper,
-  ImgTitle,
-  MainContainer,
-  PetsitterCard,
-  PetsitterImage,
-  PetSitterInfo,
-  Receipt,
-  RemoveButton,
-  ReservationContainer,
-  ReservationInfo,
-  StarContainer,
-  StarTitle,
-  SubmitButton,
-  TextArea,
-  TextContainer,
-  TextTitle,
-} from './CreateReview';
+import { useState, ChangeEvent, useRef } from 'react';
+
+import { useNavigate, useParams } from 'react-router-dom';
+import useSWR from 'swr';
+
+import styled from 'styled-components';
+
+import { Column, ImageCentered, RoundedImageWrapper, Row, Texts14h21 } from 'commonStyle';
+
+import { fetcherWithCookie, posterWithCookie } from 'api';
 import { PiStarFill } from 'react-icons/pi';
 import { timeRange } from 'utils/date';
-import { FaXmark } from 'react-icons/fa6';
-import useSWR from 'swr';
-import { fetcherWithCookie, updaterWithCookie } from 'api';
-import HoverRating from '../../../components/HoverRating';
+
+import HoverRating from '../../../../components/HoverRating';
 import { formatProgress } from 'utils/misc';
-import { useNavigate, useParams } from 'react-router-dom';
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { FaXmark } from 'react-icons/fa6';
 import useSWRMutation from 'swr/mutation';
 import Loading from '@components/Loading';
 import { toast } from 'react-toastify';
 
-interface UpdateReviewFormData {
+interface CreateReviewFormData {
   star: number;
   body: string;
   files: File[];
-  photos: string[];
-  deleteFiles: string[];
 }
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-export default function EditReview() {
-  const { id } = useParams();
+export default function CreateReview() {
   const navigate = useNavigate();
+  const { id } = useParams();
+
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const { register, setValue, handleSubmit, watch } = useForm<CreateReviewFormData>({
+    defaultValues: { star: 5, body: '', files: [] },
+  });
+  const selectedFiles = watch('files');
 
   const { data: reservation } = useSWR(`${API_URL}/reservations/${id}`, fetcherWithCookie);
 
-  const { isMutating, trigger } = useSWRMutation(`${API_URL}/reviews/${reservation?.review.id}`, updaterWithCookie, {
+  const { isMutating, trigger } = useSWRMutation(`${API_URL}/reviews`, posterWithCookie, {
     onSuccess: () => {
       navigate('/cares');
-      toast.success('리뷰를 수정하였습니다!');
+      toast.success('리뷰를 작성하였습니다!');
     },
     onError: () => {
       toast.error('리뷰 작성에 실패했습니다. 다시 시도해 주세요.');
     },
   });
-
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
-
-  const { register, setValue, handleSubmit, watch } = useForm<UpdateReviewFormData>({
-    defaultValues: { star: 0, body: '', files: [], photos: [], deleteFiles: [] },
-  });
-  const selectedFiles = watch('files');
-  const imageUrls = watch('photos');
 
   // 파일 선택 Ref open
   const openFileInput = () => {
@@ -77,23 +57,21 @@ export default function EditReview() {
     }
   };
 
-  // 파일 이미지 선택 onChange
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
 
     if (files && files.length > 0) {
       const newFiles = Array.from(files);
-      const totalFiles = selectedFiles.length + imageUrls.length + files.length;
+      const totalFiles = selectedFiles.length + files.length;
 
       if (totalFiles <= 5) {
         setValue('files', [...selectedFiles, ...newFiles]);
       } else {
-        toast.warning('최대 5개의 이미지를 선택할 수 있습니다.');
+        toast.warning('최대 5개의 이미지를 선택할 수 있습니다!');
       }
     }
   };
 
-  // 파일 이미지 remove
   const handleRemoveInputImage = (indexToRemove: number) => {
     // 해당 인덱스의 이미지를 목록에서 제거
     setValue(
@@ -102,33 +80,16 @@ export default function EditReview() {
     );
   };
 
-  // 서버에 저장된 이미지 remove
-  const handleRemoveReviewImage = (indexToRemove: number) => {
-    // 제거할 url
-    const removedImageUrl = imageUrls[indexToRemove];
-
-    // 서버에서 온 이미지 url 업데이트(프리뷰)
-    setValue(
-      'photos',
-      imageUrls.filter((_, index) => index !== indexToRemove),
-    );
-
-    // 삭제할 이미지 url 업데이트
-    setValue('deleteFiles', [...watch('deleteFiles'), removedImageUrl]);
-  };
-
   const onSubmit = async (data: any) => {
-    const { star, files, body, deleteFiles } = data;
+    const { star, files, body } = data;
 
     const formData = new FormData();
-    const updateReviewData = {
+    const createReviewData = {
       reservationId: reservation.id,
-      body,
       star,
-      deleteFiles,
+      body,
     };
-
-    formData.append('data', JSON.stringify(updateReviewData));
+    formData.append('data', JSON.stringify(createReviewData));
 
     if (files.length > 0) {
       files.forEach((file: File) => {
@@ -138,15 +99,6 @@ export default function EditReview() {
 
     await trigger({ formData });
   };
-
-  // 서버에서 온 리뷰 데이터 기본값 세팅(통신 완료 후)
-  useEffect(() => {
-    if (reservation?.review) {
-      setValue('star', reservation.review.star);
-      setValue('body', reservation.review.body);
-      setValue('photos', reservation.review.photos);
-    }
-  }, [reservation?.review]);
 
   return (
     <MainContainer>
@@ -217,21 +169,10 @@ export default function EditReview() {
         <ImgPreview>
           {/* files가 존재할 때 미리보기를 렌더링 */}
           {selectedFiles &&
-            Array.from(selectedFiles as File[]).length > 0 &&
             Array.from(selectedFiles as File[]).map((file, index) => (
               <ImgPreviewItem key={index}>
                 <Img src={URL.createObjectURL(file)} alt={`Selected ${index}`} />
                 <RemoveButton onClick={() => handleRemoveInputImage(index)}>
-                  <FaXmark color="white" size="16px" />
-                </RemoveButton>
-              </ImgPreviewItem>
-            ))}
-          {Array.isArray(imageUrls) &&
-            imageUrls.length > 0 &&
-            imageUrls.map((url: string, index: number) => (
-              <ImgPreviewItem key={index}>
-                <Img src={`${url}`} alt={`Review Server Image ${index}`} />
-                <RemoveButton onClick={() => handleRemoveReviewImage(index)}>
                   <FaXmark color="white" size="16px" />
                 </RemoveButton>
               </ImgPreviewItem>
@@ -252,38 +193,189 @@ export default function EditReview() {
   );
 }
 
-{
-  /* <ImgContainer>
-        <ImgTitle>사진 첨부</ImgTitle>
-        <input
-          type="file"
-          accept="image/png, image/jpeg"
-          multiple
-          onChange={handleFileChange}
-          ref={fileInputRef}
-          style={{ display: 'none' }}
-        />
-        <ImgSelectWrapper>
-          <ImgSelectButton onClick={openFileInput}>파일 선택</ImgSelectButton>
-          <div>최대 5개의 이미지를 선택할 수 있습니다.</div>
-        </ImgSelectWrapper>
-        <ImgPreview>
-          {selectedFiles.map((file, index) => (
-            <ImgPrevieItem key={index} className="image-preview-item">
-              <Img src={URL.createObjectURL(file)} alt={`Selected ${index}`} />
-              <RemoveButton onClick={() => handleRemoveInputImage(index)}>
-                <img src="/icons/X.png" alt="x" width="10"></img>
-              </RemoveButton>
-            </ImgPrevieItem>
-          ))}
-          {reviewImages.map((imageUrl, index) => (
-            <ImgPrevieItem key={index} className="image-preview-item">
-              <Img src={imageUrl} alt={`Review Image ${index}`} />
-              <RemoveButton onClick={() => handleRemoveReviewImage(index)}>
-                <img src="/icons/X.png" alt="x" width="10"></img>
-              </RemoveButton>
-            </ImgPrevieItem>
-          ))}
-        </ImgPreview>
-      </ImgContainer> */
-}
+export const MainContainer = styled.main`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 16px;
+  background-color: white;
+  gap: 20px;
+`;
+
+export const Title = styled.h1`
+  ${(props) => props.theme.fontSize.s18h27}
+`;
+
+export const Receipt = styled(Column)`
+  padding: 20px;
+  gap: 8px;
+  border-radius: 20px;
+  box-shadow: ${(props) => props.theme.shadow.dp03};
+`;
+
+export const PetsitterCard = styled(Row)`
+  padding: 8px;
+  border-radius: 16px;
+  box-shadow: ${(props) => props.theme.shadow.dp03};
+`;
+
+export const PetsitterImage = styled(RoundedImageWrapper)`
+  width: 60px;
+  height: 60px;
+`;
+
+export const ReservationContainer = styled(Column)`
+  gap: 8px;
+`;
+
+export const ReservationInfo = styled(Row)`
+  justify-content: space-between;
+`;
+
+export const PetName = styled.div`
+  display: flex;
+  gap: 4px;
+`;
+
+export const PetSitterInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  div:nth-child(1) {
+    ${(props) => props.theme.fontSize.s14h21}
+    color:${(props) => props.theme.textColors.gray40}
+  }
+
+  dit:nth-child(2) {
+    ${(props) => props.theme.fontSize.s16h24}
+  }
+`;
+
+export const SecondLine = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  > div {
+    text-align: right;
+    color: ${(props) => props.theme.textColors.gray40};
+    ${(props) => props.theme.fontSize.s14h21}
+  }
+`;
+
+export const StarContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const StarTitle = styled.div`
+  ${(props) => props.theme.fontSize.s16h24}
+`;
+
+export const ImgContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+export const ImgPreview = styled.div`
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+`;
+
+export const ImgPreviewItem = styled.div`
+  position: relative;
+  margin: 2px;
+  padding: 4px;
+`;
+
+export const Img = styled.img`
+  width: 100px;
+  border-radius: 8px;
+`;
+
+export const ImgTitle = styled.div`
+  ${(props) => props.theme.fontSize.s16h24}
+`;
+
+export const ImgSelectButton = styled.button`
+  background-color: ${(props) => props.theme.colors.mainBlue};
+  border: none;
+  ${(props) => props.theme.fontSize.s14h21}
+  padding:4px 8px;
+  border-radius: 4px;
+  color: white;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: ${(props) => props.theme.colors.subBlue};
+  }
+
+  &:active {
+    background-color: ${(props) => props.theme.colors.darkBlue};
+    box-shadow: ${(props) => props.theme.shadow.inset};
+  }
+`;
+
+export const ImgSelectWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  > div {
+    ${({ theme }) => theme.fontSize.s12h18}
+  }
+`;
+
+export const RemoveButton = styled.button`
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid ${(props) => props.theme.lineColors.coolGray80};
+  border-radius: 50%;
+  background-color: ${(props) => props.theme.colors.mainBlue};
+`;
+
+export const TextContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+export const TextTitle = styled.div`
+  ${(props) => props.theme.fontSize.s16h24}
+`;
+
+export const TextArea = styled.textarea`
+  width: 100%;
+  height: 100px;
+  padding: 8px;
+  border-radius: 8px;
+  font-family: inherit;
+  ${(props) => props.theme.fontSize.s14h21}
+`;
+
+export const SubmitButton = styled.button`
+  margin-top: 20px;
+  padding: 8px;
+  width: 100%;
+  border-radius: 8px;
+  color: white;
+  background-color: ${({ theme }) => theme.colors.mainBlue};
+  ${({ theme }) => theme.fontSize.s16h24}
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.subBlue};
+  }
+
+  &:active {
+    background-color: ${({ theme }) => theme.colors.darkBlue};
+    box-shadow: ${({ theme }) => theme.shadow.inset};
+  }
+`;

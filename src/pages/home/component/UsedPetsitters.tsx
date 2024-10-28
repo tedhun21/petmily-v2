@@ -24,8 +24,8 @@ export default function UsedPetsitters() {
 
   const { data, isLoading } = useSWRInfinite(getKey, infiniteFetcherWithCookie);
 
-  const isEmpty = data?.[0]?.length === 0;
-  const isEnd = data && data[data.length - 1]?.length < pageSize;
+  const isEmpty = data?.[0]?.results?.length === 0;
+  const isEnd = data && data[data.length - 1]?.results?.length < pageSize;
 
   if (isLoading) {
     <CenterContainer>
@@ -40,8 +40,9 @@ export default function UsedPetsitters() {
   return (
     <Swiper slidesPerView={2} spaceBetween={10} pagination={{ dynamicBullets: true }} modules={[Pagination]}>
       {data &&
+        data[0]?.results.length > 0 &&
         data.map((page: any) =>
-          page?.map((petsitter: any) => (
+          page?.results.map((petsitter: any) => (
             <SwiperSlide key={petsitter.id}>
               <UsedPetsitterCard petsitter={petsitter} />
             </SwiperSlide>

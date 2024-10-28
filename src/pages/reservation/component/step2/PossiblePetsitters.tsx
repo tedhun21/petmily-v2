@@ -51,8 +51,8 @@ export default function PossiblePetsitters({ filter, onNext }: any) {
     filter === 'possible' || filter === 'favorite' ? infiniteFetcherWithCookie : infiniteFetcher,
   );
 
-  const isEmpty = data?.[0]?.length === 0;
-  const isEnd = data && data[data.length - 1]?.length < pageSize;
+  const isEmpty = data?.[0]?.results.length === 0;
+  const isEnd = data && data[data.length - 1]?.results.length < pageSize;
 
   useEffect(() => {
     if (isInView) {
@@ -79,9 +79,11 @@ export default function PossiblePetsitters({ filter, onNext }: any) {
   return (
     <PetsitterContainer>
       {data &&
-        Array.isArray(data) &&
+        data[0]?.results.length > 0 &&
         data?.map((page) =>
-          page?.map((petsitter: any) => <PetsitterCard key={petsitter.id} petsitter={petsitter} onNext={onNext} />),
+          page?.results.map((petsitter: any) => (
+            <PetsitterCard key={petsitter.id} petsitter={petsitter} onNext={onNext} />
+          )),
         )}
       {!isEnd && (
         <CenterContainer ref={ref}>

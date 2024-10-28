@@ -33,6 +33,7 @@
     "react-toastify": "^10.0.6",
     "redux": "^4.2.1",
     "redux-persist": "^6.0.0",
+    "socket.io-client": "^4.8.0",
     "styled-components": "^5.3.11",
     "styled-reset": "^4.5.1",
     "swiper": "^11.1.14",

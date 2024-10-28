@@ -26,7 +26,9 @@ export default function PhotoReviews() {
 
   return (
     <ReviewContainer>
-      {data?.map((page) => page.map((review: any) => <ReviewPhotoCard key={review.id} review={review} />))}
+      {data &&
+        data[0]?.results.length > 0 &&
+        data?.map((page) => page?.results.map((review: any) => <ReviewPhotoCard key={review.id} review={review} />))}
     </ReviewContainer>
   );
 }
