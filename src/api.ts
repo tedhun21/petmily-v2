@@ -43,12 +43,11 @@ export const fetcherWithCookie = async (url: string) => {
 // infinite fetcher
 export const infiniteFetcher = async (url: string) => {
   try {
-    const {
-      data: { results },
-    } = await axios.get(`${url}`);
-    return results;
+    const { data } = await axios.get(`${url}`);
+    return data;
   } catch (e: any) {
-    throw new Error(e);
+    console.error(e);
+    throw e;
   }
 };
 
@@ -58,12 +57,12 @@ export const infiniteFetcherWithCookie = async (url: string) => {
 
   if (access_token) {
     try {
-      const {
-        data: { results },
-      } = await axios.get(`${url}`, { headers: { Authorization: `Bearer ${access_token}` } });
-      return results;
+      const { data } = await axios.get(`${url}`, { headers: { Authorization: `Bearer ${access_token}` } });
+
+      return data;
     } catch (e: any) {
-      throw new Error(e);
+      console.error(e);
+      throw e;
     }
   }
 };

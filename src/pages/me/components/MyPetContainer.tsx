@@ -26,8 +26,8 @@ export default function MyPetContainer() {
 
   const { data, size, setSize, isLoading } = useSWRInfinite(getKey, infiniteFetcherWithCookie);
 
-  const isEmpty = data?.[0]?.length === 0;
-  const isEnd = data && data[data.length - 1]?.length < pageSize;
+  const isEmpty = data?.[0]?.results?.length === 0;
+  const isEnd = data && data[data.length - 1]?.results?.length < pageSize;
 
   useEffect(() => {
     if (isInView) {
@@ -57,7 +57,7 @@ export default function MyPetContainer() {
     <CardContainer>
       {data &&
         Array.isArray(data) &&
-        data?.map((page: any) => page?.map((pet: any) => <PetmilyCard key={pet.id} pet={pet} />))}
+        data?.map((page: any) => page?.results.map((pet: any) => <PetmilyCard key={pet.id} pet={pet} />))}
 
       {!isEnd && (
         <CenterContainer ref={ref}>

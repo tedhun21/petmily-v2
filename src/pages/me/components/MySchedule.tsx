@@ -22,7 +22,7 @@ export default function MySchedule() {
   const { data, size, setSize, isLoading } = useSWRInfinite(getKey, infiniteFetcherWithCookie);
 
   const isEmpty = data?.[0]?.length === 0;
-  const isEnd = data && data[data.length - 1]?.length < pageSize;
+  const isEnd = data && data[data.length - 1]?.results.length < pageSize;
 
   useEffect(() => {
     if (isInView) {
@@ -49,8 +49,8 @@ export default function MySchedule() {
   return (
     <ScheduleList>
       {data &&
-        Array.isArray(data) &&
-        data?.map((page) => page?.map((schedule: any) => <div key={schedule.id}>{schedule.id}</div>))}
+        data[0]?.results.length > 0 &&
+        data?.map((page) => page?.results.map((schedule: any) => <div key={schedule.id}>{schedule.id}</div>))}
 
       {!isEnd && (
         <CenterContainer ref={ref}>

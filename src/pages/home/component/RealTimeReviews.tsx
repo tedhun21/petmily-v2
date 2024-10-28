@@ -18,14 +18,14 @@ export default function RealTimeReviews() {
   const pageSize = 10;
 
   const getKey = (pageIndex: number, previousPageData: any) => {
-    if (previousPageData && !previousPageData.length) null;
+    if (previousPageData && !previousPageData.results.length) return null; // Stop when no more results
     return `${API_URL}/reviews?page=${pageIndex + 1}&pageSize=${pageSize}`;
   };
 
   const { isLoading, data } = useSWRInfinite(getKey, infiniteFetcher);
 
-  const isEmpty = data?.[0]?.length === 0;
-  const isEnd = data && data[data.length - 1]?.length < pageSize;
+  const isEmpty = data?.[0]?.results?.length === 0;
+  const isEnd = data && data[data.length - 1]?.results?.length < pageSize;
 
   if (isLoading) {
     return (
@@ -43,13 +43,15 @@ export default function RealTimeReviews() {
     );
   }
 
+  console.log(data);
+
   return (
     <Swiper
       slidesPerView={2}
       centeredSlides={true}
       spaceBetween={20}
       grabCursor={true}
-      loop={true}
+      loop={!isEnd} // Enable loop if there are more reviews to load
       pagination={{
         dynamicBullets: true,
         clickable: true,
@@ -60,13 +62,15 @@ export default function RealTimeReviews() {
       }}
       modules={[Autoplay, Pagination, Navigation]}
     >
-      {data?.map((page) =>
-        page?.map((review: any) => (
-          <SwiperSlide key={review.id}>
-            <ReviewCard review={review} />
-          </SwiperSlide>
-        )),
-      )}
+      {data &&
+        data[0]?.results.length > 0 &&
+        data?.map((page: any) =>
+          page?.results.map((review: any) => (
+            <SwiperSlide key={review.id}>
+              <ReviewCard review={review} />
+            </SwiperSlide>
+          )),
+        )}
     </Swiper>
   );
 }

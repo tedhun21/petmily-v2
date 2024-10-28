@@ -131,3 +131,7 @@ export const weekdays = [
   { id: 6, value: 'Sat', label: '토' },
   { id: 7, value: 'Sun', label: '일' },
 ];
+
+export function formatToLocaleAMPM(dateString: string) {
+  return dayjs(dateString).locale('ko').format('A h:mm');
+}

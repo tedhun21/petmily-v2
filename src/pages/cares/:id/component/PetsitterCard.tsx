@@ -3,11 +3,14 @@ import styled from 'styled-components';
 import { PiStarFill } from 'react-icons/pi';
 
 import { Column, ImageCentered, RoundedImageWrapper, Row } from 'commonStyle';
-import { PetInfoCapsule, PetInfoContainer } from '@pages/care/CareDetail';
+import { PetInfoCapsule, PetInfoContainer } from '@pages/cares/:id/CareDetail';
 import { timeRange } from 'utils/date';
+import { Link } from 'react-router-dom';
 
 export default function PetsitterCard({ petsitter }: any) {
   const parsedPossibleDay = petsitter?.possibleDay && JSON.parse(petsitter?.possibleDay);
+
+  console.log(petsitter);
   return (
     <Card>
       <ImageName>
@@ -34,6 +37,7 @@ export default function PetsitterCard({ petsitter }: any) {
           <span>{timeRange(petsitter?.possibleStartTime, petsitter?.possibleEndTime)}</span>
         </div>
       </PetsitterInfo>
+      <Link to={`/chats/${petsitter?.id}`}>채팅 하기</Link>
     </Card>
   );
 }

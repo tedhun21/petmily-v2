@@ -31,31 +31,38 @@ import BackHeader from '@components/headers/BackHeader';
 // const NotFound = lazy(() => import('@pages/common/404'));
 
 import Home from '@pages/home/Home';
-import Reviews from '@pages/review/Reviews';
-import Me from '@pages/me/Me';
-import Cares from '@pages/care/Cares';
-import Care from '@pages/care/CareDetail';
+import Reviews from '@pages/reviews/Reviews';
+
 import Login from '@pages/login/Login';
 import Signup from '@pages/login/Signup';
+
+import Me from '@pages/me/Me';
 import EditMe from '@pages/me/edit/EditMe';
 import CreatePet from '@pages/me/register/CreatePet';
 import EditPet from '@pages/me/editPet/EditPet';
+
+import Cares from '@pages/cares/Cares';
+import CareDetail from '@pages/cares/:id/CareDetail';
+import CreateReview from '@pages/cares/:id/review/CreateReview';
+import CreateJournal from '@pages/cares/:id/journal/CreateJournal';
+
 import Search from '@pages/home/Search';
 import QnA from '@pages/home/QnA';
 import ViewPetsitters from '@pages/reservation/ViewPetsitters';
 import ViewJournal from '@pages/common/ViewJournal';
 import PetsitterViewDetails from '@pages/reservation/PetsitterViewDetails';
 import SitterSchedule from '@pages/me/SitterSchedule';
+
+import Chat from '@pages/chats/Chat';
+
 import NotFound from '@pages/common/404';
 
 import FormWizard from '@pages/reservation/FormWizard';
 import { Provider as ReduxProvider } from 'react-redux';
 import store from './store/index';
 import { SWRConfig } from 'swr';
-import CareDetail from '@pages/care/CareDetail';
-import CreateJournal from '@pages/care/journal/CreateJournal';
-import CreateReview from '@pages/care/review/CreateReview';
-import EditReview from '@pages/care/review/EditReview';
+
+import EditReview from '@pages/cares/:id/review/EditReview';
 import Redirect from '@pages/login/Redirect';
 import { ToastContainer } from 'react-toastify';
 
@@ -105,6 +112,7 @@ const router = createBrowserRouter(
       </Route>
       <Route path="me" element={<Me />} />
       <Route path="auth/connect/google/callback" element={<Redirect />} />
+      <Route path="chats/:opponentId" element={<Chat />} />
       <Route path="*" element={<NotFound />} />
     </Route>,
   ),
