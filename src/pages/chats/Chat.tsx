@@ -18,6 +18,8 @@ import { Texts20h30 } from 'commonStyle';
 import MessageList from './component/MessageList';
 
 import { FaArrowLeft } from 'react-icons/fa6';
+import { FiMenu } from 'react-icons/fi';
+import { useForm } from 'react-hook-form';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -27,7 +29,8 @@ export default function Chat() {
   const navigate = useNavigate();
   const socket = useRef<Socket | null>(null);
 
-  const [input, setInput] = useState('');
+  const { register, handleSubmit, setValue } = useForm();
+
   const [chatRoom, setChatRoom] = useState<ChatRoom | null>(null);
   const [allMessages, setAllMessages] = useState<any[]>([]);
 
@@ -51,20 +54,21 @@ export default function Chat() {
   // 채팅방의 메세지 가져오기
   const { data: messagesData } = useSWRInfinite(getKey, infiniteFetcherWithCookie);
 
-  const sendMessage = async () => {
-    if (!input.trim()) return; // Validate input
+  const onSubmit = async (data: any) => {
+    const { message } = data;
+    if (!message.trim()) return;
 
     try {
       if (!chatRoom) {
         // Create a new chat room if it doesn't exist
         const newChatRoom = await trigger({ formData: { opponentId } });
         setChatRoom(newChatRoom);
-        socket.current?.emit('send', { chatRoomId: newChatRoom.id, opponentId, message: input });
+        socket.current?.emit('send', { chatRoomId: newChatRoom.id, opponentId, message });
       } else {
         // Send message to existing chat room
-        socket.current?.emit('send', { chatRoomId: chatRoom.id, opponentId, message: input });
+        socket.current?.emit('send', { chatRoomId: chatRoom.id, opponentId, message });
       }
-      setInput(''); // Clear input after sending
+      setValue('message', '');
     } catch (error) {
       toast.error('Failed to send message or create chat room');
     }
@@ -112,7 +116,7 @@ export default function Chat() {
       // Using optional chaining to prevent null errors
       socket.current.on('receive', (newMessage) => {
         console.log('Message received:', newMessage);
-        setAllMessages((prevMessages: any) => [newMessage, ...prevMessages]);
+        setAllMessages((prevMessages: any) => [...prevMessages, newMessage]);
       });
 
       return () => {
@@ -122,7 +126,6 @@ export default function Chat() {
     }
   }, [chatRoom]);
 
-  console.log(messagesData);
   return (
     <MainContainer>
       <ChatHeader>
@@ -132,14 +135,17 @@ export default function Chat() {
         <Texts20h30>
           {chatRoom?.client.id === Number(opponentId) ? chatRoom?.petsitter?.nickname : chatRoom?.client?.nickname} 님
         </Texts20h30>
+        <button>
+          <FiMenu size="24px" color="#237EFF" />
+        </button>
       </ChatHeader>
 
       <MessageList allMessages={allMessages} pagination={pagination} opponentId={opponentId} />
 
-      <ChatFooter>
-        <input type="text" value={input} onChange={(e) => setInput(e.target.value)} placeholder="Send a message" />
-        <button onClick={sendMessage}>Send</button>
-      </ChatFooter>
+      <ChatFooterForm onSubmit={handleSubmit(onSubmit)}>
+        <ChatInput type="text" placeholder="Send a message" {...register('message')} />
+        <ChatSubmitButton type="submit">Send</ChatSubmitButton>
+      </ChatFooterForm>
     </MainContainer>
   );
 }
@@ -150,11 +156,9 @@ const MainContainer = styled.main`
   height: 100vh;
 `;
 
-const Fixed = styled.div`
-  position: fixed;
-`;
 const ChatHeader = styled.header`
   display: flex;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
   padding: 20px;
@@ -168,4 +172,18 @@ const StyledBackButton = styled.button`
   cursor: pointer;
 `;
 
-const ChatFooter = styled.div``;
+const ChatFooterForm = styled.form`
+  display: flex;
+  padding: 16px;
+  gap: 16px;
+`;
+
+const ChatInput = styled.input`
+  flex: auto;
+  border-radius: 24px;
+  padding: 8px 12px;
+  border: 2px solid ${(props) => props.theme.colors.mainBlue};
+  ${(props) => props.theme.fontSize.s18h27};
+`;
+
+const ChatSubmitButton = styled.button``;

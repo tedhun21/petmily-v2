@@ -4,7 +4,9 @@ import 'dayjs/locale/ko';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import updateLocale from 'dayjs/plugin/updateLocale';
 import isBetween from 'dayjs/plugin/isBetween';
+import { Message } from 'types/chat.type';
 
+dayjs.locale('ko');
 dayjs.extend(relativeTime);
 dayjs.extend(updateLocale);
 dayjs.extend(isBetween);
@@ -21,8 +23,8 @@ export const timeRange = (start: string, end: string) => {
 };
 
 export const dateAgo = (date: string) => {
-  const theDay = dayjs(date).locale('ko');
-  const now = dayjs().locale('ko');
+  const theDay = dayjs(date);
+  const now = dayjs();
 
   if (!theDay.isValid()) {
     return 'Invalid date';
@@ -135,3 +137,57 @@ export const weekdays = [
 export function formatToLocaleAMPM(dateString: string) {
   return dayjs(dateString).locale('ko').format('A h:mm');
 }
+
+// 같은 시간의 메세지면 첫번째 메세지에서만 사진 보여주기
+export const shouldShowSenderPhoto = (currentMessage: Message, previousMessage?: Message) => {
+  // 이전 메시지가 없으면 항상 표시
+  if (!previousMessage) return true;
+
+  // 현재 메시지와 이전 메시지가 같은 분인지 확인
+  const isSameMinute = dayjs(currentMessage.createdAt).isSame(previousMessage.createdAt, 'minute');
+  const isSameSender = currentMessage.sender.id === previousMessage.sender.id;
+
+  // 1. 이전과 같은 시간 && 이전과 같은 sender ===> 현재 메시지 사진 false
+  if (isSameMinute && isSameSender) {
+    return false; // 사진을 표시하지 않음
+  }
+
+  // 2. 이전과 같은 시간 && 이전과 다른 sender ===> 현재 메시지 사진 true
+  // 3. 이전과 다른 시간 && 이전과 같은 sender ===> 현재 메시지 사진 true
+  // 4. 이전과 다른 시간 && 이전과 다른 sender ===> 현재 메시지 사진 true
+  return true; // 조건 2, 3, 4의 경우 모두 사진을 표시
+};
+
+// 같은 시간의 메세지면 마지막 메세지에만 시간 보여주기
+// 1. 다음 메시지가 현재랑 같고 && 같은 시간이면 현재 메세지에서는 false
+// 2. 같은 시간이어도 이전 메시지가 상대방이면 현재 메세지에서는 true
+export const shouldShowTime = (currentMessage: Message, previousMessage?: Message, nextMessage?: Message) => {
+  // 첫 번째 메시지인 경우 시간을 항상 표시
+  if (!previousMessage) return true;
+
+  // 현재 메시지와 이전 메시지를 비교
+  const isSameMinuteWithPrevious = dayjs(currentMessage.createdAt).isSame(previousMessage.createdAt, 'minute');
+  const isSameSenderWithPrevious = currentMessage.sender.id === previousMessage.sender.id;
+
+  // 현재 메시지와 다음 메시지를 비교
+  const isSameMinuteWithNext = nextMessage && dayjs(currentMessage.createdAt).isSame(nextMessage.createdAt, 'minute');
+  const isSameSenderWithNext = nextMessage && currentMessage.sender.id === nextMessage.sender.id;
+
+  // 1. 다음 메시지가 현재 메시지와 같고 같은 시간이면 현재 메시지에서는 false
+  if (isSameMinuteWithNext && isSameSenderWithNext) {
+    return false; // 시간 표시 안 함
+  }
+
+  // 2. 같은 시간이어도 이전 메시지가 상대방이면 현재 메시지에서는 true
+  if (isSameMinuteWithPrevious && !isSameSenderWithPrevious) {
+    return true; // 시간 표시
+  }
+
+  // 기본적으로 시간 표시
+  return true;
+};
+
+export const shouldShowDateDivider = (currentMessage: Message, previousMessage?: Message) => {
+  if (!previousMessage) return true;
+  return !dayjs(currentMessage.createdAt).isSame(previousMessage.createdAt, 'day');
+};

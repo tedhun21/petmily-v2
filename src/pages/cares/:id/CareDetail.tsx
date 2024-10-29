@@ -21,8 +21,6 @@ export default function CareDetail() {
   const { data: me } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);
   const { data: reservation } = useSWR(`${API_URL}/reservations/${id}`, fetcherWithCookie);
 
-  console.log(reservation?.petsitter);
-
   return (
     <ReservationContainer>
       <Progress>
