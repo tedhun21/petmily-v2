@@ -12,6 +12,7 @@ import DetailReservation from './component/DetailReservation';
 import ProgressButton from './component/ProgressButton';
 import ClientCard from './component/ClientCard';
 import { UserRole } from 'types/user.type';
+import Maps from './component/Maps';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -31,9 +32,11 @@ export default function CareDetail() {
       ) : me?.role === UserRole.CLIENT ? (
         <PetsitterCard petsitter={reservation?.petsitter} />
       ) : null}
+
       <PetContainer pets={reservation?.pets} />
-      {/* <Maps location={reservation?.address} /> */}
-      <span>{reservation?.address}</span>
+
+      <Maps reservation={reservation} />
+
       <DetailReservation reservation={reservation} />
 
       <ProgressButton meRole={me?.role} reservation={reservation} />
