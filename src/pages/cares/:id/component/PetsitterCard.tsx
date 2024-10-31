@@ -4,12 +4,11 @@ import { PiStarFill } from 'react-icons/pi';
 
 import { Column, ImageCentered, RoundedImageWrapper, Row, Texts18h27 } from 'commonStyle';
 import { PetInfoCapsule, PetInfoContainer } from '@pages/cares/:id/CareDetail';
-import { timeRange } from 'utils/date';
+import { formatKrDays, timeRange } from 'utils/date';
 import { Link } from 'react-router-dom';
+import { MdOutlineRateReview } from 'react-icons/md';
 
 export default function PetsitterCard({ petsitter }: any) {
-  const parsedPossibleDay = petsitter?.possibleDay && JSON.parse(petsitter?.possibleDay);
-
   console.log(petsitter);
   return (
     <Card>
@@ -21,23 +20,30 @@ export default function PetsitterCard({ petsitter }: any) {
           />
         </PetsitterImage>
         <PetsitterName>{petsitter?.nickname} 님</PetsitterName>
+        <StyledLink to={`/chats/${petsitter?.id}`}>채팅 하기</StyledLink>
       </ImageName>
       <PetsitterInfo>
-        <div>
-          <PiStarFill size="28px" color="#279EFF" />
-          <span>{petsitter?.star}</span>
-        </div>
-        <div>
-          <PetInfoContainer>
-            {parsedPossibleDay?.map((day: string, index: number) => <PetInfoCapsule key={index}>{day}</PetInfoCapsule>)}
-          </PetInfoContainer>
-        </div>
+        <StarReviewWrapper>
+          <IconAndSpan>
+            <PiStarFill size="28px" color="#279EFF" />
+            <Texts18h27>{petsitter?.star}</Texts18h27>
+          </IconAndSpan>
+          <IconAndSpan>
+            <MdOutlineRateReview size="28px">review</MdOutlineRateReview>
+            <Texts18h27>{petsitter?.reviewCount}</Texts18h27>
+          </IconAndSpan>
+        </StarReviewWrapper>
+
+        <PetInfoContainer>
+          {petsitter?.possibleDays?.map((day: string, index: number) => (
+            <PetInfoCapsule key={index}>{formatKrDays(day)}</PetInfoCapsule>
+          ))}
+        </PetInfoContainer>
 
         <div>
           <span>{timeRange(petsitter?.possibleStartTime, petsitter?.possibleEndTime)}</span>
         </div>
       </PetsitterInfo>
-      <StyledLink to={`/chats/${petsitter?.id}`}>채팅 하기</StyledLink>
     </Card>
   );
 }
@@ -99,4 +105,14 @@ const StyledLink = styled(Link)`
   > span {
     color: inherit;
   }
+`;
+
+const StarReviewWrapper = styled(Row)`
+  align-items: center;
+  gap: 8px;
+`;
+
+const IconAndSpan = styled(Row)`
+  align-items: center;
+  gap: 4px;
 `;

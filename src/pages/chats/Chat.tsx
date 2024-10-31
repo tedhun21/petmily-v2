@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { io, Socket } from 'socket.io-client';
+import { io } from 'socket.io-client';
 
 import useSWR from 'swr';
 import useSWRInfinite from 'swr/infinite';
@@ -22,12 +22,13 @@ import { FiMenu } from 'react-icons/fi';
 import { useForm } from 'react-hook-form';
 
 const API_URL = process.env.REACT_APP_API_URL;
+const SOCKET_URL = process.env.REACT_APP_WEBSOCKET_URL;
 
 export default function Chat() {
   // Ensure opponentId is a string and handle undefined case
   const { opponentId } = useParams<{ opponentId: string | undefined }>();
   const navigate = useNavigate();
-  const socket = useRef<Socket | null>(null);
+  const [socket, setSocket] = useState<any>(null);
 
   const { register, handleSubmit, setValue } = useForm();
 
@@ -63,10 +64,10 @@ export default function Chat() {
         // Create a new chat room if it doesn't exist
         const newChatRoom = await trigger({ formData: { opponentId } });
         setChatRoom(newChatRoom);
-        socket.current?.emit('send', { chatRoomId: newChatRoom.id, opponentId, message });
+        socket.emit('send', { chatRoomId: newChatRoom.id, opponentId, message });
       } else {
         // Send message to existing chat room
-        socket.current?.emit('send', { chatRoomId: chatRoom.id, opponentId, message });
+        socket.emit('send', { chatRoomId: chatRoom.id, opponentId, message });
       }
       setValue('message', '');
     } catch (error) {
@@ -95,33 +96,32 @@ export default function Chat() {
   // 5. send에서 듣고 있던 서버에서 메세지 저장하고 .to(chatRoomId) 으로 특정한 채팅방으로 메세지를 보냄
   // 6. 프론트에서 receive를 듣고 있다가 메세지에 추가
   useEffect(() => {
-    if (chatRoom) {
-      socket.current = io('http://localhost:8080', {
-        auth: { token: getCookie('access_token') },
+    const token = getCookie('access_token');
+    if (chatRoom && token) {
+      const socketConnection = io(`${SOCKET_URL}`, {
+        auth: { token },
       });
 
-      socket.current.on('connect', () => {
+      socketConnection.on('connect', () => {
         console.log('Connected to server');
-        socket.current?.emit('joinRoom', chatRoom.id.toString());
+        socketConnection.emit('joinRoom', chatRoom.id.toString());
       });
 
-      socket.current.on('connect_error', (error) => {
-        console.error('Connection error:', error);
-      });
-
-      socket.current.on('error', (error) => {
+      socketConnection.on('error', (error) => {
         console.error('Socket error:', error);
       });
 
-      // Using optional chaining to prevent null errors
-      socket.current.on('receive', (newMessage) => {
+      socketConnection.on('receive', (newMessage) => {
         console.log('Message received:', newMessage);
         setAllMessages((prevMessages: any) => [...prevMessages, newMessage]);
       });
 
+      // 소켓 연결 상태를 업데이트
+      setSocket(socketConnection);
+
       return () => {
-        socket.current?.off('receive');
-        socket.current?.disconnect();
+        socketConnection.off('receive');
+        socketConnection.disconnect();
       };
     }
   }, [chatRoom]);

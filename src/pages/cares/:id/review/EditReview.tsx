@@ -28,7 +28,7 @@ import { FaXmark } from 'react-icons/fa6';
 import useSWR from 'swr';
 import { fetcherWithCookie, updaterWithCookie } from 'api';
 import HoverRating from '../../../../components/HoverRating';
-import { formatProgress } from 'utils/misc';
+import { formatStatus } from 'utils/misc';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -190,7 +190,7 @@ export default function EditReview() {
           </ReservationInfo>
           <ReservationInfo>
             <span>상태</span>
-            <Texts14h21>{formatProgress(reservation?.status)}</Texts14h21>
+            <Texts14h21>{formatStatus(reservation?.status)}</Texts14h21>
           </ReservationInfo>
         </ReservationContainer>
       </Receipt>

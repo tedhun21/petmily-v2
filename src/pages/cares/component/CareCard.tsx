@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { Column, ImageCentered, RoundedImageWrapper, Row, Texts12h18, Texts14h21, Texts16h24 } from 'commonStyle';
-import { formatProgress } from 'utils/misc';
+import { formatStatus } from 'utils/misc';
 import { dayFormat, timeRange } from 'utils/date';
 
 export default function CareCard({ reservation }: any) {
@@ -20,7 +20,7 @@ export default function CareCard({ reservation }: any) {
             <Texts14h21>펫시터님</Texts14h21>
           </PetsitterName>
         </PetsitterContainer>
-        <PropgressSpan>{formatProgress(reservation?.status)}</PropgressSpan>
+        <PropgressSpan>{formatStatus(reservation?.status)}</PropgressSpan>
       </FirstContainer>
       <ReservationContainer>
         <Wrapper>
