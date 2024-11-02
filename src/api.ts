@@ -11,6 +11,11 @@ export const fetcher = async (url: string) => {
   }
 };
 
+export const imageFetcher = async (url: string) => {
+  const response = await axios.get(url, { responseType: 'arraybuffer' });
+  return response.data;
+};
+
 export const fetcherWithToken = async (url: string, access_token: string | null) => {
   if (access_token) {
     try {

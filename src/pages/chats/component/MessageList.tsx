@@ -1,46 +1,69 @@
-import { ImageCentered, RoundedImageWrapper, Texts12h18, Texts16h24 } from 'commonStyle';
+import { useEffect, useRef } from 'react';
 import styled, { css } from 'styled-components';
+import { motion } from 'framer-motion';
+import { ImageCentered, RoundedImageWrapper, Texts12h18, Texts14h21, Texts16h24 } from 'commonStyle';
 import { Message } from 'types/chat.type';
 import { formatToLocaleAMPM } from 'utils/date';
+import { shouldShowDateDivider, shouldShowSenderPhoto, shouldShowTime } from 'utils/date';
+import dayjs from 'dayjs';
 
 export default function MessageList({
   allMessages,
   pagination,
   opponentId,
 }: {
-  allMessages: Message[];
+  allMessages?: Message[];
   pagination: { total: number; totalPages: number };
   opponentId: string | undefined;
 }) {
+  const bottomRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [allMessages]);
+
   return (
     <List>
-      {allMessages
-        .map((message: Message, index: number) => {
+      {allMessages &&
+        Array.isArray(allMessages) &&
+        allMessages.length > 0 &&
+        allMessages.map((message: Message, index: number) => {
           const isMyMessage = message.sender.id !== Number(opponentId);
-          // Get the createdAt of the previous message for comparison
-          const previousMessage = allMessages[index - 1];
-          const showTime =
-            !previousMessage ||
-            new Date(message.createdAt).getMinutes() !== new Date(previousMessage.createdAt).getMinutes() ||
-            new Date(message.createdAt).getHours() !== new Date(previousMessage.createdAt).getHours();
+
+          // 이전 메시지와 다음 메시지를 찾는다.
+          const previousMessage = index > 0 ? allMessages[index - 1] : undefined;
+          const nextMessage = index < allMessages.length - 1 ? allMessages[index + 1] : undefined;
+
+          const showSenderPhoto = shouldShowSenderPhoto(message, previousMessage);
+          const showTime = shouldShowTime(message, previousMessage, nextMessage);
+          const showDateDivider = shouldShowDateDivider(message, previousMessage);
 
           return (
-            <Item key={message.id} isMyMessage={isMyMessage}>
-              {!isMyMessage && (
-                <SenderPhoto>
-                  <ImageCentered
-                    src={message?.sender?.photo ? message?.sender.photo : '/imgs/DefaultUserProfile.jpg'}
-                  />
-                </SenderPhoto>
+            <div key={message.id}>
+              {showDateDivider && (
+                <DateDivider>
+                  <Date>{dayjs(message.createdAt).format('MMMM D[일], YYYY')}</Date>
+                </DateDivider>
               )}
-              <MessageContent isMyMessage={isMyMessage}>
-                <Content isMyMessage={isMyMessage}>{message.content}</Content>
-                <SendTime>{formatToLocaleAMPM(message.createdAt)}</SendTime>
-              </MessageContent>
-            </Item>
+              <Item isMyMessage={isMyMessage}>
+                {!isMyMessage && showSenderPhoto ? (
+                  <SenderPhoto>
+                    <ImageCentered
+                      src={message?.sender?.photo ? message.sender.photo : '/imgs/DefaultUserProfile.jpg'}
+                    />
+                  </SenderPhoto>
+                ) : !isMyMessage ? (
+                  <EmptySpace />
+                ) : null}
+                <MessageContent isMyMessage={isMyMessage}>
+                  <Content isMyMessage={isMyMessage}>{message.content}</Content>
+                  {showTime && <SendTime>{formatToLocaleAMPM(message.createdAt)}</SendTime>}
+                </MessageContent>
+              </Item>
+            </div>
           );
-        })
-        .reverse()}
+        })}
+      <motion.div ref={bottomRef} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }} />
     </List>
   );
 }
@@ -56,6 +79,7 @@ const List = styled.ul`
 
 const Item = styled.li<{ isMyMessage: boolean }>`
   display: flex;
+  width: 100%;
   align-items: center;
   gap: 8px;
   ${(props) =>
@@ -69,13 +93,33 @@ const Item = styled.li<{ isMyMessage: boolean }>`
           align-self: flex-start;
         `}
 `;
+
+const DateDivider = styled.div`
+  display: flex;
+  justify-content: center;
+  padding: 8px;
+`;
+
+const Date = styled(Texts14h21)`
+  border-radius: 12px;
+  padding: 8px;
+  background-color: ${(props) => props.theme.colors.gray};
+  ${(props) => props.theme.fontSize.s14h21};
+`;
+
 const SenderPhoto = styled(RoundedImageWrapper)`
-  width: 48px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
+`;
+
+const EmptySpace = styled.div`
+  width: 40px; /* SenderPhoto와 동일한 크기로 설정 */
+  height: 40px; /* SenderPhoto와 동일한 크기로 설정 */
 `;
 
 const MessageContent = styled.div<{ isMyMessage: boolean }>`
   display: flex;
+  flex: 1;
   flex-direction: ${(props) => (props.isMyMessage ? 'row-reverse' : 'row')};
   align-items: flex-end;
   gap: 8px;
@@ -84,9 +128,10 @@ const MessageContent = styled.div<{ isMyMessage: boolean }>`
 const Content = styled(Texts16h24)<{ isMyMessage: boolean }>`
   padding: 8px;
   color: white;
-  background-color: ${(props) => (props.isMyMessage ? props.theme.colors.mainBlue : props.theme.colors.darkBlue)};
+  background-color: ${(props) => (props.isMyMessage ? props.theme.colors.mainBlue : props.theme.colors.subBlue)};
   border-radius: 8px;
-  max-width: 70%;
+  max-width: 70%; // 최대 너비를 설정하여 상대방 영역 침범 방지
+  word-wrap: break-word; // 긴 단어가 있을 경우 줄 바꿈 처리
 `;
 
 const SendTime = styled(Texts12h18)``;

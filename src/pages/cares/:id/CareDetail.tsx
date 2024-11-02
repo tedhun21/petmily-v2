@@ -3,7 +3,7 @@ import useSWR from 'swr';
 
 import styled from 'styled-components';
 
-import { formatProgress } from 'utils/misc';
+import { formatStatus } from 'utils/misc';
 import { fetcherWithCookie } from 'api';
 
 import PetsitterCard from './component/PetsitterCard';
@@ -12,33 +12,62 @@ import DetailReservation from './component/DetailReservation';
 import ProgressButton from './component/ProgressButton';
 import ClientCard from './component/ClientCard';
 import { UserRole } from 'types/user.type';
+import Maps from './component/Maps';
+import { useEffect, useState } from 'react';
+import { getCookie } from 'utils/cookie';
+import { io } from 'socket.io-client';
 
 const API_URL = process.env.REACT_APP_API_URL;
+const SOCKET_URL = process.env.REACT_APP_WEBSOCKET_URL;
 
 export default function CareDetail() {
   const { id } = useParams();
+  const [socket, setSocket] = useState<any>(null);
 
   const { data: me } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);
-  const { data: reservation } = useSWR(`${API_URL}/reservations/${id}`, fetcherWithCookie);
+  const { data: reservation, mutate } = useSWR(`${API_URL}/reservations/${id}`, fetcherWithCookie);
 
-  console.log(reservation?.petsitter);
+  useEffect(() => {
+    const token = getCookie('access_token');
+    if (reservation && token) {
+      const socketConnection = io(`${SOCKET_URL}`, { auth: { token } });
+
+      socketConnection.on('connect', () => {
+        console.log('join reservation', reservation.id);
+        socketConnection.emit('joinReservation', reservation.id?.toString());
+      });
+
+      socketConnection.on('listenStatus', (updatedStatus) => {
+        const { newStatus } = updatedStatus;
+
+        mutate(`${API_URL}/reservations/${id}`, { ...reservation, status: newStatus });
+      });
+      setSocket(socketConnection);
+
+      return () => {
+        socketConnection.disconnect();
+      };
+    }
+  }, [reservation]);
 
   return (
     <ReservationContainer>
-      <Progress>
-        <span>{formatProgress(reservation?.status)}...</span>
-      </Progress>
+      <Status>
+        <span>{formatStatus(reservation?.status)}...</span>
+      </Status>
       {me?.role === UserRole.PETSITTER ? (
         <ClientCard client={reservation?.client} />
       ) : me?.role === UserRole.CLIENT ? (
         <PetsitterCard petsitter={reservation?.petsitter} />
       ) : null}
+
       <PetContainer pets={reservation?.pets} />
-      {/* <Maps location={reservation?.address} /> */}
-      <span>{reservation?.address}</span>
+
+      {/* <Maps reservation={reservation} /> */}
+
       <DetailReservation reservation={reservation} />
 
-      <ProgressButton meRole={me?.role} reservation={reservation} />
+      <ProgressButton meRole={me?.role} reservation={reservation} socket={socket} />
     </ReservationContainer>
   );
 }
@@ -51,7 +80,7 @@ const ReservationContainer = styled.main`
   gap: 20px;
 `;
 
-const Progress = styled.div`
+const Status = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;

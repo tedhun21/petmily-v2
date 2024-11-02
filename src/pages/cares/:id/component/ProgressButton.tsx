@@ -9,19 +9,18 @@ import Loading from '@components/Loading';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-export default function ProgressButton({ meRole, reservation }: any) {
+export default function ProgressButton({ meRole, reservation, socket }: any) {
   const navigate = useNavigate();
   const { isMutating, trigger } = useSWRMutation(`${API_URL}/reservations/${reservation?.id}`, updaterWithCookie);
 
   // 예약 수락
-  const handleAccept = async () => {
-    await trigger(
+  const handleAccept = () => {
+    trigger(
       { formData: { status: 'Accepted' } },
       {
-        optimisticData: { ...reservation, status: 'Accepted' },
-        rollbackOnError: true,
         onSuccess: () => {
-          // 성공 시 추가 작업
+          // 성공 시 웹소켓을 통해 상태 업데이트 이벤트 발송
+          socket.emit('updateStatus', { reservationId: reservation?.id, newStatus: 'Accepted' });
         },
         onError: () => {
           // 에러 발생 시 처리 (rollback이 자동으로 됨)
@@ -31,14 +30,13 @@ export default function ProgressButton({ meRole, reservation }: any) {
   };
 
   // 예약 취소
-  const handleCancel = async () => {
-    await trigger(
+  const handleCancel = () => {
+    trigger(
       { formData: { status: 'Canceled' } },
       {
-        optimisticData: { ...reservation, status: 'Canceled' },
-        rollbackOnError: true,
         onSuccess: () => {
-          // 성공 시 추가 작업
+          // 성공 시 웹소켓을 통해 상태 업데이트 이벤트 발송
+          socket.emit('updateStatus', { reservationId: reservation?.id, newStatus: 'Canceled' });
         },
         onError: () => {
           // 에러 발생 시 처리 (rollback이 자동으로 됨)

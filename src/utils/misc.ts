@@ -14,7 +14,7 @@ export const getFilter = (filterType: number, values: any) => {
   }
 };
 
-export const formatProgress = (status: string) => {
+export const formatStatus = (status: string) => {
   switch (status) {
     case 'Pending':
       return '대기중';
@@ -74,11 +74,3 @@ export const findPetsittersURL = (ref: string, query: any, pageIndex: number, pa
   // Directly add pagination to the URL
   return `${baseUrl}${hasQueryParams ? '&' : '?'}page=${pageIndex + 1}&pageSize=${pageSize}`;
 };
-
-// 같은 시간의 메세지면 시간 안보여주기
-// export const shouldShowTime = () => {
-
-// };
-
-// 같은 시간의 메세지면 사진 안 보여주기
-// export const shouldShowPhoto = () => {};

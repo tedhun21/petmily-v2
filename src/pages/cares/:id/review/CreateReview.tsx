@@ -12,7 +12,7 @@ import { PiStarFill } from 'react-icons/pi';
 import { timeRange } from 'utils/date';
 
 import HoverRating from '../../../../components/HoverRating';
-import { formatProgress } from 'utils/misc';
+import { formatStatus } from 'utils/misc';
 import { useForm } from 'react-hook-form';
 import { FaXmark } from 'react-icons/fa6';
 import useSWRMutation from 'swr/mutation';
@@ -142,7 +142,7 @@ export default function CreateReview() {
           </ReservationInfo>
           <ReservationInfo>
             <span>상태</span>
-            <Texts14h21>{formatProgress(reservation?.status)}</Texts14h21>
+            <Texts14h21>{formatStatus(reservation?.status)}</Texts14h21>
           </ReservationInfo>
         </ReservationContainer>
       </Receipt>

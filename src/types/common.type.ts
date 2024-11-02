@@ -4,11 +4,6 @@ export interface CoreType {
   updatedAt: string;
 }
 
-export interface InfiniteType<T> {
-  results: T[];
-  pagination: PaginationType;
-}
-
 export interface PaginationType {
   page: number;
   pageSize: number;

@@ -1,42 +1,49 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { fetcher, imageFetcher } from 'api';
+import styled from 'styled-components';
+import useSWR from 'swr';
 
-const NaverMapGeoUrl = '/map-geocode/v2/geocode';
-const NaverMapStaticUrl = '/map-static/v2/raster';
-const NAVER_CLIENT_ID = process.env.REACT_APP_NAVER_MAP_CLIENT_ID;
-const NAVER_CLIENT_SECRET = process.env.REACT_APP_NAVER_MAP_CLIENT_SECRET;
+const API_URL = process.env.REACT_APP_API_URL;
 
-export default function Maps({ location }: any) {
-  const geo = useState(null);
+export default function Maps({ reservation }: any) {
+  // 예약에서 latitude와 longitude가 없을 때만 geocode를 요청
 
-  const addressWithoutZip = location && location.split(' ').slice(1).join(' ');
-  console.log('🚀 ~ Maps ~ addressWithoutZip:', addressWithoutZip);
+  const { data: geocode, error: geocodeError } = useSWR(
+    reservation?.address ? `${API_URL}/maps/geocode?location=${reservation?.address}` : null,
+    fetcher,
+  );
 
-  // 1. geocode
-  // 2. static map
+  const { data: staticMaps, error: staticMapsError } = useSWR(
+    geocode && geocode.status === 'OK' && geocode.addresses.length > 0 // geocode 유효성 체크
+      ? `${API_URL}/maps/static?longitude=${geocode.addresses[0].x}&latitude=${geocode.addresses[0].y}`
+      : null,
+    imageFetcher,
+  );
 
-  const headers = { 'X-NCP-APIGW-API-KEY-ID': `${NAVER_CLIENT_ID}`, 'X-NCP-APIGW-API-KEY': `${NAVER_CLIENT_SECRET}` };
-
-  const getGeo = async () => {
-    const response = await axios.get(`${NaverMapGeoUrl}?query=${addressWithoutZip}`, {
-      headers,
-    });
-    console.log(response);
-    return response;
-  };
-
-  async function fetchStaticMap() {
-    const response = await axios(`${NaverMapStaticUrl}`, {
-      headers,
-    });
-    console.log(response);
+  // 에러 핸들링
+  if (geocodeError || staticMapsError) {
+    return <div>Error loading map data</div>;
   }
 
-  useEffect(() => {
-    if (location) {
-      getGeo();
-    }
-  }, [location]);
+  // 로딩 상태 처리
+  if (!geocode || !staticMaps) {
+    return <div>Loading...</div>;
+  }
 
-  return <div>maps</div>;
+  const blobUrl = URL.createObjectURL(new Blob([staticMaps], { type: 'image/jpg,jpeg' }));
+  return (
+    <LocationImageWrapper>
+      <LocationImg src={blobUrl} alt="Static Map" />
+    </LocationImageWrapper>
+  );
 }
+
+const LocationImageWrapper = styled.div`
+  display: flex;
+  overflow: hidden;
+  border-radius: 20px;
+  box-shadow: ${(props) => props.theme.shadow.dp03};
+`;
+
+const LocationImg = styled.img`
+  width: 100%;
+`;
