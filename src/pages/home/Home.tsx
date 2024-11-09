@@ -15,7 +15,7 @@ export default function Home() {
         {/* <CustomLink to={'/search'}>펫시터 검색</CustomLink> */}
         <HomeAd />
         <LinkContainer>
-          <PetsitterLink to="/petsitters">펫시터 보기</PetsitterLink>
+          <PetsitterLink to="/search">펫시터 보기</PetsitterLink>
           <PetsitterLink to="/qna">펫시터 QnA</PetsitterLink>
         </LinkContainer>
         <AdSubContainer>
