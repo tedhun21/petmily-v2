@@ -46,7 +46,7 @@ import CareDetail from '@pages/cares/:id/CareDetail';
 import CreateReview from '@pages/cares/:id/review/CreateReview';
 import CreateJournal from '@pages/cares/:id/journal/CreateJournal';
 
-import Search from '@pages/search/component/Search';
+import Search from '@pages/search/Search';
 import QnA from '@pages/home/QnA';
 import Profile from '@pages/users/:id/Profile';
 import ViewPetsitters from '@pages/reservation/ViewPetsitters';

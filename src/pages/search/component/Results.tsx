@@ -1,4 +1,4 @@
-import { fetcher, posterWithCookie } from 'api';
+import { fetcher, posterWithCookie, updaterWithCookie } from 'api';
 import { ImageCentered, RoundedImageWrapper, Texts16h24 } from 'commonStyle';
 import useDebounce from 'hooks/useDebounce';
 
@@ -20,7 +20,7 @@ export default function Results({ input }: any) {
   );
 
   // 최근 검색어 등록
-  const { trigger } = useSWRMutation(`${API_URL}/search/recent`, posterWithCookie);
+  const { trigger } = useSWRMutation(`${API_URL}/search/recent`, updaterWithCookie);
 
   // 최근 검색어 저장, 링크
   const handleNavigate = (e: any) => {
