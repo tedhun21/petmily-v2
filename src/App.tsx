@@ -48,9 +48,9 @@ import CreateJournal from '@pages/cares/:id/journal/CreateJournal';
 
 import Search from '@pages/search/component/Search';
 import QnA from '@pages/home/QnA';
+import Profile from '@pages/users/:id/Profile';
 import ViewPetsitters from '@pages/reservation/ViewPetsitters';
 import ViewJournal from '@pages/common/ViewJournal';
-import PetsitterViewDetails from '@pages/reservation/PetsitterViewDetails';
 import SitterSchedule from '@pages/me/SitterSchedule';
 
 import Chat from '@pages/chats/Chat';
@@ -106,7 +106,7 @@ const router = createBrowserRouter(
         <Route path="cares/:id/review/create" element={<CreateReview />} />
         <Route path="cares/:id/review" element={<EditReview />} />
         {/* <Route path="cares/:id/journal" element={<EditJournal />} /> */}
-        <Route path="petsitters/:id" element={<PetsitterViewDetails />} />
+        <Route path="users/:nickname" element={<Profile />} />
         {/* <Route path="petsitters" element={<ViewPetsitters />} /> */}
         {/* <Route path="petsitters/:memberId/schedule" element={<SitterSchedule />} /> */}
       </Route>
