@@ -1,17 +1,12 @@
-import { ChangeEvent, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 
-import { FaXmark } from 'react-icons/fa6';
-import { FiSearch } from 'react-icons/fi';
-
 import { Texts20h30 } from 'commonStyle';
-import Results from './Results';
-import RecentSearches from './RecentSearches';
-import SearchInput from '../SearchInput';
+import SearchInput from './component/SearchInput';
+import RecentSearches from './component/RecentSearches';
+import Results from './component/Results';
 
 export default function Search() {
-  const [isFocused, setIsFocused] = useState(false);
-
   const [input, setInput] = useState<string>('');
 
   return (
@@ -41,21 +36,4 @@ const SearchContainer = styled.main`
 const SearchTitleText = styled(Texts20h30)`
   color: ${(props) => props.theme.textColors.gray10};
   font-weight: ${(props) => props.theme.fontWeights.extrabold};
-`;
-
-const InputContainer = styled.div<{ isFocused: boolean }>`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px;
-  border: 2px solid ${(props) => props.theme.colors.mainBlue};
-  border-radius: 20px;
-
-  &:hover {
-    border-color: ${(props) => props.theme.colors.subBlue};
-  }
-
-  &:focus-within {
-    border-color: ${(props) => props.theme.colors.darkBlue};
-  }
 `;
