@@ -95,17 +95,17 @@ export default function Confirm({ isChecked, setIsChecked }: any) {
 }
 
 const TermsContainer = styled(Column)`
+  overflow: auto;
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
   width: 400px;
   height: 600px;
-  overflow: auto;
-  border-radius: 16px;
   padding: 24px;
-  gap: 12px;
+  border-radius: 16px;
   background-color: ${(props) => props.theme.colors.white};
+  transform: translate(-50%, -50%);
+  gap: 12px;
 `;
 
 const TextCenter = styled.div`
@@ -168,9 +168,9 @@ const CheckButton = styled.button`
 
 const ConfirmContainer = styled.div`
   display: flex;
-  position: relative;
-  justify-content: center;
   align-items: cetner;
+  justify-content: center;
+  position: relative;
   padding: 16px;
   gap: 8px;
   border-top: 1px solid ${(props) => props.theme.textColors.gray60};
@@ -179,8 +179,8 @@ const ConfirmContainer = styled.div`
 
 const Check = styled.div`
   position: absolute;
-  left: 8px;
   top: 20px;
+  left: 8px;
 `;
 
 const ConfirmText = styled.div<{ isChecked: boolean }>`

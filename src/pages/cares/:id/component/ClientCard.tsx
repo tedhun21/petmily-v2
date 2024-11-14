@@ -20,8 +20,8 @@ export default function ClientCard({ client }: any) {
 const Card = styled.section`
   display: flex;
   justify-content: space-between;
-  border-radius: 20px;
   padding: 20px;
+  border-radius: 20px;
   box-shadow: ${(props) => props.theme.shadow.dp03};
 `;
 

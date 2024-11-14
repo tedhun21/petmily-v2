@@ -49,10 +49,10 @@ export default function SelectedPets({ checkedPets }: any) {
 const PetSection = styled.section`
   display: flex;
   flex-direction: column;
-  border-radius: 12px;
   padding: 24px;
-  gap: 8px;
+  border-radius: 12px;
   background-color: ${(props) => props.theme.colors.white};
+  gap: 8px;
   box-shadow: ${(props) => props.theme.shadow.dp01};
 `;
 
@@ -62,18 +62,18 @@ const PetSectionTitle = styled.h2`
 `;
 
 const ScrollContainer = styled.ul`
-  overflow: auto;
   display: flex;
+  overflow: auto;
 `;
 
 const PetCard = styled.li`
   display: flex;
   justify-content: space-between;
-  gap: 4px;
+  margin: 4px;
+  padding: 12px;
   border: 2px solid #279eff;
   border-radius: 12px;
-  padding: 12px;
-  margin: 4px;
+  gap: 4px;
 `;
 
 const PetImg = styled(RoundedImageWrapper)`

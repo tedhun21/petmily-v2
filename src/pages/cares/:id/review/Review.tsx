@@ -311,12 +311,12 @@ const Img = styled.img`
 `;
 
 const RemoveButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: absolute;
   top: 0;
   right: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   width: 24px;
   height: 24px;
   border: 1px solid ${(props) => props.theme.lineColors.coolGray80};

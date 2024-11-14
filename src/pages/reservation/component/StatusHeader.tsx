@@ -27,8 +27,8 @@ const Header = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: ${(props) => props.theme.textColors.secondary};
   padding: 16px;
+  background-color: ${(props) => props.theme.textColors.secondary};
 `;
 
 const Title = styled.span`
@@ -43,7 +43,7 @@ const PageNumber = styled.span`
 
 export const BackArrowButton = styled.button`
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   cursor: pointer;
 `;

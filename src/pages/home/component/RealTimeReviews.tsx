@@ -43,8 +43,6 @@ export default function RealTimeReviews() {
     );
   }
 
-  console.log(data);
-
   return (
     <Swiper
       slidesPerView={2}

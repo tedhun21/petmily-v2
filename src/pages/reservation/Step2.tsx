@@ -80,9 +80,9 @@ const MainContainer = styled.main`
 `;
 
 const FilterContainer = styled(Row)`
-  padding: 8px;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  padding: 8px;
 `;
 
 const TitleWrap = styled(Row)`

@@ -100,8 +100,8 @@ export default function Login() {
 const MainContainer = styled.main`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   width: 100%;
   height: 80%;
   background-color: white;
@@ -147,7 +147,6 @@ export const SubmitButton = styled.button`
   background-color: ${({ theme }) => theme.colors.mainBlue};
   border: none;
   color: white;
-
   ${({ theme }) => theme.fontSize.s16h24};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
 

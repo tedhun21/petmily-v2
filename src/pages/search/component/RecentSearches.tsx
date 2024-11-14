@@ -94,7 +94,6 @@ const RecentLink = styled(Link)`
   align-items: center;
   padding: 4px;
   gap: 8px;
-
   color: inherit; /* 텍스트 색상을 부모 요소와 동일하게 설정 */
 
   &:visited,

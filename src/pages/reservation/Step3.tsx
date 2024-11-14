@@ -9,8 +9,6 @@ export default function Step3({ onNext, onPrevious }: any) {
   const { getValues, watch } = useFormContext();
   const { petsitter } = getValues();
 
-  console.log(petsitter);
-  // console.log(watch());
   return (
     <MainContainer>
       <PetsitterInfo>
@@ -55,8 +53,8 @@ const MainContainer = styled.main`
 
 const PetsitterInfo = styled.div`
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   gap: 20px;
 `;
 
@@ -80,8 +78,8 @@ const InfoWrapper = styled(Row)`
 
 const ButtonContainer = styled.div`
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 `;
 
 const StyledButton = styled.button`
@@ -97,6 +95,7 @@ const StyledButton = styled.button`
   &:hover {
     background-color: ${({ theme }) => theme.colors.subBlue};
   }
+
   &:active {
     background-color: ${({ theme }) => theme.colors.darkBlue};
     box-shadow: ${({ theme }) => theme.shadow.inset};

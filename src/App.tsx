@@ -142,10 +142,10 @@ const Container = styled.div`
 
 const Wrapper = styled.div`
   display: flex;
-  position: relative;
   flex-direction: column;
-  max-width: 600px;
+  position: relative;
   width: 100%;
   height: 100%;
   background-color: white;
+  max-width: 600px;
 `;

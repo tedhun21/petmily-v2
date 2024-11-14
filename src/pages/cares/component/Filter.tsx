@@ -56,9 +56,9 @@ export default function Filter({ filter, order, handleFilter, handleOrder }: any
 }
 
 const FilterContainer = styled(Row)`
-  gap: 16px;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  gap: 16px;
 `;
 
 const StatusFilters = styled(Row)`

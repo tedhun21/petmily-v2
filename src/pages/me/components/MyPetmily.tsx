@@ -28,8 +28,8 @@ const PetmilyContainer = styled.section`
 `;
 
 const TitleContainer = styled(Row)`
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
 `;
 
 const StyledPlusIcon = styled(LuBadgePlus)`

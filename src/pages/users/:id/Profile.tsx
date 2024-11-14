@@ -70,8 +70,6 @@ export default function Profile() {
   // 유저 정보 가져오기
   const { data: userData } = useSWR(`${API_URL}/users?q=${nickname}`, fetcherWithCookie);
 
-  console.log(userData);
-
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [activeTab, setActiveTab] = useState(NavItem[0].link);
   const [selectedDates, setSelectedDates] = useState<dayjs.Dayjs | null>(null);

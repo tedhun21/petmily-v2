@@ -140,8 +140,8 @@ const ClientInfo = styled(Row)`
 `;
 
 const TitleContainer = styled(Row)`
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
 `;
 
 const StarWrapper = styled(Row)`
@@ -164,7 +164,7 @@ const ClientImage = styled(RoundedImageWrapper)`
 `;
 
 const ReviewText = styled.p<{ isExpanded: boolean }>`
-  display: -webkit-box;
+  display: box;
   -webkit-line-clamp: ${(props) => (props.isExpanded ? 'none' : '3')};
   -webkit-box-orient: vertical;
   overflow: hidden;

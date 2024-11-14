@@ -61,11 +61,10 @@ const CustomSwiper = styled(Swiper)`
 `;
 
 const PetCard = styled(Column)`
-  padding: 20px;
-  height: 100%;
-  background-color: white;
-
   justify-content: space-between;
+  height: 100%;
+  padding: 20px;
+  background-color: white;
 `;
 
 const PetImageName = styled(Row)`

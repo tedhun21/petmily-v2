@@ -51,10 +51,10 @@ export default function PetsitterCard({ petsitter, onNext }: any) {
 
 const Card = styled.button`
   display: flex;
+  padding: 12px;
+  border-radius: 12px;
   justify-contnet: space-between;
   box-shadow: ${(props) => props.theme.shadow.dp02};
-  border-radius: 12px;
-  padding: 12px;
   cursor: pointer;
 `;
 
