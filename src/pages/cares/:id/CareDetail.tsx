@@ -22,6 +22,7 @@ const SOCKET_URL = process.env.REACT_APP_WEBSOCKET_URL;
 
 export default function CareDetail() {
   const { id } = useParams();
+
   const [socket, setSocket] = useState<any>(null);
 
   const { data: me } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);
@@ -32,16 +33,21 @@ export default function CareDetail() {
     if (reservation && token) {
       const socketConnection = io(`${SOCKET_URL}`, { auth: { token } });
 
+      // 채팅방 연결 웹소켓
       socketConnection.on('connect', () => {
         console.log('join reservation', reservation.id);
         socketConnection.emit('joinReservation', reservation.id?.toString());
       });
 
+      // status 변경 웹소켓
       socketConnection.on('listenStatus', (updatedStatus) => {
         const { newStatus } = updatedStatus;
 
+        // reservation status 캐시 변경
+
         mutate(`${API_URL}/reservations/${id}`, { ...reservation, status: newStatus });
       });
+
       setSocket(socketConnection);
 
       return () => {
@@ -105,5 +111,3 @@ export const PetInfoCapsule = styled.li`
   background-color: ${(props) => props.theme.colors.subBlue};
   ${(props) => props.theme.fontSize.s14h21};
 `;
-
-const LocationContainer = styled.div``;

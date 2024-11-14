@@ -21,7 +21,7 @@ function getLabelText(value: number) {
   return `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]}`;
 }
 
-export default function CustomizedRating({ value, setValue }: any) {
+export default function HoverRating({ value, setValue }: any) {
   const [hover, setHover] = useState(-1);
 
   return (
