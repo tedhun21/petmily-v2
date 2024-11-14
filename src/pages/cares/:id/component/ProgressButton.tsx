@@ -45,17 +45,14 @@ export default function ProgressButton({ meRole, reservation, socket }: any) {
     );
   };
 
-  const handleLinkCreateReview = () => {
-    navigate(`/cares/${reservation?.id}/review/create`);
-  };
-
   const handleLinkReview = () => {
     navigate(`/cares/${reservation?.id}/review`);
   };
 
   const handleLinkJournal = () => {
-    navigate(`/cares/${reservation?.id}/journal/create`);
+    navigate(`/cares/${reservation?.id}/journal`);
   };
+
   const renderButton = () => {
     if (meRole === 'Petsitter') {
       // 펫시터
@@ -77,9 +74,10 @@ export default function ProgressButton({ meRole, reservation, socket }: any) {
           return <Button disabled>취소됨</Button>;
         case 'Completed':
           return (
-            <Button disabled={isMutating} onClick={handleLinkJournal}>
-              {isMutating ? <Loading /> : '일지 작성'}
-            </Button>
+            <>
+              <Button onClick={handleLinkJournal}>{reservation?.journal ? '케어일지 수정' : '케어일지 작성'}</Button>
+              <Button disabled>완료됨</Button>
+            </>
           );
         default:
           return null;
@@ -105,16 +103,8 @@ export default function ProgressButton({ meRole, reservation, socket }: any) {
         case 'Completed':
           return (
             <>
-              {reservation?.jounarl ? <Button>일지 보기</Button> : null}
-              {reservation.review ? (
-                <Button disabled={false} onClick={handleLinkReview}>
-                  리뷰 수정
-                </Button>
-              ) : (
-                <Button disabled={isMutating} onClick={handleLinkCreateReview}>
-                  {isMutating ? <Loading /> : '리뷰 작성'}
-                </Button>
-              )}
+              <Button onClick={handleLinkReview}>{reservation?.review ? '후기 수정' : '후기 작성'}</Button>
+              <Button disabled>완료됨</Button>
             </>
           );
         default:

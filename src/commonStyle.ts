@@ -29,7 +29,7 @@ export const Texts20h30 = styled.span`
   ${(props) => props.theme.fontSize.s20h30}
 `;
 
-export const Title = styled.h2`
+export const Title = styled.h1`
   ${(props) => props.theme.fontSize.s18h27};
   font-weight: ${(props) => props.theme.fontWeights.bold};
 `;

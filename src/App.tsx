@@ -43,8 +43,6 @@ import EditPet from '@pages/me/editPet/EditPet';
 
 import Cares from '@pages/cares/Cares';
 import CareDetail from '@pages/cares/:id/CareDetail';
-import CreateReview from '@pages/cares/:id/review/CreateReview';
-import CreateJournal from '@pages/cares/:id/journal/CreateJournal';
 
 import Search from '@pages/search/component/Search';
 import QnA from '@pages/home/QnA';
@@ -57,14 +55,16 @@ import Chat from '@pages/chats/Chat';
 
 import NotFound from '@pages/common/404';
 
-import FormWizard from '@pages/reservation/FormWizard';
+import ReservationFormWizard from '@pages/reservation/ReservationFormWizard';
 import { Provider as ReduxProvider } from 'react-redux';
 import store from './store/index';
 import { SWRConfig } from 'swr';
 
-import EditReview from '@pages/cares/:id/review/EditReview';
 import Redirect from '@pages/login/Redirect';
 import { ToastContainer } from 'react-toastify';
+import Review from '@pages/cares/:id/review/Review';
+import Journal from '@pages/cares/:id/journal/Journal';
+// import CareWizard from '@pages/cares/:id/CareWizard';
 
 const NavHeaderLayout = () => {
   return (
@@ -90,7 +90,7 @@ const router = createBrowserRouter(
       <Route element={<NavHeaderLayout />}>
         <Route path="" element={<Home />} />
         <Route path="reviews" element={<Reviews />} />
-        <Route path="reservation" element={<FormWizard />} />
+        <Route path="reservation" element={<ReservationFormWizard />} />
         <Route path="cares" element={<Cares />} />
       </Route>
       <Route element={<BackHeaderLayout />}>
@@ -102,16 +102,15 @@ const router = createBrowserRouter(
         <Route path="search" element={<Search />} />
         <Route path="qna" element={<QnA />} />
         <Route path="cares/:id" element={<CareDetail />} />
-        <Route path="cares/:id/journal/create" element={<CreateJournal />} />
-        <Route path="cares/:id/review/create" element={<CreateReview />} />
-        <Route path="cares/:id/review" element={<EditReview />} />
-        {/* <Route path="cares/:id/journal" element={<EditJournal />} /> */}
+        <Route path="cares/:id/review" element={<Review />} />
+        <Route path="cares/:id/journal" element={<Journal />} />
         <Route path="users/:nickname" element={<Profile />} />
         {/* <Route path="petsitters" element={<ViewPetsitters />} /> */}
         {/* <Route path="petsitters/:memberId/schedule" element={<SitterSchedule />} /> */}
       </Route>
       <Route path="me" element={<Me />} />
       <Route path="auth/connect/google/callback" element={<Redirect />} />
+      {/* <Route path="cares/:id" element={<CareWizard />} /> */}
       <Route path="chats/:opponentId" element={<Chat />} />
       <Route path="*" element={<NotFound />} />
     </Route>,
