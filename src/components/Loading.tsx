@@ -19,10 +19,10 @@ const spin = keyframes`
 `;
 
 const Spinner = styled.div<{ $size: string; $color: string }>`
-  border: 4px solid rgba(0, 0, 0, 0.1); /* 배경 색상 */
-  border-top: 4px solid ${(props) => props.$color}; /* 스피너 색상 */
-  border-radius: 50%;
   width: ${(props) => props.$size};
   height: ${(props) => props.$size};
+  border: 4px solid rgb(0 0 0 / 10%); /* 배경 색상 */
+  border-radius: 50%;
   animation: ${spin} 1s linear infinite; /* 회전 애니메이션 */
+  border-top: 4px solid ${(props) => props.$color}; /* 스피너 색상 */
 `;

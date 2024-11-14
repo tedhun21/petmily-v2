@@ -52,17 +52,17 @@ export default function PetmilyCard({ pet }: any) {
 }
 
 const PetCard = styled(Link)`
-  border: 2px solid ${(props) => props.theme.colors.mainBlue};
-  padding: 8px;
-  border-radius: 16px;
-  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  width: 100%;
+  padding: 8px;
+  border: 2px solid ${(props) => props.theme.colors.mainBlue};
+  border-radius: 16px;
+  color: inherit;
   gap: 8px;
   box-shadow: ${(props) => props.theme.shadow.dp01};
   text-decoration: none;
-  color: inherit;
 
   &:hover {
     box-shadow: ${(props) => props.theme.shadow.dp02};
@@ -109,11 +109,11 @@ const LowerContainer = styled.ul`
 
 const PetPropWrapper = styled.li`
   display: flex;
-  justify-content: center;
   align-items: center;
-  background-color: ${(props) => props.theme.colors.subBlue};
-  border-radius: 16px;
+  justify-content: center;
   padding: 4px 8px;
+  border-radius: 16px;
+  background-color: ${(props) => props.theme.colors.subBlue};
 
   > span {
     color: white;

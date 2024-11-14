@@ -44,11 +44,11 @@ export default function UsedPetsitterCard({ petsitter }: any) {
 }
 
 const OftenPetsitterbox = styled(Row)`
+  align-items: center;
   padding: 12px;
   border-radius: 16px;
-  align-items: center;
-  gap: 8px;
   background-color: ${(props) => props.theme.colors.gray};
+  gap: 8px;
 `;
 
 const InfoContainer = styled(Column)`

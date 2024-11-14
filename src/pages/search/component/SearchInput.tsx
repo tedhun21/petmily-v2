@@ -58,6 +58,7 @@ const Input = styled.input`
   &:focus {
     outline: none;
   }
+
   focus: none;
   ${(props) => props.theme.fontSize.s18h27};
 `;

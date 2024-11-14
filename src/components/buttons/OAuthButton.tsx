@@ -19,12 +19,11 @@ export default function GoogleOAuthButton({ children }: Props) {
 }
 
 const GoogleOAuthButtonStyle = styled.button`
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
   width: 100%;
-
   padding: 8px;
   border: 1px solid ${({ theme }) => theme.textColors.gray40};
   border-radius: 12px;

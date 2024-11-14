@@ -16,10 +16,10 @@ export default function NavBarLink({ item }: any) {
 }
 
 const NavLi = styled.li<{ $isActive: boolean }>`
-  flex: 1;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  flex: 1;
   border-bottom: ${({ $isActive, theme }) => ($isActive ? `2px solid ${theme.colors.mainBlue}` : '')};
 `;
 
@@ -35,8 +35,8 @@ const CustomLink = styled(Link)<{ $isActive: boolean }>`
 const LinkLabel = styled.span`
   ${(props) => props.theme.fontSize.s12h18};
   padding: 4px 8px;
-
   border-radius: 8px;
+
   &:hover {
     background-color: ${(props) => props.theme.colors.gray};
   }

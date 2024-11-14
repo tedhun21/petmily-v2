@@ -103,7 +103,6 @@ export default function Chat() {
       });
 
       socketConnection.on('connect', () => {
-        console.log('Connected to server');
         socketConnection.emit('joinRoom', chatRoom.id.toString());
       });
 
@@ -112,7 +111,6 @@ export default function Chat() {
       });
 
       socketConnection.on('receive', (newMessage) => {
-        console.log('Message received:', newMessage);
         setAllMessages((prevMessages: any) => [...prevMessages, newMessage]);
       });
 
@@ -158,8 +156,8 @@ const MainContainer = styled.main`
 
 const ChatHeader = styled.header`
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
   padding: 20px;
   background-color: ${(props) => props.theme.colors.gray};

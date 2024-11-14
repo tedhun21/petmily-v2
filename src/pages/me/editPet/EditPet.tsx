@@ -248,6 +248,6 @@ export default function EditPet() {
 
 const EditTitleContainer = styled(TitleContainer)`
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
 `;

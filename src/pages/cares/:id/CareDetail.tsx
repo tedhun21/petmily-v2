@@ -35,7 +35,6 @@ export default function CareDetail() {
 
       // 채팅방 연결 웹소켓
       socketConnection.on('connect', () => {
-        console.log('join reservation', reservation.id);
         socketConnection.emit('joinReservation', reservation.id?.toString());
       });
 
@@ -81,15 +80,15 @@ export default function CareDetail() {
 const ReservationContainer = styled.main`
   display: flex;
   flex-direction: column;
-  border-radius: 20px;
   padding: 20px;
+  border-radius: 20px;
   gap: 20px;
 `;
 
 const Status = styled.div`
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 
   > span {
     color: ${(props) => props.theme.colors.mainBlue};

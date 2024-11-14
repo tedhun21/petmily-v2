@@ -11,7 +11,7 @@ import { useDispatch } from 'react-redux';
 // import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Box, Divider, Drawer, List, ListItem, ListItemText, ListSubheader } from '@mui/material';
 import { FormatListBulleted } from '@mui/icons-material';
-import { deleteCookie, getCookie, refreshAccessToken } from 'utils/cookie';
+import { deleteCookie, getCookie } from 'utils/cookie';
 import PetsitterCard from './component/step2/PetsitterCard';
 
 const apiUrl = process.env.REACT_APP_API_URL;
@@ -69,22 +69,21 @@ export default function ViewPetsitters() {
           setProperPetsitters(response.data);
         } catch (error: any) {
           if (error.response.status === 401) {
-            try {
-              const newAccessToken = await refreshAccessToken();
-              if (newAccessToken) {
-                const response = await axios.get(`${apiUrl}/members/favorite`, {
-                  headers: { Authorization: `Bearer ${newAccessToken}` },
-                });
-                setProperPetsitters(response.data);
-              }
-            } catch (refreshError) {
-              console.log(refreshError);
-              alert('로그인이 만료되었습니다. 다시 로그인 해주세요');
-              dispatch(logoutUser());
-              dispatch(deleteReservation());
-              deleteCookie('access_token');
-              deleteCookie('refresh_token');
-            }
+            // try {
+            //   const newAccessToken = await refreshAccessToken();
+            //   if (newAccessToken) {
+            //     const response = await axios.get(`${apiUrl}/members/favorite`, {
+            //       headers: { Authorization: `Bearer ${newAccessToken}` },
+            //     });
+            //     setProperPetsitters(response.data);
+            //   }
+            // } catch (refreshError) {
+            //   alert('로그인이 만료되었습니다. 다시 로그인 해주세요');
+            //   dispatch(logoutUser());
+            //   dispatch(deleteReservation());
+            //   deleteCookie('access_token');
+            //   deleteCookie('refresh_token');
+            // }
           }
           setProperPetsitters([]);
         }

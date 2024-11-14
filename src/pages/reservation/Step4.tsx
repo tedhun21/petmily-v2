@@ -156,17 +156,17 @@ const CheckTitleText = styled.h1`
 const CheckIconWrapper = styled.div`
   display: flex;
   justify-content: center;
-  align-itmems: center;
-  background-color: ${(props) => props.theme.colors.mainBlue};
   padding: 8px;
   border-radius: 50%;
+  background-color: ${(props) => props.theme.colors.mainBlue};
+  align-itmems: center;
 `;
 
 const TitleContainer = styled(Row)`
-  justify-content: center;
   align-items: center;
-  gap: 20px;
+  justify-content: center;
   padding: 12px;
+  gap: 20px;
 `;
 
 const ReservationResult = styled.section`
@@ -251,8 +251,8 @@ const CofirmButtonContainer = styled.section`
 
 const ButtonContainer = styled.div`
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   padding: 8px;
 `;
 

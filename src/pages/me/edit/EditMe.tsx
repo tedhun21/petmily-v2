@@ -212,8 +212,6 @@ export default function EditMe() {
     }
   }, [isLoading, me]);
 
-  console.log(watch());
-
   return (
     <main>
       <TitleContainer>

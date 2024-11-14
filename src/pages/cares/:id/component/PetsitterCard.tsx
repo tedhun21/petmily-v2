@@ -9,7 +9,6 @@ import { Link } from 'react-router-dom';
 import { MdOutlineRateReview } from 'react-icons/md';
 
 export default function PetsitterCard({ petsitter }: any) {
-  console.log(petsitter);
   return (
     <Card>
       <ImageName>
@@ -50,8 +49,8 @@ export default function PetsitterCard({ petsitter }: any) {
 
 const Card = styled.section`
   display: flex;
-  border-radius: 20px;
   padding: 20px;
+  border-radius: 20px;
   box-shadow: ${(props) => props.theme.shadow.dp03};
 
   > div {
@@ -72,10 +71,11 @@ const PetsitterImage = styled(RoundedImageWrapper)`
 
 const PetsitterInfo = styled(Column)`
   flex: auto;
+
   > div {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     flex: 1;
   }
 `;

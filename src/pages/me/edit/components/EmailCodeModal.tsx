@@ -42,8 +42,8 @@ const EmailButton = styled.button`
 
 const CustomModal = styled(Modal)`
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 `;
 
 const ModalContainer = styled.div`

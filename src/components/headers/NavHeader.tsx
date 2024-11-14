@@ -44,6 +44,6 @@ const HeaderContatiner = styled(Column)`
 
 const TopHeader = styled.div`
   display: flex;
-  flex: 1;
   justify-content: space-between;
+  flex: 1;
 `;
