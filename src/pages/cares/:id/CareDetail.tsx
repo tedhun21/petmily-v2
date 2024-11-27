@@ -123,4 +123,5 @@ const FloatButtonContainer = styled(Float)`
   justify-content: center;
   align-items: center;
   padding: 20px;
+  background-color: ${({ theme }) => theme.background.primary};
 `;

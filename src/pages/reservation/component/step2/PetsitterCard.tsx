@@ -30,7 +30,6 @@ export default function PetsitterCard({ petsitter, onNext }: any) {
             <Possiblebox>예약가능</Possiblebox>
           </PetsitterWrap>
           <TimeWrap>
-            {/* <IoMdTime size="16px" color="gray" /> */}
             <TimeText>{timeRange(possibleStartTime, possibleEndTime)}</TimeText>
           </TimeWrap>
           <RatingReviewContainer>

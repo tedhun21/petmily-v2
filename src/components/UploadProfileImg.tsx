@@ -65,5 +65,4 @@ const ImageLabel = styled.label`
 const UserImageWrapper = styled(RoundedImageWrapper)`
   width: 80px;
   height: 80px;
-  // border: 1px solid gray;
 `;

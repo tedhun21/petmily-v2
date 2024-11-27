@@ -49,7 +49,7 @@ export default function Step3({ onNext }: any) {
       <BottomFixed>
         <FloatButtonContainer>
           <StyledButton type="button" onClick={onNext}>
-            예약하러가기
+            예약하기
           </StyledButton>
         </FloatButtonContainer>
       </BottomFixed>
@@ -97,6 +97,7 @@ const FloatButtonContainer = styled(Float)`
   justify-content: center;
   width: 100%;
   padding: 20px;
+  background-color: ${({ theme }) => theme.background.primary};
 `;
 
 const StyledButton = styled(BlueButton)`

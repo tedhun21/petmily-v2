@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { IUser } from 'store/userSlice';
+import { IUser, userSlice } from 'store/userSlice';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 
@@ -16,8 +16,19 @@ import { UserRole } from 'types/user.type';
 import { PiCatBold, PiDogBold, PiStarFill } from 'react-icons/pi';
 import { formatKrDays, timeRange } from 'utils/date';
 import { MdOutlineRateReview } from 'react-icons/md';
-import { BlueButton, ImageCentered, RoundedImageWrapper, Texts16h24, Texts18h27 } from 'commonStyle';
+import {
+  BlueButton,
+  BottomFixed,
+  Column,
+  DefaultDivider,
+  ImageCentered,
+  RoundedImageWrapper,
+  Texts16h24,
+  Texts18h27,
+} from 'commonStyle';
 import { Link } from 'react-router-dom';
+import { Rating } from '@mui/material';
+import ReadOnlyRating from '@components/ReadOnlyRating';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -80,6 +91,8 @@ export default function Profile() {
     setSelectedTimes([]);
   };
 
+  console.log(userData);
+
   return (
     <MainContainer>
       {/* 프로필 상단: 기본 정보 */}
@@ -92,70 +105,81 @@ export default function Profile() {
 
         {/* 2. 이름과 닉네임 */}
         <div>
-          <Texts18h27>{userData?.nickname}</Texts18h27>
+          <Texts18h27>
+            {userData?.role === UserRole.PETSITTER ? `펫시터: ${userData?.nickname} 님` : `${userData?.nickname} 님`}
+          </Texts18h27>
         </div>
 
         {/* 3. 평점 및 리뷰 수 */}
-        <div>
+        <StarReview>
           <Wrapper>
-            <PiStarFill size="20px" color="#279EFF" />
             <span>{userData?.star}</span>
+            <ReadOnlyRating value={userData?.star} />
           </Wrapper>
+          <DefaultDivider />
           <Wrapper>
+            <span>{userData?.reviewCount} 개</span>
             <MdOutlineRateReview size="16px" />
-            <span>{userData?.reviewCount}</span>
           </Wrapper>
-        </div>
+        </StarReview>
       </Section>
 
       {/* 4. 간단한 소개 */}
+      <Section>
+        <span>소개</span>
+        <p>{userData?.body}</p>
+      </Section>
 
+      <DefaultDivider />
       {/* 펫시터 */}
-      {userData?.role === UserRole.PETSITTER && (
-        <CardList>
-          {/* 펫시터 가능 펫 종류 */}
-          {userData?.possiblePetSpecies && (
-            <CardItem>
-              <span>가능 펫 종류</span>
-              <PetList>
-                {userData.possiblePetSpecies.map((species: any, index: number) => (
-                  <PetItem key={index}>
-                    {species === 'Dog' ? (
-                      <PiDogBold size="20px" color="white" />
-                    ) : species === 'Cat' ? (
-                      <PiCatBold size="20px" color="white" />
-                    ) : null}
-                  </PetItem>
-                ))}
-              </PetList>
-            </CardItem>
-          )}
 
-          {/* 펫시터 가능 요일 */}
-          {userData?.possibleDays && (
-            <CardItem>
-              <span>가능 요일</span>
-              <DayList>
-                {userData.possibleDays.map((day: any, index: number) => (
-                  <DayItem key={index}>{formatKrDays(day)}</DayItem>
-                ))}
-              </DayList>
-            </CardItem>
-          )}
+      <Section>
+        {userData?.role === UserRole.PETSITTER && (
+          <CardList>
+            {/* 펫시터 가능 펫 종류 */}
+            {userData?.possiblePetSpecies && (
+              <CardItem>
+                <span>가능 펫 종류</span>
+                <PetList>
+                  {userData.possiblePetSpecies.map((species: any, index: number) => (
+                    <PetItem key={index}>
+                      {species === 'Dog' ? (
+                        <PiDogBold size="20px" color="white" />
+                      ) : species === 'Cat' ? (
+                        <PiCatBold size="20px" color="white" />
+                      ) : null}
+                    </PetItem>
+                  ))}
+                </PetList>
+              </CardItem>
+            )}
 
-          {/* 펫시터 가능 시간 */}
-          {userData?.possibleStartTime && userData?.possibleEndTime && (
-            <CardItem>
-              <span>가능 시간</span>
-              <span>{timeRange(userData.possibleStartTime, userData.possibleEndTime)}</span>
-            </CardItem>
-          )}
+            {/* 펫시터 가능 요일 */}
+            {userData?.possibleDays && (
+              <CardItem>
+                <span>가능 요일</span>
+                <DayList>
+                  {userData.possibleDays.map((day: any, index: number) => (
+                    <DayItem key={index}>{formatKrDays(day)}</DayItem>
+                  ))}
+                </DayList>
+              </CardItem>
+            )}
 
-          {/* 펫시터 가능 요일, 시간 */}
+            {/* 펫시터 가능 시간 */}
+            {userData?.possibleStartTime && userData?.possibleEndTime && (
+              <CardItem>
+                <span>가능 시간</span>
+                <span>{timeRange(userData.possibleStartTime, userData.possibleEndTime)}</span>
+              </CardItem>
+            )}
 
-          {/* 예약하러가기 버튼 */}
-        </CardList>
-      )}
+            {/* 펫시터 가능 요일, 시간 */}
+
+            {/* 예약하러가기 버튼 */}
+          </CardList>
+        )}
+      </Section>
     </MainContainer>
   );
 }
@@ -163,12 +187,15 @@ export default function Profile() {
 const MainContainer = styled.main`
   display: flex;
   flex-direction: column;
+  padding: 20px;
+  gap: 20px;
 `;
 
 const Section = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 20px;
 `;
 
 const UserImage = styled(RoundedImageWrapper)`
@@ -176,24 +203,33 @@ const UserImage = styled(RoundedImageWrapper)`
   height: 80px;
 `;
 
-const Wrapper = styled.div`
+const StarReview = styled.div`
   display: flex;
+  border: 1px solid ${({ theme }) => theme.line.box.default};
+  border-radius: 12px;
+  padding: 20px 0;
+  width: 100%;
+`;
+
+const Wrapper = styled(Column)`
+  flex: 1;
   align-items: center;
+  gap: 8px;
 `;
 
 const CardList = styled.ul`
   display: flex;
   flex-wrap: wrap;
-  padding: 20px;
   gap: 4px;
 `;
 
 const CardItem = styled.li`
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   gap: 8px;
   padding: 8px;
-  border-radius: 16px;
+  border-radius: 12px;
   border: 2px solid ${({ theme }) => theme.line.box.blue};
 `;
 
@@ -270,7 +306,6 @@ const PetsitterIntroText = styled.div`
   max-width: 70%;
   max-height: 200px;
   margin-top: 40px;
-  // color: ${({ theme }) => theme.textColors.gray50};
   font-size: ${({ theme }) => theme.fontSize.s14h21};
   font-weight: ${({ theme }) => theme.fontWeight.normal};
 
@@ -306,10 +341,8 @@ const BookmarkContainer = styled.div`
   align-items: center;
   margin: 14px 12px 0 12px;
   padding: 8px 16px;
-  // background-color: ${({ theme }) => theme.color.white};
   box-shadow: ${({ theme }) => theme.shadow.dp01};
   border-radius: 8px;
-  // color: ${({ theme }) => theme.textColors.gray00};
   font-size: ${({ theme }) => theme.fontSize.s18h27};
   font-weight: ${({ theme }) => theme.fontWeight.extrabold};
 `;

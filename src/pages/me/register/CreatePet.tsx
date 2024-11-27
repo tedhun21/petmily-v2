@@ -317,6 +317,7 @@ export const FloatButtonContainer = styled(Float)`
   bottom: 0;
   padding: 20px;
   width: 100%;
+  background-color: ${({ theme }) => theme.background.primary};
 `;
 
 export const SubmitButton = styled(BlueButton)`

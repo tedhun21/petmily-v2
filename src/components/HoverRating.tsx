@@ -1,8 +1,8 @@
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
-import StarIcon from '@mui/icons-material/Star';
 import { useState } from 'react';
 import styled from 'styled-components';
+import { PiStar, PiStarFill } from 'react-icons/pi';
 
 const labels: { [index: string]: string } = {
   0.5: '0.5점',
@@ -45,23 +45,24 @@ export default function HoverRating({ value, setValue }: any) {
           setHover(newHover);
         }}
         size="large"
-        icon={<StarIcon fontSize="inherit" />}
-        emptyIcon={<EmptyStarIcon fontSize="inherit" />}
+        icon={<PiStarFill size="24px" />}
+        emptyIcon={<StyledPiStar size="24px" />}
       />
       {value !== null && <Box sx={{ ml: 2 }}>{labels[hover !== -1 ? hover : value]}</Box>}
     </Box>
   );
 }
 
-const StyledRating = styled(Rating)({
-  '& .MuiRating-iconFilled': {
-    color: '#279EFF',
-  },
-  '& .MuiRating-iconHover': {
-    color: '#1D8CE7',
-  },
-});
+const StyledRating = styled(Rating)`
+  & .MuiRating-iconFilled {
+    color: ${({ theme }) => theme.background.highlight};
+  }
 
-const EmptyStarIcon = styled(StarIcon)`
+  & .MuiRating-iconHover {
+    color: ${({ theme }) => theme.background.deepHighlight};
+  }
+`;
+
+const StyledPiStar = styled(PiStar)`
   color: ${({ theme }) => theme.text.inactive};
 `;

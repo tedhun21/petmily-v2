@@ -53,14 +53,12 @@ const lightTheme = {
     active: '#1A1A1A',
     inactive: '#525252',
     highlight: '#279EFF',
-    deepHighlight: '#1D8CE7',
-    darkHighlight: '#096DBE',
     secondary: '#B5B5B5',
     error: '#FF6161',
   },
   line: {
     input: { default: '#D4D4D4', blue: '#279EFF', error: '#FF6161' },
-    box: { default: '#DEE2E9', blue: '#279EFF' },
+    box: { default: '#CDCDCD', highlight: '#525252', blue: '#279EFF' },
     divider: { default: '#DEE', blue: '#1A73E8' },
   },
   background: {
@@ -103,15 +101,14 @@ const darkTheme = {
     active: '#EAEAEA',
     inactive: '#A3A3A3',
     highlight: '#1A73E8',
-
     secondary: '#A6A6A6',
     error: '#FF5A5A',
   },
 
   line: {
     input: { default: '#1C1C1C', blue: '#1A73E8', error: '#FF5A5A' },
-    box: { default: '#CDCDCD', blue: '#1A73E8' },
-    divider: { default: '#1C1C1C', blue: '#1A73E8' },
+    box: { default: '#525252', highlight: '#CDCDCD', blue: '#1A73E8' },
+    divider: { default: '#525252', blue: '#1A73E8' },
   },
 
   background: {

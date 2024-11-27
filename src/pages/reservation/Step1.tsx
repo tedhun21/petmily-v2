@@ -361,8 +361,9 @@ const FloatButtonContainer = styled(Float)`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
   width: 100%;
+  padding: 20px;
+  background-color: ${({ theme }) => theme.background.primary};
 `;
 
 const StyledButton = styled(BlueButton)`
