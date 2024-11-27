@@ -41,14 +41,14 @@ const TextContainer = styled.div`
 `;
 
 const AdText = styled.div`
-  color: ${(props) => props.color || 'black'};
-  font-weight: ${(props) => props.theme.fontWeights.extrabold};
+  color: ${({ theme }) => theme.text.active};
+  font-weight: ${({ theme }) => theme.fontWeight.extrabold};
   font-size: 18px;
 `;
 
 const InfoText = styled.div`
   color: #a9a9a9;
-  font-weight: ${(props) => props.theme.fontWeights.extrabold};
+  font-weight: ${({ theme }) => theme.fontWeight.extrabold};
   font-size: 14px;
 `;
 const GifContainer = styled.img`

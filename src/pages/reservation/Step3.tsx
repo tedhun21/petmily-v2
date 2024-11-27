@@ -3,43 +3,56 @@ import styled from 'styled-components';
 import { PiStarFill } from 'react-icons/pi';
 
 import MyPetsitterSettings from '@pages/me/components/MyPetistterSetting';
-import { Column, ImageCentered, RoundedImageWrapper, Row, Texts18h27 } from 'commonStyle';
+import {
+  BlueButton,
+  BottomFixed,
+  CenterContainer,
+  Column,
+  Float,
+  ImageCentered,
+  RoundedImageWrapper,
+  Row,
+  Texts18h27,
+} from 'commonStyle';
 
-export default function Step3({ onNext, onPrevious }: any) {
-  const { getValues, watch } = useFormContext();
+export default function Step3({ onNext }: any) {
+  const { getValues } = useFormContext();
   const { petsitter } = getValues();
 
   return (
     <MainContainer>
-      <PetsitterInfo>
-        <ImageName>
-          <ImageWrapper>
-            <ImageCentered src={petsitter?.photo ? `${petsitter.photo}` : '/imgs/DefaultUserProfile.jpg'} />
-          </ImageWrapper>
-          <Texts18h27>{petsitter?.nickname}</Texts18h27>
-        </ImageName>
-        <InfoContainer>
-          <InfoWrapper>
-            <PiStarFill color="#279EFF" size="32px" />
-            <Texts18h27>{petsitter?.star}</Texts18h27>
-          </InfoWrapper>
-          <InfoWrapper>
-            <span>{petsitter?.reviewCount}</span>
-            <span>리뷰가 달린 케어</span>
-          </InfoWrapper>
-          <div></div>
-        </InfoContainer>
-      </PetsitterInfo>
+      <PaddingContainer>
+        <PetsitterInfo>
+          <ImageName>
+            <ImageWrapper>
+              <ImageCentered src={petsitter?.photo ? `${petsitter.photo}` : '/imgs/DefaultUserProfile.jpg'} />
+            </ImageWrapper>
+            <Texts18h27>{petsitter?.nickname}</Texts18h27>
+          </ImageName>
+          <InfoContainer>
+            <InfoWrapper>
+              <PiStarFill color="#279EFF" size="32px" />
+              <Texts18h27>{petsitter?.star}</Texts18h27>
+            </InfoWrapper>
+            <InfoWrapper>
+              <span>{petsitter?.reviewCount}</span>
+              <span>리뷰가 달린 케어</span>
+            </InfoWrapper>
+          </InfoContainer>
+        </PetsitterInfo>
 
-      <span>리뷰 보기</span>
+        <span>리뷰 보기</span>
 
-      <MyPetsitterSettings petsitter={petsitter} />
+        <MyPetsitterSettings petsitter={petsitter} />
+      </PaddingContainer>
 
-      <ButtonContainer>
-        <StyledButton type="button" onClick={onNext}>
-          예약하러가기
-        </StyledButton>
-      </ButtonContainer>
+      <BottomFixed>
+        <FloatButtonContainer>
+          <StyledButton type="button" onClick={onNext}>
+            예약하러가기
+          </StyledButton>
+        </FloatButtonContainer>
+      </BottomFixed>
     </MainContainer>
   );
 }
@@ -47,14 +60,14 @@ export default function Step3({ onNext, onPrevious }: any) {
 const MainContainer = styled.main`
   display: flex;
   flex-direction: column;
-  padding: 20px;
   gap: 8px;
 `;
 
-const PetsitterInfo = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
+const PaddingContainer = styled.div`
+  padding: 12px;
+`;
+
+const PetsitterInfo = styled(CenterContainer)`
   gap: 20px;
 `;
 
@@ -76,28 +89,20 @@ const InfoWrapper = styled(Row)`
   gap: 4px;
 `;
 
-const ButtonContainer = styled.div`
+const FloatButtonContainer = styled(Float)`
+  left: 0;
+  bottom: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
+  padding: 20px;
 `;
 
-const StyledButton = styled.button`
+const StyledButton = styled(BlueButton)`
   border-radius: 8px;
   width: 100%;
   padding: 12px;
-  border: none;
-  background-color: ${({ theme }) => theme.colors.mainBlue};
-  color: white;
-  cursor: pointer;
+
   ${({ theme }) => theme.fontSize.s16h24};
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.subBlue};
-  }
-
-  &:active {
-    background-color: ${({ theme }) => theme.colors.darkBlue};
-    box-shadow: ${({ theme }) => theme.shadow.inset};
-  }
 `;

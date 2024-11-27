@@ -41,7 +41,7 @@ const LocationImageWrapper = styled.div`
   display: flex;
   overflow: hidden;
   border-radius: 20px;
-  box-shadow: ${(props) => props.theme.shadow.dp03};
+  box-shadow: ${({ theme }) => theme.shadow.dp03};
 `;
 
 const LocationImg = styled.img`

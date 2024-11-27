@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { FaRegCircleCheck, FaCircleCheck } from 'react-icons/fa6';
 import { Modal } from '@mui/material';
 
-import { Column, Texts18h27, Texts20h30 } from 'commonStyle';
+import { BlueButton, Column, Texts12h18, Texts16h24, Texts18h27, Texts20h30 } from 'commonStyle';
 
 export default function Confirm({ isChecked, setIsChecked }: any) {
   const [open, setOpen] = useState(false);
@@ -103,7 +103,8 @@ const TermsContainer = styled(Column)`
   height: 600px;
   padding: 24px;
   border-radius: 16px;
-  background-color: ${(props) => props.theme.colors.white};
+  background-color: ${({ theme }) => theme.background.box.default.primary};
+  color: inherit;
   transform: translate(-50%, -50%);
   gap: 12px;
 `;
@@ -113,7 +114,7 @@ const TextCenter = styled.div`
 `;
 
 const Title = styled(Texts20h30)`
-  font-weight: ${(props) => props.theme.fontWeights.extrabold};
+  font-weight: ${({ theme }) => theme.fontWeight.extrabold};
 `;
 
 const Container = styled(Column)`
@@ -121,12 +122,12 @@ const Container = styled(Column)`
 `;
 
 const SubTitle = styled(Texts18h27)`
-  font-weight: ${(props) => props.theme.fontWeights.bold};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;
 
 const RedSubTitle = styled(Texts18h27)`
-  color: red;
-  font-weight: ${(props) => props.theme.fontWeights.bold};
+  color: ${({ theme }) => theme.text.error};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;
 
 const List = styled.ul`
@@ -138,32 +139,20 @@ const List = styled.ul`
 
 const Item = styled.li`
   list-style-position: inside;
-  ${(props) => props.theme.fontSize.s14h21}
+  ${({ theme }) => theme.fontSize.s14h21}
 `;
 
-const SubItem = styled.span`
+const SubItem = styled(Texts12h18)`
   padding-left: 20px;
-  color: ${(props) => props.theme.textColors.gray30};
-  ${(props) => props.theme.fontSize.s12h18};
+  color: ${({ theme }) => theme.text.inactive};
 `;
 
-const CheckButton = styled.button`
-  background-color: ${(props) => props.theme.colors.mainBlue};
-  color: white;
+const CheckButton = styled(BlueButton)`
   width: 100%;
   padding: 12px;
   border-radius: 8px;
-  cursor: pointer;
-  ${(props) => props.theme.fontSize.s16h24}
 
-  &:hover {
-    background-color: ${(props) => props.theme.colors.subBlue};
-  }
-
-  &:active {
-    background-color: ${({ theme }) => theme.colors.darkBlue};
-    box-shadow: ${({ theme }) => theme.shadow.inset};
-  }
+  ${({ theme }) => theme.fontSize.s16h24}
 `;
 
 const ConfirmContainer = styled.div`
@@ -173,8 +162,8 @@ const ConfirmContainer = styled.div`
   position: relative;
   padding: 16px;
   gap: 8px;
-  border-top: 1px solid ${(props) => props.theme.textColors.gray60};
-  border-bottom: 1px solid ${(props) => props.theme.textColors.gray60};
+  border-top: 1px solid ${({ theme }) => theme.text.inactive};
+  border-bottom: 1px solid ${({ theme }) => theme.text.inactive};
 `;
 
 const Check = styled.div`
@@ -183,18 +172,16 @@ const Check = styled.div`
   left: 8px;
 `;
 
-const ConfirmText = styled.div<{ isChecked: boolean }>`
-  color: ${(props) => (props.isChecked ? '#279EFF' : 'black')};
-  ${(props) => props.theme.fontSize.s16h24};
+const ConfirmText = styled(Texts16h24)<{ isChecked: boolean }>`
+  color: ${({ isChecked, theme }) => (isChecked ? theme.text.highlight : theme.text.inactive)};
 `;
 
 const TermsButton = styled.button`
   text-decoration: underline;
-  cursor: pointer;
-  color: ${(props) => props.theme.textColors.gray40};
-  ${(props) => props.theme.fontSize.s14h21}
+  color: ${({ theme }) => theme.text.secondary};
+  ${({ theme }) => theme.fontSize.s14h21}
 
   &:hover {
-    color: ${(props) => props.theme.textColors.gray30};
+    color: ${({ theme }) => theme.text.inactive};
   }
 `;

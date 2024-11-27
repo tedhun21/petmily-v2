@@ -1,30 +1,24 @@
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { Swiper, SwiperSlide } from 'swiper/react';
 import styled from 'styled-components';
-import { Rating } from '@mui/material';
-
-import { dateAgo, dateFormat, timeRange } from 'utils/date';
-import PetCard from '../../home/PetCard';
-import { Column, ImageCentered, RoundedImageWrapper, Row, Texts12h18, Texts16h24 } from 'commonStyle';
-
+import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
-
 import { Pagination } from 'swiper/modules';
 import { PiStarFill } from 'react-icons/pi';
-import { useEffect, useRef, useState } from 'react';
 
-const BUCKET_URL = process.env.REACT_APP_BUCKET_URL;
+import { dateAgo } from 'utils/date';
+import { Column, ImageCentered, RoundedImageWrapper, Row, Texts12h18, Texts16h24 } from 'commonStyle';
 
 export default function ReviewPhotoCard({ review }: any) {
   const [isTextOverflow, setIsTextOverflow] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const textRef = useRef<HTMLDivElement>(null);
+
   const {
-    reservation: { startTime, endTime, pets, client, petsitter },
+    reservation: { client, petsitter },
   } = review;
-  const { year, month, day } = dateFormat(review.reservation.date);
 
   const handleRestOpen = () => {
     setIsExpanded(true);
@@ -61,35 +55,13 @@ export default function ReviewPhotoCard({ review }: any) {
         ))}
       </Swiper>
 
-      {/* 예약 정보 */}
-      {/* <ReservationContainer>
-        <span>맡기신 펫</span>
-        <PetContainer>
-          {pets.map((pet: any) => (
-            <PetCard key={pet.id} pet={pet} />
-          ))}
-        </PetContainer>
-        <DateWrapper>
-          <span>케어 날짜:</span>
-          <span>{`${year}.${month}.${day}`}</span>
-          <span>{timeRange(startTime, endTime)}</span>
-        </DateWrapper>
-      </ReservationContainer> */}
-
       <ReviewContainer>
         <TitleContainer>
-          <ClientInfo>
-            <ClientImage>
-              <ImageCentered
-                src={client?.photo ? `${client.photo}` : '/imgs/DefaultUserProfile.jpg'}
-                alt="default_user"
-              />
-            </ClientImage>
-            <Texts16h24>{client?.nickname} 고객님</Texts16h24>
-          </ClientInfo>
           <StarWrapper>
-            <PiStarFill size="20px" color="#279EFF" />
-            <span>{review?.star}</span>
+            <Texts16h24>{client?.nickname.slice(0, 2) + '*****'}</Texts16h24>
+            {Array.from({ length: review?.star }).map((_, index) => (
+              <PiStarFill key={index} size="28px" color="#279EFF" />
+            ))}
           </StarWrapper>
         </TitleContainer>
         <div>
@@ -104,6 +76,7 @@ export default function ReviewPhotoCard({ review }: any) {
         </div>
         <Texts12h18>{dateAgo(review.createdAt)}</Texts12h18>
       </ReviewContainer>
+
       {/* 펫시터 카드 */}
       <PetsitterContainer>
         <PetsitterInfo>
@@ -115,7 +88,7 @@ export default function ReviewPhotoCard({ review }: any) {
           </PetsitterImage>
           <span>{petsitter?.nickname} 펫시터님</span>
         </PetsitterInfo>
-        <PetsitterDetailLink to={``}>자세히 보기</PetsitterDetailLink>
+        <PetsitterDetailLink to={`/users/${petsitter?.nickname}`}>자세히 보기</PetsitterDetailLink>
       </PetsitterContainer>
     </ReviewCard>
   );
@@ -127,6 +100,17 @@ const ReviewCard = styled.article`
   width: 100%;
   gap: 16px;
 `;
+
+const ReservationSection = styled.section`
+  display: flex;
+  flex-direction: column;
+`;
+
+const PetContainer = styled.ul`
+  display: block;
+`;
+
+const DateWrapper = styled.div``;
 
 const ReviewContainer = styled(Column)`
   justify-content: space-between;
@@ -141,7 +125,6 @@ const ClientInfo = styled(Row)`
 
 const TitleContainer = styled(Row)`
   align-items: center;
-  justify-content: space-between;
 `;
 
 const StarWrapper = styled(Row)`
@@ -160,12 +143,12 @@ const ReviewImageContainer = styled.div`
 const ClientImage = styled(RoundedImageWrapper)`
   width: 50px;
   height: 50px;
-  border: 2px solid ${(props) => props.theme.colors.mainBlue};
+  border: 2px solid ${({ theme }) => theme.line.box.blue};
 `;
 
 const ReviewText = styled.p<{ isExpanded: boolean }>`
   display: box;
-  -webkit-line-clamp: ${(props) => (props.isExpanded ? 'none' : '3')};
+  -webkit-line-clamp: ${({ isExpanded }) => (isExpanded ? 'none' : '3')};
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -174,14 +157,14 @@ const ReviewText = styled.p<{ isExpanded: boolean }>`
 `;
 
 const RestButton = styled.button`
-  ${(props) => props.theme.fontSize.s12h18};
+  ${({ theme }) => theme.fontSize.s12h18};
 `;
 
 const PetsitterContainer = styled(Row)`
   align-items: center;
   justify-content: space-between;
   padding: 12px;
-  border: 2px solid ${(props) => props.theme.colors.mainBlue};
+  border: 2px solid ${({ theme }) => theme.line.box.blue};
   border-radius: 16px;
   gap: 8px;
 `;
@@ -194,25 +177,25 @@ const PetsitterInfo = styled(Row)`
 const PetsitterImage = styled(RoundedImageWrapper)`
   width: 40px;
   height: 40px;
-  border: 2px solid ${(props) => props.theme.colors.mainBlue};
+  border: 2px solid ${({ theme }) => theme.line.box.blue};
 `;
 
 const PetsitterDetailLink = styled(Link)`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${({ theme }) => theme.colors.mainBlue};
+  background-color: ${({ theme }) => theme.background.box.blue.primary};
   ${({ theme }) => theme.fontSize.s14h21}
   padding: 4px 8px;
   border-radius: 4px;
   color: white;
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.subBlue};
+    background-color: ${({ theme }) => theme.background.box.blue.hover};
   }
 
   &:active {
-    background-color: ${({ theme }) => theme.colors.darkBlue};
+    background-color: ${({ theme }) => theme.background.box.blue.active};
     box-shadow: ${({ theme }) => theme.shadow.inset};
   }
 `;

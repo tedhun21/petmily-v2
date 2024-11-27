@@ -1,8 +1,8 @@
-import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
 import StarIcon from '@mui/icons-material/Star';
 import { useState } from 'react';
+import styled from 'styled-components';
 
 const labels: { [index: string]: string } = {
   0.5: '0.5점',
@@ -46,7 +46,7 @@ export default function HoverRating({ value, setValue }: any) {
         }}
         size="large"
         icon={<StarIcon fontSize="inherit" />}
-        emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+        emptyIcon={<EmptyStarIcon fontSize="inherit" />}
       />
       {value !== null && <Box sx={{ ml: 2 }}>{labels[hover !== -1 ? hover : value]}</Box>}
     </Box>
@@ -61,3 +61,7 @@ const StyledRating = styled(Rating)({
     color: '#1D8CE7',
   },
 });
+
+const EmptyStarIcon = styled(StarIcon)`
+  color: ${({ theme }) => theme.text.inactive};
+`;

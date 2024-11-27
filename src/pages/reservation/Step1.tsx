@@ -12,11 +12,11 @@ import { TimePicker } from '@mui/x-date-pickers';
 import { Modal, Sheet } from '@mui/joy';
 import DaumPostcode from 'react-daum-postcode';
 
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 
 import { checkInDisableTime, checkOutDisableTime, reservationDisableDate } from 'utils/date';
 
-import { Row } from 'commonStyle';
+import { BlueButton, BottomFixed, Column, Float, Row } from 'commonStyle';
 import PetContainer from './component/step1/PetContainer';
 import { toast } from 'react-toastify';
 
@@ -25,6 +25,7 @@ export default function Step1({ onNext }: any) {
 
   const {
     setValue,
+    setError,
     clearErrors,
     control,
     watch,
@@ -55,55 +56,89 @@ export default function Step1({ onNext }: any) {
   };
 
   const onSubmit = () => {
-    if (checkedPets?.length === 0 || checkedPets?.length > 3) {
-      toast.warning('펫은 최소 1마리 최대 3마리까지 가능합니다.');
-      return;
+    let hasError = false;
+
+    if (!date) {
+      setError('date', { type: 'manual', message: '날짜를 선택해주세요.' });
+      hasError = true;
+    } else {
+      clearErrors('date');
     }
 
-    if (date && startTime && endTime && address !== '' && detailAddress !== '') {
-      onNext();
+    if (!startTime) {
+      setError('startTime', { type: 'manual', message: '시작 시간을 선택해주세요.' });
+      hasError = true;
+    } else {
+      clearErrors('startTime');
     }
+
+    if (!endTime) {
+      setError('endTime', { type: 'manual', message: '종료 시간을 선택해주세요.' });
+      hasError = true;
+    } else {
+      clearErrors('endTime');
+    }
+
+    if (!address) {
+      setError('address', { type: 'manual', message: '주소를 입력해주세요.' });
+      hasError = true;
+    } else {
+      clearErrors('address');
+    }
+
+    if (!checkedPets || checkedPets.length === 0 || checkedPets.length > 3) {
+      setError('checkedPets', { type: 'manual', message: '펫을 최소 1마리, 최대 3마리까지 선택해주세요.' });
+      hasError = true;
+    } else {
+      clearErrors('checkedPets');
+    }
+
+    if (hasError) {
+      return; // 에러가 있으면 진행하지 않음
+    }
+
+    onNext(); // 에러가 없으면 다음 단계로 진행
   };
 
   return (
     <MainContainer>
-      <FormContainer>
-        {/* 방문 날짜 */}
-        <Container>
-          <ScheduleText>언제 펫시터가 필요하신가요?</ScheduleText>
-          <LocalizationProvider dateAdapter={AdapterDayjs} dateFormats={{ monthShort: `M` }}>
-            <DemoContainer components={['DatePicker']}>
-              <Controller
-                name="date"
-                control={control}
-                render={({ field: { value, onChange } }) => (
-                  <DatePicker
-                    label="날짜를 입력해주세요"
-                    format="YYYY-MM-DD"
-                    value={value}
-                    onChange={onChange}
-                    shouldDisableDate={reservationDisableDate}
-                    sx={{ width: '100%' }}
-                  />
-                )}
-              />
-            </DemoContainer>
-          </LocalizationProvider>
-        </Container>
+      <form>
+        <FieldContainer>
+          {/* 방문 날짜 */}
+          <Container>
+            <ScheduleText>언제 펫시터가 필요하신가요?</ScheduleText>
+            <LocalizationProvider dateAdapter={AdapterDayjs} dateFormats={{ monthShort: `M` }}>
+              <DemoContainer components={['DatePicker']}>
+                <Controller
+                  name="date"
+                  control={control}
+                  render={({ field: { value, onChange } }) => (
+                    <StyledDatePicker
+                      label="날짜를 입력해주세요"
+                      format="YYYY-MM-DD"
+                      value={value}
+                      onChange={onChange}
+                      shouldDisableDate={(value) => reservationDisableDate(value as Dayjs)}
+                      sx={{ width: '100%' }}
+                    />
+                  )}
+                />
+              </DemoContainer>
+            </LocalizationProvider>
+          </Container>
 
-        {/* 방문시간 */}
-        <Container>
-          <ScheduleText>방문시간</ScheduleText>
-          <BasicTimePickerContainer>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DemoContainer components={['TimePicker']} sx={{ flex: 1 }}>
-                <StyledTimePicker>
+          {/* 방문시간 */}
+          <Container>
+            <ScheduleText>방문시간</ScheduleText>
+            <BasicTimePickerContainer>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={['TimePicker']} sx={{ flex: 1 }}>
                   <Controller
                     name="startTime"
                     control={control}
                     rules={{ required: '예약 시간을 확인해주세요' }}
                     render={({ field: { value, onChange } }) => (
-                      <TimePicker
+                      <StyledTimePicker
                         label="Check In"
                         minutesStep={30}
                         skipDisabled={true}
@@ -112,23 +147,20 @@ export default function Step1({ onNext }: any) {
                         ampm={false}
                         value={value}
                         onChange={onChange}
-                        shouldDisableTime={(value, view) => checkInDisableTime(value, view, watch('date'))}
-                        sx={{ width: '100%' }}
+                        shouldDisableTime={(value, view) => checkInDisableTime(value as Dayjs, view, watch('date'))}
                       />
                     )}
                   />
-                </StyledTimePicker>
-              </DemoContainer>
-            </LocalizationProvider>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DemoContainer components={['TimePicker']} sx={{ flex: 1 }}>
-                <StyledTimePicker>
+                </DemoContainer>
+              </LocalizationProvider>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={['TimePicker']} sx={{ flex: 1 }}>
                   <Controller
                     name="endTime"
                     control={control}
                     rules={{ required: '예약 시간을 확인해주세요' }}
                     render={({ field: { value, onChange } }) => (
-                      <TimePicker
+                      <StyledTimePicker
                         label="Check Out"
                         minutesStep={30}
                         skipDisabled={true}
@@ -137,72 +169,75 @@ export default function Step1({ onNext }: any) {
                         ampm={false}
                         value={value}
                         onChange={onChange}
-                        shouldDisableTime={(value, view) => checkOutDisableTime(value, view, watch('startTime'))}
-                        sx={{ width: '100%' }}
+                        shouldDisableTime={(value, view) =>
+                          checkOutDisableTime(value as Dayjs, view, watch('startTime'))
+                        }
                       />
                     )}
                   />
-                </StyledTimePicker>
-              </DemoContainer>
-            </LocalizationProvider>
-          </BasicTimePickerContainer>
-        </Container>
+                </DemoContainer>
+              </LocalizationProvider>
+            </BasicTimePickerContainer>
+          </Container>
 
-        {/* 방문 주소 */}
-        <Container>
-          <ScheduleText>어디로 방문할까요?</ScheduleText>
-          <Controller
-            name="address"
-            control={control}
-            rules={{ required: '주소를 입력해주세요' }}
-            render={({ field: { value, onChange } }) => (
-              <TextField
-                id="outlined-basic"
-                placeholder="주소를 입력해주세요"
-                fullWidth
-                // {...register('address', { required: true })}
-                value={value}
-                onChange={onChange}
-                error={errors.address?.type === 'required'}
-                onClick={onToggleModal}
-                onKeyDown={onToggleModal}
-              />
-            )}
-          />
+          {/* 방문 주소 */}
+          <Container>
+            <ScheduleText>어디로 방문할까요?</ScheduleText>
+            <Controller
+              name="address"
+              control={control}
+              rules={{ required: '주소를 입력해주세요' }}
+              render={({ field: { value, onChange } }) => (
+                <StyledTextField
+                  id="outlined-basic"
+                  label="주소를 입력해주세요"
+                  fullWidth
+                  // {...register('address', { required: true })}
+                  value={value}
+                  onChange={onChange}
+                  error={errors.address?.type === 'required'}
+                  onClick={onToggleModal}
+                  onKeyDown={onToggleModal}
+                />
+              )}
+            />
 
-          <Controller
-            name="detailAddress"
-            control={control}
-            rules={{ required: '상세주소를 확인해주세요' }}
-            render={({ field: { value, onChange } }) => (
-              <TextField label="상세주소를 입력해주세요" fullWidth value={value} onChange={onChange} />
-            )}
-          />
+            <Controller
+              name="detailAddress"
+              control={control}
+              rules={{ required: '상세주소를 확인해주세요' }}
+              render={({ field: { value, onChange } }) => (
+                <StyledTextField label="상세주소를 입력해주세요" fullWidth value={value} onChange={onChange} />
+              )}
+            />
 
-          {/* 다음 주소 모달 */}
-          <Modal
-            open={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
-            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-          >
-            <Sheet sx={{ width: '360px;' }}>
-              <DaumPostcode onComplete={handleComplete} />
-            </Sheet>
-          </Modal>
-        </Container>
+            {/* 다음 주소 모달 */}
+            <Modal
+              open={isModalOpen}
+              onClose={() => setIsModalOpen(false)}
+              sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            >
+              <Sheet sx={{ width: '360px;' }}>
+                <DaumPostcode onComplete={handleComplete} />
+              </Sheet>
+            </Modal>
+          </Container>
 
-        {/* 맡기실 펫 */}
-        <SelectPetContainer>
-          <SelectTitle>맡기시는 반려동물</SelectTitle>
-          <PetContainer />
-        </SelectPetContainer>
+          {/* 맡기실 펫 */}
+          <SelectPetContainer>
+            <ScheduleText>맡기시는 반려동물</ScheduleText>
+            <PetContainer />
+          </SelectPetContainer>
+        </FieldContainer>
 
-        <ButtonContainer>
-          <StyledButton type="button" onClick={onSubmit}>
-            다음단계
-          </StyledButton>
-        </ButtonContainer>
-      </FormContainer>
+        <BottomFixed>
+          <FloatButtonContainer>
+            <StyledButton type="button" onClick={onSubmit}>
+              다음단계
+            </StyledButton>
+          </FloatButtonContainer>
+        </BottomFixed>
+      </form>
     </MainContainer>
   );
 }
@@ -210,70 +245,130 @@ export default function Step1({ onNext }: any) {
 const MainContainer = styled.main`
   display: flex;
   flex-direction: column;
+  height: 100vh;
+`;
+
+const FieldContainer = styled(Column)`
+  gap: 52px;
   padding: 12px;
 `;
 
-const FormContainer = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-`;
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
+const Container = styled(Column)`
   gap: 8px;
 `;
 
 const ScheduleText = styled.h2`
-  ${(props) => props.theme.fontSize.s16h24};
-  font-weight: ${(props) => props.theme.fontWeights.extrabold};
-  white-space: pre-line;
+  color: ${({ theme }) => theme.text.active};
+  font-weight: ${({ theme }) => theme.fontWeight.extrabold};
+  ${({ theme }) => theme.fontSize.s16h24};
 `;
 
 const BasicTimePickerContainer = styled(Row)`
   gap: 8px;
 `;
 
-const StyledTimePicker = styled.div`
-  // TimePicker 컴포넌트의 스타일을 수정하기 위한
-  display: flex;
-  justify-content: center;
-  align-items: center;
+const StyledDatePicker = styled(DatePicker)`
+  // 기본 배경 & 텍스트
+  .MuiInputBase-root {
+    color: ${({ theme }) => theme.text.active};
+    background-color: ${({ theme }) => theme.background.input.primary};
+
+    &:hover {
+      background-color: ${({ theme }) => theme.background.input.hover};
+    }
+  }
+
+  // 버튼
+  .MuiButtonBase-root {
+    color: ${({ theme }) => theme.text.active};
+  }
+
+  // 라벨
+  .MuiInputLabel-root {
+    color: ${({ theme }) => theme.text.active};
+    ${({ theme }) => theme.fontSize.s14h21};
+  }
+
+  .MuiOutlinedInput-notchedOutline {
+    border-color: ${({ theme }) => theme.line.input.default};
+  }
 `;
 
-const SelectPetContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+const StyledTimePicker = styled(TimePicker)`
+  width: 100%;
+
+  // 기본 배경 & 텍스트
+  .MuiInputBase-root {
+    color: ${({ theme }) => theme.text.active};
+    background-color: ${({ theme }) => theme.background.input.primary};
+
+    &:hover {
+      background-color: ${({ theme }) => theme.background.input.hover};
+    }
+  }
+
+  // 버튼
+  .MuiButtonBase-root {
+    color: ${({ theme }) => theme.text.active};
+  }
+
+  // 라벨
+  .MuiInputLabel-root {
+    color: ${({ theme }) => theme.text.active};
+    ${({ theme }) => theme.fontSize.s14h21};
+  }
+
+  .MuiOutlinedInput-notchedOutline {
+    border-color: ${({ theme }) => theme.line.input.default};
+  }
+`;
+
+const StyledTextField = styled(TextField)`
+  // 라벨
+  .MuiInputLabel-root {
+    color: ${({ theme }) => theme.text.active};
+    ${({ theme }) => theme.fontSize.s14h21};
+  }
+
+  // input 배경
+  .MuiOutlinedInput-root {
+    background-color: ${({ theme }) => theme.background.input.primary};
+
+    &:hover {
+      background-color: ${({ theme }) => theme.background.input.hover};
+    }
+  }
+
+  // value
+  .MuiOutlinedInput-input {
+    color: ${({ theme }) => theme.text.active};
+    ${({ theme }) => theme.fontSize.s14h21};
+  }
+
+  // 포커스 상태 스타일
+  .Mui-focused .MuiOutlinedInput-input {
+    color: ${({ theme }) => theme.text.active} !important;
+  }
+`;
+
+const SelectPetContainer = styled(Column)`
   gap: 8px;
 `;
 
-const SelectTitle = styled.h1`
-  font-weight: ${({ theme }) => theme.fontWeights.extrabold};
-  ${({ theme }) => theme.fontSize.s16h24};
-`;
-
-const ButtonContainer = styled.div`
+const FloatButtonContainer = styled(Float)`
+  left: 0;
+  bottom: 0;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 20px;
+  width: 100%;
 `;
 
-const StyledButton = styled.button`
+const StyledButton = styled(BlueButton)`
   border-radius: 8px;
   width: 100%;
   padding: 12px;
-  border: none;
-  background-color: ${({ theme }) => theme.colors.mainBlue};
-  color: white;
-  cursor: pointer;
-  ${({ theme }) => theme.fontSize.s16h24};
 
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.subBlue};
-  }
-  &:active {
-    background-color: ${({ theme }) => theme.colors.darkBlue};
-    box-shadow: ${({ theme }) => theme.shadow.inset};
-  }
+  ${({ theme }) => theme.fontSize.s16h24};
 `;

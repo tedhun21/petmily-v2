@@ -51,7 +51,7 @@ const Card = styled.section`
   display: flex;
   padding: 20px;
   border-radius: 20px;
-  box-shadow: ${(props) => props.theme.shadow.dp03};
+  box-shadow: ${({ theme }) => theme.shadow.dp03};
 
   > div {
     flex: 1;
@@ -66,7 +66,7 @@ const ImageName = styled(Column)`
 const PetsitterImage = styled(RoundedImageWrapper)`
   width: 100px;
   height: 100px;
-  border: 2px solid ${(props) => props.theme.colors.mainBlue};
+  border: 2px solid ${({ theme }) => theme.line.box.blue};
 `;
 
 const PetsitterInfo = styled(Column)`
@@ -81,7 +81,7 @@ const PetsitterInfo = styled(Column)`
 `;
 
 const PetsitterName = styled(Texts18h27)`
-  font-weight: ${(props) => props.theme.fontWeights.bold};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;
 
 const StyledLink = styled(Link)`
@@ -91,15 +91,15 @@ const StyledLink = styled(Link)`
   padding: 8px;
   border-radius: 8px;
   color: white;
-  background-color: ${(props) => props.theme.colors.mainBlue};
+  background-color: ${({ theme }) => theme.background.box.blue.primary};
 
   &:hover {
-    background-color: ${(props) => props.theme.colors.subBlue};
+    background-color: ${({ theme }) => theme.background.box.blue.hover};
   }
 
   &:active {
-    background-color: ${(props) => props.theme.colors.darkBlue};
-    box-shadow: ${(props) => props.theme.shadow.inset};
+    background-color: ${({ theme }) => theme.background.box.blue.active};
+    box-shadow: ${({ theme }) => theme.shadow.inset};
   }
 
   > span {

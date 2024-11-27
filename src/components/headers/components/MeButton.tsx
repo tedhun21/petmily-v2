@@ -87,7 +87,7 @@ const UserWrapper = styled.div`
 `;
 
 const UserButton = styled.button`
-  border: 2px solid ${(props) => props.theme.colors.mainBlue};
+  border: 2px solid ${({ theme }) => theme.background.box.blue.primary};
   border-radius: 50%;
   position: relative;
   cursor: pointer;
@@ -99,18 +99,17 @@ const UserImage = styled(RoundedImageWrapper)`
 `;
 
 const LoginNavLink = styled(Link)`
-  background-color: ${({ theme }) => theme.colors.mainBlue};
+  background-color: ${({ theme }) => theme.background.box.blue.primary};
   ${({ theme }) => theme.fontSize.s14h21}
   padding: 4px 8px;
   border-radius: 4px;
-  color: white;
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.subBlue};
+    background-color: ${({ theme }) => theme.background.box.blue.hover};
   }
 
   &:active {
-    background-color: ${({ theme }) => theme.colors.darkBlue};
+    background-color: ${({ theme }) => theme.background.box.blue.active};
     box-shadow: ${({ theme }) => theme.shadow.inset};
   }
 `;
@@ -127,26 +126,18 @@ const LoginNavModal = styled.nav`
   width: 100px;
   height: 80px;
   border-radius: 8px;
-  background-color: white;
+  background-color: ${({ theme }) => theme.background.highlight};
   gap: 12px;
-  box-shadow: ${(props) => props.theme.shadow.dp03};
+  box-shadow: ${({ theme }) => theme.shadow.dp03};
 `;
 
 const MypageLink = styled(Link)`
-  color: black;
-  ${({ theme }) => theme.fontSize.s14h21}
-  cursor:pointer;
+  cursor: pointer;
   padding: 4px;
   border-radius: 4px;
-
-  &:hover {
-    // background-color: ${(props) => props.theme.textColors.gray30};
-  }
+  ${({ theme }) => theme.fontSize.s14h21};
 `;
 
 const LogoutButton = styled.button`
-  border: none;
-  background-color: white;
-  cursor: pointer;
   ${({ theme }) => theme.fontSize.s14h21};
 `;

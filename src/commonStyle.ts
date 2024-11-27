@@ -10,28 +10,28 @@ export const Row = styled.div`
 `;
 
 export const Texts12h18 = styled.span`
-  ${(props) => props.theme.fontSize.s12h18}
+  ${({ theme }) => theme.fontSize.s12h18};
 `;
 
 export const Texts14h21 = styled.span`
-  ${(props) => props.theme.fontSize.s14h21}
+  ${({ theme }) => theme.fontSize.s14h21};
 `;
 
 export const Texts16h24 = styled.span`
-  ${(props) => props.theme.fontSize.s16h24}
+  ${({ theme }) => theme.fontSize.s16h24};
 `;
 
 export const Texts18h27 = styled.span`
-  ${(props) => props.theme.fontSize.s18h27}
+  ${({ theme }) => theme.fontSize.s18h27};
 `;
 
 export const Texts20h30 = styled.span`
-  ${(props) => props.theme.fontSize.s20h30}
+  ${({ theme }) => theme.fontSize.s20h30};
 `;
 
 export const Title = styled.h1`
-  ${(props) => props.theme.fontSize.s18h27};
-  font-weight: ${(props) => props.theme.fontWeights.bold};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
+  ${({ theme }) => theme.fontSize.s18h27};
 `;
 
 export const RoundedImageWrapper = styled.div`
@@ -56,7 +56,71 @@ export const CenterContainer = styled.div`
   align-items: center;
 `;
 
-export const ErrorMessage = styled.span`
-  color: ${({ theme }) => theme.colors.paleBlue};
-  ${(props) => props.theme.fontSize.s12h18}
+export const ErrorMessage = styled(Texts12h18)`
+  color: ${({ theme }) => theme.text.error};
+`;
+
+export const Input = styled.input`
+  background-color: ${({ theme }) => theme.background.input.primary};
+  border: 1px solid ${({ theme }) => theme.line.input.default};
+
+  &:hover {
+    background-color: ${({ theme }) => theme.background.input.hover};
+  }
+`;
+
+export const Button = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border: 1px solid ${({ theme }) => theme.line.box.default};
+  background-color: ${({ theme }) => theme.background.box.default};
+
+  &:hover {
+    background-color: ${({ theme }) => theme.background.box.default.hover};
+  }
+
+  &:active {
+    background-color: ${({ theme }) => theme.background.box.default.active};
+    box-shadow: ${({ theme }) => theme.shadow.inset};
+  }
+`;
+
+export const BlueButton = styled(Button)`
+  color: white;
+  border: none;
+  background-color: ${({ theme }) => theme.background.box.blue.primary};
+
+  &:hover {
+    background-color: ${({ theme }) => theme.background.box.blue.hover};
+  }
+
+  &:active {
+    background-color: ${({ theme }) => theme.background.box.blue.active};
+    box-shadow: ${({ theme }) => theme.shadow.inset};
+  }
+`;
+
+export const DefaultDivider = styled.div`
+  border: 1px solid ${({ theme }) => theme.line.divider.default};
+`;
+
+export const BlueDivider = styled.div`
+  border: 1px solid ${({ theme }) => theme.line.divider.blue};
+`;
+
+export const Fixed = styled.div`
+  position: fixed;
+  width: 100%;
+  max-width: 600px;
+  z-index: 10;
+`;
+
+export const BottomFixed = styled(Fixed)`
+  bottom: 0;
+`;
+
+export const Float = styled.div`
+  position: absolute;
 `;

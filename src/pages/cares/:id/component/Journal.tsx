@@ -1,6 +1,6 @@
 import Loading from '@components/Loading';
 import { posterWithCookie, updaterWithCookie } from 'api';
-import { CenterContainer, Texts14h21, Texts16h24, Title } from 'commonStyle';
+import { BlueButton, CenterContainer, Texts14h21, Texts16h24, Title } from 'commonStyle';
 import { ChangeEvent, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { FaXmark } from 'react-icons/fa6';
@@ -191,7 +191,7 @@ const Section = styled.section`
   display: flex;
   flex-direction: column;
   padding: 16px;
-  border: solid 2px gray;
+  // border: solid 2px gray;
   border-radius: 16px;
 `;
 
@@ -207,23 +207,10 @@ const ImageSelectWrapper = styled.div`
   }
 `;
 
-const ImageSelectButton = styled.button`
-  background-color: ${(props) => props.theme.colors.mainBlue};
-  border: none;
-  ${(props) => props.theme.fontSize.s14h21}
+const ImageSelectButton = styled(BlueButton)`
+  ${({ theme }) => theme.fontSize.s14h21}
   padding:4px 8px;
   border-radius: 4px;
-  color: white;
-  white-space: nowrap;
-
-  &:hover {
-    background-color: ${(props) => props.theme.colors.subBlue};
-  }
-
-  &:active {
-    background-color: ${(props) => props.theme.colors.darkBlue};
-    box-shadow: ${(props) => props.theme.shadow.inset};
-  }
 `;
 
 const ImagePreview = styled.div`
@@ -252,9 +239,9 @@ const RemoveButton = styled.button`
   right: 0;
   width: 24px;
   height: 24px;
-  border: 1px solid ${(props) => props.theme.lineColors.coolGray80};
+  // border: 1px solid ${({ theme }) => theme.lineColors.coolGray80};
   border-radius: 50%;
-  background-color: ${(props) => props.theme.colors.mainBlue};
+  background-color: ${({ theme }) => theme.background.highlight};
 `;
 
 const TextContainer = styled.div`
@@ -263,34 +250,21 @@ const TextContainer = styled.div`
   gap: 8px;
 `;
 
-const TextTitle = styled.div`
-  ${(props) => props.theme.fontSize.s16h24}
-`;
+const TextTitle = styled(Texts16h24)``;
 
 const TextArea = styled.textarea`
   width: 100%;
   height: 100px;
   padding: 8px;
   border-radius: 8px;
-  font-family: inherit;
-  ${(props) => props.theme.fontSize.s14h21}
+
+  ${({ theme }) => theme.fontSize.s14h21}
 `;
 
-const SubmitButton = styled.button`
-  margin-top: 20px;
+const SubmitButton = styled(BlueButton)`
   padding: 8px;
   width: 100%;
   border-radius: 8px;
-  color: white;
-  background-color: ${({ theme }) => theme.colors.mainBlue};
+
   ${({ theme }) => theme.fontSize.s16h24}
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.subBlue};
-  }
-
-  &:active {
-    background-color: ${({ theme }) => theme.colors.darkBlue};
-    box-shadow: ${({ theme }) => theme.shadow.inset};
-  }
 `;

@@ -1,3 +1,4 @@
+import { Texts18h27 } from 'commonStyle';
 import styled from 'styled-components';
 import { dateAgo, dayFormat, timeRange } from 'utils/date';
 
@@ -30,7 +31,7 @@ const DetailRservation = styled.section`
   gap: 8px;
   padding: 20px;
   border-radius: 20px;
-  box-shadow: ${(props) => props.theme.shadow.dp03};
+  box-shadow: ${({ theme }) => theme.shadow.dp03};
 `;
 
 const Wrapper = styled.div`
@@ -38,7 +39,6 @@ const Wrapper = styled.div`
   justify-content: space-between;
 `;
 
-const Label = styled.span`
-  font-weight: ${(props) => props.theme.fontWeights.bold};
-  ${(props) => props.theme.fontSize.s18h27};
+const Label = styled(Texts18h27)`
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;

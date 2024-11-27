@@ -57,14 +57,14 @@ const CustomSwiper = styled(Swiper)`
   width: 100%;
   height: 140px;
   border-radius: 20px;
-  box-shadow: ${(props) => props.theme.shadow.dp03};
+  box-shadow: ${({ theme }) => theme.shadow.dp03};
 `;
 
 const PetCard = styled(Column)`
   justify-content: space-between;
   height: 100%;
   padding: 20px;
-  background-color: white;
+  // background-color: ${({ theme }) => theme.background.box.default.primary};
 `;
 
 const PetImageName = styled(Row)`
@@ -75,5 +75,5 @@ const PetImageName = styled(Row)`
 const PetImage = styled(RoundedImageWrapper)`
   width: 60px;
   height: 60px;
-  border: 2px solid ${(props) => props.theme.colors.mainBlue};
+  border: 2px solid ${({ theme }) => theme.line.box.blue};
 `;

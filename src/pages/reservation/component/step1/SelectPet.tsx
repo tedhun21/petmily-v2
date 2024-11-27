@@ -85,8 +85,8 @@ const PetImageWrapper = styled(RoundedImageWrapper)<{ isChecked: boolean }>`
   cursor: pointer;
   width: 80px;
   height: 80px;
-  filter: ${(props) => (props.isChecked ? 'brightness(1.05)' : 'brightness(1)')};
-  transform ${(props) => (props.isChecked ? 'scale(1)' : 'scale(0.95)')};
+  filter: ${({ isChecked }) => (isChecked ? 'brightness(1.05)' : 'brightness(1)')};
+  transform ${({ isChecked }) => (isChecked ? 'scale(1)' : 'scale(0.95)')};
   transition:
     transform 0.3s ease-in-out;
 `;
@@ -96,7 +96,7 @@ const Check = styled.div<{ isChecked: boolean }>`
   justify-content: center;
   align-items: center;
   position: absolute;
-  background-color: ${(props) => props.theme.colors.mainBlue};
+  background-color: ${({ theme }) => theme.background.highlight};
   width: 24px;
   height: 24px;
   border-radius: 50%;
@@ -104,9 +104,8 @@ const Check = styled.div<{ isChecked: boolean }>`
   z-index: 2;
   right: 0;
   top: 0;
-  border: 1px solid ${(props) => props.theme.colors.subBlue};
-  opacity: ${(props) => (props.isChecked ? 1 : 0)};
-  transform: ${(props) => (props.isChecked ? 'scale(1)' : 'scale(0.5)')};
+  opacity: ${({ isChecked }) => (isChecked ? 1 : 0)};
+  transform: ${({ isChecked }) => (isChecked ? 'scale(1)' : 'scale(0.5)')};
   transition:
     opacity 0.3s ease-in-out,
     transform 0.3s ease-in-out;

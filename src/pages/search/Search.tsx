@@ -34,6 +34,6 @@ const SearchContainer = styled.main`
 `;
 
 const SearchTitleText = styled(Texts20h30)`
-  color: ${(props) => props.theme.textColors.gray10};
-  font-weight: ${(props) => props.theme.fontWeights.extrabold};
+  color: ${({ theme }) => theme.text.active};
+  font-weight: ${({ theme }) => theme.fontWeight.extrabold};
 `;

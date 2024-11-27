@@ -16,6 +16,7 @@ import Maps from './component/Maps';
 import { useEffect, useState } from 'react';
 import { getCookie } from 'utils/cookie';
 import { io } from 'socket.io-client';
+import { BottomFixed, CenterContainer, Float, Texts20h30 } from 'commonStyle';
 
 const API_URL = process.env.REACT_APP_API_URL;
 const SOCKET_URL = process.env.REACT_APP_WEBSOCKET_URL;
@@ -56,45 +57,48 @@ export default function CareDetail() {
   }, [reservation]);
 
   return (
-    <ReservationContainer>
-      <Status>
-        <span>{formatStatus(reservation?.status)}...</span>
-      </Status>
-      {me?.role === UserRole.PETSITTER ? (
-        <ClientCard client={reservation?.client} />
-      ) : me?.role === UserRole.CLIENT ? (
-        <PetsitterCard petsitter={reservation?.petsitter} />
-      ) : null}
+    <Main>
+      <Container>
+        <CenterContainer>
+          <Status>{formatStatus(reservation?.status)}...</Status>
+        </CenterContainer>
+        {me?.role === UserRole.PETSITTER ? (
+          <ClientCard client={reservation?.client} />
+        ) : me?.role === UserRole.CLIENT ? (
+          <PetsitterCard petsitter={reservation?.petsitter} />
+        ) : null}
 
-      <PetContainer pets={reservation?.pets} />
+        <PetContainer pets={reservation?.pets} />
 
-      {/* <Maps reservation={reservation} /> */}
+        {/* <Maps reservation={reservation} /> */}
 
-      <DetailReservation reservation={reservation} />
+        <DetailReservation reservation={reservation} />
+      </Container>
 
-      <ProgressButton meRole={me?.role} reservation={reservation} socket={socket} />
-    </ReservationContainer>
+      <BottomFixed>
+        <FloatButtonContainer>
+          <ProgressButton meRole={me?.role} reservation={reservation} socket={socket} />
+        </FloatButtonContainer>
+      </BottomFixed>
+    </Main>
   );
 }
 
-const ReservationContainer = styled.main`
+const Main = styled.main`
   display: flex;
   flex-direction: column;
-  padding: 20px;
   border-radius: 20px;
   gap: 20px;
 `;
 
-const Status = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
+const Container = styled.div`
+  padding: 20px;
+  gap: 16px;
+`;
 
-  > span {
-    color: ${(props) => props.theme.colors.mainBlue};
-    font-weight: ${(props) => props.theme.fontWeights.extrabold};
-    ${(props) => props.theme.fontSize.s20h30};
-  }
+const Status = styled(Texts20h30)`
+  color: ${({ theme }) => theme.text.highlight};
+  font-weight: ${({ theme }) => theme.fontWeight.extrabold};
 `;
 
 export const PetInfoContainer = styled.ul`
@@ -107,6 +111,16 @@ export const PetInfoCapsule = styled.li`
   padding: 4px 8px;
   border-radius: 16px;
   color: white;
-  background-color: ${(props) => props.theme.colors.subBlue};
-  ${(props) => props.theme.fontSize.s14h21};
+  background-color: ${({ theme }) => theme.background.box.blue.primary};
+  ${({ theme }) => theme.fontSize.s14h21};
+`;
+
+const FloatButtonContainer = styled(Float)`
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
 `;

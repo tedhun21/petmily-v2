@@ -10,7 +10,7 @@ import dayjs from 'dayjs';
 
 import { GoChecklist } from 'react-icons/go';
 
-import { Column, Row } from 'commonStyle';
+import { BlueButton, BottomFixed, CenterContainer, Column, Row, Texts12h18, Texts14h21, Texts16h24 } from 'commonStyle';
 import SelectedPetsitter from './component/step4/SelectedPetsitterCard';
 import SelectedPets from './component/step4/SelectedPets';
 import Confirm from './component/step4/Confirm';
@@ -76,66 +76,70 @@ export default function Step4() {
 
   return (
     <MainContainer>
-      <TitleContainer>
-        {/* <CheckTitleText>{nickName}님</CheckTitleText> */}
-        <CheckTitleText>예약내역을 확인해주세요</CheckTitleText>
-        <CheckIconWrapper>
-          <GoChecklist size="32px" color="white" />
-        </CheckIconWrapper>
-      </TitleContainer>
-
-      <SelectedPetsitter petsitter={petsitter} />
-
-      <ReservationResult>
-        <ResultWrapper>
-          <ReservationLabel>주소</ReservationLabel>
-          <ReservationSpan>{`${address} ${detailAddress}`}</ReservationSpan>
-        </ResultWrapper>
-        <ResultWrapper>
-          <ReservationLabel>예약 날짜</ReservationLabel>
-          <ReservationSpan>{dayjs(date).format('YYYY-MM-DD')}</ReservationSpan>
-        </ResultWrapper>
-        <ResultWrapper>
-          <ReservationLabel>예약 시간</ReservationLabel>
-          <ReservationSpan>{timeRange(startTime, endTime)}</ReservationSpan>
-        </ResultWrapper>
-      </ReservationResult>
-
-      <SelectedPets checkedPets={checkedPets} />
-
       <FormContainer onSubmit={handleSubmit(onSubmit)}>
-        <RequestContactSection>
-          <RequestContainer>
-            <RequestText>요청사항</RequestText>
-            <StyledTextField
-              {...register('body', { required: true })}
-              id="outlined-basic"
-              label={'예) 산책중에 아무거나 잘 삼켜서 주의해주셔야 해요.'}
-              variant="outlined"
-              error={errors.body?.type === 'required'}
-              fullWidth
-              multiline
-            />
-          </RequestContainer>
+        <InfoContainer>
+          <TitleContainer>
+            {/* <CheckTitleText>{nickName}님</CheckTitleText> */}
+            <CheckTitleText>예약내역을 확인해주세요</CheckTitleText>
+            <CheckIconWrapper>
+              <GoChecklist size="32px" color="white" />
+            </CheckIconWrapper>
+          </TitleContainer>
 
-          <ContactContainer>
+          <SelectedPetsitter petsitter={petsitter} />
+
+          <ReservationResult>
+            <ResultWrapper>
+              <ReservationLabel>주소</ReservationLabel>
+              <Texts14h21>{`${address} ${detailAddress}`}</Texts14h21>
+            </ResultWrapper>
+            <ResultWrapper>
+              <ReservationLabel>예약 날짜</ReservationLabel>
+              <Texts14h21>{dayjs(date).format('YYYY-MM-DD')}</Texts14h21>
+            </ResultWrapper>
+            <ResultWrapper>
+              <ReservationLabel>예약 시간</ReservationLabel>
+              <Texts14h21>{timeRange(startTime, endTime)}</Texts14h21>
+            </ResultWrapper>
+          </ReservationResult>
+
+          <SelectedPets checkedPets={checkedPets} />
+
+          <RequestContactSection>
+            <RequestContainer>
+              <RequestText>요청사항</RequestText>
+              <StyledTextField
+                {...register('body', { required: true })}
+                id="outlined-basic"
+                label={'예) 산책중에 아무거나 잘 삼켜서 주의해주셔야 해요.'}
+                variant="outlined"
+                error={errors.body?.type === 'required'}
+                fullWidth
+                multiline
+              />
+            </RequestContainer>
+
+            {/* <ContactContainer>
             <RequestText>연락처</RequestText>
             <TextContainer>
               <ContactText>{me?.phone}</ContactText>
               <ContactSubText>프로필 번호로 카카오 알림톡 전송</ContactSubText>
             </TextContainer>
-          </ContactContainer>
-        </RequestContactSection>
+          </ContactContainer> */}
+          </RequestContactSection>
+        </InfoContainer>
 
-        <CofirmButtonContainer>
-          <Confirm isChecked={isChecked} setIsChecked={setIsChecked} />
+        <BottomFixed>
+          <CofirmButtonContainer>
+            <Confirm isChecked={isChecked} setIsChecked={setIsChecked} />
 
-          <ButtonContainer>
-            <StyledButton type="submit" disabled={isMutating || !isChecked || watch('body') === ''}>
-              {isMutating ? <Loading /> : <span>예약하기</span>}
-            </StyledButton>
-          </ButtonContainer>
-        </CofirmButtonContainer>
+            <ButtonContainer>
+              <StyledButton type="submit" disabled={isMutating || !isChecked || watch('body') === ''}>
+                {isMutating ? <Loading /> : <span>예약하기</span>}
+              </StyledButton>
+            </ButtonContainer>
+          </CofirmButtonContainer>
+        </BottomFixed>
       </FormContainer>
     </MainContainer>
   );
@@ -144,27 +148,25 @@ export default function Step4() {
 const MainContainer = styled.main`
   display: flex;
   flex-direction: column;
+`;
+
+const InfoContainer = styled(Column)`
+  gap: 16px;
   padding: 12px;
-  gap: 8px;
 `;
 
 const CheckTitleText = styled.h1`
-  ${(props) => props.theme.fontSize.s20h30};
-  font-weight: ${(props) => props.theme.fontWeights.extrabold};
+  font-weight: ${({ theme }) => theme.fontWeight.extrabold};
+  ${({ theme }) => theme.fontSize.s20h30};
 `;
 
-const CheckIconWrapper = styled.div`
-  display: flex;
-  justify-content: center;
+const CheckIconWrapper = styled(CenterContainer)`
   padding: 8px;
   border-radius: 50%;
-  background-color: ${(props) => props.theme.colors.mainBlue};
-  align-itmems: center;
+  background-color: ${({ theme }) => theme.background.highlight};
 `;
 
-const TitleContainer = styled(Row)`
-  align-items: center;
-  justify-content: center;
+const TitleContainer = styled(CenterContainer)`
   padding: 12px;
   gap: 20px;
 `;
@@ -175,8 +177,8 @@ const ReservationResult = styled.section`
   padding: 24px;
   border-radius: 12px;
   gap: 16px;
-  background-color: ${(props) => props.theme.colors.white};
-  box-shadow: ${(props) => props.theme.shadow.dp01};
+  background-color: ${({ theme }) => theme.background.box.default.primary};
+  box-shadow: ${({ theme }) => theme.shadow.dp01};
 `;
 
 const ResultWrapper = styled(Row)`
@@ -184,15 +186,10 @@ const ResultWrapper = styled(Row)`
   justify-content: space-between;
 `;
 
-const ReservationLabel = styled.span`
-  ${(props) => props.theme.fontSize.s16h24};
-  font-weight: ${(props) => props.theme.fontWeights.bold};
-  color: ${(props) => props.theme.textColors.gray30};
+const ReservationLabel = styled(Texts16h24)`
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
+  color: ${({ theme }) => theme.text.active};
   white-space: nowrap;
-`;
-
-const ReservationSpan = styled.span`
-  ${(props) => props.theme.fontSize.s14h21};
 `;
 
 const FormContainer = styled.form`
@@ -207,8 +204,8 @@ const RequestContactSection = styled.section`
   padding: 24px;
   border-radius: 12px;
   gap: 16px;
-  background-color: ${(props) => props.theme.colors.white};
-  box-shadow: ${(props) => props.theme.shadow.dp01};
+  background-color: ${({ theme }) => theme.background.box.default.primary};
+  box-shadow: ${({ theme }) => theme.shadow.dp01};
 `;
 
 const RequestContainer = styled(Column)`
@@ -216,8 +213,8 @@ const RequestContainer = styled(Column)`
 `;
 
 const RequestText = styled.h2`
-  ${(props) => props.theme.fontSize.s16h24};
-  font-weight: ${(props) => props.theme.fontWeights.bold};
+  ${({ theme }) => theme.fontSize.s16h24};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;
 
 const StyledTextField = styled(TextField)`
@@ -233,15 +230,13 @@ const ContactContainer = styled(Row)`
 
 const TextContainer = styled(Column)``;
 
-const ContactText = styled.span`
-  ${(props) => props.theme.fontSize.s14h21};
-  font-weight: ${(props) => props.theme.fontWeights.light};
+const ContactText = styled(Texts14h21)`
+  font-weight: ${({ theme }) => theme.fontWeight.light};
 `;
 
-const ContactSubText = styled.div`
-  ${(props) => props.theme.fontSize.s12h18};
-  font-weight: ${(props) => props.theme.fontWeights.light};
-  color: ${(props) => props.theme.textColors.primary};
+const ContactSubText = styled(Texts12h18)`
+  font-weight: ${({ theme }) => theme.fontWeight.light};
+  color: ${({ theme }) => theme.text.active};
 `;
 
 const CofirmButtonContainer = styled.section`
@@ -249,34 +244,20 @@ const CofirmButtonContainer = styled.section`
   flex-direction: column;
 `;
 
-const ButtonContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
+const ButtonContainer = styled(CenterContainer)`
   padding: 8px;
 `;
 
-const StyledButton = styled.button`
+const StyledButton = styled(BlueButton)`
   border-radius: 8px;
   width: 100%;
   padding: 12px;
   border: none;
-  background-color: ${(props) => props.theme.colors.mainBlue};
-  color: white;
-  cursor: pointer;
-  ${(props) => props.theme.fontSize.s16h24};
+
+  ${({ theme }) => theme.fontSize.s16h24};
 
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
-  }
-
-  &:hover {
-    background-color: ${(props) => props.theme.colors.subBlue};
-  }
-
-  &:active {
-    background-color: ${(props) => props.theme.colors.darkBlue};
-    box-shadow: ${(props) => props.theme.shadow.inset};
   }
 `;

@@ -1,10 +1,9 @@
 import styled from 'styled-components';
 import { PiStarFill } from 'react-icons/pi';
 
-import { timeRange } from 'utils/date';
+import { formatKrDays, timeRange } from 'utils/date';
 import { Column, ImageCentered, RoundedImageWrapper, Row, Texts12h18, Texts18h27 } from 'commonStyle';
 
-const BUCKET_URL = process.env.REACT_APP_BUCKET_URL;
 export default function UsedPetsitterCard({ petsitter }: any) {
   const { nickname, star, photo, possibleDays, possibleStartTime, possibleEndTime } = petsitter;
 
@@ -14,10 +13,7 @@ export default function UsedPetsitterCard({ petsitter }: any) {
     <OftenPetsitterbox>
       <ImageNameContainer>
         <ImageWrapper>
-          <ImageCentered
-            src={photo ? `${BUCKET_URL}${photo?.url}` : '/imgs/DefaultUserProfile.jpg'}
-            alt="petsitterPhoto"
-          />
+          <ImageCentered src={photo ? `${photo?.url}` : '/imgs/DefaultUserProfile.jpg'} alt="petsitterPhoto" />
         </ImageWrapper>
       </ImageNameContainer>
       <InfoContainer>
@@ -31,7 +27,11 @@ export default function UsedPetsitterCard({ petsitter }: any) {
         <LowerContainer>
           <PossibleWrapper>
             <Texts12h18>가능 요일</Texts12h18>
-            <div>{possibleDays?.map((day: string, index: number) => <Texts12h18 key={index}>{day}</Texts12h18>)}</div>
+            <div>
+              {possibleDays?.map((day: string, index: number) => (
+                <Texts12h18 key={index}>{formatKrDays(day)}</Texts12h18>
+              ))}
+            </div>
           </PossibleWrapper>
           <PossibleWrapper>
             <Texts12h18>가능 시간</Texts12h18>
@@ -44,10 +44,11 @@ export default function UsedPetsitterCard({ petsitter }: any) {
 }
 
 const OftenPetsitterbox = styled(Row)`
+  width: 100%;
   align-items: center;
   padding: 12px;
   border-radius: 16px;
-  background-color: ${(props) => props.theme.colors.gray};
+  background-color: ${({ theme }) => theme.background.box.default.primary};
   gap: 8px;
 `;
 
@@ -72,7 +73,7 @@ const ImageNameContainer = styled(Row)`
 const ImageWrapper = styled(RoundedImageWrapper)`
   width: 60px;
   height: 60px;
-  border: 2px solid ${(props) => props.theme.colors.mainBlue};
+  border: 2px solid ${({ theme }) => theme.line.box.blue};
 `;
 
 const LowerContainer = styled.div`

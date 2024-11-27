@@ -1,3 +1,4 @@
+import { Texts12h18 } from 'commonStyle';
 import { useLocation, Link } from 'react-router-dom';
 
 import styled from 'styled-components';
@@ -9,7 +10,7 @@ export default function NavBarLink({ item }: any) {
   return (
     <NavLi $isActive={isActive}>
       <CustomLink to={item.link} $isActive={isActive}>
-        <LinkLabel>{item.label}</LinkLabel>
+        <LinkLabel $isActive={isActive}>{item.label}</LinkLabel>
       </CustomLink>
     </NavLi>
   );
@@ -20,24 +21,23 @@ const NavLi = styled.li<{ $isActive: boolean }>`
   align-items: center;
   justify-content: center;
   flex: 1;
-  border-bottom: ${({ $isActive, theme }) => ($isActive ? `2px solid ${theme.colors.mainBlue}` : '')};
+  border-bottom: ${({ $isActive, theme }) => ($isActive ? `2px solid ${theme.line.box.blue}` : '')};
 `;
 
 const CustomLink = styled(Link)<{ $isActive: boolean }>`
-  color: ${({ $isActive, theme }) => ($isActive ? theme.colors.black : theme.textColors.gray30)};
-  font-weight: ${({ $isActive, theme }) => ($isActive ? theme.fontWeights.extrabold : theme.fontWeights.bold)};
+  font-weight: ${({ $isActive, theme }) => ($isActive ? theme.fontWeight.extrabold : theme.fontWeight.bold)};
 
   &:visited {
     text-decoration: none;
   }
 `;
 
-const LinkLabel = styled.span`
-  ${(props) => props.theme.fontSize.s12h18};
+const LinkLabel = styled(Texts12h18)<{ $isActive: boolean }>`
   padding: 4px 8px;
   border-radius: 8px;
+  color: ${({ $isActive, theme }) => ($isActive ? theme.text.active : theme.text.inactive)};
 
   &:hover {
-    background-color: ${(props) => props.theme.colors.gray};
+    // background-color: ${({ theme }) => theme.color.gray};
   }
 `;

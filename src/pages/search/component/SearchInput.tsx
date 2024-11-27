@@ -16,7 +16,7 @@ export default function SearchInput({ input, setInput }: any) {
 
   return (
     <InputSection isFocused={isFocused}>
-      <FiSearch size="28px" color="#237EFF" />
+      <FiSearch size="28px" color="#279EFF" />
       <Input
         placeholder="검색"
         value={input}
@@ -26,7 +26,7 @@ export default function SearchInput({ input, setInput }: any) {
       />
       {input && (
         <button type="button" onClick={handleClearInput}>
-          <FaXmark size="20px" />
+          <FaXmark size="20px" color="#279EFF" />
         </button>
       )}
     </InputSection>
@@ -38,15 +38,17 @@ const InputSection = styled.section<{ isFocused: boolean }>`
   align-items: center;
   gap: 8px;
   padding: 8px;
-  border: 2px solid ${(props) => props.theme.colors.mainBlue};
+  border: 2px solid ${({ theme }) => theme.line.box.blue};
   border-radius: 20px;
+  background-color: ${({ theme }) => theme.background.box.default.primary};
 
   &:hover {
-    border-color: ${(props) => props.theme.colors.subBlue};
+    border-color: ${({ theme }) => theme.line.box.blue};
+    background-color: ${({ theme }) => theme.background.box.default.hover};
   }
 
   &:focus-within {
-    border-color: ${(props) => props.theme.colors.darkBlue};
+    border-color: ${({ theme }) => theme.line.box.blue};
   }
 `;
 
@@ -54,11 +56,12 @@ const Input = styled.input`
   flex: auto;
   width: 100%;
   border: none;
+  background-color: inherit;
+  color: inherit;
 
   &:focus {
     outline: none;
   }
 
-  focus: none;
-  ${(props) => props.theme.fontSize.s18h27};
+  ${({ theme }) => theme.fontSize.s18h27};
 `;

@@ -22,7 +22,7 @@ export default function CareContainer({ filter, order }: any) {
   };
   const { data, size, setSize, isLoading } = useSWRInfinite(getKey, infiniteFetcherWithCookie);
 
-  const isEmpty = data?.[0]?.results.length === 0;
+  const isEmpty = data?.[0]?.results?.length === 0;
   const isEnd = data && data[data.length - 1]?.results?.length < pageSize;
 
   useEffect(() => {
