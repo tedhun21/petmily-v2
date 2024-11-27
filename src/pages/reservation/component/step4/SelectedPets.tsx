@@ -9,12 +9,12 @@ export default function SelectedPets({ checkedPets }: any) {
     <PetSection>
       <PetSectionTitle>맡기시는 반려동물</PetSectionTitle>
       <ScrollContainer>
-        {checkedPets.map((pet: any) => (
+        {checkedPets?.map((pet: any) => (
           <PetCard key={pet.id}>
             <PetImg>
               <ImageCentered
                 src={
-                  pet.photo
+                  pet?.photo
                     ? `${pet.photo}`
                     : pet.species === 'Dog'
                       ? '/imgs/DogProfile.png'
@@ -51,14 +51,14 @@ const PetSection = styled.section`
   flex-direction: column;
   padding: 24px;
   border-radius: 12px;
-  background-color: ${(props) => props.theme.colors.white};
   gap: 8px;
-  box-shadow: ${(props) => props.theme.shadow.dp01};
+  background-color: ${({ theme }) => theme.background.box.default.primary};
+  box-shadow: ${({ theme }) => theme.shadow.dp01};
 `;
 
 const PetSectionTitle = styled.h2`
-  ${(props) => props.theme.fontSize.s16h24};
-  font-weight: ${(props) => props.theme.fontWeights.bold};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
+  ${({ theme }) => theme.fontSize.s16h24};
 `;
 
 const ScrollContainer = styled.ul`
@@ -71,7 +71,7 @@ const PetCard = styled.li`
   justify-content: space-between;
   margin: 4px;
   padding: 12px;
-  border: 2px solid #279eff;
+  border: 2px solid ${({ theme }) => theme.line.box.blue};
   border-radius: 12px;
   gap: 4px;
 `;

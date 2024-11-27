@@ -1,12 +1,9 @@
+import { Button } from 'commonStyle';
 import styled from 'styled-components';
-
-interface Props {
-  children: string;
-}
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-export default function GoogleOAuthButton({ children }: Props) {
+export default function GoogleOAuthButton({ children }: any) {
   const handleGooleOAuth = () => {
     window.location.assign(`${API_URL}/connect/google`);
   };
@@ -18,30 +15,14 @@ export default function GoogleOAuthButton({ children }: Props) {
   );
 }
 
-const GoogleOAuthButtonStyle = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
+const GoogleOAuthButtonStyle = styled(Button)`
   position: relative;
   width: 100%;
   padding: 8px;
-  border: 1px solid ${({ theme }) => theme.textColors.gray40};
   border-radius: 12px;
-  color: ${({ theme }) => theme.textColors.gray60};
-  background-color: white;
-  font-family: inherit;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.textColors.primary};
-  }
-
-  &:active {
-    background-color: ${({ theme }) => theme.textColors.gray50};
-    box-shadow: ${({ theme }) => theme.shadow.inset};
-  }
 
   div {
-    color: ${({ theme }) => theme.textColors.gray40};
+    color: ${({ theme }) => theme.text.secondary};
     ${({ theme }) => theme.fontSize.s16h24};
   }
 `;

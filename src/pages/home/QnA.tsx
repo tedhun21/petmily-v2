@@ -561,6 +561,6 @@ const FirstFAQ = styled.div`
 `;
 
 const Question = styled.h1`
-  ${(props) => props.theme.fontSize.s16h24};
-  color: ${(props) => props.theme.colors.mainBlue};
+  color: ${({ theme }) => theme.text.highlight};
+  ${({ theme }) => theme.fontSize.s16h24};
 `;

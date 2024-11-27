@@ -23,12 +23,11 @@ export default function NavHeader() {
 }
 
 const Header = styled.header`
-  display: flex;
   position: sticky;
+  background-color: inherit;
   top: 0;
   left: 0;
-  z-index: 100;
-  width: 100%;
+  z-index: 10;
 `;
 
 const HeaderContatiner = styled(Column)`
@@ -37,9 +36,9 @@ const HeaderContatiner = styled(Column)`
   height: 100px;
   gap: 8px;
   padding: 12px 12px 0;
-  background-color: white;
+
   max-width: 600px;
-  box-shadow: ${(props) => props.theme.shadow.onlyBottom};
+  box-shadow: ${({ theme }) => theme.shadow.onlyBottom};
 `;
 
 const TopHeader = styled.div`

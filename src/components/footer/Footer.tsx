@@ -55,10 +55,10 @@ const MainContainer = styled.div`
   width: 100%;
   height: auto;
   margin-top: auto;
-  background-color: ${(props) => props.theme.colors.mainBlue};
+  background-color: ${({ theme }) => theme.background.box.blue.primary};
 `;
 const ContactUs = styled.div`
-  color: ${(props) => props.theme.colors.white};
+  color: ${(props) => props.theme.color.white};
   ${(props) => props.theme.fontSize.s16h24};
   font-weight: bold;
   margin-top: 20px;
@@ -72,28 +72,28 @@ const MemberContainer = styled.div`
 `;
 
 const Link = styled.a`
-  color: ${(props) => props.theme.colors.white};
-  font-weight: ${(props) => props.theme.fontWeights.light};
+  color: ${(props) => props.theme.color.white};
+  font-weight: ${(props) => props.theme.fontWeight.light};
   ${(props) => props.theme.fontSize.s14h21};
   margin-left: 8px;
 `;
 
 const BE = styled.h1`
-  color: ${(props) => props.theme.colors.white};
-  font-weight: ${(props) => props.theme.fontWeights.light};
+  color: ${(props) => props.theme.color.white};
+  font-weight: ${(props) => props.theme.fontWeight.light};
   ${(props) => props.theme.fontSize.s14h21};
 `;
 
 const FE = styled.h1`
-  color: ${(props) => props.theme.colors.white};
-  font-weight: ${(props) => props.theme.fontWeights.light};
+  color: ${(props) => props.theme.color.white};
+  font-weight: ${(props) => props.theme.fontWeight.light};
   ${(props) => props.theme.fontSize.s14h21};
 `;
 
 const CopyrightNotice = styled.div`
-  color: ${(props) => props.theme.colors.white};
+  color: ${(props) => props.theme.color.white};
   ${(props) => props.theme.fontSize.s12h18};
-  font-weight: ${(props) => props.theme.fontWeights.light};
+  font-weight: ${(props) => props.theme.fontWeight.light};
   margin-bottom: 8px;
 `;
 

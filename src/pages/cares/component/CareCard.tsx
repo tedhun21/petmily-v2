@@ -1,7 +1,16 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Column, ImageCentered, RoundedImageWrapper, Row, Texts12h18, Texts14h21, Texts16h24 } from 'commonStyle';
+import {
+  Column,
+  ImageCentered,
+  RoundedImageWrapper,
+  Row,
+  Texts12h18,
+  Texts14h21,
+  Texts16h24,
+  Texts18h27,
+} from 'commonStyle';
 import { formatStatus } from 'utils/misc';
 import { dayFormat, timeRange } from 'utils/date';
 
@@ -49,7 +58,7 @@ const Card = styled(Link)`
   flex-direction: column;
   gap: 8px;
   padding: 20px;
-  box-shadow: ${(props) => props.theme.shadow.dp01};
+  box-shadow: ${({ theme }) => theme.shadow.dp01};
   border-radius: 16px;
   color: black;
 
@@ -58,7 +67,7 @@ const Card = styled(Link)`
   }
 
   &:hover {
-    box-shadow: ${(props) => props.theme.shadow.dp03};
+    box-shadow: ${({ theme }) => theme.shadow.dp03};
   }
 `;
 
@@ -79,7 +88,7 @@ const PetsitterName = styled(Row)`
 const PetsitterImage = styled(RoundedImageWrapper)`
   width: 60px;
   height: 60px;
-  border: 2px solid ${(props) => props.theme.colors.mainBlue};
+  border: 2px solid ${({ theme }) => theme.line.box.blue};
 `;
 
 const ReservationContainer = styled(Column)`
@@ -96,31 +105,12 @@ const PetWrapper = styled(Row)`
   gap: 4px;
 
   > span {
-    font-weight: ${(props) => props.theme.fontWeights.bold};
+    font-weight: ${({ theme }) => theme.fontWeight.bold};
     ${({ theme }) => theme.fontSize.s12h18};
   }
 `;
 
-const PropgressSpan = styled.span`
-  color: ${(props) => props.theme.colors.mainBlue};
-  font-weight: ${(props) => props.theme.fontWeights.extrabold};
-  ${(props) => props.theme.fontSize.s18h27}
-`;
-
-const ActiveLink = styled(Link)`
-  color: white;
-  cursor: pointer;
-  ${({ theme }) => theme.fontSize.s14h21}
-  background-color: ${({ theme }) => theme.colors.mainBlue};
-  border-radius: 4px;
-  padding: 4px 8px;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.subBlue};
-  }
-
-  &:active {
-    background-color: ${({ theme }) => theme.colors.darkBlue};
-    box-shadow: ${({ theme }) => theme.shadow.inset};
-  }
+const PropgressSpan = styled(Texts18h27)`
+  color: ${({ theme }) => theme.text.highlight};
+  font-weight: ${({ theme }) => theme.fontWeight.extrabold};
 `;

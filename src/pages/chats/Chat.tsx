@@ -134,7 +134,7 @@ export default function Chat() {
           {chatRoom?.client.id === Number(opponentId) ? chatRoom?.petsitter?.nickname : chatRoom?.client?.nickname} 님
         </Texts20h30>
         <button>
-          <FiMenu size="24px" color="#237EFF" />
+          <FiMenu size="24px" color="#279EFF" />
         </button>
       </ChatHeader>
 
@@ -160,7 +160,7 @@ const ChatHeader = styled.header`
   justify-content: space-between;
   width: 100%;
   padding: 20px;
-  background-color: ${(props) => props.theme.colors.gray};
+  // background-color: ${({ theme }) => theme.color.gray};
 `;
 
 const StyledBackButton = styled.button`
@@ -180,8 +180,8 @@ const ChatInput = styled.input`
   flex: auto;
   border-radius: 24px;
   padding: 8px 12px;
-  border: 2px solid ${(props) => props.theme.colors.mainBlue};
-  ${(props) => props.theme.fontSize.s18h27};
+  border: 2px solid ${({ theme }) => theme.line.input.blue};
+  ${({ theme }) => theme.fontSize.s18h27};
 `;
 
 const ChatSubmitButton = styled.button``;

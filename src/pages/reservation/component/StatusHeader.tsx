@@ -1,3 +1,4 @@
+import { Texts12h18 } from 'commonStyle';
 import { IoArrowBackOutline } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -17,7 +18,7 @@ export default function StatusHeader({ currentStep, onPrevious }: IStatusProps) 
       <BackArrowButton type="button" onClick={currentStep === 1 ? handleBackPage : onPrevious}>
         <IoArrowBackOutline size="16px" />
       </BackArrowButton>
-      <Title>예약</Title>
+      <Title>예약 단계</Title>
       <PageNumber>{currentStep}/4</PageNumber>
     </Header>
   );
@@ -28,22 +29,21 @@ const Header = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 16px;
-  background-color: ${(props) => props.theme.textColors.secondary};
+  background-color: ${({ theme }) => theme.background.secondary};
 `;
 
-const Title = styled.span`
-  ${(props) => props.theme.fontSize.s12h18};
-  font-weight: ${(props) => props.theme.fontWeights.extrabold};
+const Title = styled(Texts12h18)`
+  font-weight: ${({ theme }) => theme.fontWeight.extrabold};
 `;
 
-const PageNumber = styled.span`
-  ${(props) => props.theme.fontSize.s12h18};
-  font-weight: ${(props) => props.theme.fontWeights.light};
+const PageNumber = styled(Texts12h18)`
+  font-weight: ${({ theme }) => theme.fontWeight.light};
 `;
 
 export const BackArrowButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  color: inherit;
   cursor: pointer;
 `;

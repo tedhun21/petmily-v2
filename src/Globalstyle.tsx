@@ -15,18 +15,24 @@ const GlobalStyle = createGlobalStyle`
     }
 
     body {
-        background-color: #F5F6F8;
         font-family: 'Noto Sans KR', Roboto, sans-serif;
     }
 
     a {
         text-decoration: none;
+        color: inherit;
     }
 
     button {
         border: none;
         background-color: transparent;
         cursor: pointer;
+        color:inherit;
+    }
+
+    input {
+        outline: none;
+        color:inherit;
     }
 
 `;

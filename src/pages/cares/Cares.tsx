@@ -28,5 +28,4 @@ export default function Cares() {
 const MainContainer = styled.main`
   height: 100%;
   padding: 12px;
-  background-color: white;
 `;

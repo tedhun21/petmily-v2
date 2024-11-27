@@ -92,10 +92,11 @@ const OrderRadio = styled.div`
 
 const CustomLabel = styled.label<{ isSelected: boolean }>`
   padding: 4px 8px;
-  border: ${({ theme, isSelected }) => (isSelected ? 'none' : `1px solid ${theme.colors.mainBlue}`)};
+  border: ${({ theme, isSelected }) => (isSelected ? 'none' : `1px solid ${theme.line.box.default}`)};
   border-radius: 4px;
-  color: ${({ isSelected }) => (isSelected ? 'white' : 'black')};
-  background-color: ${({ theme, isSelected }) => (isSelected ? theme.colors.mainBlue : 'white')};
+  color: ${({ isSelected, theme }) => (isSelected ? 'white' : theme.text.inactive)};
+  background-color: ${({ theme, isSelected }) =>
+    isSelected ? theme.background.box.blue.primary : theme.background.box.default.primary};
   cursor: pointer;
   transition:
     background-color 0.2s,
@@ -104,7 +105,7 @@ const CustomLabel = styled.label<{ isSelected: boolean }>`
 
 const CustomOrderLabel = styled.label<{ isSelected: boolean }>`
   cursor: pointer;
-  color: ${({ isSelected, theme }) => (isSelected ? theme.colors.mainBlue : 'black')};
-  font-weight: ${({ isSelected }) => (isSelected ? 'bold' : 'normal')};
-  ${(props) => props.theme.fontSize.s14h21}
+  color: ${({ isSelected, theme }) => (isSelected ? theme.text.highlight : theme.text.inactive)};
+  font-weight: ${({ isSelected, theme }) => (isSelected ? theme.fontWeight.bold : theme.fontWeight.normal)};
+  ${({ theme }) => theme.fontSize.s14h21}
 `;

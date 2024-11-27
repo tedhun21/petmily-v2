@@ -63,7 +63,6 @@ const MypageContainer = styled.main`
   width: 100%;
   height: 100%;
   padding: 36px;
-  background-color: white;
 `;
 
 // 유저 컨테이너
@@ -83,7 +82,7 @@ const MyProfile = styled.div`
 const MyImage = styled(RoundedImageWrapper)`
   width: 60px;
   height: 60px;
-  border: 2px solid ${(props) => props.theme.colors.mainBlue};
+  border: 2px solid ${({ theme }) => theme.line.box.blue};
 `;
 
 const TextWrapper = styled.div`
@@ -93,15 +92,15 @@ const TextWrapper = styled.div`
 `;
 
 const NameText = styled.div`
-  ${(props) => props.theme.fontSize.s18h27};
-  font-weight: 600;
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
+  ${({ theme }) => theme.fontSize.s18h27};
 `;
 
 const HelloText = styled.div`
-  ${(props) => props.theme.fontSize.s16h24};
-  font-weight: 600;
   display: flex;
   justify-content: space-between;
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
+  ${({ theme }) => theme.fontSize.s16h24};
 `;
 
 const EditLink = styled(Link)`
@@ -111,15 +110,15 @@ const EditLink = styled(Link)`
   padding: 8px;
   border-radius: 8px;
   color: white;
-  background-color: ${(props) => props.theme.colors.mainBlue};
+  background-color: ${({ theme }) => theme.background.box.blue.primary};
 
   &:hover {
-    background-color: ${(props) => props.theme.colors.subBlue};
+    background-color: ${({ theme }) => theme.background.box.blue.hover};
   }
 
   &:active {
-    background-color: ${(props) => props.theme.colors.darkBlue};
-    box-shadow: ${(props) => props.theme.shadow.inset};
+    background-color: ${({ theme }) => theme.background.box.blue.active};
+    box-shadow: ${({ theme }) => theme.shadow.inset};
   }
 
   > span {

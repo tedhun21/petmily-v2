@@ -4,32 +4,33 @@ import styled from 'styled-components';
 import HomeAd from '@components/HomeAd';
 // import Footer from '@components/footer/Footer';
 
-import { Title } from 'commonStyle';
+import { Texts14h21, Title } from 'commonStyle';
 import RealTimeReviews from './component/RealTimeReviews';
 import UsedPetsitters from './component/UsedPetsitters';
+import useSWR from 'swr';
+import { fetcherWithCookie } from 'api';
+
+const API_URL = process.env.REACT_APP_API_URL;
 
 export default function Home() {
+  const { data: me } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);
+
   return (
     <>
       <HomeContainer>
-        {/* <CustomLink to={'/search'}>펫시터 검색</CustomLink> */}
         <HomeAd />
         <LinkContainer>
-          <PetsitterLink to="/search">펫시터 보기</PetsitterLink>
+          <PetsitterLink to="/search">펫시터 검색</PetsitterLink>
           <PetsitterLink to="/qna">펫시터 QnA</PetsitterLink>
         </LinkContainer>
         <AdSubContainer>
           <AdSubText>{'첫 만남\n 50% 할인 쿠폰'}</AdSubText>
         </AdSubContainer>
         <img src="/imgs/HomeTitleAd.svg" alt="Advertising" width="100%" />
-        <section>
-          <Title>최근 이용한 펫시터 서비스</Title>
-          <UsedPetsitters />
-        </section>
-        <section>
-          <Title>실시간 후기</Title>
-          <RealTimeReviews />
-        </section>
+
+        {me && <UsedPetsitters />}
+
+        <RealTimeReviews />
       </HomeContainer>
       {/* <Footer /> */}
     </>
@@ -49,18 +50,34 @@ const LinkContainer = styled.div`
   gap: 12px;
 `;
 
+const StyledDefaultLink = styled(Link)`
+  color: ${({ theme }) => theme.text.active};
+  border: 1px solid ${({ theme }) => theme.line.box.default};
+  background-color: ${({ theme }) => theme.background.box.default.primary};
+
+  &:hover {
+    background-color: ${({ theme }) => theme.background.box.default.hover};
+  }
+`;
+
 const PetsitterLink = styled(Link)`
   flex: 1;
   display: flex;
   justify-content: center;
-  padding: 20px 24px;
-  ${(props) => props.theme.fontSize.s16h24};
-  font-weight: ${(props) => props.theme.fontWeights.bold};
-  box-shadow: ${(props) => props.theme.shadow.dp01};
-  color: ${(props) => props.theme.colors.black};
+  padding: 24px;
+  color: ${({ theme }) => theme.text.active};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
+  border: 1px solid ${({ theme }) => theme.line.box.default};
+  border-radius: 16px;
+  background-color: ${({ theme }) => theme.background.box.default.primary};
+  ${({ theme }) => theme.fontSize.s16h24};
 
   &:visited {
     text-decoration: none;
+  }
+
+  &:hover {
+    background-color: ${({ theme }) => theme.background.box.default.hover};
   }
 `;
 
@@ -68,15 +85,14 @@ const AdSubContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 24px;
-  border-radius: 8px;
-  background-color: ${(props) => props.theme.colors.white};
-  box-shadow: ${(props) => props.theme.shadow.dp01};
+  padding: 16px;
+  border-radius: 16px;
+  background-color: ${({ theme }) => theme.background.box.default.primary};
 `;
 
-const AdSubText = styled.div`
-  ${(props) => props.theme.fontSize.s14h21};
-  font-weight: 600;
+const AdSubText = styled(Texts14h21)`
+  color: ${({ theme }) => theme.text.active};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
   white-space: pre-line;
 `;
 

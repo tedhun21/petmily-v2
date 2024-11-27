@@ -1,3 +1,4 @@
+import { Texts14h21 } from 'commonStyle';
 import { PiCatBold, PiDogBold } from 'react-icons/pi';
 import styled from 'styled-components';
 import { Species } from 'types/pet.type';
@@ -65,7 +66,7 @@ const InfoItem = styled.li`
   flex-direction: column;
   padding: 8px;
   gap: 8px;
-  border: 2px solid ${(props) => props.theme.colors.mainBlue};
+  border: 2px solid ${({ theme }) => theme.line.box.blue};
   border-radius: 12px;
 `;
 
@@ -75,13 +76,12 @@ const ItemWrapper = styled.ul`
   gap: 4px;
 `;
 
-const ItemLabel = styled.span`
+const ItemLabel = styled(Texts14h21)`
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 4px 8px;
   color: white;
   border-radius: 8px;
-  background-color: ${(props) => props.theme.colors.mainBlue};
-  ${(props) => props.theme.fontSize.s14h21};
+  background-color: ${({ theme }) => theme.text.highlight};
 `;

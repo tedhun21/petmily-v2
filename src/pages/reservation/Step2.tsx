@@ -6,7 +6,7 @@ import { Drawer } from '@mui/material';
 import { FiFilter } from 'react-icons/fi';
 import { CgOptions } from 'react-icons/cg';
 
-import { Row } from 'commonStyle';
+import { BlueDivider, CenterContainer, Row, Texts18h27, Texts20h30 } from 'commonStyle';
 import PossiblePetsitters from './component/step2/PossiblePetsitters';
 
 const filterList = [
@@ -39,27 +39,22 @@ export default function Step2({ onNext }: any) {
       <FilterContainer>
         <TitleWrap>
           <TitleText>{filterList.map((list: any) => list.ref === filter && list.item)}</TitleText>
-          <ItemCountbox>0</ItemCountbox>
+          {/* <ItemCountbox>0</ItemCountbox> */}
         </TitleWrap>
-        <FilterButton type="button" onClick={handleFilterOpen}>
+        <button type="button" onClick={handleFilterOpen}>
           <CgOptions size="24px" />
-        </FilterButton>
+        </button>
       </FilterContainer>
 
       <PossiblePetsitters filter={filter} onNext={onNext} />
 
-      <Drawer
-        anchor="bottom"
-        open={isFilterOpen}
-        onClose={handleFilterClose}
-        // ModalProps={{ container: document.getElementById('steptwo-main'), style: { position: 'absolute' } }}
-      >
-        <>
+      <Drawer anchor="bottom" open={isFilterOpen} onClose={handleFilterClose}>
+        <Container>
           <DrawerHeader>
             <FiFilter size="28px" color="#279EFF" />
             <HeaderTitle>필터</HeaderTitle>
           </DrawerHeader>
-          <Divider />
+          <BlueDivider />
           <ListContainer>
             {filterList.map((filter) => (
               <li key={filter.id}>
@@ -67,7 +62,7 @@ export default function Step2({ onNext }: any) {
               </li>
             ))}
           </ListContainer>
-        </>
+        </Container>
       </Drawer>
     </MainContainer>
   );
@@ -90,24 +85,20 @@ const TitleWrap = styled(Row)`
   align-items: center;
 `;
 
-const TitleText = styled.span`
-  font-weight: ${(props) => props.theme.fontWeights.extrabold};
-  font-size: ${(props) => props.theme.fontSize.s20h30};
+const TitleText = styled(Texts20h30)`
+  font-weight: ${({ theme }) => theme.fontWeight.extrabold};
 `;
 
-const ItemCountbox = styled.div`
-  display: flex;
-  justify-content: center;
-  align-itmes: center;
+const ItemCountbox = styled(CenterContainer)`
   padding: 4px 8px;
   border-radius: 4px;
-  color: ${(props) => props.theme.colors.white};
   font-size: 14px;
-  background-color: ${(props) => props.theme.colors.mainBlue};
+  background-color: ${({ theme }) => theme.background.box.default.primary};
 `;
 
-const FilterButton = styled.button`
-  cursor: pointer;
+const Container = styled.div`
+  background-color: ${({ theme }) => theme.background.box.default.primary};
+  color: ${({ theme }) => theme.text.active};
 `;
 
 const DrawerHeader = styled(Row)`
@@ -116,13 +107,8 @@ const DrawerHeader = styled(Row)`
   padding: 12px;
 `;
 
-const HeaderTitle = styled.span`
-  ${(props) => props.theme.fontSize.s18h27}
-  font-weight:${(props) => props.theme.fontWeights.bold}
-`;
-
-const Divider = styled.div`
-  border: 1px solid ${(props) => props.theme.colors.mainBlue};
+const HeaderTitle = styled(Texts18h27)`
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;
 
 const ListContainer = styled.ul`
@@ -131,5 +117,5 @@ const ListContainer = styled.ul`
 
 const ItemButton = styled.button`
   padding: 16px;
-  ${(props) => props.theme.fontSize.s16h24}
+  ${({ theme }) => theme.fontSize.s16h24}
 `;

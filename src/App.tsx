@@ -1,6 +1,6 @@
 // import { Suspense, lazy } from 'react';
 import { createBrowserRouter, RouterProvider, Outlet, Route, createRoutesFromElements } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { ThemeProvider as StyledComponentsThemeProvider } from 'styled-components';
 
 import NavHeader from '@components/headers/NavHeader';
 import BackHeader from '@components/headers/BackHeader';
@@ -47,8 +47,7 @@ import CareDetail from '@pages/cares/:id/CareDetail';
 import Search from '@pages/search/Search';
 import QnA from '@pages/home/QnA';
 import Profile from '@pages/users/:id/Profile';
-import ViewPetsitters from '@pages/reservation/ViewPetsitters';
-import ViewJournal from '@pages/common/ViewJournal';
+
 import SitterSchedule from '@pages/me/SitterSchedule';
 
 import Chat from '@pages/chats/Chat';
@@ -56,15 +55,17 @@ import Chat from '@pages/chats/Chat';
 import NotFound from '@pages/common/404';
 
 import ReservationFormWizard from '@pages/reservation/ReservationFormWizard';
-import { Provider as ReduxProvider } from 'react-redux';
-import store from './store/index';
+import { useDispatch, useSelector } from 'react-redux';
 import { SWRConfig } from 'swr';
 
 import Redirect from '@pages/login/Redirect';
 import { ToastContainer } from 'react-toastify';
 import Review from '@pages/cares/:id/review/Review';
 import Journal from '@pages/cares/:id/journal/Journal';
-// import CareWizard from '@pages/cares/:id/CareWizard';
+import { darkTheme, lightTheme } from 'theme';
+import GlobalStyle from 'Globalstyle';
+import { ITheme, toggleTheme } from 'store/themeSlice';
+import { useEffect } from 'react';
 
 const NavHeaderLayout = () => {
   return (
@@ -105,12 +106,10 @@ const router = createBrowserRouter(
         <Route path="cares/:id/review" element={<Review />} />
         <Route path="cares/:id/journal" element={<Journal />} />
         <Route path="users/:nickname" element={<Profile />} />
-        {/* <Route path="petsitters" element={<ViewPetsitters />} /> */}
         {/* <Route path="petsitters/:memberId/schedule" element={<SitterSchedule />} /> */}
       </Route>
       <Route path="me" element={<Me />} />
       <Route path="auth/connect/google/callback" element={<Redirect />} />
-      {/* <Route path="cares/:id" element={<CareWizard />} /> */}
       <Route path="chats/:opponentId" element={<Chat />} />
       <Route path="*" element={<NotFound />} />
     </Route>,
@@ -118,26 +117,51 @@ const router = createBrowserRouter(
 );
 
 export default function App() {
+  const dispatch = useDispatch();
+  const isDarkMode = useSelector((state: ITheme) => state.theme.isDarkMode);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = (e: MediaQueryListEvent) => {
+      dispatch(toggleTheme(e.matches ? 'dark' : 'light'));
+    };
+
+    dispatch(toggleTheme(mediaQuery.matches ? 'dark' : 'light')); // 초기 테마 설정
+    mediaQuery.addEventListener('change', handleChange); // 시스템 테마 변경 감지
+
+    return () => {
+      mediaQuery.removeEventListener('change', handleChange); // 클린업
+    };
+  }, [dispatch]);
+
   return (
-    <ReduxProvider store={store}>
-      <SWRConfig value={{ revalidateOnFocus: false, provider: () => new Map() }}>
+    <SWRConfig value={{ revalidateOnFocus: false, provider: () => new Map() }}>
+      <StyledComponentsThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+        <GlobalStyle />
         <Container>
           <Wrapper>
             <RouterProvider router={router} />
-            <ToastContainer position="top-center" autoClose={3000} />
+            <ToastContainer
+              position="top-right"
+              autoClose={2000}
+              theme={isDarkMode ? 'dark' : 'light'}
+              hideProgressBar={true}
+              closeOnClick={true}
+              pauseOnFocusLoss={false}
+            />
           </Wrapper>
         </Container>
-      </SWRConfig>
-    </ReduxProvider>
+      </StyledComponentsThemeProvider>
+    </SWRConfig>
   );
 }
 
 const Container = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: center;
   width: 100%;
   min-height: 100vh;
+  background-color: ${({ theme }) => theme.background.secondary};
 `;
 
 const Wrapper = styled.div`
@@ -146,6 +170,7 @@ const Wrapper = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
-  background-color: white;
   max-width: 600px;
+  color: ${({ theme }) => theme.text.active};
+  background-color: ${({ theme }) => theme.background.primary};
 `;

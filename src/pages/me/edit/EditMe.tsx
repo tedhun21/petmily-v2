@@ -12,7 +12,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import { Modal } from '@mui/joy';
 
-import { Column, ErrorMessage, Row, Texts14h21, Texts20h30 } from 'commonStyle';
+import { BlueButton, BottomFixed, Column, ErrorMessage, Float, Input, Row, Texts14h21, Texts20h30 } from 'commonStyle';
 
 import UploadProfileImg from '../../../components/UploadProfileImg';
 import { deleteCookie } from 'utils/cookie';
@@ -26,13 +26,12 @@ import { GoVerified } from 'react-icons/go';
 
 import EmailCodeModalButton from './components/EmailCodeModal';
 import { PiCatBold, PiDogBold } from 'react-icons/pi';
-import { checkInDisableTime, weekdays } from 'utils/date';
+import { weekdays } from 'utils/date';
 import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import dayjs from 'dayjs';
 import { FaArrowUp, FaXmark } from 'react-icons/fa6';
-import { Diversity1Outlined } from '@mui/icons-material';
 
 const schema = yup.object().shape({
   nickname: yup
@@ -225,199 +224,211 @@ export default function EditMe() {
           defaultImage="/imgs/DefaultUserProfile.jpg"
         />
 
-        <FormContainer onSubmit={handleSubmit(onSubmit)}>
-          <InputWrapper>
-            <InputLabel htmlFor="username">이름</InputLabel>
-            <span id="username">{me?.username}</span>
-          </InputWrapper>
-          <InputWrapper>
-            <InputLabel htmlFor="email">이메일</InputLabel>
-            <EmailWrapper>
-              <span id="email">{me?.email}</span>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <InputContainer>
+            <InputWrapper>
+              <InputLabel htmlFor="username">이름</InputLabel>
+              <span id="username">{me?.username}</span>
+            </InputWrapper>
+            <InputWrapper>
+              <InputLabel htmlFor="email">이메일</InputLabel>
+              <EmailWrapper>
+                <span id="email">{me?.email}</span>
 
-              {me?.verified ? <GoVerified color="#279EFF" size="20px" /> : <EmailCodeModalButton email={me?.email} />}
-            </EmailWrapper>
-          </InputWrapper>
-          <InputWrapper>
-            <InputLabel htmlFor="nickname">닉네임</InputLabel>
-            <InputError>
-              <Input {...register('nickname')} />
-              <ErrorMessage>{errors.nickname && errors.nickname.message}</ErrorMessage>
-            </InputError>
-          </InputWrapper>
-          <InputWrapper>
-            <InputLabel htmlFor="phone">연락처</InputLabel>
-            <InputError>
-              <Input {...register('phone')} />
-              <ErrorMessage>{errors.phone && errors.phone.message}</ErrorMessage>
-            </InputError>
-          </InputWrapper>
-          <InputWrapper>
-            <InputLabel htmlFor="address">주소</InputLabel>
-            <InputError>
-              <Input onClick={onToggleModal} onKeyDown={onToggleModal} {...register('address')} />
-              {errors.address && <ErrorMessage>{errors.address.message}</ErrorMessage>}
-            </InputError>
+                {me?.verified ? <GoVerified color="#279EFF" size="20px" /> : <EmailCodeModalButton email={me?.email} />}
+              </EmailWrapper>
+            </InputWrapper>
+            <InputWrapper>
+              <InputLabel htmlFor="nickname">닉네임</InputLabel>
+              <InputError>
+                <MeInput {...register('nickname')} />
+                <ErrorMessage>{errors.nickname && errors.nickname.message}</ErrorMessage>
+              </InputError>
+            </InputWrapper>
+            <InputWrapper>
+              <InputLabel htmlFor="phone">연락처</InputLabel>
+              <InputError>
+                <MeInput {...register('phone')} />
+                <ErrorMessage>{errors.phone && errors.phone.message}</ErrorMessage>
+              </InputError>
+            </InputWrapper>
+            <InputWrapper>
+              <InputLabel htmlFor="address">주소</InputLabel>
+              <InputError>
+                <MeInput onClick={onToggleModal} onKeyDown={onToggleModal} {...register('address')} />
+                {errors.address && <ErrorMessage>{errors.address.message}</ErrorMessage>}
+              </InputError>
 
-            <Modal
-              open={isModalOpen}
-              onClose={() => setIsModalOpen(false)}
-              sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-            >
-              <div style={{ width: '360px' }}>
-                <DaumPostcode onComplete={handleComplete} />
-              </div>
-            </Modal>
-          </InputWrapper>
-          <InputWrapper>
-            <InputLabel htmlFor="detailAddress">상세 주소</InputLabel>
-            <InputError>
-              <Input {...register('detailAddress')} />
-              {errors.detailAddress && <ErrorMessage>{errors.detailAddress.message}</ErrorMessage>}
-            </InputError>
-          </InputWrapper>
-          <InputWrapper>
-            <InputLabel htmlFor="body">나의 소개</InputLabel>
-            <TextArea {...register('body')} />
-          </InputWrapper>
-          {me?.role === 'Petsitter' && (
-            <>
-              <InputWrapper>
-                <InputLabel>케어가능동물</InputLabel>
-                <PetSpciesButtonContainer>
-                  <TypeRadioLabel isSelected={watch('possiblePetSpecies')?.includes('Dog')}>
-                    <input
-                      hidden
-                      type="checkbox"
-                      value="Dog"
-                      {...register('possiblePetSpecies')}
-                      onClick={handlePetSpecies}
-                    />
-                    <PiDogBold size="20px" color="white" />
-                  </TypeRadioLabel>
-                  <TypeRadioLabel isSelected={watch('possiblePetSpecies')?.includes('Cat')}>
-                    <input
-                      hidden
-                      type="checkbox"
-                      value="Cat"
-                      {...register('possiblePetSpecies')}
-                      onClick={handlePetSpecies}
-                    />
-                    <PiCatBold size="20px" color="white" />
-                  </TypeRadioLabel>
-                </PetSpciesButtonContainer>
-              </InputWrapper>
-              <InputWrapper>
-                <InputLabel>케어가능지역</InputLabel>
-                <LocationInputWrapper>
-                  <LocationList>
-                    {watch('possibleLocations')?.map((location: any) => (
-                      <LocationItem key={location}>
-                        <Texts14h21>{location}</Texts14h21>
-                        <button
-                          type="button"
-                          onClick={() => handleDeleteLocation(location)}
-                          style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-                        >
-                          <FaXmark size="16px" color="red" />
-                        </button>
-                      </LocationItem>
-                    ))}
-                  </LocationList>
+              <Modal
+                open={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              >
+                <div style={{ width: '360px' }}>
+                  <DaumPostcode onComplete={handleComplete} />
+                </div>
+              </Modal>
+            </InputWrapper>
+            <InputWrapper>
+              <InputLabel htmlFor="detailAddress">상세 주소</InputLabel>
+              <InputError>
+                <MeInput {...register('detailAddress')} />
+                {errors.detailAddress && <ErrorMessage>{errors.detailAddress.message}</ErrorMessage>}
+              </InputError>
+            </InputWrapper>
+            <InputWrapper>
+              <InputLabel htmlFor="body">나의 소개</InputLabel>
+              <TextArea {...register('body')} />
+            </InputWrapper>
 
-                  <InputContainer>
-                    <LocationInput
-                      placeholder="예) 서울시, 서울시 용산구"
-                      value={newLocation}
-                      onChange={(e) => setNewLocation(e.target.value)}
-                    />
-                    <AddLocationButton type="button" onClick={handleAddLocation}>
-                      <FaArrowUp size="16px" color="#279EFF" />
-                    </AddLocationButton>
-                  </InputContainer>
-                </LocationInputWrapper>
-              </InputWrapper>
-              <InputWrapper>
-                <InputLabel>케어가능요일</InputLabel>
-                <WeekdaysWrapper>
-                  {weekdays.map((day: any) => (
-                    <DayLabel key={day.id} isSelected={watch('possibleDays')?.includes(day.value)}>
+            {/* 펫시터 정보 */}
+            {me?.role === 'Petsitter' && (
+              <>
+                <InputWrapper>
+                  <InputLabel>케어가능동물</InputLabel>
+                  <PetSpciesButtonContainer>
+                    <TypeRadioLabel isSelected={watch('possiblePetSpecies')?.includes('Dog')}>
                       <input
                         hidden
                         type="checkbox"
-                        value={day.value}
-                        {...register('possibleDays')}
-                        onClick={handlePossibleDays}
+                        value="Dog"
+                        {...register('possiblePetSpecies')}
+                        onClick={handlePetSpecies}
                       />
-                      <span>{day.label}</span>
-                    </DayLabel>
-                  ))}
-                </WeekdaysWrapper>
-              </InputWrapper>
-              <InputWrapper>
-                <InputLabel>케어가능시간</InputLabel>
-                <TimePickerContainer>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DemoContainer components={['TimePicker']} sx={{ flex: 1 }}>
-                      <StyledTimePicker>
-                        <Controller
-                          name="possibleStartTime"
-                          control={control}
-                          render={({ field: { value, onChange } }) => (
-                            <TimePicker
-                              label="시작"
-                              minutesStep={30}
-                              skipDisabled={true}
-                              minTime={dayjs(new Date(0, 0, 0, 8))}
-                              maxTime={dayjs(new Date(0, 0, 0, 21))}
-                              ampm={false}
-                              value={value || null}
-                              onChange={onChange}
-                              // shouldDisableTime={(value, view) => checkInDisableTime(value, view, watch('date'))}
-                              sx={{ width: '100%' }}
-                            />
-                          )}
-                        />
-                      </StyledTimePicker>
-                    </DemoContainer>
-                  </LocalizationProvider>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DemoContainer components={['TimePicker']} sx={{ flex: 1 }}>
-                      <StyledTimePicker>
-                        <Controller
-                          name="possibleEndTime"
-                          control={control}
-                          render={({ field: { value, onChange } }) => (
-                            <TimePicker
-                              label="끝"
-                              minutesStep={30}
-                              skipDisabled={true}
-                              minTime={dayjs(new Date(0, 0, 0, 8))}
-                              maxTime={dayjs(new Date(0, 0, 0, 21))}
-                              ampm={false}
-                              value={value || null}
-                              onChange={onChange}
-                              // shouldDisableTime={(value, view) => checkInDisableTime(value, view, watch('date'))}
-                              sx={{ width: '100%' }}
-                            />
-                          )}
-                        />
-                      </StyledTimePicker>
-                    </DemoContainer>
-                  </LocalizationProvider>
-                </TimePickerContainer>
-              </InputWrapper>
-            </>
-          )}
-          <SubmitButton disabled={isMutating} type="submit">
-            {isLoading ? <Loading /> : <span>수정하기</span>}
-          </SubmitButton>
-        </FormContainer>
+                      <PiDogBold size="20px" color="white" />
+                    </TypeRadioLabel>
+                    <TypeRadioLabel isSelected={watch('possiblePetSpecies')?.includes('Cat')}>
+                      <input
+                        hidden
+                        type="checkbox"
+                        value="Cat"
+                        {...register('possiblePetSpecies')}
+                        onClick={handlePetSpecies}
+                      />
+                      <PiCatBold size="20px" color="white" />
+                    </TypeRadioLabel>
+                  </PetSpciesButtonContainer>
+                </InputWrapper>
+                <InputWrapper>
+                  <InputLabel>케어가능지역</InputLabel>
+                  <LocationInputWrapper>
+                    <LocationList>
+                      {watch('possibleLocations')?.map((location: any) => (
+                        <LocationItem key={location}>
+                          <Texts14h21>{location}</Texts14h21>
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteLocation(location)}
+                            style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                          >
+                            <FaXmark size="16px" color="red" />
+                          </button>
+                        </LocationItem>
+                      ))}
+                    </LocationList>
 
-        <LinkContainer>
-          <StyledButton onClick={handleLogout}>로그아웃</StyledButton>
-          <StyledButton onClick={deleteAccount}>회원 탈퇴</StyledButton>
-        </LinkContainer>
+                    <LocationInputContainer>
+                      <LocationInput
+                        placeholder="예) 서울시, 서울시 용산구"
+                        value={newLocation}
+                        onChange={(e) => setNewLocation(e.target.value)}
+                      />
+                      <AddLocationButton type="button" onClick={handleAddLocation}>
+                        <FaArrowUp size="16px" color="#279EFF" />
+                      </AddLocationButton>
+                    </LocationInputContainer>
+                  </LocationInputWrapper>
+                </InputWrapper>
+                <InputWrapper>
+                  <InputLabel>케어가능요일</InputLabel>
+                  <WeekdaysWrapper>
+                    {weekdays.map((day: any) => (
+                      <DayLabel key={day.id} isSelected={watch('possibleDays')?.includes(day.value)}>
+                        <input
+                          hidden
+                          type="checkbox"
+                          value={day.value}
+                          {...register('possibleDays')}
+                          onClick={handlePossibleDays}
+                        />
+                        <span>{day.label}</span>
+                      </DayLabel>
+                    ))}
+                  </WeekdaysWrapper>
+                </InputWrapper>
+                <InputWrapper>
+                  <InputLabel>케어가능시간</InputLabel>
+                  <TimePickerContainer>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DemoContainer components={['TimePicker']} sx={{ flex: 1 }}>
+                        <StyledTimePicker>
+                          <Controller
+                            name="possibleStartTime"
+                            control={control}
+                            render={({ field: { value, onChange } }) => (
+                              <TimePicker
+                                label="시작"
+                                minutesStep={30}
+                                skipDisabled={true}
+                                minTime={dayjs(new Date(0, 0, 0, 8))}
+                                maxTime={dayjs(new Date(0, 0, 0, 21))}
+                                ampm={false}
+                                value={value || null}
+                                onChange={onChange}
+                                // shouldDisableTime={(value, view) => checkInDisableTime(value, view, watch('date'))}
+                                sx={{ width: '100%' }}
+                              />
+                            )}
+                          />
+                        </StyledTimePicker>
+                      </DemoContainer>
+                    </LocalizationProvider>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DemoContainer components={['TimePicker']} sx={{ flex: 1 }}>
+                        <StyledTimePicker>
+                          <Controller
+                            name="possibleEndTime"
+                            control={control}
+                            render={({ field: { value, onChange } }) => (
+                              <TimePicker
+                                label="끝"
+                                minutesStep={30}
+                                skipDisabled={true}
+                                minTime={dayjs(new Date(0, 0, 0, 8))}
+                                maxTime={dayjs(new Date(0, 0, 0, 21))}
+                                ampm={false}
+                                value={value || null}
+                                onChange={onChange}
+                                // shouldDisableTime={(value, view) => checkInDisableTime(value, view, watch('date'))}
+                                sx={{ width: '100%' }}
+                              />
+                            )}
+                          />
+                        </StyledTimePicker>
+                      </DemoContainer>
+                    </LocalizationProvider>
+                  </TimePickerContainer>
+                </InputWrapper>
+              </>
+            )}
+          </InputContainer>
+
+          <BottomFixed>
+            <FloatContainer>
+              <SubmitButton disabled={isMutating} type="submit">
+                {isLoading ? <Loading /> : <span>수정하기</span>}
+              </SubmitButton>
+              <LinkContainer>
+                <StyledButton type="button" onClick={handleLogout}>
+                  로그아웃
+                </StyledButton>
+                <StyledButton type="button" onClick={deleteAccount}>
+                  회원 탈퇴
+                </StyledButton>
+              </LinkContainer>
+            </FloatContainer>
+          </BottomFixed>
+        </form>
       </MainContainer>
     </main>
   );
@@ -426,21 +437,11 @@ export default function EditMe() {
 const MainContainer = styled.section`
   display: flex;
   flex-direction: column;
-  padding: 40px;
 `;
 
-export const InfoText = styled.div`
-  ${(props) => props.theme.fontSize.s16h24};
-  font-weight: 800;
-  margin-top: 20px;
-  color: #2792ff;
-`;
-
-const FormContainer = styled.form`
-  display: flex;
+const InputContainer = styled(Column)`
+  padding: 20px;
   gap: 20px;
-  flex-direction: column;
-  width: 100%;
 `;
 
 const EmailWrapper = styled.div`
@@ -463,26 +464,17 @@ const InputError = styled(Column)`
   width: 80%;
 `;
 
-const Input = styled.input`
+const MeInput = styled(Input)`
   width: 100%;
-  border: 2px solid ${(props) => props.theme.colors.mainBlue};
+  border: 2px solid ${({ theme }) => theme.line.input.blue};
   border-radius: 8px;
   padding: 8px;
-  ${(props) => props.theme.fontSize.s16h24}
+  ${({ theme }) => theme.fontSize.s16h24}
 `;
 
 const LocationInputWrapper = styled(Column)`
   width: 80%;
   gap: 4px;
-`;
-
-const InputDiv = styled.div`
-  display: flex;
-  width: 80%;
-  border: 2px solid ${(props) => props.theme.colors.mainBlue};
-  border-radius: 8px;
-  padding: 8px;
-  ${(props) => props.theme.fontSize.s16h24};
 `;
 
 const LocationList = styled.ul`
@@ -497,10 +489,10 @@ const LocationItem = styled.li`
   gap: 4px;
   padding: 4px;
   color: white;
-  background-color: ${(props) => props.theme.colors.mainBlue};
+  background-color: ${({ theme }) => theme.background.highlight};
 `;
 
-const InputContainer = styled(Row)`
+const LocationInputContainer = styled(Row)`
   position: relative;
   flex: auto;
   justify-content: space-between;
@@ -508,10 +500,10 @@ const InputContainer = styled(Row)`
 
 const LocationInput = styled.input`
   width: 100%;
-  border: 2px solid ${(props) => props.theme.colors.mainBlue};
+  border: 2px solid ${({ theme }) => theme.line.input.blue};
   border-radius: 8px;
   padding: 8px;
-  ${(props) => props.theme.fontSize.s16h24};
+  ${({ theme }) => theme.fontSize.s16h24};
 `;
 
 const AddLocationButton = styled.button`
@@ -522,10 +514,16 @@ const AddLocationButton = styled.button`
 
 const TextArea = styled.textarea`
   width: 80%;
-  border: 2px solid ${(props) => props.theme.colors.mainBlue};
+  border: 2px solid ${({ theme }) => theme.line.input.blue};
   border-radius: 8px;
   padding: 8px;
-  ${(props) => props.theme.fontSize.s16h24}
+  color: ${({ theme }) => theme.text.active};
+  background-color: ${({ theme }) => theme.background.input.primary};
+  ${({ theme }) => theme.fontSize.s16h24};
+
+  &:hover {
+    background-color: ${({ theme }) => theme.background.input.hover};
+  }
 `;
 
 const PetSpciesButtonContainer = styled(ButtonContainer)`
@@ -541,7 +539,8 @@ const WeekdaysWrapper = styled.div`
 const DayLabel = styled.label<{ isSelected?: boolean }>`
   padding: 8px;
   color: white;
-  background-color: ${(props) => (props.isSelected ? props.theme.colors.mainBlue : props.theme.textColors.gray50)};
+  background-color: ${({ theme, isSelected }) =>
+    isSelected ? theme.background.box.blue.prirmary : theme.backgroud.box.blue.disabled};
   cursor: pointer;
   border-radius: 8px;
 
@@ -551,7 +550,7 @@ const DayLabel = styled.label<{ isSelected?: boolean }>`
     transform 0.3s ease-in-out;
 
   &:hover {
-    background-color: ${(props) => props.theme.colors.skyBlue};
+    background-color: ${({ theme }) => theme.background.box.blue.hover};
   }
 `;
 
@@ -567,42 +566,39 @@ const StyledTimePicker = styled.div`
   align-items: center;
 `;
 
-const SubmitButton = styled.button`
+const FloatContainer = styled(Float)`
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
+const SubmitButton = styled(BlueButton)`
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${(props) => props.theme.colors.mainBlue};
-  color: white;
+
   border-radius: 8px;
   padding: 8px;
-  ${(props) => props.theme.fontSize.s18h27};
-  font-weight: ${(props) => props.theme.fontWeights.bold};
-  cursor: pointer;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.subBlue};
-  }
-
-  &:active {
-    background-color: ${({ theme }) => theme.colors.darkBlue};
-    box-shadow: ${({ theme }) => theme.shadow.inset};
-  }
+  ${({ theme }) => theme.fontSize.s18h27};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;
 
-export const LinkContainer = styled.div`
-  display: flex;
+const LinkContainer = styled(Row)`
   justify-content: space-between;
   width: 100%;
-  margin-top: 36px;
 `;
 
-export const StyledButton = styled.button`
-  border: none;
+const StyledButton = styled.button`
   background: none;
-  cursor: pointer;
 
-  ${(props) => props.theme.fontSize.s14h21}
+  ${({ theme }) => theme.fontSize.s14h21};
+
   &:hover {
-    color: ${(props) => props.theme.colors.mainBlue};
+    color: ${({ theme }) => theme.text.highlight};
   }
 `;

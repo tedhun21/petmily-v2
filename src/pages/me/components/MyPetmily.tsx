@@ -33,13 +33,13 @@ const TitleContainer = styled(Row)`
 `;
 
 const StyledPlusIcon = styled(LuBadgePlus)`
-  color: ${(props) => props.theme.colors.mainBlue};
+  color: ${({ theme }) => theme.text.highlihght};
 
   &:hover {
-    color: ${(props) => props.theme.colors.subBlue};
+    color: ${({ theme }) => theme.text.deepHighlight};
   }
 
   &:active {
-    color: ${(props) => props.theme.colors.darkBlue};
+    color: ${({ theme }) => theme.text.darkHighlight};
   }
 `;

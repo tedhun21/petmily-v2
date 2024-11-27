@@ -82,8 +82,8 @@ const Item = styled.li<{ isMyMessage: boolean }>`
   width: 100%;
   align-items: center;
   gap: 8px;
-  ${(props) =>
-    props.isMyMessage
+  ${({ isMyMessage }) =>
+    isMyMessage
       ? css`
           flex-direction: row-reverse; /* 본인의 메시지 사진을 오른쪽으로 이동 */
           align-self: flex-end;
@@ -103,8 +103,8 @@ const DateDivider = styled.div`
 const Date = styled(Texts14h21)`
   border-radius: 12px;
   padding: 8px;
-  background-color: ${(props) => props.theme.colors.gray};
-  ${(props) => props.theme.fontSize.s14h21};
+  background-color: ${({ theme }) => theme.background.box.active};
+  ${({ theme }) => theme.fontSize.s14h21};
 `;
 
 const SenderPhoto = styled(RoundedImageWrapper)`
@@ -120,7 +120,7 @@ const EmptySpace = styled.div`
 const MessageContent = styled.div<{ isMyMessage: boolean }>`
   display: flex;
   flex: 1;
-  flex-direction: ${(props) => (props.isMyMessage ? 'row-reverse' : 'row')};
+  flex-direction: ${({ isMyMessage }) => (isMyMessage ? 'row-reverse' : 'row')};
   align-items: flex-end;
   gap: 8px;
 `;
@@ -128,7 +128,8 @@ const MessageContent = styled.div<{ isMyMessage: boolean }>`
 const Content = styled(Texts16h24)<{ isMyMessage: boolean }>`
   padding: 8px;
   color: white;
-  background-color: ${(props) => (props.isMyMessage ? props.theme.colors.mainBlue : props.theme.colors.subBlue)};
+  background-color: ${({ theme, isMyMessage }) =>
+    isMyMessage ? theme.background.box.blue.primary : theme.background.box.blue.hover};
   border-radius: 8px;
   max-width: 70%; // 최대 너비를 설정하여 상대방 영역 침범 방지
   word-wrap: break-word; // 긴 단어가 있을 경우 줄 바꿈 처리

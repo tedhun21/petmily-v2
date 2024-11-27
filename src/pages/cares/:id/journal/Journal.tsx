@@ -11,7 +11,7 @@ import { FaXmark } from 'react-icons/fa6';
 
 import Loading from '@components/Loading';
 import { fetcherWithCookie, posterWithCookie, updaterWithCookie } from 'api';
-import { CenterContainer, Texts14h21, Texts16h24, Title } from 'commonStyle';
+import { BlueButton, CenterContainer, Texts14h21, Texts16h24, Title } from 'commonStyle';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -240,7 +240,7 @@ const TextArea = styled.textarea`
   padding: 8px;
   border-radius: 8px;
   font-family: inherit;
-  ${(props) => props.theme.fontSize.s14h21}
+  ${({ theme }) => theme.fontSize.s14h21}
 `;
 
 const ImageSection = styled.section`
@@ -259,23 +259,10 @@ const ImageSelectWrapper = styled.div`
   }
 `;
 
-const ImageSelectButton = styled.button`
-  background-color: ${(props) => props.theme.colors.mainBlue};
-  border: none;
-  ${(props) => props.theme.fontSize.s14h21}
+const ImageSelectButton = styled(BlueButton)`
+  ${({ theme }) => theme.fontSize.s14h21}
   padding:4px 8px;
   border-radius: 4px;
-  color: white;
-  white-space: nowrap;
-
-  &:hover {
-    background-color: ${(props) => props.theme.colors.subBlue};
-  }
-
-  &:active {
-    background-color: ${(props) => props.theme.colors.darkBlue};
-    box-shadow: ${(props) => props.theme.shadow.inset};
-  }
 `;
 
 const ImagePreview = styled.div`
@@ -304,26 +291,15 @@ const RemoveButton = styled.button`
   right: 0;
   width: 24px;
   height: 24px;
-  border: 1px solid ${(props) => props.theme.lineColors.coolGray80};
+  // border: 1px solid ${({ theme }) => theme.lineColors.coolGray80};
   border-radius: 50%;
-  background-color: ${(props) => props.theme.colors.mainBlue};
+  background-color: ${({ theme }) => theme.background.box.blue.primary};
 `;
 
-const SubmitButton = styled.button`
-  margin-top: 20px;
+const SubmitButton = styled(BlueButton)`
   padding: 8px;
   width: 100%;
   border-radius: 8px;
-  color: white;
-  background-color: ${({ theme }) => theme.colors.mainBlue};
+
   ${({ theme }) => theme.fontSize.s16h24}
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.subBlue};
-  }
-
-  &:active {
-    background-color: ${({ theme }) => theme.colors.darkBlue};
-    box-shadow: ${({ theme }) => theme.shadow.inset};
-  }
 `;

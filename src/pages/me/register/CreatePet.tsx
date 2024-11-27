@@ -10,12 +10,14 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { PiCatBold, PiDogBold } from 'react-icons/pi';
 
 import UploadProfileImg from '@components/UploadProfileImg';
-import { Column, ErrorMessage, Row, Texts20h30 } from 'commonStyle';
+import { BlueButton, BottomFixed, Column, ErrorMessage, Float, Input, Row, Texts20h30 } from 'commonStyle';
 
 import useSWRMutation from 'swr/mutation';
 import { posterWithCookie } from 'api';
 import Loading from '@components/Loading';
 import { toast } from 'react-toastify';
+
+import { TbGenderFemale, TbGenderMale } from 'react-icons/tb';
 
 const schema = yup.object().shape({
   species: yup.string().oneOf(['Dog', 'Cat'], '강아지인가요 고양이인가요?').required('이 항목은 필수입니다.'),
@@ -93,96 +95,109 @@ export default function CreatePet() {
       <TitleContainer>
         <Texts20h30>나의 Petmily 등록</Texts20h30>
       </TitleContainer>
-      <SectionContainer>
+      <Section>
         <UploadProfileImg
           previewImage={previewImage}
           setPreviewImage={setPreviewImage}
           defaultImage={watch('species') === 'Dog' ? '/imgs/DogProfile.png' : '/imgs/CatProfile.png'}
         />
-        <FormContainer onSubmit={handleSubmit(onSubmit)}>
-          {/* 타입 */}
-          <ButtonContainer>
-            <TypeRadioLabel isSelected={watch('species') === 'Dog'}>
-              <input hidden type="radio" value="Dog" {...register('species')} onClick={handlePetType} />
-              <PiDogBold size="20px" color="white" />
-            </TypeRadioLabel>
-            <TypeRadioLabel isSelected={watch('species') === 'Cat'}>
-              <input hidden type="radio" value="Cat" {...register('species')} onClick={handlePetType} />
-              <PiCatBold size="20px" color="white" />
-            </TypeRadioLabel>
-          </ButtonContainer>
-          {errors.species && <ErrorMessage>{errors.species.message}</ErrorMessage>}
+        <Form onSubmit={handleSubmit(onSubmit)}>
+          <Container>
+            {/* 타입 */}
+            <ButtonContainer>
+              <TypeRadioLabel isSelected={watch('species') === 'Dog'}>
+                <input hidden type="radio" value="Dog" {...register('species')} onClick={handlePetType} />
+                <PiDogBold size="20px" color="white" />
+              </TypeRadioLabel>
+              <TypeRadioLabel isSelected={watch('species') === 'Cat'}>
+                <input hidden type="radio" value="Cat" {...register('species')} onClick={handlePetType} />
+                <PiCatBold size="20px" color="white" />
+              </TypeRadioLabel>
+            </ButtonContainer>
+            {errors.species && <ErrorMessage>{errors.species.message}</ErrorMessage>}
 
-          {/* 이름 */}
-          <InputContainer>
-            <InputLabel htmlFor="name">이름</InputLabel>
-            <InputWrapper>
-              <Input type="text" placeholder="e.g. 도기" {...register('name')} />
-              {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
-            </InputWrapper>
-          </InputContainer>
+            {/* 이름 */}
+            <InputContainer>
+              <InputLabel htmlFor="name">이름</InputLabel>
+              <InputWrapper>
+                <PetInput type="text" placeholder="e.g. 도기" {...register('name')} />
+                {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
+              </InputWrapper>
+            </InputContainer>
 
-          {/* 성별 */}
-          <InputContainer>
-            <InputLabel>성별</InputLabel>
-            <RadioContainer>
-              <RadioWrapper>
-                <input type="radio" value="Male" {...register('gender')} />
-                <GenderRadioLabel htmlFor="Male">남자 아이</GenderRadioLabel>
-              </RadioWrapper>
-              <RadioWrapper>
-                <input type="radio" value="Female" {...register('gender')} />
-                <GenderRadioLabel htmlFor="Female">여자 아이</GenderRadioLabel>
-              </RadioWrapper>
-            </RadioContainer>
-          </InputContainer>
+            {/* 성별 */}
+            <InputContainer>
+              <InputLabel>성별</InputLabel>
+              <RadioContainer>
+                <RadioWrapper>
+                  <input type="radio" value="Male" {...register('gender')} />
+                  <GenderWrapper>
+                    <TbGenderMale />
+                    <GenderRadioLabel htmlFor="Male">남자 아이</GenderRadioLabel>
+                  </GenderWrapper>
+                </RadioWrapper>
+                <RadioWrapper>
+                  <input type="radio" value="Female" {...register('gender')} />
+                  <GenderWrapper>
+                    <TbGenderFemale />
+                    <GenderRadioLabel htmlFor="Female">여자 아이</GenderRadioLabel>
+                  </GenderWrapper>
+                </RadioWrapper>
+              </RadioContainer>
+            </InputContainer>
 
-          {/* 중성화 */}
-          <InputContainer>
-            <InputLabel>중성화</InputLabel>
-            <input type="checkbox" {...register('neutering')} />
-          </InputContainer>
+            {/* 중성화 */}
+            <InputContainer>
+              <InputLabel>중성화</InputLabel>
+              <input type="checkbox" {...register('neutering')} />
+            </InputContainer>
 
-          {/* 품종 */}
-          <InputContainer>
-            <InputLabel>품종</InputLabel>
-            <InputWrapper>
-              <Input type="text" placeholder="e.g. 골든 리트리버 or 샴" {...register('breed')} />
-              {errors.breed && <ErrorMessage>{errors.breed.message}</ErrorMessage>}
-            </InputWrapper>
-          </InputContainer>
+            {/* 품종 */}
+            <InputContainer>
+              <InputLabel>품종</InputLabel>
+              <InputWrapper>
+                <PetInput type="text" placeholder="e.g. 골든 리트리버 or 샴" {...register('breed')} />
+                {errors.breed && <ErrorMessage>{errors.breed.message}</ErrorMessage>}
+              </InputWrapper>
+            </InputContainer>
 
-          <InputContainer>
-            <InputLabel>나이</InputLabel>
-            <InputWrapper>
-              <Row>
-                <Input type="number" min={0} placeholder="e.g. 5" {...register('age')} />
-                <UnitText>살</UnitText>
-              </Row>
-              {errors.age && <ErrorMessage>{errors.age.message}</ErrorMessage>}
-            </InputWrapper>
-          </InputContainer>
+            <InputContainer>
+              <InputLabel>나이</InputLabel>
+              <InputWrapper>
+                <Row>
+                  <PetInput type="number" min={0} placeholder="e.g. 5" {...register('age')} />
+                  <UnitText>살</UnitText>
+                </Row>
+                {errors.age && <ErrorMessage>{errors.age.message}</ErrorMessage>}
+              </InputWrapper>
+            </InputContainer>
 
-          <InputContainer>
-            <InputLabel>몸무게</InputLabel>
-            <InputWrapper>
-              <Row>
-                <Input type="number" placeholder="e.g. 10" min={0} step={0.1} {...register('weight')} />
-                <UnitText>kg</UnitText>
-              </Row>
-              {errors.weight && <ErrorMessage>{errors.weight.message}</ErrorMessage>}
-            </InputWrapper>
-          </InputContainer>
+            <InputContainer>
+              <InputLabel>몸무게</InputLabel>
+              <InputWrapper>
+                <Row>
+                  <PetInput type="number" placeholder="e.g. 10" min={0} step={0.1} {...register('weight')} />
+                  <UnitText>kg</UnitText>
+                </Row>
+                {errors.weight && <ErrorMessage>{errors.weight.message}</ErrorMessage>}
+              </InputWrapper>
+            </InputContainer>
 
-          <InputContainer>
-            <InputLabel>펫 소개</InputLabel>
-            <PetTextarea rows={5} {...register('body')} />
-          </InputContainer>
-          <SubmitButton type="submit" disabled={isMutating}>
-            {isMutating ? <Loading /> : <span>펫 등록하기</span>}
-          </SubmitButton>
-        </FormContainer>
-      </SectionContainer>
+            <InputContainer>
+              <InputLabel>펫 소개</InputLabel>
+              <PetTextarea rows={5} {...register('body')} />
+            </InputContainer>
+          </Container>
+
+          <BottomFixed>
+            <FloatButtonContainer>
+              <SubmitButton type="submit" disabled={isMutating}>
+                {isMutating ? <Loading /> : <span>펫 등록하기</span>}
+              </SubmitButton>
+            </FloatButtonContainer>
+          </BottomFixed>
+        </Form>
+      </Section>
     </main>
   );
 }
@@ -190,13 +205,10 @@ export const TitleContainer = styled.div`
   padding: 20px;
 `;
 
-export const SectionContainer = styled.section`
+export const Section = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100%;
-  padding: 20px;
-  background-color: white;
 `;
 
 export const ButtonContainer = styled.div`
@@ -213,7 +225,7 @@ export const TypeRadioLabel = styled.label<{ isSelected?: boolean }>`
   flex: 1;
   padding: 8px;
   cursor: pointer;
-  background-color: ${(props) => (props.isSelected ? props.theme.colors.mainBlue : props.theme.textColors.gray50)};
+  background-color: ${({ theme, isSelected }) => (isSelected ? theme.background.highlight : theme.text.inactive)};
 
   /* Adding transition for smooth effect */
   transition:
@@ -221,16 +233,19 @@ export const TypeRadioLabel = styled.label<{ isSelected?: boolean }>`
     transform 0.3s ease-in-out;
 
   &:hover {
-    background-color: ${(props) => (props.isSelected ? '' : props.theme.colors.skyBlue)};
+    background-color: ${({ theme, isSelected }) => (isSelected ? '' : theme.background.box.blue.hover)};
   }
 `;
 
-export const FormContainer = styled.form`
+export const Form = styled.form`
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  width: 100%;
+`;
+
+export const Container = styled(Column)`
   width: 100%;
   gap: 24px;
+  padding: 60px;
 `;
 
 export const RegisterInputWrapper = styled.div`
@@ -243,14 +258,13 @@ export const RegisterInputWrapper = styled.div`
 
 export const InputLabel = styled.label`
   width: 20%;
-  ${(props) => props.theme.fontSize.s16h24};
   white-space: nowrap;
+  ${({ theme }) => theme.fontSize.s16h24};
 `;
 
-export const Input = styled.input`
+export const PetInput = styled(Input)`
   width: 100%;
   padding: 8px;
-  border: 1px solid ${({ theme }) => theme.textColors.gray60};
   border-radius: 8px;
 `;
 
@@ -264,16 +278,6 @@ export const InputWrapper = styled(Column)`
   width: 100%;
 `;
 
-const RadioLabel = styled.label`
-  ${(props) => props.theme.fontSize.s14h21};
-  margin-left: 8px;
-  color: ${({ theme }) => theme.textColors.gray60};
-
-  input:checked + & {
-    color: #279eff;
-  }
-`;
-
 export const RadioContainer = styled(Row)`
   justify-content: space-around;
   flex: auto;
@@ -285,7 +289,12 @@ export const RadioWrapper = styled(Row)`
 `;
 
 export const GenderRadioLabel = styled.label`
-  ${(props) => props.theme.fontSize.s14h21}
+  ${({ theme }) => theme.fontSize.s14h21}
+`;
+
+export const GenderWrapper = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 export const UnitText = styled.span`
@@ -296,28 +305,27 @@ export const PetTextarea = styled.textarea`
   flex: auto;
   width: 100%;
   padding: 8px;
-  border: 1px solid ${({ theme }) => theme.textColors.gray60};
+
+  background-color: ${({ theme }) => theme.background.input.primary};
+  border: 1px solid ${({ theme }) => theme.line.input.default};
+  color: inherit;
   border-radius: 8px;
 `;
 
-export const SubmitButton = styled.button`
+export const FloatButtonContainer = styled(Float)`
+  left: 0;
+  bottom: 0;
+  padding: 20px;
+  width: 100%;
+`;
+
+export const SubmitButton = styled(BlueButton)`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${(props) => props.theme.colors.mainBlue};
-  cursor: pointer;
-  color: white;
+
   width: 100%;
   padding: 8px;
   border-radius: 8px;
-  ${(props) => props.theme.fontSize.s18h27};
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.subBlue};
-  }
-
-  &:active {
-    background-color: ${({ theme }) => theme.colors.darkBlue};
-    box-shadow: ${({ theme }) => theme.shadow.inset};
-  }
+  ${({ theme }) => theme.fontSize.s18h27};
 `;

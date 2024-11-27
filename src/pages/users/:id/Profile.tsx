@@ -6,17 +6,17 @@ import { IUser } from 'store/userSlice';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 
-import Reviews from '@components/Reviews';
 import PossibleReservationTime from '@components/PossibleReservationTime';
 import dayjs from 'dayjs';
 
+import Reviews from './component/Reviews';
 import useSWR from 'swr';
 import { fetcherWithCookie } from 'api';
 import { UserRole } from 'types/user.type';
 import { PiCatBold, PiDogBold, PiStarFill } from 'react-icons/pi';
 import { formatKrDays, timeRange } from 'utils/date';
 import { MdOutlineRateReview } from 'react-icons/md';
-import { ImageCentered, RoundedImageWrapper, Texts16h24, Texts18h27 } from 'commonStyle';
+import { BlueButton, ImageCentered, RoundedImageWrapper, Texts16h24, Texts18h27 } from 'commonStyle';
 import { Link } from 'react-router-dom';
 
 const API_URL = process.env.REACT_APP_API_URL;
@@ -194,7 +194,7 @@ const CardItem = styled.li`
   gap: 8px;
   padding: 8px;
   border-radius: 16px;
-  border: 2px solid ${(props) => props.theme.colors.mainBlue};
+  border: 2px solid ${({ theme }) => theme.line.box.blue};
 `;
 
 const PetList = styled.ul`
@@ -206,7 +206,7 @@ const PetItem = styled.li`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${(props) => props.theme.colors.mainBlue};
+  background-color: ${({ theme }) => theme.background.highlight};
   border-radius: 16px;
   padding: 8px;
 `;
@@ -221,7 +221,7 @@ const DayItem = styled.li`
   justify-content: center;
   align-items: cetner;
   color: white;
-  background-color: ${(props) => props.theme.colors.mainBlue};
+  background-color: ${({ theme }) => theme.background.highlight};
   border-radius: 12px;
   padding: 8px;
 `;
@@ -250,9 +250,9 @@ const CareablePet = styled.div`
 `;
 
 const PetsitterName = styled.div`
-  color: ${(props) => props.theme.colors.white};
+  color: ${({ theme }) => theme.color.white};
   font-size: 28px;
-  font-weight: ${(props) => props.theme.fontWeights.extrabold};
+  font-weight: ${({ theme }) => theme.fontWeight.extrabold};
 `;
 
 const Introbox = styled.div`
@@ -270,9 +270,9 @@ const PetsitterIntroText = styled.div`
   max-width: 70%;
   max-height: 200px;
   margin-top: 40px;
-  color: ${(props) => props.theme.textColors.gray50};
-  font-size: ${(props) => props.theme.fontSize.s14h21};
-  font-weight: ${(props) => props.theme.fontWeights.normal};
+  // color: ${({ theme }) => theme.textColors.gray50};
+  font-size: ${({ theme }) => theme.fontSize.s14h21};
+  font-weight: ${({ theme }) => theme.fontWeight.normal};
 
   /* Hide scrollbar for Chrome, Safari and Opera */
   ::-webkit-scrollbar {
@@ -290,12 +290,12 @@ const CareerContainer = styled.div`
 `;
 
 const CareerText = styled.div`
-  font-size: ${(props) => props.theme.fontSize.s14h21};
+  font-size: ${({ theme }) => theme.fontSize.s14h21};
 
   span {
-    font-size: ${(props) => props.theme.fontSize.s18h27};
-    font-weight: ${(props) => props.theme.fontWeights.extrabold};
-    color: ${(props) => props.theme.colors.mainBlue};
+    font-size: ${({ theme }) => theme.fontSize.s18h27};
+    font-weight: ${({ theme }) => theme.fontWeight.extrabold};
+    color: ${({ theme }) => theme.text.highlight};
   }
 `;
 
@@ -306,12 +306,12 @@ const BookmarkContainer = styled.div`
   align-items: center;
   margin: 14px 12px 0 12px;
   padding: 8px 16px;
-  background-color: ${(props) => props.theme.colors.white};
-  box-shadow: ${(props) => props.theme.shadow.dp01};
+  // background-color: ${({ theme }) => theme.color.white};
+  box-shadow: ${({ theme }) => theme.shadow.dp01};
   border-radius: 8px;
-  color: ${(props) => props.theme.textColors.gray00};
-  font-size: ${(props) => props.theme.fontSize.s18h27};
-  font-weight: ${(props) => props.theme.fontWeights.extrabold};
+  // color: ${({ theme }) => theme.textColors.gray00};
+  font-size: ${({ theme }) => theme.fontSize.s18h27};
+  font-weight: ${({ theme }) => theme.fontWeight.extrabold};
 `;
 
 const RatingImg = styled.img`
@@ -340,11 +340,10 @@ const ViewDetailsContainer = styled.div`
   display: flex;
   flex-direction: column;
   border-radius: 8px;
-  background-color: ${(props) => props.theme.colors.white};
   margin: 16px 12px 12px 12px;
   padding-top: 16px;
   /* min-height: 320px; */
-  box-shadow: ${(props) => props.theme.shadow.dp01};
+  box-shadow: ${({ theme }) => theme.shadow.dp01};
   overflow: visible;
 `;
 
@@ -353,13 +352,13 @@ const NavBarButton = styled.button<{ isActive: boolean }>`
   flex: 1;
   border: none;
   background-color: white;
-  font-weight: ${(props) => (props.isActive ? props.theme.fontWeights.extrabold : props.theme.fontWeights.bold)};
-  color: ${(props) => (props.isActive ? 'black' : props.theme.textColors.gray30)};
-  border-bottom: ${(props) => (props.isActive ? `2px solid ${props.theme.colors.mainBlue}` : null)};
+  font-weight: ${({ theme, isActive }) => (isActive ? theme.fontWeight.extrabold : theme.fontWeight.bold)};
+  color: ${({ theme, isActive }) => (isActive ? theme.text.active : theme.text.inactive)};
+  border-bottom: ${({ theme, isActive }) => (isActive ? `2px solid ${theme.line.box.blue.primary}` : null)};
   padding-bottom: 36px;
-  margin-bottom: ${(props) => (props.isActive ? '-2px' : '0px')};
-  ${(props) => props.theme.fontSize.s14h21};
+  margin-bottom: ${({ isActive }) => (isActive ? '-2px' : '0px')};
   height: 16%;
+  ${({ theme }) => theme.fontSize.s14h21};
 `;
 
 const TabButtonsContainer = styled.div`
@@ -399,32 +398,17 @@ const ButtonContainer = styled.div`
   align-items: center;
 `;
 
-const StyledSubmitButton = styled.button`
+const StyledSubmitButton = styled(BlueButton)`
   border-radius: 8px;
   width: 100%;
   padding: 12px;
-  border: none;
-  background-color: ${({ theme }) => theme.colors.mainBlue};
-  color: white;
+
   ${({ theme }) => theme.fontSize.s16h24};
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.subBlue};
-  }
-  &:active {
-    background-color: ${({ theme }) => theme.colors.darkBlue};
-    box-shadow: ${({ theme }) => theme.shadow.inset};
-  }
 `;
 
 const DefaultImg = styled.img`
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background-color: ${(props) => props.theme.textColors.primary};
+  // background-color: ${({ theme }) => theme.textColors.primary};
 `;

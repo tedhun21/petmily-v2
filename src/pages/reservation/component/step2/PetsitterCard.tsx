@@ -1,4 +1,4 @@
-import { ImageCentered, RoundedImageWrapper, Row } from 'commonStyle';
+import { ImageCentered, RoundedImageWrapper, Row, Texts12h18, Texts14h21, Texts16h24 } from 'commonStyle';
 
 import styled from 'styled-components';
 
@@ -30,7 +30,7 @@ export default function PetsitterCard({ petsitter, onNext }: any) {
             <Possiblebox>예약가능</Possiblebox>
           </PetsitterWrap>
           <TimeWrap>
-            <IoMdTime size="16px" color="gray" />
+            {/* <IoMdTime size="16px" color="gray" /> */}
             <TimeText>{timeRange(possibleStartTime, possibleEndTime)}</TimeText>
           </TimeWrap>
           <RatingReviewContainer>
@@ -51,11 +51,11 @@ export default function PetsitterCard({ petsitter, onNext }: any) {
 
 const Card = styled.button`
   display: flex;
+  justify-contnet: space-between;
   padding: 12px;
   border-radius: 12px;
-  justify-contnet: space-between;
-  box-shadow: ${(props) => props.theme.shadow.dp02};
-  cursor: pointer;
+  color: inherit;
+  box-shadow: ${({ theme }) => theme.shadow.dp02};
 `;
 
 const InfoWrapper = styled(Row)`
@@ -74,20 +74,17 @@ const PetsitterWrap = styled(Row)`
   align-items: center;
 `;
 
-const NameText = styled.span`
-  font-weight: ${(props) => props.theme.fontWeights.extrabold};
-  font-size: ${(props) => props.theme.fontSize.s16h24};
+const NameText = styled(Texts16h24)`
+  font-weight: ${({ theme }) => theme.fontWeight.extrabold};
 `;
 
-const Possiblebox = styled.div`
+const Possiblebox = styled(Texts12h18)`
   margin: 6px 0;
   padding: 2px 8px;
   border-radius: 8px;
-  color: ${(props) => props.theme.colors.white};
-  font-weight: ${(props) => props.theme.fontWeights.light};
-  font-size: 12px;
-  line-height: 16px;
-  background-color: ${(props) => props.theme.colors.mainBlue};
+  font-weight: ${({ theme }) => theme.fontWeight.light};
+  color: white;
+  background-color: ${({ theme }) => theme.background.highlight};
 `;
 
 const TimeWrap = styled(Row)`
@@ -95,23 +92,21 @@ const TimeWrap = styled(Row)`
   align-items: center;
 `;
 
-const TimeText = styled.div`
-  color: ${(props) => props.theme.textColors.gray50};
-  font-weight: ${(props) => props.theme.fontWeights.light};
-  font-size: ${(props) => props.theme.fontSize.s14h21};
+const TimeText = styled(Texts14h21)`
+  font-weight: ${({ theme }) => theme.fontWeight.light};
 `;
 
 const RatingReviewContainer = styled(Row)`
-  display: flex;
   align-items: center;
   gap: 16px;
 `;
 
 const StarContainer = styled(Row)`
+  align-items: center;
   gap: 4px;
 `;
 
-const ReviewContainer = styled.div`
-  display: flex;
+const ReviewContainer = styled(Row)`
+  align-items: center;
   gap: 4px;
 `;

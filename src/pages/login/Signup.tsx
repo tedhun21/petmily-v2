@@ -13,7 +13,7 @@ import DaumPostcode from 'react-daum-postcode';
 
 import { SubmitButton } from './Login';
 import { poster } from 'api';
-import { ErrorMessage } from 'commonStyle';
+import { Column, ErrorMessage, Input, Texts16h24, Texts20h30 } from 'commonStyle';
 import { toast } from 'react-toastify';
 import Loading from '@components/Loading';
 
@@ -29,7 +29,7 @@ const schema = yup.object().shape({
     .required('전화번호는 필수입니다.'),
   address: yup.string().required('주소는 필수입니다.'),
   detailAddress: yup.string().required('상세주소는 필수입니다.'),
-  email: yup.string().email('이메일 형식을 지켜주세요.').required('ID는 필수입니다.'),
+  email: yup.string().email('이메일 형식을 지켜주세요.').required('Email은 필수입니다.'),
   nickname: yup
     .string()
     .min(2, '닉네임은 2자 이상부터 가능합니다.')
@@ -133,8 +133,8 @@ export default function Signup() {
     <MainContainer>
       <SignupContainer>
         <TitleContainer>
-          <div>We&apos;re Petmily!</div>
-          <div>회원가입</div>
+          <Texts20h30>We&apos;re Petmily!</Texts20h30>
+          <Texts16h24>회원가입</Texts16h24>
         </TitleContainer>
         <InputFormContainer onSubmit={handleSubmit(onSubmit)}>
           <InputFormWrapper>
@@ -237,15 +237,15 @@ export default function Signup() {
 const MainContainer = styled.main`
   display: flex;
   justify-content: center;
+  align-items: center;
   width: 100%;
-  background-color: white;
 `;
 
 const SignupContainer = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 20px;
   width: 100%;
-  margin-top: 100px;
   max-width: 360px;
 `;
 
@@ -253,14 +253,6 @@ const TitleContainer = styled.div`
   display: flex;
   flex-direction: column;
   text-align: left;
-
-  div:nth-child(1) {
-    ${(props) => props.theme.fontSize.s20h30}
-  }
-
-  div:nth-child(2) {
-    ${(props) => props.theme.fontSize.s16h24}
-  }
 `;
 
 const InputFormContainer = styled.form`
@@ -272,20 +264,19 @@ const InputFormContainer = styled.form`
 
 const InputFormWrapper = styled.div``;
 
-const SignupInputStyle = styled.input<{ error: boolean | null }>`
+const SignupInputStyle = styled(Input)<{ error: boolean | null }>`
   width: 100%;
-  height: 32px;
   border-radius: 8px;
-  border: 1px solid;
-  border: 1px solid ${({ theme, error }) => (error ? 'red' : theme.lineColors.coolGray80)};
   padding: 8px;
+  border: 1px solid ${({ theme, error }) => (error ? theme.line.input.error : theme.line.input.default)};
   ${({ theme }) => theme.fontSize.s14h21}
-  font-family: inherit;
+
+  &:focus {
+    border: 1px solid ${({ theme }) => theme.line.input.blue};
+  }
 `;
 
-const ButtonContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+const ButtonContainer = styled(Column)`
   gap: 16px;
 `;
 const CheckBoxWrapper = styled.div`
@@ -295,31 +286,6 @@ const CheckBoxWrapper = styled.div`
 `;
 
 const CheckBoxLabel = styled.label`
-  ${(props) => props.theme.fontSize.s14h21}
-  color:${(props) => props.theme.textColors.gray40}
-`;
-
-const LoadingContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  top: 19px;
-  left: 12px;
-  width: 18px;
-  height: 18px;
-`;
-
-const spin = keyframes`
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-`;
-
-const Spinner = styled.div`
-  width: 100%;
-  height: 100%;
-  border: 2px solid rgb(255 255 255 / 60%);
-  border-radius: 50%;
-  animation: ${spin} 1.2s linear infinite;
-  border-top: 2px solid #fff;
+  ${({ theme }) => theme.fontSize.s14h21}
+  color:${({ theme }) => theme.text.secondary}
 `;

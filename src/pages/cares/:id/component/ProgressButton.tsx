@@ -6,6 +6,7 @@ import { updaterWithCookie } from 'api';
 
 import { useNavigate } from 'react-router-dom';
 import Loading from '@components/Loading';
+import { BlueButton } from 'commonStyle';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -133,27 +134,20 @@ const ButtonContainer = styled.div`
 // 1-3. progress === "CANCELED" => 취소됨 inActive
 // 1-4. progress === "FINISHED" => 일지 작성하기 active
 
-const Button = styled.button<{ disabled?: boolean }>`
+const Button = styled(BlueButton)<{ disabled?: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  color: white;
+
   border-radius: 16px;
   padding: 8px;
-  border: none;
-  font-family: inherit;
-  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
-  background-color: ${({ theme, disabled }) => (disabled ? theme.colors.skyBlue : theme.colors.mainBlue)};
+
+  // hover와 active 스타일을 disabled일 때 비활성화
+  pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
+
+  background-color: ${({ theme, disabled }) =>
+    disabled ? theme.background.box.blue.disabled : theme.background.box.blue.primary};
 
   ${({ theme }) => theme.fontSize.s20h30};
-
-  &:hover {
-    background-color: ${({ theme, disabled }) => (disabled ? null : theme.colors.subBlue)};
-  }
-
-  &:active {
-    background-color: ${({ theme, disabled }) => (disabled ? null : theme.colors.darkBlue)};
-    box-shadow: ${({ theme, disabled }) => (disabled ? null : theme.shadow.inset)};
-  }
 `;

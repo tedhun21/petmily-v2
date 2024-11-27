@@ -1,8 +1,8 @@
 import { CenterContainer, Column, ImageCentered, RoundedImageWrapper, Row, Texts12h18 } from 'commonStyle';
 import styled from 'styled-components';
 
-import { CgGenderFemale, CgGenderMale } from 'react-icons/cg';
 import { Link } from 'react-router-dom';
+import { TbGenderFemale, TbGenderMale } from 'react-icons/tb';
 
 export default function PetmilyCard({ pet }: any) {
   return (
@@ -33,9 +33,9 @@ export default function PetmilyCard({ pet }: any) {
         <PetPropWrapper>
           <CenterContainer>
             {pet?.gender === 'Male' ? (
-              <CgGenderMale size="21px" color="white" />
+              <TbGenderMale size="21px" color="white" />
             ) : pet?.gender === 'Female' ? (
-              <CgGenderFemale size="21px" color="white" />
+              <TbGenderFemale size="21px" color="white" />
             ) : null}
           </CenterContainer>
         </PetPropWrapper>
@@ -57,19 +57,19 @@ const PetCard = styled(Link)`
   justify-content: space-between;
   width: 100%;
   padding: 8px;
-  border: 2px solid ${(props) => props.theme.colors.mainBlue};
+  border: 2px solid ${({ theme }) => theme.line.box.blue};
   border-radius: 16px;
   color: inherit;
   gap: 8px;
-  box-shadow: ${(props) => props.theme.shadow.dp01};
+  box-shadow: ${({ theme }) => theme.shadow.dp01};
   text-decoration: none;
 
   &:hover {
-    box-shadow: ${(props) => props.theme.shadow.dp02};
+    box-shadow: ${({ theme }) => theme.shadow.dp02};
   }
 
   &:active {
-    box-shadow: ${(props) => props.theme.shadow.inset};
+    box-shadow: ${({ theme }) => theme.shadow.inset};
   }
 
   &:visited {
@@ -92,7 +92,7 @@ const PetNameSpecies = styled(Column)`
 `;
 
 const Species = styled(Texts12h18)`
-  color: ${(props) => props.theme.textColors.gray10};
+  color: ${({ theme }) => theme.text.inactive};
 `;
 
 const PetImage = styled(RoundedImageWrapper)`
@@ -113,10 +113,10 @@ const PetPropWrapper = styled.li`
   justify-content: center;
   padding: 4px 8px;
   border-radius: 16px;
-  background-color: ${(props) => props.theme.colors.subBlue};
+  background-color: ${({ theme }) => theme.background.highlight};
 
   > span {
     color: white;
-    ${(props) => props.theme.fontSize.s14h21};
+    ${({ theme }) => theme.fontSize.s14h21};
   }
 `;

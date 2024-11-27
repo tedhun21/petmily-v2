@@ -17,6 +17,7 @@ export default function ReservationFormWizard() {
       endTime: null,
       address: '',
       detailAddress: '',
+      checkedPets: null,
     },
   });
 
@@ -35,7 +36,7 @@ export default function ReservationFormWizard() {
       case 1:
         return <Step1 onNext={handleNextStep} />;
       case 2:
-        return <Step2 onNext={handleNextStep} onPrevious={handlePreviousStep} />;
+        return <Step2 onNext={handleNextStep} />;
       case 3:
         return <Step3 onNext={handleNextStep} onPrevious={handlePreviousStep} />;
       case 4:

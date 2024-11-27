@@ -108,7 +108,7 @@ const ImageButton = styled.button`
     transform: scale(1.01);
 
     & > div {
-      color: ${({ theme }) => theme.colors.mainBlue};
+      color: ${({ theme }) => theme.text.highlight};
       transition: all 0.2s linear;
       font-family: inherit;
       ${({ theme }) => theme.fontSize.s20h30}
@@ -124,7 +124,7 @@ const ClientSign = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   color: black;
-  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
   pointer-events: none;
 
   ${({ theme }) => theme.fontSize.s18h27}
@@ -135,7 +135,7 @@ const PetsitterSign = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
   pointer-events: none;
 
   ${({ theme }) => theme.fontSize.s18h27};

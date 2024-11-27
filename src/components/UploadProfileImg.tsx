@@ -50,21 +50,20 @@ export default function UploadProfileImg({ serverImageUrl, previewImage, setPrev
 
 const ImageContainer = styled(Column)`
   align-items: center;
-  padding: 40px;
   gap: 16px;
 `;
 
 const ImageLabel = styled.label`
   cursor: pointer;
-  color: ${(props) => props.theme.colors.mainBlue};
+  color: ${({ theme }) => theme.text.deepHighlight};
 
   &:hover {
-    color: ${(props) => props.theme.colors.subBlue};
+    color: ${({ theme }) => theme.text.darkHeighlight};
   }
 `;
 
 const UserImageWrapper = styled(RoundedImageWrapper)`
   width: 80px;
   height: 80px;
-  border: 1px solid gray;
+  // border: 1px solid gray;
 `;

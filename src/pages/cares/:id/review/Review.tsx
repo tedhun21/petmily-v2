@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 
 import Loading from '@components/Loading';
 import { fetcherWithCookie, posterWithCookie, updaterWithCookie } from 'api';
-import { CenterContainer, Texts14h21, Texts16h24, Title } from 'commonStyle';
+import { BlueButton, BottomFixed, CenterContainer, Column, Float, Texts14h21, Texts16h24, Title } from 'commonStyle';
 import { useNavigate, useParams } from 'react-router-dom';
 import useSWR from 'swr';
 import HoverRating from '@components/HoverRating';
@@ -162,68 +162,74 @@ export default function Review() {
       <CenterContainer>
         <Title>{review ? '후기 수정' : '후기 작성'}</Title>
       </CenterContainer>
-      <Form onSubmit={handleSubmit(onSubmit)}>
-        <StarSection>
-          <SubTitle>별점</SubTitle>
-          <HoverRating value={watch('star')} setValue={setValue} />
-        </StarSection>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Container>
+          <StarSection>
+            <Texts16h24>별점</Texts16h24>
+            <HoverRating value={watch('star')} setValue={setValue} />
+          </StarSection>
 
-        <TextSection>
-          <SubTitle>후기 내용</SubTitle>
-          <TextArea placeholder="케어는 어떠셨나요?" {...register('body')} />
-        </TextSection>
+          <TextSection>
+            <Texts16h24>후기 내용</Texts16h24>
+            <TextArea placeholder="케어는 어떠셨나요?" {...register('body')} />
+          </TextSection>
 
-        <ImageSection>
-          <SubTitle>사진 첨부</SubTitle>
-          <input
-            type="file"
-            accept="image/png, image/jpg, image/jpeg"
-            multiple
-            ref={fileInputRef}
-            onChange={handleFileChange}
-            hidden
-          />
+          <ImageSection>
+            <Texts16h24>사진 첨부</Texts16h24>
+            <input
+              type="file"
+              accept="image/png, image/jpg, image/jpeg"
+              multiple
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              hidden
+            />
 
-          <ImageSelectWrapper>
-            <ImageSelectButton type="button" onClick={openFileInput}>
-              파일 선택
-            </ImageSelectButton>
-            <Texts14h21>최대 5개의 이미지를 선택할 수 있습니다.</Texts14h21>
-          </ImageSelectWrapper>
+            <ImageSelectWrapper>
+              <ImageSelectButton type="button" onClick={openFileInput}>
+                파일 선택
+              </ImageSelectButton>
+              <Texts14h21>최대 5개의 이미지를 선택할 수 있습니다.</Texts14h21>
+            </ImageSelectWrapper>
 
-          <ImagePreview>
-            {selectedFiles &&
-              Array.from(selectedFiles as File[]).map((file: File, index: number) => (
-                <ImagePreviewItem key={index}>
-                  <Img src={URL.createObjectURL(file)} alt={`selected_${index}`} />
-                  <RemoveButton type="button" onClick={() => handleRemoveInputImage(index)}>
-                    <FaXmark color="white" size="16px" />
-                  </RemoveButton>
-                </ImagePreviewItem>
-              ))}
-            {Array.isArray(imageUrls) &&
-              imageUrls.length > 0 &&
-              imageUrls.map((url: string, index: number) => (
-                <ImagePreviewItem key={index}>
-                  <Img src={`${url}`} alt={`review_server_image_${index}`} />
-                  <RemoveButton onClick={() => handleRemoveReviewImage(index)}>
-                    <FaXmark color="white" size="16px" />
-                  </RemoveButton>
-                </ImagePreviewItem>
-              ))}
-          </ImagePreview>
-        </ImageSection>
+            <ImagePreview>
+              {selectedFiles &&
+                Array.from(selectedFiles as File[]).map((file: File, index: number) => (
+                  <ImagePreviewItem key={index}>
+                    <Img src={URL.createObjectURL(file)} alt={`selected_${index}`} />
+                    <RemoveButton type="button" onClick={() => handleRemoveInputImage(index)}>
+                      <FaXmark color="white" size="16px" />
+                    </RemoveButton>
+                  </ImagePreviewItem>
+                ))}
+              {Array.isArray(imageUrls) &&
+                imageUrls.length > 0 &&
+                imageUrls.map((url: string, index: number) => (
+                  <ImagePreviewItem key={index}>
+                    <Img src={`${url}`} alt={`review_server_image_${index}`} />
+                    <RemoveButton onClick={() => handleRemoveReviewImage(index)}>
+                      <FaXmark color="white" size="16px" />
+                    </RemoveButton>
+                  </ImagePreviewItem>
+                ))}
+            </ImagePreview>
+          </ImageSection>
+        </Container>
 
-        <SubmitButton type="submit" disabled={isCreateMutating || isUpdateMutating}>
-          {isCreateMutating || isUpdateMutating ? (
-            <CenterContainer>
-              <Loading />
-            </CenterContainer>
-          ) : (
-            <span>{review ? '후기 수정' : '후기 등록'}</span>
-          )}
-        </SubmitButton>
-      </Form>
+        <BottomFixed>
+          <FloatButtonContainer>
+            <SubmitButton type="submit" disabled={isCreateMutating || isUpdateMutating}>
+              {isCreateMutating || isUpdateMutating ? (
+                <CenterContainer>
+                  <Loading />
+                </CenterContainer>
+              ) : (
+                <span>{review ? '후기 수정' : '후기 등록'}</span>
+              )}
+            </SubmitButton>
+          </FloatButtonContainer>
+        </BottomFixed>
+      </form>
     </Main>
   );
 }
@@ -231,7 +237,6 @@ export default function Review() {
 const Main = styled.main`
   display: flex;
   flex-direction: column;
-  padding: 20px;
 `;
 
 const StarSection = styled.section`
@@ -239,12 +244,9 @@ const StarSection = styled.section`
   flex-direction: column;
 `;
 
-const SubTitle = styled(Texts16h24)``;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+const Container = styled(Column)`
+  gap: 20px;
+  padding: 20px;
 `;
 
 const TextSection = styled.section`
@@ -258,11 +260,20 @@ const TextArea = styled.textarea`
   height: 100px;
   padding: 8px;
   border-radius: 8px;
-  font-family: inherit;
-  ${(props) => props.theme.fontSize.s14h21}
+  color: ${({ theme }) => theme.text.active};
+  background-color: ${({ theme }) => theme.background.input.primary};
+  ${({ theme }) => theme.fontSize.s14h21};
+
+  &:hover {
+    background-color: ${({ theme }) => theme.background.input.hover};
+  }
 `;
 
-const ImageSection = styled.section``;
+const ImageSection = styled.section`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
 
 const ImageSelectWrapper = styled.div`
   display: flex;
@@ -274,23 +285,10 @@ const ImageSelectWrapper = styled.div`
   }
 `;
 
-const ImageSelectButton = styled.button`
-  background-color: ${(props) => props.theme.colors.mainBlue};
-  border: none;
-  ${(props) => props.theme.fontSize.s14h21}
-  padding:4px 8px;
+const ImageSelectButton = styled(BlueButton)`
+  padding: 4px 8px;
   border-radius: 4px;
-  color: white;
-  white-space: nowrap;
-
-  &:hover {
-    background-color: ${(props) => props.theme.colors.subBlue};
-  }
-
-  &:active {
-    background-color: ${(props) => props.theme.colors.darkBlue};
-    box-shadow: ${(props) => props.theme.shadow.inset};
-  }
+  ${({ theme }) => theme.fontSize.s14h21};
 `;
 
 const ImagePreview = styled.div`
@@ -319,26 +317,22 @@ const RemoveButton = styled.button`
   right: 0;
   width: 24px;
   height: 24px;
-  border: 1px solid ${(props) => props.theme.lineColors.coolGray80};
+  border: 1px solid ${({ theme }) => theme.line.box.default};
   border-radius: 50%;
-  background-color: ${(props) => props.theme.colors.mainBlue};
+  background-color: ${({ theme }) => theme.background.highlight};
 `;
 
-const SubmitButton = styled.button`
-  margin-top: 20px;
+const FloatButtonContainer = styled(Float)`
+  left: 0;
+  bottom: 0;
+  padding: 20px;
+  width: 100%;
+`;
+
+const SubmitButton = styled(BlueButton)`
   padding: 8px;
   width: 100%;
   border-radius: 8px;
-  color: white;
-  background-color: ${({ theme }) => theme.colors.mainBlue};
-  ${({ theme }) => theme.fontSize.s16h24}
 
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.subBlue};
-  }
-
-  &:active {
-    background-color: ${({ theme }) => theme.colors.darkBlue};
-    box-shadow: ${({ theme }) => theme.shadow.inset};
-  }
+  ${({ theme }) => theme.fontSize.s16h24};
 `;

@@ -11,7 +11,7 @@ import { poster } from 'api';
 import { setCookie } from 'utils/cookie';
 import GoogleOAuthButton from '@components/buttons/OAuthButton';
 import Loading from '@components/Loading';
-import { Column, ErrorMessage } from 'commonStyle';
+import { BlueButton, Column, ErrorMessage, Input } from 'commonStyle';
 import { toast } from 'react-toastify';
 
 const schema = yup.object().shape({
@@ -54,21 +54,23 @@ export default function Login() {
   const onSubmit = async (data: IFormLoginInputs) => {
     const { email, password } = data;
 
-    try {
-      await trigger({ email, password }); // await를 사용하여 에러 처리
-    } catch (error: any) {
-      // 에러 처리
-      if (error.response) {
-        // not found
-        if (error.response.data.statusCode === 404) {
-          setError('email', { type: error.response.data.error, message: error.response.data.message });
-        }
-        // unauthorized
-        if (error.response.data.statusCode === 401) {
-          setError('password', { type: error.response.data.error, message: error.response.data.message });
-        }
-      }
-    }
+    trigger(
+      { email, password },
+      {
+        onError: (error: any) => {
+          if (error.response) {
+            // not found
+            if (error.response.data.statusCode === 404) {
+              setError('email', { type: error.response.data.error, message: error.response.data.message });
+            }
+            // unauthorized
+            if (error.response.data.statusCode === 401) {
+              setError('password', { type: error.response.data.error, message: error.response.data.message });
+            }
+          }
+        },
+      },
+    );
   };
 
   return (
@@ -89,9 +91,14 @@ export default function Login() {
               {isMutating ? <Loading /> : '로 그 인'}
             </SubmitButton>
           </div>
-          <GoogleOAuthButton>Log in with Google</GoogleOAuthButton>
+          <GoogleOAuthButton>
+            <span>Log in with Google</span>
+          </GoogleOAuthButton>
         </FormContainer>
-        <CustomLink to="/signup">회원가입하기</CustomLink>
+        <div>
+          <span>처음이신가요? </span>
+          <CustomLink to="/signup">회원가입하기</CustomLink>
+        </div>
       </LoginContainer>
     </MainContainer>
   );
@@ -104,7 +111,6 @@ const MainContainer = styled.main`
   justify-content: center;
   width: 100%;
   height: 80%;
-  background-color: white;
   gap: 60px;
 `;
 
@@ -124,45 +130,28 @@ const FormContainer = styled.form`
   gap: 12px;
 `;
 
-const LoginInput = styled.input`
+const LoginInput = styled(Input)`
   width: 100%;
-  height: 32px;
-  padding: 16px 8px;
+  padding: 8px;
   border-radius: 8px;
-  border: 1px solid ${({ theme }) => theme.colors.mainBlue};
+
   ${({ theme }) => theme.fontSize.s14h21};
 
-  &:hover {
-    border: 1px solid ${({ theme }) => theme.colors.darkBlue};
+  &:focus {
+    border: 1px solid ${({ theme }) => theme.line.blue};
   }
 `;
 
-export const SubmitButton = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+export const SubmitButton = styled(BlueButton)`
   width: 100%;
   padding: 8px;
   border-radius: 12px;
-  background-color: ${({ theme }) => theme.colors.mainBlue};
-  border: none;
-  color: white;
   ${({ theme }) => theme.fontSize.s16h24};
-  font-weight: ${({ theme }) => theme.fontWeights.bold};
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.subBlue};
-  }
-
-  &:active {
-    background-color: ${({ theme }) => theme.colors.darkBlue};
-    box-shadow: ${({ theme }) => theme.shadow.inset};
-  }
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;
 
 const CustomLink = styled(Link)`
-  margin-top: 12px;
-  color: ${({ theme }) => theme.colors.mainBlue};
+  color: ${({ theme }) => theme.text.highlight};
   font-size: ${({ theme }) => theme.fontSize.s14h21};
   text-decoration-line: none;
 `;

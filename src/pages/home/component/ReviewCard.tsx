@@ -17,7 +17,7 @@ export default function ReviewCard({ review }: any) {
           <ClientImage>
             <ImageCentered src={client?.photo ? `${client?.photo}` : '/imgs/DefaultUserProfile.jpg'} alt="user_photo" />
           </ClientImage>
-          <Texts14h21>{client?.nickname} 고객님</Texts14h21>
+          <Texts14h21>{client?.nickname.slice(0, 2) + '*****'}</Texts14h21>
         </ClientImageName>
         <StarWrapper>
           <PiStarFill size="20px" color="#279EFF" />
@@ -38,7 +38,7 @@ const Card = styled(Column)`
   padding: 16px;
   gap: 12px;
   border-radius: 16px;
-  background-color: ${(props) => props.theme.colors.gray};
+  background-color: ${({ theme }) => theme.background.box.default.primary};
 `;
 
 const ClientContainer = styled(Row)`
@@ -55,11 +55,10 @@ const ClientImageName = styled(Row)`
 const ClientImage = styled(RoundedImageWrapper)`
   width: 46px;
   height: 46px;
-  border: 2px solid ${(props) => props.theme.colors.mainBlue};
+  border: 2px solid ${({ theme }) => theme.line.box.blue};
 `;
 
 const ContentContainer = styled(Column)`
-  // flex: auto;
   gap: 24px;
 `;
 

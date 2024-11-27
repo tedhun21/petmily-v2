@@ -97,14 +97,14 @@ const TitleContainer = styled.div`
 `;
 
 const Title = styled.h2`
-  font-weight: ${(props) => props.theme.fontWeights.extrabold};
+  font-weight: ${(props) => props.theme.fontWeight.extrabold};
   font-size: ${(props) => props.theme.fontSize.s20h30};
 `;
 
 const ReviewsCount = styled.div`
   ${(props) => props.theme.fontSize.s14h21};
-  font-weight: ${(props) => props.theme.fontWeights.light};
-  color: ${(props) => props.theme.textColors.gray40};
+  font-weight: ${(props) => props.theme.fontWeight.light};
+  color: ${(props) => props.theme.text.secondary};
   line-height: 2.4;
   margin-left: 4px;
 `;
@@ -135,13 +135,13 @@ const InformationContainer = styled.div`
 
 const Name = styled.div`
   display: flex;
-  font-weight: ${(props) => props.theme.fontWeights.bold};
+  font-weight: ${(props) => props.theme.fontWeight.bold};
   font-size: ${(props) => props.theme.fontSize.s20h30};
 `;
 
 const PetInformation = styled.div`
-  color: ${(props) => props.theme.textColors.gray40};
-  font-weight: ${(props) => props.theme.fontWeights.light};
+  color: ${(props) => props.theme.text.secondary};
+  font-weight: ${(props) => props.theme.fontWeight.light};
   font-size: ${(props) => props.theme.fontSize.s12h18};
 `;
 

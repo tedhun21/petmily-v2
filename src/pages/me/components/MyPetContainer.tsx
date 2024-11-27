@@ -94,15 +94,15 @@ const StyledLink = styled(Link)`
   padding: 8px;
   border-radius: 8px;
   color: white;
-  background-color: ${(props) => props.theme.colors.mainBlue};
+  background-color: ${({ theme }) => theme.background.box.blue.primary};
 
   &:hover {
-    background-color: ${(props) => props.theme.colors.subBlue};
+    background-color: ${({ theme }) => theme.background.box.blue.hover};
   }
 
   &:active {
-    background-color: ${(props) => props.theme.colors.darkBlue};
-    box-shadow: ${(props) => props.theme.shadow.inset};
+    background-color: ${({ theme }) => theme.background.box.blue.active};
+    box-shadow: ${({ theme }) => theme.shadow.inset};
   }
 
   > span {
