@@ -191,3 +191,13 @@ export const shouldShowDateDivider = (currentMessage: Message, previousMessage?:
   if (!previousMessage) return true;
   return !dayjs(currentMessage.createdAt).isSame(previousMessage.createdAt, 'day');
 };
+
+// 시간 리스트 생성
+export const timeOptions = (): string[] => {
+  const times: string[] = [];
+  for (let i = 8; i < 22; i++) {
+    times.push(`${String(i).padStart(2, '0')}:00`);
+    times.push(`${String(i).padStart(2, '0')}:30`);
+  }
+  return times;
+};

@@ -18,7 +18,6 @@ import { checkInDisableTime, checkOutDisableTime, reservationDisableDate } from 
 
 import { BlueButton, BottomFixed, Column, Float, Row } from 'commonStyle';
 import PetContainer from './component/step1/PetContainer';
-import { toast } from 'react-toastify';
 
 export default function Step1({ onNext }: any) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -84,6 +83,13 @@ export default function Step1({ onNext }: any) {
       hasError = true;
     } else {
       clearErrors('address');
+    }
+
+    if (!detailAddress) {
+      setError('detailAddress', { type: 'manual', message: '상세주소를 입력해주세요.' });
+      hasError = true;
+    } else {
+      clearErrors('detailAddress');
     }
 
     if (!checkedPets || checkedPets.length === 0 || checkedPets.length > 3) {
@@ -189,10 +195,8 @@ export default function Step1({ onNext }: any) {
               rules={{ required: '주소를 입력해주세요' }}
               render={({ field: { value, onChange } }) => (
                 <StyledTextField
-                  id="outlined-basic"
                   label="주소를 입력해주세요"
                   fullWidth
-                  // {...register('address', { required: true })}
                   value={value}
                   onChange={onChange}
                   error={errors.address?.type === 'required'}
@@ -243,9 +247,7 @@ export default function Step1({ onNext }: any) {
 }
 
 const MainContainer = styled.main`
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
+  margin-bottom: 80px;
 `;
 
 const FieldContainer = styled(Column)`

@@ -1,6 +1,7 @@
 // import { Suspense, lazy } from 'react';
 import { createBrowserRouter, RouterProvider, Outlet, Route, createRoutesFromElements } from 'react-router-dom';
 import styled, { ThemeProvider as StyledComponentsThemeProvider } from 'styled-components';
+import { createTheme, ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 
 import NavHeader from '@components/headers/NavHeader';
 import BackHeader from '@components/headers/BackHeader';
@@ -116,6 +117,9 @@ const router = createBrowserRouter(
   ),
 );
 
+const muiLightTheme = createTheme({ palette: { mode: 'light' } });
+const muiDarkTheme = createTheme({ palette: { mode: 'dark' } });
+
 export default function App() {
   const dispatch = useDispatch();
   const isDarkMode = useSelector((state: ITheme) => state.theme.isDarkMode);
@@ -137,20 +141,22 @@ export default function App() {
   return (
     <SWRConfig value={{ revalidateOnFocus: false, provider: () => new Map() }}>
       <StyledComponentsThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
-        <GlobalStyle />
-        <Container>
-          <Wrapper>
-            <RouterProvider router={router} />
-            <ToastContainer
-              position="top-right"
-              autoClose={2000}
-              theme={isDarkMode ? 'dark' : 'light'}
-              hideProgressBar={true}
-              closeOnClick={true}
-              pauseOnFocusLoss={false}
-            />
-          </Wrapper>
-        </Container>
+        <MuiThemeProvider theme={isDarkMode ? muiDarkTheme : muiLightTheme}>
+          <GlobalStyle />
+          <Container>
+            <Wrapper>
+              <RouterProvider router={router} />
+              <ToastContainer
+                position="top-right"
+                autoClose={2000}
+                theme={isDarkMode ? 'dark' : 'light'}
+                hideProgressBar={true}
+                closeOnClick={true}
+                pauseOnFocusLoss={false}
+              />
+            </Wrapper>
+          </Container>
+        </MuiThemeProvider>
       </StyledComponentsThemeProvider>
     </SWRConfig>
   );
