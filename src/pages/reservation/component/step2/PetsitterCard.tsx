@@ -81,8 +81,8 @@ const Possiblebox = styled(Texts12h18)`
   margin: 6px 0;
   padding: 2px 8px;
   border-radius: 8px;
-  font-weight: ${({ theme }) => theme.fontWeight.light};
   color: white;
+  font-weight: ${({ theme }) => theme.fontWeight.light};
   background-color: ${({ theme }) => theme.background.highlight};
 `;
 

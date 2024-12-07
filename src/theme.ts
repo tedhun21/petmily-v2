@@ -28,6 +28,9 @@ const baseTheme = {
       line-height: 30px;
     `,
   },
+  text: {
+    white: '#FFFFF0',
+  },
   fontWeight: {
     light: 400,
     normal: 500,
@@ -50,6 +53,7 @@ const lightTheme = {
   //   red: '#FF6161',
   // },
   text: {
+    ...baseTheme.text,
     active: '#1A1A1A',
     inactive: '#525252',
     highlight: '#279EFF',
@@ -69,7 +73,7 @@ const lightTheme = {
     darkHighlight: '#096DBE',
     box: {
       default: { primary: '#FFFEFE', hover: '#f6f6f6', active: '#C1C1C1' },
-      blue: { primary: '#279EFF', hover: '#1D8CE7', active: '#096DBE', diasbled: '#757575' },
+      blue: { primary: '#279EFF', hover: '#1D8CE7', active: '#096DBE', disabled: '#757575' },
     },
     input: { primary: '#F7F7F7', hover: '#E8E8E8' },
   },
@@ -98,6 +102,7 @@ const darkTheme = {
   // },
 
   text: {
+    ...baseTheme.text,
     active: '#EAEAEA',
     inactive: '#A3A3A3',
     highlight: '#1A73E8',

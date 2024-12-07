@@ -97,8 +97,8 @@ const ItemCountbox = styled(CenterContainer)`
 `;
 
 const Container = styled.div`
-  background-color: ${({ theme }) => theme.background.box.default.primary};
   color: ${({ theme }) => theme.text.active};
+  background-color: ${({ theme }) => theme.background.box.default.primary};
 `;
 
 const DrawerHeader = styled(Row)`

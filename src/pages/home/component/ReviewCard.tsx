@@ -42,9 +42,9 @@ const Card = styled(Column)`
 `;
 
 const ClientContainer = styled(Row)`
-  width: 100%;
-  justify-content: space-between;
   align-items: start;
+  justify-content: space-between;
+  width: 100%;
 `;
 
 const ClientImageName = styled(Row)`
@@ -72,7 +72,7 @@ const UserTimeAgo = styled(Column)`
 `;
 
 const ReviewText = styled.p`
-  display: -webkit-box;
+  display: box;
   -webkit-line-clamp: 3; /* 3줄까지만 표시 */
   -webkit-box-orient: vertical;
   overflow: hidden; /* 넘치는 텍스트 숨김 */

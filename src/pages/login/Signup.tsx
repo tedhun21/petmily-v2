@@ -236,8 +236,8 @@ export default function Signup() {
 
 const MainContainer = styled.main`
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   width: 100%;
 `;
 

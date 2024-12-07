@@ -130,7 +130,7 @@ export default function Step4() {
         </InfoContainer>
 
         <BottomFixed>
-          <CofirmButtonContainer>
+          <ConfirmButtonContainer>
             <Confirm isChecked={isChecked} setIsChecked={setIsChecked} />
 
             <ButtonContainer>
@@ -138,7 +138,7 @@ export default function Step4() {
                 {isMutating ? <Loading /> : <span>예약하기</span>}
               </StyledButton>
             </ButtonContainer>
-          </CofirmButtonContainer>
+          </ConfirmButtonContainer>
         </BottomFixed>
       </FormContainer>
     </MainContainer>
@@ -187,8 +187,8 @@ const ResultWrapper = styled(Row)`
 `;
 
 const ReservationLabel = styled(Texts16h24)`
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
   color: ${({ theme }) => theme.text.active};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
   white-space: nowrap;
 `;
 
@@ -235,11 +235,11 @@ const ContactText = styled(Texts14h21)`
 `;
 
 const ContactSubText = styled(Texts12h18)`
-  font-weight: ${({ theme }) => theme.fontWeight.light};
   color: ${({ theme }) => theme.text.active};
+  font-weight: ${({ theme }) => theme.fontWeight.light};
 `;
 
-const CofirmButtonContainer = styled.section`
+const ConfirmButtonContainer = styled.section`
   display: flex;
   flex-direction: column;
 `;

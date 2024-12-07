@@ -1,19 +1,17 @@
 import styled from 'styled-components';
 import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
-import PossibleReservationTime from '@components/PossibleReservationTime';
 import dayjs from 'dayjs';
 
 import Reviews from './component/Reviews';
 import useSWR from 'swr';
-import { fetcher, fetcherWithCookie } from 'api';
+import { fetcher } from 'api';
 import { UserRole } from 'types/user.type';
 import { PiCatBold, PiDogBold } from 'react-icons/pi';
 import { formatKrDays, timeRange } from 'utils/date';
 import { MdOutlineRateReview } from 'react-icons/md';
 import {
-  BlueButton,
   BottomFixed,
   Column,
   DefaultDivider,
@@ -53,8 +51,6 @@ export default function Profile() {
   const { data: userData } = useSWR(`${API_URL}/users?q=${nickname}`, fetcher);
 
   const [isBookmarked, setIsBookmarked] = useState(false);
-
-  console.log(methods.watch());
 
   return (
     <FormProvider {...methods}>
@@ -269,6 +265,7 @@ const StyledLink = styled(Link)<{ disabled: boolean }>`
   padding: 12px;
   border-radius: 8px;
   width: 100%;
+  color: ${({ theme }) => theme.text.active};
 
   // hover와 active 스타일을 disabled일 때 비활성화
   pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};

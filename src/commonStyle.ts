@@ -30,6 +30,13 @@ export const Texts20h30 = styled.span`
 `;
 
 export const Title = styled.h1`
+  color: ${({ theme }) => theme.text.active};
+  font-weight: ${({ theme }) => theme.fontWeight.extrabold};
+  ${({ theme }) => theme.fontSize.s20h30};
+`;
+
+export const SubTitle = styled.h2`
+  color: ${({ theme }) => theme.text.active};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
   ${({ theme }) => theme.fontSize.s18h27};
 `;

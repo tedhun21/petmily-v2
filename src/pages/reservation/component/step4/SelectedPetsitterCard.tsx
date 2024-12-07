@@ -51,10 +51,9 @@ export default function SelectedPetsitter({ petsitter }: any) {
 }
 
 const PetsitterSection = styled.section`
+  overflow: hidden;
   position: relative;
   border-radius: 12px;
-  overflow: hidden;
-
   box-shadow: ${({ theme }) => theme.shadow.dp01};
 `;
 
@@ -72,8 +71,8 @@ const NameWrapper = styled(Row)`
 
 const PetsitterImg = styled(RoundedImageWrapper)`
   position: absolute;
-  right: 24px;
   top: 24px;
+  right: 24px;
   width: 64px;
   height: 64px;
 `;
@@ -110,8 +109,8 @@ const CapsuleWrapper = styled.div`
 `;
 
 const Capsule = styled(Texts14h21)`
-  color: white;
   padding: 4px 8px;
   border-radius: 16px;
-  background-color: ${({ theme }) => theme.backgorund.highlight};
+  color: white;
+  background-color: ${({ theme }) => theme.background.highlight};
 `;

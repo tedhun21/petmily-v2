@@ -25,9 +25,9 @@ const GlobalStyle = createGlobalStyle`
 
     button {
         border: none;
+        color:inherit;
         background-color: transparent;
         cursor: pointer;
-        color:inherit;
     }
 
     input {

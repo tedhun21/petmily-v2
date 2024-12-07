@@ -110,8 +110,7 @@ export default function PossibleDate({ petsitter }: any) {
 
     const dayOfWeek = weekDays[day.day()]; // 날짜의 요일 ("Mon")
 
-    //
-    return !petsitter.possibleDays.includes(dayOfWeek);
+    return !(petsitter?.possibleDays?.includes(dayOfWeek) || false);
   };
 
   return (
@@ -158,7 +157,9 @@ export default function PossibleDate({ petsitter }: any) {
                         isSelected={isSelected}
                         onClick={() => handleButtonClick(time)}
                       >
-                        <TimeText disabled={disabled}>{time}</TimeText>
+                        <TimeText disabled={disabled} isBetween={isBetween} isSelected={isSelected}>
+                          {time}
+                        </TimeText>
                       </TimeButton>
                     </ButtonWrapper>
                   );
@@ -239,8 +240,9 @@ const TimeButton = styled.button<{ disabled: boolean; isSelected: boolean; isBet
     isSelected ? theme.background.box.blue.active : isBetween ? theme.background.box.blue.primary : 'transparent'};
 `;
 
-const TimeText = styled.span<{ disabled: boolean }>`
-  color: ${({ theme, disabled }) => (disabled ? theme.text.inactive : theme.text.active)};
+const TimeText = styled.span<{ disabled: boolean; isBetween: boolean; isSelected: boolean }>`
+  color: ${({ disabled, isSelected, isBetween, theme }) =>
+    isSelected || isBetween ? theme.text.white : disabled ? theme.text.inactive : theme.text.active};
   text-decoration: ${({ disabled }) => (disabled ? 'line-through' : 'none')};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;

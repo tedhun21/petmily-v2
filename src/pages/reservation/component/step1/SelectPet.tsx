@@ -87,8 +87,7 @@ const PetImageWrapper = styled(RoundedImageWrapper)<{ isChecked: boolean }>`
   height: 80px;
   filter: ${({ isChecked }) => (isChecked ? 'brightness(1.05)' : 'brightness(1)')};
   transform ${({ isChecked }) => (isChecked ? 'scale(1)' : 'scale(0.95)')};
-  transition:
-    transform 0.3s ease-in-out;
+  transition: transform 0.3s ease-in-out;
 `;
 
 const Check = styled.div<{ isChecked: boolean }>`

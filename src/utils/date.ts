@@ -11,13 +11,18 @@ dayjs.extend(relativeTime);
 dayjs.extend(updateLocale);
 dayjs.extend(isBetween);
 
-export const timeRange = (start: string, end: string) => {
-  const formattedStart = dayjs(start, 'HH:mm:ss').format('HH:mm');
-  const formattedEnd = dayjs(end, 'HH:mm:ss').format('HH:mm');
-
+export const timeRange = (start: string | null, end: string | null) => {
   if (!start || !end) {
     return null;
   }
+
+  // 입력 형식을 동적으로 처리
+  const startFormat = start.includes(':') && start.split(':').length === 3 ? 'HH:mm:ss' : 'HH:mm';
+  const endFormat = end.includes(':') && end.split(':').length === 3 ? 'HH:mm:ss' : 'HH:mm';
+
+  // 형식에 따라 시간 변환
+  const formattedStart = dayjs(start, startFormat).format('HH:mm');
+  const formattedEnd = dayjs(end, endFormat).format('HH:mm');
 
   return `${formattedStart} ~ ${formattedEnd}`;
 };
