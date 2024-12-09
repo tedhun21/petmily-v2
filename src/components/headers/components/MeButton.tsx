@@ -87,9 +87,9 @@ const UserWrapper = styled.div`
 `;
 
 const UserButton = styled.button`
+  position: relative;
   border: 2px solid ${({ theme }) => theme.background.box.blue.primary};
   border-radius: 50%;
-  position: relative;
   cursor: pointer;
 `;
 

@@ -11,13 +11,18 @@ dayjs.extend(relativeTime);
 dayjs.extend(updateLocale);
 dayjs.extend(isBetween);
 
-export const timeRange = (start: string, end: string) => {
-  const formattedStart = dayjs(start, 'HH:mm:ss').format('HH:mm');
-  const formattedEnd = dayjs(end, 'HH:mm:ss').format('HH:mm');
-
+export const timeRange = (start: string | null, end: string | null) => {
   if (!start || !end) {
     return null;
   }
+
+  // 입력 형식을 동적으로 처리
+  const startFormat = start.includes(':') && start.split(':').length === 3 ? 'HH:mm:ss' : 'HH:mm';
+  const endFormat = end.includes(':') && end.split(':').length === 3 ? 'HH:mm:ss' : 'HH:mm';
+
+  // 형식에 따라 시간 변환
+  const formattedStart = dayjs(start, startFormat).format('HH:mm');
+  const formattedEnd = dayjs(end, endFormat).format('HH:mm');
 
   return `${formattedStart} ~ ${formattedEnd}`;
 };
@@ -47,12 +52,11 @@ export const reservationDisableDate = (day: Dayjs) => {
   // const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
 
   const now = dayjs();
-  // now로부터 3개월 이후에만 date 선택가능 범위
-  const nowAddThreeMonth = dayjs(now).add(3, 'M').format('YYYY-MM-DD');
+  // now로부터 1개월 이후에만 date 선택가능 범위
+  const nowAddThreeMonth = dayjs(now).add(2, 'M').format('YYYY-MM-DD');
 
   // 3개월 이내와 주말 이외에만 예약 가능 (true면 비활성화, false는 활성화)
   return !dayjs(dayjs(day).format('YYYY-MM-DD')).isBetween(now, nowAddThreeMonth, 'day', '[)');
-  //  || isWeekend;
 };
 
 export const checkInDisableTime = (value: Dayjs, view: 'hours' | 'minutes' | 'seconds', date: string | null) => {
@@ -190,4 +194,14 @@ export const shouldShowTime = (currentMessage: Message, previousMessage?: Messag
 export const shouldShowDateDivider = (currentMessage: Message, previousMessage?: Message) => {
   if (!previousMessage) return true;
   return !dayjs(currentMessage.createdAt).isSame(previousMessage.createdAt, 'day');
+};
+
+// 시간 리스트 생성
+export const timeOptions = (): string[] => {
+  const times: string[] = [];
+  for (let i = 8; i < 22; i++) {
+    times.push(`${String(i).padStart(2, '0')}:00`);
+    times.push(`${String(i).padStart(2, '0')}:30`);
+  }
+  return times;
 };

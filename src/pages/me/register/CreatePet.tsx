@@ -305,25 +305,24 @@ export const PetTextarea = styled.textarea`
   flex: auto;
   width: 100%;
   padding: 8px;
-
-  background-color: ${({ theme }) => theme.background.input.primary};
   border: 1px solid ${({ theme }) => theme.line.input.default};
-  color: inherit;
   border-radius: 8px;
+  color: inherit;
+  background-color: ${({ theme }) => theme.background.input.primary};
 `;
 
 export const FloatButtonContainer = styled(Float)`
-  left: 0;
   bottom: 0;
-  padding: 20px;
+  left: 0;
   width: 100%;
+  padding: 20px;
+  background-color: ${({ theme }) => theme.background.primary};
 `;
 
 export const SubmitButton = styled(BlueButton)`
   display: flex;
   justify-content: center;
   align-items: center;
-
   width: 100%;
   padding: 8px;
   border-radius: 8px;

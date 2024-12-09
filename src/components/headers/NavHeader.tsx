@@ -24,10 +24,10 @@ export default function NavHeader() {
 
 const Header = styled.header`
   position: sticky;
-  background-color: inherit;
   top: 0;
   left: 0;
   z-index: 10;
+  background-color: inherit;
 `;
 
 const HeaderContatiner = styled(Column)`
@@ -36,7 +36,6 @@ const HeaderContatiner = styled(Column)`
   height: 100px;
   gap: 8px;
   padding: 12px 12px 0;
-
   max-width: 600px;
   box-shadow: ${({ theme }) => theme.shadow.onlyBottom};
 `;

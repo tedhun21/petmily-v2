@@ -116,11 +116,12 @@ export const PetInfoCapsule = styled.li`
 `;
 
 const FloatButtonContainer = styled(Float)`
-  left: 0;
-  bottom: 0;
-  width: 100%;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  bottom: 0;
+  left: 0;
+  width: 100%;
   padding: 20px;
+  background-color: ${({ theme }) => theme.background.primary};
 `;

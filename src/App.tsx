@@ -1,6 +1,7 @@
 // import { Suspense, lazy } from 'react';
 import { createBrowserRouter, RouterProvider, Outlet, Route, createRoutesFromElements } from 'react-router-dom';
 import styled, { ThemeProvider as StyledComponentsThemeProvider } from 'styled-components';
+import { createTheme, ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 
 import NavHeader from '@components/headers/NavHeader';
 import BackHeader from '@components/headers/BackHeader';
@@ -66,6 +67,7 @@ import { darkTheme, lightTheme } from 'theme';
 import GlobalStyle from 'Globalstyle';
 import { ITheme, toggleTheme } from 'store/themeSlice';
 import { useEffect } from 'react';
+import Book from '@pages/users/:id/book/Book';
 
 const NavHeaderLayout = () => {
   return (
@@ -106,6 +108,7 @@ const router = createBrowserRouter(
         <Route path="cares/:id/review" element={<Review />} />
         <Route path="cares/:id/journal" element={<Journal />} />
         <Route path="users/:nickname" element={<Profile />} />
+        <Route path="users/:nickname/book" element={<Book />} />
         {/* <Route path="petsitters/:memberId/schedule" element={<SitterSchedule />} /> */}
       </Route>
       <Route path="me" element={<Me />} />
@@ -115,6 +118,9 @@ const router = createBrowserRouter(
     </Route>,
   ),
 );
+
+const muiLightTheme = createTheme({ palette: { mode: 'light' } });
+const muiDarkTheme = createTheme({ palette: { mode: 'dark' } });
 
 export default function App() {
   const dispatch = useDispatch();
@@ -137,20 +143,22 @@ export default function App() {
   return (
     <SWRConfig value={{ revalidateOnFocus: false, provider: () => new Map() }}>
       <StyledComponentsThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
-        <GlobalStyle />
-        <Container>
-          <Wrapper>
-            <RouterProvider router={router} />
-            <ToastContainer
-              position="top-right"
-              autoClose={2000}
-              theme={isDarkMode ? 'dark' : 'light'}
-              hideProgressBar={true}
-              closeOnClick={true}
-              pauseOnFocusLoss={false}
-            />
-          </Wrapper>
-        </Container>
+        <MuiThemeProvider theme={isDarkMode ? muiDarkTheme : muiLightTheme}>
+          <GlobalStyle />
+          <Container>
+            <Wrapper>
+              <RouterProvider router={router} />
+              <ToastContainer
+                position="top-right"
+                autoClose={2000}
+                theme={isDarkMode ? 'dark' : 'light'}
+                hideProgressBar={true}
+                closeOnClick={true}
+                pauseOnFocusLoss={false}
+              />
+            </Wrapper>
+          </Container>
+        </MuiThemeProvider>
       </StyledComponentsThemeProvider>
     </SWRConfig>
   );

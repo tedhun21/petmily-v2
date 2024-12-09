@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { FaRegCircleCheck, FaCircleCheck } from 'react-icons/fa6';
 import { Modal } from '@mui/material';
 
-import { BlueButton, Column, Texts12h18, Texts16h24, Texts18h27, Texts20h30 } from 'commonStyle';
+import { BlueButton, Column, SubTitle, Texts12h18, Texts16h24, Texts20h30, Title } from 'commonStyle';
 
 export default function Confirm({ isChecked, setIsChecked }: any) {
   const [open, setOpen] = useState(false);
@@ -94,6 +94,17 @@ export default function Confirm({ isChecked, setIsChecked }: any) {
   );
 }
 
+const ConfirmContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 8px;
+  gap: 8px;
+  border-top: 1px solid ${({ theme }) => theme.text.inactive};
+  border-bottom: 1px solid ${({ theme }) => theme.text.inactive};
+`;
+
 const TermsContainer = styled(Column)`
   overflow: auto;
   position: absolute;
@@ -102,9 +113,9 @@ const TermsContainer = styled(Column)`
   width: 400px;
   height: 600px;
   padding: 24px;
-  border-radius: 16px;
+  border-radius: 12px;
+  color: ${({ theme }) => theme.text.active};
   background-color: ${({ theme }) => theme.background.box.default.primary};
-  color: inherit;
   transform: translate(-50%, -50%);
   gap: 12px;
 `;
@@ -113,27 +124,18 @@ const TextCenter = styled.div`
   text-align: center;
 `;
 
-const Title = styled(Texts20h30)`
-  font-weight: ${({ theme }) => theme.fontWeight.extrabold};
-`;
-
 const Container = styled(Column)`
   gap: 8px;
 `;
 
-const SubTitle = styled(Texts18h27)`
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
-`;
-
-const RedSubTitle = styled(Texts18h27)`
+const RedSubTitle = styled(SubTitle)`
   color: ${({ theme }) => theme.text.error};
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;
 
 const List = styled.ul`
   display: flex;
-  gap: 4px;
   flex-direction: column;
+  gap: 4px;
   list-style-type: disc;
 `;
 
@@ -155,17 +157,6 @@ const CheckButton = styled(BlueButton)`
   ${({ theme }) => theme.fontSize.s16h24}
 `;
 
-const ConfirmContainer = styled.div`
-  display: flex;
-  align-items: cetner;
-  justify-content: center;
-  position: relative;
-  padding: 16px;
-  gap: 8px;
-  border-top: 1px solid ${({ theme }) => theme.text.inactive};
-  border-bottom: 1px solid ${({ theme }) => theme.text.inactive};
-`;
-
 const Check = styled.div`
   position: absolute;
   top: 20px;
@@ -180,8 +171,4 @@ const TermsButton = styled.button`
   text-decoration: underline;
   color: ${({ theme }) => theme.text.secondary};
   ${({ theme }) => theme.fontSize.s14h21}
-
-  &:hover {
-    color: ${({ theme }) => theme.text.inactive};
-  }
 `;

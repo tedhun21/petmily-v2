@@ -323,10 +323,11 @@ const RemoveButton = styled.button`
 `;
 
 const FloatButtonContainer = styled(Float)`
-  left: 0;
   bottom: 0;
-  padding: 20px;
+  left: 0;
   width: 100%;
+  padding: 20px;
+  background-color: ${({ theme }) => theme.background.primary};
 `;
 
 const SubmitButton = styled(BlueButton)`

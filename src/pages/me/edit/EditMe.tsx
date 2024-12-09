@@ -574,6 +574,7 @@ const FloatContainer = styled(Float)`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  background-color: ${({ theme }) => theme.background.primary};
 `;
 
 const SubmitButton = styled(BlueButton)`

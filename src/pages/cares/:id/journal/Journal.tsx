@@ -291,7 +291,6 @@ const RemoveButton = styled.button`
   right: 0;
   width: 24px;
   height: 24px;
-  // border: 1px solid ${({ theme }) => theme.lineColors.coolGray80};
   border-radius: 50%;
   background-color: ${({ theme }) => theme.background.box.blue.primary};
 `;

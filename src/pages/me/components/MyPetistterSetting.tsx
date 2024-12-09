@@ -78,10 +78,10 @@ const ItemWrapper = styled.ul`
 
 const ItemLabel = styled(Texts14h21)`
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   padding: 4px 8px;
-  color: white;
   border-radius: 8px;
+  color: white;
   background-color: ${({ theme }) => theme.text.highlight};
 `;

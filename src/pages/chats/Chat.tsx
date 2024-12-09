@@ -160,7 +160,6 @@ const ChatHeader = styled.header`
   justify-content: space-between;
   width: 100%;
   padding: 20px;
-  // background-color: ${({ theme }) => theme.color.gray};
 `;
 
 const StyledBackButton = styled.button`

@@ -51,8 +51,8 @@ const LinkContainer = styled.div`
 `;
 
 const StyledDefaultLink = styled(Link)`
-  color: ${({ theme }) => theme.text.active};
   border: 1px solid ${({ theme }) => theme.line.box.default};
+  color: ${({ theme }) => theme.text.active};
   background-color: ${({ theme }) => theme.background.box.default.primary};
 
   &:hover {

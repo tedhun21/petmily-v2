@@ -44,8 +44,8 @@ export default function UsedPetsitterCard({ petsitter }: any) {
 }
 
 const OftenPetsitterbox = styled(Row)`
-  width: 100%;
   align-items: center;
+  width: 100%;
   padding: 12px;
   border-radius: 16px;
   background-color: ${({ theme }) => theme.background.box.default.primary};

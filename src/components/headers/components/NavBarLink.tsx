@@ -36,8 +36,4 @@ const LinkLabel = styled(Texts12h18)<{ $isActive: boolean }>`
   padding: 4px 8px;
   border-radius: 8px;
   color: ${({ $isActive, theme }) => ($isActive ? theme.text.active : theme.text.inactive)};
-
-  &:hover {
-    // background-color: ${({ theme }) => theme.color.gray};
-  }
 `;
