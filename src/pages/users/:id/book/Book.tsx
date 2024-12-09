@@ -89,8 +89,6 @@ export default function Book() {
     const formattedStartTime = dayjs(startTime, 'HH:mm').format('HH:mm:ss');
     const formattedEndTime = dayjs(endTime, 'HH:mm').format('HH:mm:ss');
     const formattedPetIds = checkedPets.map((pet: any) => pet.id);
-    console.log(formattedStartTime);
-    console.log(formattedEndTime);
 
     const formattedData = {
       date,
@@ -125,6 +123,7 @@ export default function Book() {
         <form onSubmit={methods.handleSubmit(onSubmit)}>
           <Container>
             <Title>예약 요청</Title>
+
             <SelectedPetsitter petsitter={petsitter} />
 
             <Reservation>
@@ -231,6 +230,7 @@ const Reservation = styled.section`
   border-radius: 12px;
   gap: 16px;
   background-color: ${({ theme }) => theme.background.box.default.primary};
+  box-shadow: ${({ theme }) => theme.shadow.dp01};
 `;
 
 const Container = styled(Column)`
@@ -245,7 +245,6 @@ const ReservationWrapper = styled(Row)`
 
 const ReservationLabel = styled(Texts16h24)`
   font-weight: ${({ theme }) => theme.fontWeight.bold};
-  color: ${({ theme }) => theme.text.inactive};
 `;
 
 const AddressSection = styled.section`

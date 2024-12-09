@@ -1,14 +1,17 @@
 import dayjs, { Dayjs } from 'dayjs';
-import { Controller, useForm, useFormContext } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 
 import styled from 'styled-components';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DatePicker, LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 
 import { Row, Title } from 'commonStyle';
-import { timeOptions } from 'utils/date';
+import { reservationDisableDate, timeOptions } from 'utils/date';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
+import { fetcher } from 'api';
+import useSWR from 'swr';
+
+const API_URL = process.env.REACT_APP_API_URL;
 
 export default function PossibleDate({ petsitter }: any) {
   const { setValue, control, watch } = useFormContext();
@@ -19,6 +22,11 @@ export default function PossibleDate({ petsitter }: any) {
   const date = watch('date');
   const startTime = watch('startTime');
   const endTime = watch('endTime');
+
+  const { data } = useSWR(
+    date ? `${API_URL}/reservations/petsitter/${petsitter?.id}?date=${dayjs(date).format('YYYY-MM-DD')}` : null,
+    fetcher,
+  );
 
   const deleteDate = () => {
     setValue('date', null);
@@ -72,12 +80,25 @@ export default function PossibleDate({ petsitter }: any) {
         return true;
       }
 
-      // 최소 시간
+      // 최소 시간 처리: 시작 시간인 경우는 예외
       const minDuration = 1; // 최소 1시간
       const isWithinMinDuration = timeDayjs.diff(startTimeDayjs, 'hour') < minDuration;
-      if (isWithinMinDuration) {
+      if (isWithinMinDuration && time !== startTime) {
         return true;
       }
+    }
+
+    // 예약된 시간 확인
+    const isReserved = data?.some((reservation: any) => {
+      const reservationStart = dayjs(reservation.startTime, 'HH:mm');
+      const reservationEnd = dayjs(reservation.endTime, 'HH:mm');
+
+      // "[]" 이면 포함(이상, 이하), "()" 이면 포함x (초과, 미만)
+      return timeDayjs.isBetween(reservationStart, reservationEnd, 'minute', '[]');
+    });
+
+    if (isReserved) {
+      return true;
     }
 
     // 시작 시간과 종료 시간이 선택된 경우, 시간 범위를 제외한 나머지 비활성화
@@ -106,11 +127,16 @@ export default function PossibleDate({ petsitter }: any) {
 
   const isDateDisabled = (day: Dayjs | null): boolean => {
     if (!day) return false;
+
+    // 첫번째 조건: 2개월 이후까지만
+    const isOutOfRange = reservationDisableDate(day);
+
+    // 두번째 조건: 요일 조건 확인
     const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-
     const dayOfWeek = weekDays[day.day()]; // 날짜의 요일 ("Mon")
+    const isNotAvailableDay = !(petsitter?.possibleDays?.includes(dayOfWeek) || false);
 
-    return !(petsitter?.possibleDays?.includes(dayOfWeek) || false);
+    return isOutOfRange || isNotAvailableDay;
   };
 
   return (
@@ -149,7 +175,7 @@ export default function PossibleDate({ petsitter }: any) {
                   const isBetween = isTimeBetween(time);
 
                   return (
-                    <ButtonWrapper key={time}>
+                    <ButtonWrapper key={time} disabled={disabled}>
                       {/* {isSelected && <Hover isSelected={isSelected}>체크인 시간</Hover>} */}
                       <TimeButton
                         disabled={disabled}
@@ -185,9 +211,14 @@ const TitleContainer = styled(Row)`
   justify-content: space-between;
   align-items: center;
 `;
-const DateWrapper = styled(Row)``;
 
-const StyledDatePicker = styled(DatePicker)``;
+const StyledDatePicker = styled(DatePicker)`
+  font-family: inherit;
+
+  .MuiInputBase-root {
+    border-radius: 12px;
+  }
+`;
 
 const DropdownMenu = styled(motion.div)`
   width: 100%;
@@ -201,14 +232,14 @@ const ButtonContainer = styled.div`
   grid-gap: 8px;
 `;
 
-const ButtonWrapper = styled.div`
+const ButtonWrapper = styled.div<{ disabled: boolean }>`
   position: relative;
   display: flex;
   border-radius: 12px;
   border: 1px solid transparent;
 
   &:hover {
-    border: 1px solid ${({ theme }) => theme.line.box.highlight};
+    border: 1px solid ${({ theme, disabled }) => (disabled ? 'none' : theme.line.box.highlight)};
   }
 
   &:hover div {

@@ -55,7 +55,7 @@ const lightTheme = {
   text: {
     ...baseTheme.text,
     active: '#1A1A1A',
-    inactive: '#525252',
+    inactive: '#999999',
     highlight: '#279EFF',
     secondary: '#B5B5B5',
     error: '#FF6161',
@@ -104,7 +104,7 @@ const darkTheme = {
   text: {
     ...baseTheme.text,
     active: '#EAEAEA',
-    inactive: '#A3A3A3',
+    inactive: '#6B6B6B',
     highlight: '#1A73E8',
     secondary: '#A6A6A6',
     error: '#FF5A5A',

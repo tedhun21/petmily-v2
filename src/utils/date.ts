@@ -52,12 +52,11 @@ export const reservationDisableDate = (day: Dayjs) => {
   // const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
 
   const now = dayjs();
-  // now로부터 3개월 이후에만 date 선택가능 범위
-  const nowAddThreeMonth = dayjs(now).add(3, 'M').format('YYYY-MM-DD');
+  // now로부터 1개월 이후에만 date 선택가능 범위
+  const nowAddThreeMonth = dayjs(now).add(2, 'M').format('YYYY-MM-DD');
 
   // 3개월 이내와 주말 이외에만 예약 가능 (true면 비활성화, false는 활성화)
   return !dayjs(dayjs(day).format('YYYY-MM-DD')).isBetween(now, nowAddThreeMonth, 'day', '[)');
-  //  || isWeekend;
 };
 
 export const checkInDisableTime = (value: Dayjs, view: 'hours' | 'minutes' | 'seconds', date: string | null) => {

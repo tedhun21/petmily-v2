@@ -265,7 +265,7 @@ const StyledLink = styled(Link)<{ disabled: boolean }>`
   padding: 12px;
   border-radius: 8px;
   width: 100%;
-  color: ${({ theme }) => theme.text.active};
+  color: ${({ theme }) => theme.text.white};
 
   // hover와 active 스타일을 disabled일 때 비활성화
   pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};

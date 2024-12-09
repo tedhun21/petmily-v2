@@ -1,8 +1,10 @@
-import { Column, ImageCentered, RoundedImageWrapper, Row, Texts14h21, Texts18h27, Texts20h30 } from 'commonStyle';
+import styled from 'styled-components';
+
 import { MdOutlineRateReview } from 'react-icons/md';
 import { PiStarFill } from 'react-icons/pi';
-import styled from 'styled-components';
+
 import { formatKrDays } from 'utils/date';
+import { Column, DefaultDivider, ImageCentered, RoundedImageWrapper, Row, Texts14h21, Texts18h27 } from 'commonStyle';
 
 export default function SelectedPetsitter({ petsitter }: any) {
   return (
@@ -21,17 +23,17 @@ export default function SelectedPetsitter({ petsitter }: any) {
       </CardTitleContainer>
 
       <CardBodyContainer>
-        <Row>
-          <div>
+        <StarReview>
+          <Wrapper>
             <PiStarFill size="28px" color="#279EFF" />
-            <Count>{petsitter?.average_rating}</Count>
-          </div>
-          <div>
+            <Count>{petsitter?.star}</Count>
+          </Wrapper>
+          <Wrapper>
             <MdOutlineRateReview size="28px" />
             <Count>{petsitter?.reviewCount}</Count>
-          </div>
-        </Row>
-        <PossibleContainer style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          </Wrapper>
+        </StarReview>
+        <PossibleContainer>
           <PossibleWrapper>
             <span>가능 장소</span>
             <CapsuleWrapper>
@@ -45,6 +47,10 @@ export default function SelectedPetsitter({ petsitter }: any) {
             </CapsuleWrapper>
           </PossibleWrapper>
         </PossibleContainer>
+
+        <DefaultDivider />
+
+        <div>{petsitter?.body}</div>
       </CardBodyContainer>
     </PetsitterSection>
   );
@@ -61,12 +67,13 @@ const CardTitleContainer = styled.div`
   display: flex;
   position: relative;
   padding: 12px 36px;
+  color: ${({ theme }) => theme.text.white};
   background-color: ${({ theme }) => theme.background.highlight};
 `;
 
 const NameWrapper = styled(Row)`
   gap: 8px;
-  align-items: center;
+  align-items: flex-end;
 `;
 
 const PetsitterImg = styled(RoundedImageWrapper)`
@@ -87,10 +94,21 @@ const Petsitter = styled(Texts14h21)`
 
 const CardBodyContainer = styled(Column)`
   padding: 24px;
+  gap: 8px;
   background-color: ${({ theme }) => theme.background.box.default.primary};
 `;
 
-const Count = styled(Texts20h30)`
+const StarReview = styled(Row)`
+  align-items: center;
+  gap: 16px;
+`;
+
+const Wrapper = styled(Row)`
+  align-items: center;
+  gap: 8px;
+`;
+
+const Count = styled(Texts18h27)`
   font-weight: ${({ theme }) => theme.fontWeight.extrabold};
 `;
 
@@ -110,7 +128,7 @@ const CapsuleWrapper = styled.div`
 
 const Capsule = styled(Texts14h21)`
   padding: 4px 8px;
-  border-radius: 16px;
-  color: white;
+  border-radius: 12px;
+  color: ${({ theme }) => theme.text.white};
   background-color: ${({ theme }) => theme.background.highlight};
 `;
