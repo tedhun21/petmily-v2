@@ -15,7 +15,7 @@ export default function SearchInput({ input, setInput }: any) {
   };
 
   return (
-    <InputSection isFocused={isFocused}>
+    <InputSection $isFocused={isFocused}>
       <FiSearch size="28px" color="#279EFF" />
       <Input
         placeholder="검색"
@@ -33,7 +33,7 @@ export default function SearchInput({ input, setInput }: any) {
   );
 }
 
-const InputSection = styled.section<{ isFocused: boolean }>`
+const InputSection = styled.section<{ $isFocused: boolean }>`
   display: flex;
   align-items: center;
   gap: 8px;

@@ -55,10 +55,9 @@ const ImageContainer = styled(Column)`
 
 const ImageLabel = styled.label`
   cursor: pointer;
-  color: ${({ theme }) => theme.text.deepHighlight};
 
   &:hover {
-    color: ${({ theme }) => theme.text.darkHeighlight};
+    color: ${({ theme }) => theme.text.highlight};
   }
 `;
 

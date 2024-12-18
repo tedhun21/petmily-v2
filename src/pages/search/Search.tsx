@@ -5,16 +5,22 @@ import { Texts20h30 } from 'commonStyle';
 import SearchInput from './component/SearchInput';
 import RecentSearches from './component/RecentSearches';
 import Results from './component/Results';
+import SearchBox from './component/SearchBox';
 
 export default function Search() {
   const [input, setInput] = useState<string>('');
 
+  const handleSubmit = (e: any) => {
+    console.log(e);
+  };
   return (
     <SearchContainer>
       <SearchTitleText>펫시터 검색</SearchTitleText>
 
       {/* input */}
       <SearchInput input={input} setInput={setInput} />
+
+      <SearchBox />
 
       {/* 최근 검색어 */}
       <RecentSearches input={input} />
@@ -28,9 +34,8 @@ export default function Search() {
 const SearchContainer = styled.main`
   display: flex;
   flex-direction: column;
-  overflow: auto;
   gap: 16px;
-  padding: 12px;
+  height: 100%;
 `;
 
 const SearchTitleText = styled(Texts20h30)`

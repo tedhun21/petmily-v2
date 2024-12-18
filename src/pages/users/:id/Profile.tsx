@@ -14,7 +14,7 @@ import { MdOutlineRateReview } from 'react-icons/md';
 import {
   BottomFixed,
   Column,
-  DefaultDivider,
+  Divider,
   Float,
   ImageCentered,
   RoundedImageWrapper,
@@ -78,7 +78,9 @@ export default function Profile() {
                 <span>{userData?.star}</span>
                 <ReadOnlyRating size="20px" value={userData?.star || 0} />
               </Wrapper>
-              <DefaultDivider />
+
+              <Divider />
+
               <Wrapper>
                 <span>{userData?.reviewCount} 개</span>
                 <MdOutlineRateReview size="16px" />
@@ -130,7 +132,7 @@ export default function Profile() {
             </CardList>
           </Section>
 
-          <DefaultDivider />
+          <Divider />
 
           {/* 4. 간단한 소개 */}
           <Section>
@@ -139,11 +141,11 @@ export default function Profile() {
             <p>안녕하세요 몇년차 경력 펫시터 펫시터입니다 잘 합니다!</p>
           </Section>
 
-          <DefaultDivider />
+          <Divider />
 
           <Reviews nickname={nickname} />
 
-          <DefaultDivider />
+          <Divider />
 
           <PossibleDate petsitter={userData} />
         </Container>

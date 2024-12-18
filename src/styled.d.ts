@@ -1,51 +1,53 @@
-// import 'styled-components';
-// declare module 'styled-components' {
-//   export interface DefaultTheme {
-//     color: {
-//       black: string;
-//       gray: string;
-//       white: string;
-//       mainBlue: string;
-//       subBlue: string;
-//       darkBlue: string;
-//       skyBlue: string;
-//       paleBlue: string;
-//       red: string;
-//     };
-//     textColors: {
-//       gray00: string;
-//       gray10: string;
-//       gray30: string;
-//       gray40: string;
-//       gray50: string;
-//       gray60: string;
-//       primary: string;
-//       secondary: string;
-//     };
-//     lineColors: {
-//       coolGray90: string;
-//       coolGray80: string;
-//     };
-//     shadow: {
-//       onlyBottom: string;
-//       dp01: string;
-//       dp02: string;
-//       dp03: string;
-//       dp04: string;
-//       inset: string;
-//     };
-//     fontWeight: {
-//       light: number;
-//       normal: number;
-//       bold: number;
-//       extrabold: number;
-//     };
-//     fontSize: {
-//       s12h18: SerializedStyles;
-//       s14h21: SerializedStyles;
-//       s16h24: SerializedStyles;
-//       s18h27: SerializedStyles;
-//       s20h30: SerializedStyles;
-//     };
-//   }
-// }
+import 'styled-components';
+
+declare module 'styled-components' {
+  export interface DefaultTheme {
+    fontSize: {
+      s12h18: string;
+      s14h21: string;
+      s16h24: string;
+      s18h27: string;
+      s20h30: string;
+    };
+    text: {
+      white: string;
+      active: string;
+      inactive: string;
+      highlight: string;
+      secondary: string;
+      opposite: string;
+      error: string;
+    };
+    fontWeight: {
+      light: number;
+      normal: number;
+      bold: number;
+      extrabold: number;
+    };
+    line: {
+      input: { default: string; blue: string; error: string };
+      box: { default: string; highlight: string; blue: string };
+      divider: { default: string; blue: string };
+    };
+    background: {
+      primary: string;
+      secondary: string;
+      highlight: string;
+      deepHighlight: string;
+      darkHighlight: string;
+      box: {
+        default: { primary: string; hover: string; active: string; opposite: string };
+        blue: { primary: string; hover: string; active: string; disabled: string };
+      };
+      input: { primary: string; hover: string };
+    };
+    shadow: {
+      onlyBottom: string;
+      dp01: string;
+      dp02: string;
+      dp03: string;
+      dp04: string;
+      inset: string;
+    };
+  }
+}

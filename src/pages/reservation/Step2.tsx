@@ -6,7 +6,7 @@ import { Drawer } from '@mui/material';
 import { FiFilter } from 'react-icons/fi';
 import { CgOptions } from 'react-icons/cg';
 
-import { BlueDivider, CenterContainer, Row, Texts18h27, Texts20h30 } from 'commonStyle';
+import { CenterContainer, Divider, Row, Texts18h27, Texts20h30 } from 'commonStyle';
 import PossiblePetsitters from './component/step2/PossiblePetsitters';
 
 const filterList = [
@@ -109,6 +109,10 @@ const DrawerHeader = styled(Row)`
 
 const HeaderTitle = styled(Texts18h27)`
   font-weight: ${({ theme }) => theme.fontWeight.bold};
+`;
+
+const BlueDivider = styled(Divider)`
+  background-color: ${({ theme }) => theme.background.highlight};
 `;
 
 const ListContainer = styled.ul`
