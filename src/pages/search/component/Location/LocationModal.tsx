@@ -8,9 +8,9 @@ const locations = ['강남구', '강동구', '서초구', '용산구', '종로�
 export default function LocationModal({ setIsSelected }: any) {
   const { setValue } = useFormContext();
 
-  const handleCapsuleClick = (e: React.MouseEvent, location: string) => {
+  const handleCapsuleClick = (e: React.MouseEvent, city: string, location: string) => {
     e.stopPropagation();
-    setValue('location', location);
+    setValue('location', `${city} ${location}`);
     setIsSelected('date');
   };
 
@@ -29,7 +29,7 @@ export default function LocationModal({ setIsSelected }: any) {
           <Texts12h18>서울</Texts12h18>
           <List>
             {locations.map((location) => (
-              <Capsule key={location} onClick={(e) => handleCapsuleClick(e, location)}>
+              <Capsule key={location} onClick={(e) => handleCapsuleClick(e, '서울', location)}>
                 {location}
               </Capsule>
             ))}

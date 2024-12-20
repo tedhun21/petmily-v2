@@ -5,45 +5,43 @@ import { timeOptions } from 'utils/date';
 import { useFormContext } from 'react-hook-form';
 import dayjs from 'dayjs';
 
-export default function CheckInOutModal({ isSelected, setIsSelected }: any) {
+export default function StartEndTimeModal({ isSelected, setIsSelected }: any) {
   const { setValue, watch } = useFormContext();
 
-  const checkIn = watch('checkIn');
-  const checkOut = watch('checkOut');
-
-  console.log(isSelected);
+  const startTime = watch('startTime');
+  const endTime = watch('endTime');
 
   const handleCapsuleClick = (e: React.MouseEvent, time: string) => {
     e.stopPropagation();
-    if (isSelected === 'checkIn') {
-      if (dayjs(time, 'HH:mm').isAfter(dayjs(checkOut, 'HH:mm'))) {
-        setValue('checkIn', time);
-        setValue('checkOut', null);
+    if (isSelected === 'startTime') {
+      if (dayjs(time, 'HH:mm').isAfter(dayjs(endTime, 'HH:mm'))) {
+        setValue('startTime', time);
+        setValue('endTime', null);
       }
 
-      setValue('checkIn', time);
-      setIsSelected('checkOut');
-    } else if (isSelected === 'checkOut') {
-      if (dayjs(time, 'HH:mm').isBefore(dayjs(checkIn, 'HH:mm'))) {
-        setValue('checkIn', time);
-        setValue('checkOut', null);
+      setValue('startTime', time);
+      setIsSelected('endTime');
+    } else if (isSelected === 'endTime') {
+      if (dayjs(time, 'HH:mm').isBefore(dayjs(startTime, 'HH:mm'))) {
+        setValue('startTime', time);
+        setValue('endTime', null);
       } else {
-        setValue('checkOut', time);
+        setValue('endTime', time);
       }
 
-      if (!checkIn) {
-        setIsSelected('checkIn');
+      if (!startTime) {
+        setIsSelected('startTime');
       }
     }
   };
 
   const isTimeBetween = (time: string) => {
-    if (!checkIn || !checkOut) return false;
-    const checkInTimeDayjs = dayjs(checkIn, 'HH:mm');
-    const checkOutTimeDayjs = dayjs(checkOut, 'HH:mm');
+    if (!startTime || !endTime) return false;
+    const startTimeTimeDayjs = dayjs(startTime, 'HH:mm');
+    const endTimeTimeDayjs = dayjs(endTime, 'HH:mm');
     const timeDayjs = dayjs(time, 'HH:mm');
 
-    return timeDayjs.isBetween(checkInTimeDayjs, checkOutTimeDayjs, 'minute', '[]');
+    return timeDayjs.isBetween(startTimeTimeDayjs, endTimeTimeDayjs, 'minute', '[]');
   };
 
   return (
@@ -53,12 +51,12 @@ export default function CheckInOutModal({ isSelected, setIsSelected }: any) {
           <span>{isSelected === 'chekcIn' ? '체크인' : '체크아웃'} 시간 선택</span>
           <List>
             {timeOptions().map((time: string) => {
-              const inTime = checkIn === time;
-              const outTime = checkOut === time;
+              const inTime = startTime === time;
+              const outTime = endTime === time;
               const isBetween = isTimeBetween(time);
 
               return (
-                <CapsuleWrapper key={time} $isBetween={isBetween} $isCheckIn={inTime} $isCheckOut={outTime}>
+                <CapsuleWrapper key={time} $isBetween={isBetween} $isstartTime={inTime} $isendTime={outTime}>
                   <TimeCapsule onClick={(e) => handleCapsuleClick(e, time)} $isSelected={inTime || outTime}>
                     {time}
                   </TimeCapsule>
@@ -81,12 +79,14 @@ const TimeContainer = styled(Column)`
 const List = styled.ul`
   display: flex;
   flex-wrap: wrap;
+
   row-gap: 1px;
+  justify-content: center;
 `;
 
-const CapsuleWrapper = styled.div<{ $isBetween: boolean; $isCheckIn: boolean; $isCheckOut: boolean }>`
-  border-radius: ${({ $isCheckIn, $isCheckOut }) =>
-    $isCheckIn ? '20px 0 0 20px' : $isCheckOut ? '0 20px 20px 0' : null};
+const CapsuleWrapper = styled.div<{ $isBetween: boolean; $isstartTime: boolean; $isendTime: boolean }>`
+  border-radius: ${({ $isstartTime, $isendTime }) =>
+    $isstartTime ? '20px 0 0 20px' : $isendTime ? '0 20px 20px 0' : null};
   background-color: ${({ $isBetween, theme }) => ($isBetween ? theme.background.box.default.hover : null)};
 `;
 

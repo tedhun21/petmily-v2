@@ -12,7 +12,7 @@ export default function DateModal() {
 
   return (
     <ModalLayOut>
-      <DatepickerWrapper>
+      <DatepickerWrapper onClick={(e) => e.stopPropagation()}>
         <Controller
           control={control}
           name="date"
@@ -23,7 +23,17 @@ export default function DateModal() {
                 dateFormatCalendar="yyyy년 MM월"
                 selected={selectedDate ? new Date(selectedDate) : null}
                 onChange={(date: Date | null) => field.onChange(date ? date.toString() : null)}
+                // 오늘 이전 날짜 선택 불가
+                minDate={new Date()}
+                // 오늘부터 2개월 이후까지 선택 가능
+                maxDate={new Date(new Date().setMonth(new Date().getMonth() + 2))}
+                // 달력만 보이기 (input 없애기)
                 inline
+                // 이번 달에 속한 일수만 표시
+                renderDayContents={(day, date) => {
+                  const currentMonth = new Date().getMonth();
+                  return date.getMonth() === currentMonth ? day : null;
+                }}
               />
             );
           }}
@@ -40,7 +50,7 @@ const DatepickerWrapper = styled.div`
   .react-datepicker {
     width: 100%;
     height: 100%;
-    background-color: transparent;
+    background-color: transparent; // 변경된 부분
     color: inherit;
     border: none;
 
@@ -50,7 +60,7 @@ const DatepickerWrapper = styled.div`
 
       .react-datepicker__header {
         height: 15%;
-        background-color: inherit;
+        background-color: transparent; // 변경된 부분
         border: none;
 
         .react-datepicker__current-month {
@@ -87,7 +97,8 @@ const DatepickerWrapper = styled.div`
           .react-datepicker__day--selected,
           .react-datepicker__day--in-range {
             //선택된 날짜
-            background-color: ${({ theme }) => theme.background.highlight};
+            background-color: ${({ theme }) => theme.background.highlight} !important;
+            color: ${({ theme }) => theme.text.white};
             border-radius: 50%;
           }
 
@@ -96,8 +107,11 @@ const DatepickerWrapper = styled.div`
             background-color: transparent;
           }
 
-          .react-datepicker__day--keyboard-selected {
-            background-color: transparent;
+          .react-datepicker__day--disabled {
+            // 비활성화된 날짜
+            color: ${({ theme }) => theme.text.inactive};
+            cursor: default;
+            text-decoration: line-through;
           }
 
           .react-datepicker__day {
@@ -113,7 +127,7 @@ const DatepickerWrapper = styled.div`
             &:not(.react-datepicker__day--selected):not([aria-disabled='true']):hover {
               border-radius: 50%;
               border: 1px solid ${({ theme }) => theme.line.box.default};
-              background-color: transparent;
+              background-color: transparent; // 변경된 부분
             }
           }
         }

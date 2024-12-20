@@ -63,7 +63,3 @@ export default function LocationBox({ isSelected, setIsSelected }: any) {
     </>
   );
 }
-
-const StyledX = styled(FaXmark)`
-  color: ${({ theme }) => theme.text.active};
-`;

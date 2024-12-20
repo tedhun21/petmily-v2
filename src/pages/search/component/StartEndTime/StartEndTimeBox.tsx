@@ -1,33 +1,36 @@
-import { Divider, Row } from 'commonStyle';
-import { AddText, BoxInput, InputDiv, Label, Modal, Wrapper, XButton } from '../SearchBox';
-import { createPortal } from 'react-dom';
-import CheckInOutModal from './CheckInOutModal';
-import { FaXmark } from 'react-icons/fa6';
-import { useFormContext } from 'react-hook-form';
 import { useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 
-export default function CheckInOutBox({ isSelected, setIsSelected }: any) {
+import { useFormContext } from 'react-hook-form';
+
+import { FaXmark } from 'react-icons/fa6';
+
+import { Divider, Row } from 'commonStyle';
+import StartTimeOutModal from './StartEndTimeModal';
+import { AddText, InputDiv, Label, Modal, Wrapper, XButton } from '../SearchBox';
+
+export default function StartEndTimeBox({ isSelected, setIsSelected }: any) {
   const container = document.getElementById('container');
   const modalRef = useRef<HTMLDivElement>(null);
 
   const { register, setValue, watch } = useFormContext();
 
-  const checkIn = watch('checkIn');
-  const checkOut = watch('checkOut');
+  const startTime = watch('startTime');
+  const endTime = watch('endTime');
 
-  const handleCheckInBoxClick = (e: React.MouseEvent) => {
+  const handlestartTimeBoxClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsSelected('checkIn');
+    setIsSelected('startTime');
   };
 
-  const handleCheckOutBoxClick = (e: React.MouseEvent) => {
+  const handleendTimeBoxClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsSelected('checkOut');
+    setIsSelected('endTime');
   };
 
   const handleInputRemove = () => {
-    setValue('checkIn', null);
-    setValue('checkOut', null);
+    setValue('startTime', null);
+    setValue('endTime', null);
   };
 
   useEffect(() => {
@@ -46,34 +49,34 @@ export default function CheckInOutBox({ isSelected, setIsSelected }: any) {
 
   return (
     <Row style={{ flex: 2, alignItems: 'center' }}>
-      <InputDiv onClick={(e) => handleCheckInBoxClick(e)} $isSelected={isSelected === 'checkIn'}>
+      <InputDiv onClick={(e) => handlestartTimeBoxClick(e)} $isSelected={isSelected === 'startTime'}>
         <Wrapper>
           <Label>체크인</Label>
-          <AddText $isClicked={checkIn?.length > 0}>{checkIn ?? '시간 추가'}</AddText>
+          <AddText $isClicked={startTime?.length > 0}>{startTime ?? '시간 추가'}</AddText>
         </Wrapper>
-        {isSelected === 'checkIn' && checkIn?.length > 0 && (
+        {isSelected === 'startTime' && startTime?.length > 0 && (
           <XButton type="button" onClick={handleInputRemove}>
             <FaXmark size="12px" />
           </XButton>
         )}
       </InputDiv>
       <Divider orientation="vertical" length="32px" />
-      <InputDiv onClick={(e) => handleCheckOutBoxClick(e)} $isSelected={isSelected === 'checkOut'}>
+      <InputDiv onClick={(e) => handleendTimeBoxClick(e)} $isSelected={isSelected === 'endTime'}>
         <Wrapper>
           <Label>체크아웃</Label>
-          <AddText $isClicked={checkOut?.length > 0}>{checkOut ?? '시간 추가'}</AddText>
+          <AddText $isClicked={endTime?.length > 0}>{endTime ?? '시간 추가'}</AddText>
         </Wrapper>
-        {isSelected === 'checkOut' && checkOut?.length > 0 && (
+        {isSelected === 'endTime' && endTime?.length > 0 && (
           <XButton type="button" onClick={handleInputRemove}>
             <FaXmark size="12px" />
           </XButton>
         )}
       </InputDiv>
-      {(isSelected === 'checkIn' || isSelected === 'checkOut') &&
+      {(isSelected === 'startTime' || isSelected === 'endTime') &&
         container &&
         createPortal(
           <Modal ref={modalRef}>
-            <CheckInOutModal isSelected={isSelected} setIsSelected={setIsSelected} />
+            <StartTimeOutModal isSelected={isSelected} setIsSelected={setIsSelected} />
           </Modal>,
           container,
         )}

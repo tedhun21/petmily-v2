@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
+import useSWRInfinite from 'swr/infinite';
 import styled from 'styled-components';
 import { FiSearch } from 'react-icons/fi';
 
@@ -8,17 +9,48 @@ import { BlueButton, Column, Divider, Row, Texts14h21 } from 'commonStyle';
 import LocationBox from './Location/LocationBox';
 import DateBox from './Date/DateBox';
 
-import CheckInOutBox from './CheckInOut/CheckInOutBox';
+import StartEndTimeBox from './StartEndTime/StartEndTimeBox';
+
+import { infiniteFetcher } from 'api';
+import dayjs from 'dayjs';
+
+const API_URL = process.env.REACT_APP_API_URL;
 
 export default function SearchBox() {
   const [isSelected, setIsSelected] = useState<string | null>(null);
-  const methods = useForm({ defaultValues: { location: null, date: null, checkIn: null, checkOut: null } });
+  const [url, setUrl] = useState<string | null>(null);
+  const methods = useForm({ defaultValues: { location: null, date: null, startTime: null, endTime: null } });
 
-  const onSubmit = async (data: any) => {
-    console.log('🚀 ~ onSubmit ~ data:', data);
+  const pageSize = 10;
+  const getKey = (pageIndex: number, previousPageData: any) => {
+    if (previousPageData && !previousPageData.length) return null;
+    return url ? `${url}&page=${pageIndex + 1}&pageSize=${pageSize}` : null;
   };
 
-  console.log(methods.watch());
+  const { data, size, setSize, mutate } = useSWRInfinite(getKey, infiniteFetcher);
+  console.log(data);
+
+  const onSubmit = async (data: any) => {
+    const { location, date, startTime, endTime } = data;
+
+    const queryParams = new URLSearchParams({
+      location,
+      date: date && dayjs(date).format('YYYY-MM-DD'),
+      startTime,
+      endTime,
+    });
+
+    // 존재하지 않으면 url에서 제거
+    if (!location) queryParams.delete('location');
+    if (!date) queryParams.delete('date');
+    if (!startTime) queryParams.delete('startTime');
+    if (!endTime) queryParams.delete('endTime');
+
+    const requestUrl = `${API_URL}/users/petsitters/possible?${queryParams.toString()}`;
+    setUrl(requestUrl);
+    setSize(1); // Reset the size to 1 when a new search is submitted
+    mutate();
+  };
 
   return (
     <FormProvider {...methods}>
@@ -33,12 +65,12 @@ export default function SearchBox() {
 
             <Divider orientation="vertical" length="32px" />
 
-            <CheckInOutBox isSelected={isSelected} setIsSelected={setIsSelected} />
+            <StartEndTimeBox isSelected={isSelected} setIsSelected={setIsSelected} />
           </BoxWrapper>
 
           <ButtonDiv>
             <SearchButton>
-              <FiSearch size="28px" color="white" />
+              <FiSearch size="24px" color="white" />
             </SearchButton>
           </ButtonDiv>
         </Container>
@@ -132,7 +164,9 @@ export const ModalLayOut = styled.div`
   box-shadow: ${({ theme }) => theme.shadow.dp02};
 `;
 
-const ButtonDiv = styled.div``;
+const ButtonDiv = styled.div`
+  margin: 8px;
+`;
 
 const SearchButton = styled(BlueButton)`
   display: flex;
