@@ -45,7 +45,7 @@ export default function DateBox({ isSelected, setIsSelected }: any) {
           <Label>날짜</Label>
           <AddText $isClicked={!!date}>{date ? dayjs(date).format('MM-DD') : '날짜 추가'}</AddText>
         </Wrapper>
-        {isSelected === 'date' && date?.length > 0 && (
+        {isSelected === 'date' && date && (
           <XButton type="button" onClick={handleInputRemove}>
             <FaXmark size="12px" />
           </XButton>

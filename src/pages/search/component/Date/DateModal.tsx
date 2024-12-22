@@ -29,11 +29,6 @@ export default function DateModal() {
                 maxDate={new Date(new Date().setMonth(new Date().getMonth() + 2))}
                 // 달력만 보이기 (input 없애기)
                 inline
-                // 이번 달에 속한 일수만 표시
-                renderDayContents={(day, date) => {
-                  const currentMonth = new Date().getMonth();
-                  return date.getMonth() === currentMonth ? day : null;
-                }}
               />
             );
           }}

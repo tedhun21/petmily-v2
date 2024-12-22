@@ -49,13 +49,9 @@ import Search from '@pages/search/Search';
 import QnA from '@pages/home/QnA';
 import Profile from '@pages/users/:id/Profile';
 
-import SitterSchedule from '@pages/me/SitterSchedule';
-
 import Chat from '@pages/chats/Chat';
-
 import NotFound from '@pages/common/404';
 
-import ReservationFormWizard from '@pages/reservation/ReservationFormWizard';
 import { useDispatch, useSelector } from 'react-redux';
 import { SWRConfig } from 'swr';
 
@@ -93,7 +89,7 @@ const router = createBrowserRouter(
       <Route element={<NavHeaderLayout />}>
         <Route path="" element={<Home />} />
         <Route path="reviews" element={<Reviews />} />
-        <Route path="reservation" element={<ReservationFormWizard />} />
+        <Route path="search" element={<Search />} />
         <Route path="cares" element={<Cares />} />
       </Route>
       <Route element={<BackHeaderLayout />}>
@@ -102,7 +98,6 @@ const router = createBrowserRouter(
         <Route path="me/edit" element={<EditMe />} />
         <Route path="me/register" element={<CreatePet />} />
         <Route path="me/:petId/edit" element={<EditPet />} />
-        <Route path="search" element={<Search />} />
         <Route path="qna" element={<QnA />} />
         <Route path="cares/:id" element={<CareDetail />} />
         <Route path="cares/:id/review" element={<Review />} />

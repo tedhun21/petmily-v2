@@ -2,10 +2,9 @@ import { useEffect, useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { createPortal } from 'react-dom';
 
-import { BoxInput, InputDiv, Label, Modal, Wrapper, XButton } from '../SearchBox';
-
 import { FaXmark } from 'react-icons/fa6';
-import styled from 'styled-components';
+
+import { BoxInput, InputDiv, Label, Modal, Wrapper, XButton } from '../SearchBox';
 import LocationModal from './LocationModal';
 
 export default function LocationBox({ isSelected, setIsSelected }: any) {
@@ -22,7 +21,7 @@ export default function LocationBox({ isSelected, setIsSelected }: any) {
   };
 
   const handleInputRemove = () => {
-    setValue('location', '');
+    setValue('location', null);
   };
 
   useEffect(() => {
