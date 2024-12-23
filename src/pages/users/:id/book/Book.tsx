@@ -14,7 +14,7 @@ import {
   BlueButton,
   BottomFixed,
   Column,
-  DefaultDivider,
+  Divider,
   Float,
   Row,
   SubTitle,
@@ -147,7 +147,7 @@ export default function Book() {
               <>
                 <SelectPets />
 
-                <DefaultDivider />
+                <Divider />
 
                 <AddressSection>
                   <SubTitle>어디로 방문할까요?</SubTitle>
@@ -178,7 +178,7 @@ export default function Book() {
                   </Modal>
                 </AddressSection>
 
-                <DefaultDivider />
+                <Divider />
 
                 <RequestSection>
                   <SubTitle>요청사항</SubTitle>
@@ -196,7 +196,7 @@ export default function Book() {
               </>
             ) : (
               <>
-                <DefaultDivider />
+                <Divider />
                 <div>
                   <span>예약하려면 로그인 하세요</span>
                 </div>

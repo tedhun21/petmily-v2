@@ -11,6 +11,23 @@ dayjs.extend(relativeTime);
 dayjs.extend(updateLocale);
 dayjs.extend(isBetween);
 
+// date format
+
+/// { year, month, day }
+export const dateFormat = (date: string) => {
+  const year = dayjs(date).format('YYYY');
+  const month = dayjs(date).format('MM');
+  const day = dayjs(date).format('DD');
+  return { year, month, day };
+};
+
+/// 요일 표시
+export const dayFormat = (date: string) => {
+  return dayjs(date).locale('ko').format('ddd');
+};
+
+/// 시간 범위 표시
+/// 예) 10:00 ~ 17:00
 export const timeRange = (start: string | null, end: string | null) => {
   if (!start || !end) {
     return null;
@@ -27,6 +44,8 @@ export const timeRange = (start: string | null, end: string | null) => {
   return `${formattedStart} ~ ${formattedEnd}`;
 };
 
+/// 지난 시간 표시
+/// 며칠 전, 몇 년전
 export const dateAgo = (date: string) => {
   const theDay = dayjs(date);
   const now = dayjs();
@@ -36,13 +55,6 @@ export const dateAgo = (date: string) => {
   }
 
   return theDay.from(now);
-};
-
-export const dateFormat = (date: string) => {
-  const year = dayjs(date).format('YYYY');
-  const month = dayjs(date).format('MM');
-  const day = dayjs(date).format('DD');
-  return { year, month, day };
 };
 
 export const reservationDisableDate = (day: Dayjs) => {
@@ -101,10 +113,6 @@ export const checkOutDisableTime = (
   }
 
   return false;
-};
-
-export const dayFormat = (date: string) => {
-  return dayjs(date).locale('ko').format('ddd');
 };
 
 export const formatKrDays = (day: string) => {

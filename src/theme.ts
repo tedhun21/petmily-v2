@@ -1,4 +1,5 @@
-import { css } from 'styled-components';
+import { DefaultTheme } from 'styled-components';
+
 // 1. 활성 텍스트
 // 2. 비활성 텍스트
 // 3. 강조 텍스트
@@ -7,26 +8,11 @@ import { css } from 'styled-components';
 
 const baseTheme = {
   fontSize: {
-    s12h18: css`
-      font-size: 12px;
-      line-height: 18px;
-    `,
-    s14h21: css`
-      font-size: 14px;
-      line-height: 21px;
-    `,
-    s16h24: css`
-      font-size: 16px;
-      line-height: 24px;
-    `,
-    s18h27: css`
-      font-size: 18px;
-      line-height: 27px;
-    `,
-    s20h30: css`
-      font-size: 20px;
-      line-height: 30px;
-    `,
+    s12h18: 'font-size: 12px; line-height: 18px;',
+    s14h21: 'font-size: 14px; line-height: 21px;',
+    s16h24: 'font-size: 16px; line-height: 24px;',
+    s18h27: 'font-size: 18px; line-height: 27px;',
+    s20h30: 'font-size: 20px; line-height: 30px;',
   },
   text: {
     white: '#FFFFF0',
@@ -39,31 +25,22 @@ const baseTheme = {
   },
 };
 
-const lightTheme = {
+const lightTheme: DefaultTheme = {
   ...baseTheme,
-  // color: {
-  //   black: '#0A0A0A',
-  //   gray: '#F2F2F2',
-  //   white: '#ffffff',
-  //   mainBlue: '#279EFF',
-  //   subBlue: '#1D8CE7',
-  //   darkBlue: '#096DBE',
-  //   skyBlue: '#78C1F3',
-  //   paleBlue: '#9AC5F4',
-  //   red: '#FF6161',
-  // },
+
   text: {
     ...baseTheme.text,
     active: '#1A1A1A',
     inactive: '#999999',
     highlight: '#279EFF',
     secondary: '#B5B5B5',
+    opposite: '#EAEAEA',
     error: '#FF6161',
   },
   line: {
     input: { default: '#D4D4D4', blue: '#279EFF', error: '#FF6161' },
     box: { default: '#CDCDCD', highlight: '#525252', blue: '#279EFF' },
-    divider: { default: '#DEE', blue: '#1A73E8' },
+    divider: { default: '#DEEDE0', blue: '#1A73E8' },
   },
   background: {
     primary: '#FFFFFF',
@@ -72,7 +49,7 @@ const lightTheme = {
     deepHighlight: '#1D8CE7',
     darkHighlight: '#096DBE',
     box: {
-      default: { primary: '#FFFEFE', hover: '#f6f6f6', active: '#C1C1C1' },
+      default: { primary: '#F2F2F2', hover: '#E8E8E8', active: '#D6D6D6', opposite: '#2C2C2C' },
       blue: { primary: '#279EFF', hover: '#1D8CE7', active: '#096DBE', disabled: '#757575' },
     },
     input: { primary: '#F7F7F7', hover: '#E8E8E8' },
@@ -87,19 +64,8 @@ const lightTheme = {
   },
 };
 
-const darkTheme = {
+const darkTheme: DefaultTheme = {
   ...baseTheme,
-  // color: {
-  //   black: '#121212',
-  //   gray: '#2C2C2C',
-  //   white: '#EAEAEA',
-  //   mainBlue: '#1A73E8',
-  //   subBlue: '#1451A5',
-  //   darkBlue: '#0D3B73',
-  //   skyBlue: '#6096D1',
-  //   paleBlue: '#8BADE6',
-  //   red: '#FF5A5A',
-  // },
 
   text: {
     ...baseTheme.text,
@@ -107,11 +73,12 @@ const darkTheme = {
     inactive: '#6B6B6B',
     highlight: '#1A73E8',
     secondary: '#A6A6A6',
+    opposite: '#1A1A1A',
     error: '#FF5A5A',
   },
 
   line: {
-    input: { default: '#1C1C1C', blue: '#1A73E8', error: '#FF5A5A' },
+    input: { default: '#474747', blue: '#1A73E8', error: '#FF5A5A' },
     box: { default: '#525252', highlight: '#CDCDCD', blue: '#1A73E8' },
     divider: { default: '#525252', blue: '#1A73E8' },
   },
@@ -123,7 +90,7 @@ const darkTheme = {
     deepHighlight: '#1451A5',
     darkHighlight: '#0D3B73',
     box: {
-      default: { primary: '#2C2C2C', hover: '#323232', active: '#383838' },
+      default: { primary: '#2C2C2C', hover: '#292929', active: '#404040', opposite: '#F2F2F2' },
       blue: { primary: '#1A73E8', hover: '#1451A5', active: '#0D3B73', disabled: '#787878' },
     },
     input: { primary: '#232323', hover: '#383838' },

@@ -540,7 +540,7 @@ const DayLabel = styled.label<{ isSelected?: boolean }>`
   padding: 8px;
   color: white;
   background-color: ${({ theme, isSelected }) =>
-    isSelected ? theme.background.box.blue.prirmary : theme.backgroud.box.blue.disabled};
+    isSelected ? theme.background.box.blue.primary : theme.background.box.blue.disabled};
   cursor: pointer;
   border-radius: 8px;
 

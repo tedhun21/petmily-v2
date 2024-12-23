@@ -109,12 +109,23 @@ export const BlueButton = styled(Button)`
   }
 `;
 
-export const DefaultDivider = styled.div`
-  border: 1px solid ${({ theme }) => theme.line.divider.default};
-`;
+export const Divider = styled.div<{
+  orientation?: 'horizontal' | 'vertical';
+  thickness?: string;
+  length?: string;
+}>`
+  background-color: ${({ theme }) => theme.line.divider.default};
 
-export const BlueDivider = styled.div`
-  border: 1px solid ${({ theme }) => theme.line.divider.blue};
+  ${({ orientation, thickness, length }) =>
+    orientation === 'vertical'
+      ? `
+        width: ${thickness || '1px'};
+        height: ${length || '100%'};
+      `
+      : `
+        height: ${thickness || '1px'};
+        width: ${length || '100%'};
+      `};
 `;
 
 export const Fixed = styled.div`

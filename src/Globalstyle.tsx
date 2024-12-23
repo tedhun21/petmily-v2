@@ -16,6 +16,7 @@ const GlobalStyle = createGlobalStyle`
 
     body {
         font-family: 'Noto Sans KR', Roboto, sans-serif;
+        background-color: ${({ theme }) => theme.background.secondary};
     }
 
     a {

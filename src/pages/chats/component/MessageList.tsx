@@ -103,7 +103,7 @@ const DateDivider = styled.div`
 const Date = styled(Texts14h21)`
   border-radius: 12px;
   padding: 8px;
-  background-color: ${({ theme }) => theme.background.box.active};
+  background-color: ${({ theme }) => theme.background.box.default.active};
   ${({ theme }) => theme.fontSize.s14h21};
 `;
 

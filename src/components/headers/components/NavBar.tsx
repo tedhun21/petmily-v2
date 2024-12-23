@@ -4,7 +4,7 @@ import NavBarLink from '@components/headers/components/NavBarLink';
 
 const navItem = [
   { id: 1, label: '홈', link: '/' },
-  { id: 2, label: '예약하기', link: '/reservation' },
+  { id: 2, label: '검색하기', link: '/search' },
   { id: 3, label: '예약현황', link: '/cares' },
   { id: 4, label: '이용후기', link: '/reviews' },
 ];

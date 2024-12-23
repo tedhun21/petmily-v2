@@ -99,10 +99,11 @@ const UserImage = styled(RoundedImageWrapper)`
 `;
 
 const LoginNavLink = styled(Link)`
+  color: ${({ theme }) => theme.text.white};
   background-color: ${({ theme }) => theme.background.box.blue.primary};
-  ${({ theme }) => theme.fontSize.s14h21}
   padding: 4px 8px;
   border-radius: 4px;
+  ${({ theme }) => theme.fontSize.s14h21}
 
   &:hover {
     background-color: ${({ theme }) => theme.background.box.blue.hover};

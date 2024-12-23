@@ -138,7 +138,7 @@ const LoginInput = styled(Input)`
   ${({ theme }) => theme.fontSize.s14h21};
 
   &:focus {
-    border: 1px solid ${({ theme }) => theme.line.blue};
+    border: 1px solid ${({ theme }) => theme.line.input.blue};
   }
 `;
 

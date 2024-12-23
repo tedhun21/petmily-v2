@@ -1,78 +1,73 @@
-import { fetcher, posterWithCookie, updaterWithCookie } from 'api';
-import { ImageCentered, RoundedImageWrapper, Texts16h24 } from 'commonStyle';
-import useDebounce from 'hooks/useDebounce';
+import { useSearchParams } from 'react-router-dom';
+import useSWRInfinite from 'swr/infinite';
 
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import useSWR from 'swr';
-import useSWRMutation from 'swr/mutation';
+
+import { infiniteFetcher } from 'api';
+import Result from './Result';
+import { CenterContainer } from 'commonStyle';
+import Loading from '@components/Loading';
+import { useEffect, useRef } from 'react';
+import { useInView } from 'framer-motion';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-export default function Results({ input }: any) {
-  const navigate = useNavigate();
-  const debouncedInput = useDebounce(input, 1000);
+export default function Results() {
+  const [searchParams] = useSearchParams();
+  const ref = useRef(null);
+  const isInView = useInView(ref);
 
-  // 검색
-  const { data: searchedData } = useSWR(
-    debouncedInput ? `${API_URL}/search?q=${debouncedInput}&page=1&pageSize=5` : null,
-    fetcher,
-  );
-
-  // 최근 검색어 등록
-  const { trigger } = useSWRMutation(`${API_URL}/search/recent`, updaterWithCookie);
-
-  // 최근 검색어 저장, 링크
-  const handleNavigate = (e: any) => {
-    const { id, nickname, role } = e;
-    if (role) {
-      trigger({ formData: { id, type: 'User' } });
-    }
-    navigate(`/users/${nickname}`);
+  const pageSize = 10;
+  const getKey = (pageIndex: number, previousPageData: any) => {
+    if (!searchParams || Array.from(searchParams).length === 0) return null;
+    if (previousPageData && !previousPageData.length) return null;
+    return `${API_URL}/users/petsitters/possible?${searchParams}&page=${pageIndex + 1}&pageSize=${pageSize}`;
   };
+
+  const { data, size, setSize, mutate } = useSWRInfinite(getKey, infiniteFetcher);
+
+  const isEmpty = data?.[0]?.results?.length === 0;
+  const isEnd = data && data[data.length - 1]?.results?.length < pageSize;
+
+  if (isEmpty) {
+    return (
+      <CenterContainer>
+        <span>펫시터를 찾을 수 없습니다</span>
+      </CenterContainer>
+    );
+  }
+
+  useEffect(() => {
+    if (isInView) {
+      setSize(size + 1);
+    }
+  }, [isInView]);
 
   return (
     <>
-      {searchedData?.results && (
+      {data && (
         <section>
-          <span>검색 결과</span>
-          <ul>
-            {Array.isArray(searchedData?.results) ? (
-              searchedData.results.map((result: any) => (
-                <ResultItem key={result.id}>
-                  <ResultButton onClick={() => handleNavigate(result)}>
-                    <ResultPhoto>
-                      <ImageCentered src={result.photo ? `${result.photo}` : '/imgs/DefaultUserProfile.jpg'} />
-                    </ResultPhoto>
-                    <ResultNickname>{result.nickname}</ResultNickname>
-                  </ResultButton>
-                </ResultItem>
-              ))
-            ) : (
-              <li>검색 결과가 없습니다</li>
-            )}
-          </ul>
+          <ResultsList>
+            {data[0].results.length > 0 &&
+              Array.isArray(data[0].results) &&
+              data.map((page: any) =>
+                page?.results.map((petsitter: any) => <Result key={petsitter.id} petsitter={petsitter} />),
+              )}
+          </ResultsList>
         </section>
+      )}
+
+      {!isEnd && (
+        <CenterContainer ref={ref}>
+          <Loading color="#279EFF" />
+        </CenterContainer>
       )}
     </>
   );
 }
 
-const ResultItem = styled.li`
-  gap: 8px;
-  align-items: center;
-`;
-
-const ResultButton = styled.button`
+const ResultsList = styled.ul`
   display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px;
+  flex-direction: column;
+  gap: 16px;
 `;
-
-const ResultPhoto = styled(RoundedImageWrapper)`
-  width: 52px;
-  height: 52px;
-`;
-
-const ResultNickname = styled(Texts16h24)``;
