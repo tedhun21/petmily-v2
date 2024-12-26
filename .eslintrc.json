@@ -25,6 +25,7 @@
     "no-empty": "warn", // 빈 블록 문(statement)이나 루프 등을 발견할 때 경고 메시지를 표시합니다. 일반적으로 코드 블록이 비어있을 경우 실수로 놓친 것일 수 있으므로 이를 경고로 알려줍니다.
     "no-undef": "off", // 정의되지 않은 변수 사용에 대한 경고를 비활성화합니다. 즉, 코드 내에서 정의되지 않은 변수를 사용할 때 발생하는 경고를 끄는 설정입니다.
     "import/no-unresolved": "off",
+    "import/no-named-as-default": "off", // default로 export된 모듈을 import할 때, named import로 import하라는 경고를 끄는 설정입니다.
     "@typescript-eslint/no-var-requires": 0
   }
 }

@@ -1,4 +1,4 @@
-import { Texts12h18 } from 'commonStyle';
+import { Texts12h18 } from 'styles/commonStyle';
 import { useLocation, Link } from 'react-router-dom';
 
 import styled from 'styled-components';

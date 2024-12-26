@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import styled, { css } from 'styled-components';
 import { motion } from 'framer-motion';
-import { ImageCentered, RoundedImageWrapper, Texts12h18, Texts14h21, Texts16h24 } from 'commonStyle';
+import { ImageCentered, RoundedImageWrapper, Texts12h18, Texts14h21, Texts16h24 } from 'styles/commonStyle';
 import { Message } from 'types/chat.type';
 import { formatToLocaleAMPM } from 'utils/date';
 import { shouldShowDateDivider, shouldShowSenderPhoto, shouldShowTime } from 'utils/date';

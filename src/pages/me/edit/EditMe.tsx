@@ -12,7 +12,17 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import { Modal } from '@mui/joy';
 
-import { BlueButton, BottomFixed, Column, ErrorMessage, Float, Input, Row, Texts14h21, Texts20h30 } from 'commonStyle';
+import {
+  BlueButton,
+  BottomFixed,
+  Column,
+  ErrorMessage,
+  Float,
+  Input,
+  Row,
+  Texts14h21,
+  Texts20h30,
+} from 'styles/commonStyle';
 
 import UploadProfileImg from '../../../components/UploadProfileImg';
 import { deleteCookie } from 'utils/cookie';

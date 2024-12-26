@@ -16,7 +16,7 @@ import Maps from './component/Maps';
 import { useEffect, useState } from 'react';
 import { getCookie } from 'utils/cookie';
 import { io } from 'socket.io-client';
-import { BottomFixed, CenterContainer, Float, Texts20h30 } from 'commonStyle';
+import { BottomFixed, CenterContainer, Float, Texts20h30 } from 'styles/commonStyle';
 
 const API_URL = process.env.REACT_APP_API_URL;
 const SOCKET_URL = process.env.REACT_APP_WEBSOCKET_URL;

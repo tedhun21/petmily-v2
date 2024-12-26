@@ -1,4 +1,4 @@
-import { Button } from 'commonStyle';
+import { Button } from 'styles/commonStyle';
 import styled from 'styled-components';
 
 const API_URL = process.env.REACT_APP_API_URL;

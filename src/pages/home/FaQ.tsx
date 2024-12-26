@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 
-import { Collapse, Divider, List, ListItemButton, ListItemText, Typography } from '@mui/material';
+import { Collapse, List, ListItemButton, ListItemText, Typography } from '@mui/material';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import { Divider } from 'styles/commonStyle';
 
-export default function QnA() {
+export default function FaQ() {
   const [open, setOpen] = useState<{ [key: string]: boolean }>({});
 
   const handleClick = (id: string) => {
@@ -13,7 +14,7 @@ export default function QnA() {
 
   return (
     <MainContainer>
-      <HeaderTitle>FAQ</HeaderTitle>
+      <HeaderTitle>자주 묻는 질문</HeaderTitle>
       <FirstFAQ>
         <Question>1. 기본예절</Question>
       </FirstFAQ>
@@ -549,10 +550,8 @@ const MainContainer = styled.div`
   padding: 36px;
 `;
 
-const HeaderTitle = styled.div`
-  margin-top: -16px;
-  font-weight: 700;
-  font-size: 28px;
+const HeaderTitle = styled.h1`
+  ${({ theme }) => theme.fontSize.s20h30};
 `;
 
 const FirstFAQ = styled.div`

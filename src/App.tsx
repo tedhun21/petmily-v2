@@ -1,6 +1,7 @@
 // import { Suspense, lazy } from 'react';
+import { useEffect } from 'react';
 import { createBrowserRouter, RouterProvider, Outlet, Route, createRoutesFromElements } from 'react-router-dom';
-import styled, { ThemeProvider as StyledComponentsThemeProvider } from 'styled-components';
+import { styled, ThemeProvider as StyledComponentsThemeProvider } from 'styled-components';
 import { createTheme, ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 
 import NavHeader from '@components/headers/NavHeader';
@@ -46,7 +47,7 @@ import Cares from '@pages/cares/Cares';
 import CareDetail from '@pages/cares/:id/CareDetail';
 
 import Search from '@pages/search/Search';
-import QnA from '@pages/home/QnA';
+import FaQ from '@pages/home/FaQ';
 import Profile from '@pages/users/:id/Profile';
 
 import Chat from '@pages/chats/Chat';
@@ -59,11 +60,11 @@ import Redirect from '@pages/login/Redirect';
 import { ToastContainer } from 'react-toastify';
 import Review from '@pages/cares/:id/review/Review';
 import Journal from '@pages/cares/:id/journal/Journal';
-import { darkTheme, lightTheme } from 'theme';
-import GlobalStyle from 'Globalstyle';
-import { ITheme, toggleTheme } from 'store/themeSlice';
-import { useEffect } from 'react';
 import Book from '@pages/users/:id/book/Book';
+
+import { darkTheme, lightTheme } from 'styles/theme';
+import GlobalStyle from 'styles/Globalstyle';
+import { ITheme, toggleTheme } from 'store/themeSlice';
 
 const NavHeaderLayout = () => {
   return (
@@ -98,7 +99,7 @@ const router = createBrowserRouter(
         <Route path="me/edit" element={<EditMe />} />
         <Route path="me/register" element={<CreatePet />} />
         <Route path="me/:petId/edit" element={<EditPet />} />
-        <Route path="qna" element={<QnA />} />
+        <Route path="faq" element={<FaQ />} />
         <Route path="cares/:id" element={<CareDetail />} />
         <Route path="cares/:id/review" element={<Review />} />
         <Route path="cares/:id/journal" element={<Journal />} />
@@ -121,6 +122,7 @@ export default function App() {
   const dispatch = useDispatch();
   const isDarkMode = useSelector((state: ITheme) => state.theme.isDarkMode);
 
+  // dark mode 설정
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const handleChange = (e: MediaQueryListEvent) => {

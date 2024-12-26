@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import useSWRInfinite from 'swr/infinite';
-import { CenterContainer } from 'commonStyle';
+import { CenterContainer } from 'styles/commonStyle';
 
 const API_URL = process.env.REACT_APP_API_URL;
 import { infiniteFetcherWithCookie } from 'api';

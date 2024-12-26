@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { PiStarFill } from 'react-icons/pi';
 
-import { Column, ImageCentered, RoundedImageWrapper, Row, Texts18h27 } from 'commonStyle';
+import { Column, ImageCentered, RoundedImageWrapper, Row, Texts18h27 } from 'styles/commonStyle';
 import { PetInfoCapsule, PetInfoContainer } from '@pages/cares/:id/CareDetail';
 import { formatKrDays, timeRange } from 'utils/date';
 import { Link } from 'react-router-dom';

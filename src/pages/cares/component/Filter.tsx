@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { Row, Texts12h18 } from 'commonStyle';
+import { Row, Texts12h18 } from 'styles/commonStyle';
 
 const filters = [
   { id: 1, label: '모두', value: 'all' },
@@ -27,7 +27,7 @@ export default function Filter({ filter, order, handleFilter, handleOrder }: any
               checked={filter.value === el.value}
               onChange={() => handleFilter(el)}
             />
-            <CustomLabel htmlFor={`filter-${el.id}`} isSelected={filter.value === el.value}>
+            <CustomLabel htmlFor={`filter-${el.id}`} $isSelected={filter.value === el.value}>
               {el.label}
             </CustomLabel>
           </FilterRadio>
@@ -44,7 +44,7 @@ export default function Filter({ filter, order, handleFilter, handleOrder }: any
               checked={order.value === el.value}
               onChange={() => handleOrder(el)}
             />
-            <CustomOrderLabel htmlFor={`order-${el.id}`} isSelected={order.value === el.value}>
+            <CustomOrderLabel htmlFor={`order-${el.id}`} $isSelected={order.value === el.value}>
               {el.label}
             </CustomOrderLabel>
             {index === 0 && <Texts12h18>•</Texts12h18>}
@@ -90,22 +90,22 @@ const OrderRadio = styled.div`
   }
 `;
 
-const CustomLabel = styled.label<{ isSelected: boolean }>`
+const CustomLabel = styled.label<{ $isSelected: boolean }>`
   padding: 4px 8px;
-  border: ${({ theme, isSelected }) => (isSelected ? 'none' : `1px solid ${theme.line.box.default}`)};
+  border: ${({ theme, $isSelected }) => ($isSelected ? 'none' : `1px solid ${theme.line.box.default}`)};
   border-radius: 4px;
-  color: ${({ isSelected, theme }) => (isSelected ? 'white' : theme.text.inactive)};
-  background-color: ${({ theme, isSelected }) =>
-    isSelected ? theme.background.box.blue.primary : theme.background.box.default.primary};
+  color: ${({ $isSelected, theme }) => ($isSelected ? 'white' : theme.text.inactive)};
+  background-color: ${({ theme, $isSelected }) =>
+    $isSelected ? theme.background.box.blue.primary : theme.background.box.default.primary};
   cursor: pointer;
   transition:
     background-color 0.2s,
     color 0.2s;
 `;
 
-const CustomOrderLabel = styled.label<{ isSelected: boolean }>`
+const CustomOrderLabel = styled.label<{ $isSelected: boolean }>`
   cursor: pointer;
-  color: ${({ isSelected, theme }) => (isSelected ? theme.text.highlight : theme.text.inactive)};
-  font-weight: ${({ isSelected, theme }) => (isSelected ? theme.fontWeight.bold : theme.fontWeight.normal)};
+  color: ${({ $isSelected, theme }) => ($isSelected ? theme.text.highlight : theme.text.inactive)};
+  font-weight: ${({ $isSelected, theme }) => ($isSelected ? theme.fontWeight.bold : theme.fontWeight.normal)};
   ${({ theme }) => theme.fontSize.s14h21}
 `;

@@ -14,7 +14,7 @@ import { ChatRoom } from 'types/chat.type';
 import { fetcherWithCookie, infiniteFetcherWithCookie, posterWithCookie } from 'api';
 
 import { getCookie } from 'utils/cookie';
-import { Texts20h30 } from 'commonStyle';
+import { Texts20h30 } from 'styles/commonStyle';
 import MessageList from './component/MessageList';
 
 import { FaArrowLeft } from 'react-icons/fa6';

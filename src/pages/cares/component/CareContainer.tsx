@@ -4,11 +4,12 @@ import styled from 'styled-components';
 import useSWRInfinite from 'swr/infinite';
 import { useInView } from 'framer-motion';
 
-import { CenterContainer } from 'commonStyle';
+import { CenterContainer } from 'styles/commonStyle';
 import { infiniteFetcherWithCookie } from 'api';
 
 import Loading from '@components/Loading';
 import CareCard from './CareCard';
+import { getCookie } from 'utils/cookie';
 
 const API_URL = process.env.REACT_APP_API_URL;
 export default function CareContainer({ filter, order }: any) {
@@ -17,6 +18,9 @@ export default function CareContainer({ filter, order }: any) {
   const pageSize = 10;
 
   const getKey = (pageIndex: number, previousPageData: any) => {
+    const access_token = getCookie('access_token');
+    if (!access_token) return null;
+
     if (previousPageData && !previousPageData.length) return null;
     return `${API_URL}/reservations?page=${pageIndex + 1}&pageSize=${pageSize}&status=${filter.value}&order=${order.value}`;
   };
@@ -55,7 +59,7 @@ export default function CareContainer({ filter, order }: any) {
           page?.results.map((reservation: any) => <CareCard key={reservation.id} reservation={reservation} />),
         )}
 
-      {!isEnd && (
+      {data && !isEnd && (
         <CenterContainer ref={ref}>
           <Loading color="#279EFF" />
         </CenterContainer>

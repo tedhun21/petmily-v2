@@ -9,7 +9,7 @@ import { Pagination } from 'swiper/modules';
 import { PiStarFill } from 'react-icons/pi';
 
 import { dateAgo } from 'utils/date';
-import { Column, ImageCentered, RoundedImageWrapper, Row, Texts12h18, Texts16h24 } from 'commonStyle';
+import { Column, ImageCentered, RoundedImageWrapper, Row, Texts12h18, Texts16h24 } from 'styles/commonStyle';
 
 export default function ReviewPhotoCard({ review }: any) {
   const [isTextOverflow, setIsTextOverflow] = useState(false);
@@ -65,7 +65,7 @@ export default function ReviewPhotoCard({ review }: any) {
           </StarWrapper>
         </TitleContainer>
         <div>
-          <ReviewText ref={textRef} isExpanded={isExpanded}>
+          <ReviewText ref={textRef} $isExpanded={isExpanded}>
             {review?.body}
           </ReviewText>
           {isTextOverflow && !isExpanded && (
@@ -101,26 +101,10 @@ const ReviewCard = styled.article`
   gap: 16px;
 `;
 
-const ReservationSection = styled.section`
-  display: flex;
-  flex-direction: column;
-`;
-
-const PetContainer = styled.ul`
-  display: block;
-`;
-
-const DateWrapper = styled.div``;
-
 const ReviewContainer = styled(Column)`
   justify-content: space-between;
   width: 100%;
   gap: 4px;
-`;
-
-const ClientInfo = styled(Row)`
-  gap: 8px;
-  align-items: center;
 `;
 
 const TitleContainer = styled(Row)`
@@ -140,15 +124,9 @@ const ReviewImageContainer = styled.div`
   object-fit: cover;
 `;
 
-const ClientImage = styled(RoundedImageWrapper)`
-  width: 50px;
-  height: 50px;
-  border: 2px solid ${({ theme }) => theme.line.box.blue};
-`;
-
-const ReviewText = styled.p<{ isExpanded: boolean }>`
+const ReviewText = styled.p<{ $isExpanded: boolean }>`
   display: box;
-  -webkit-line-clamp: ${({ isExpanded }) => (isExpanded ? 'none' : '3')};
+  -webkit-line-clamp: ${({ $isExpanded }) => ($isExpanded ? 'none' : '3')};
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;

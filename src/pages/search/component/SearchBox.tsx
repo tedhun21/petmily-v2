@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { FiSearch } from 'react-icons/fi';
 
-import { BlueButton, Column, Divider, Row, Texts14h21 } from 'commonStyle';
+import { BlueButton, Column, Divider, Row, Texts14h21 } from 'styles/commonStyle';
 import LocationBox from './Location/LocationBox';
 import DateBox from './Date/DateBox';
 import StartEndTimeBox from './StartEndTime/StartEndTimeBox';
@@ -93,8 +93,8 @@ export default function SearchBox() {
 }
 
 const Container = styled(Row)<{ $isSelected: string | null }>`
-  position: relative;
   align-items: center;
+  position: relative;
   border: 1px solid ${({ theme }) => theme.line.input.default};
   border-radius: 28px;
   background-color: ${({ theme, $isSelected }) => $isSelected && theme.background.box.default.active};
@@ -102,21 +102,19 @@ const Container = styled(Row)<{ $isSelected: string | null }>`
 `;
 
 const BoxWrapper = styled(Row)`
-  width: 100%;
   align-items: center;
+  width: 100%;
 `;
 
 export const InputDiv = styled.div<{ $isSelected: boolean }>`
-  flex: 1;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  cursor: pointer;
-  border-radius: 28px;
+  justify-content: space-between;
+  flex: 1;
   padding: 8px 12px;
-
+  border-radius: 28px;
   background-color: ${({ $isSelected, theme }) => $isSelected && theme.background.primary};
-
+  cursor: pointer;
   box-shadow: ${({ $isSelected, theme }) => $isSelected && theme.shadow.dp02};
 
   &:hover {
@@ -150,10 +148,10 @@ export const AddText = styled(Texts14h21)<{ $isClicked?: boolean }>`
 
 export const XButton = styled.button`
   display: flex;
-  justify-content: center;
   align-items: center;
-  border-radius: 50%;
+  justify-content: center;
   padding: 4px;
+  border-radius: 50%;
 
   &:hover {
     background-color: ${({ theme }) => theme.background.box.default.active};
@@ -164,9 +162,9 @@ export const Modal = styled.div`
   position: absolute;
   top: 100%;
   left: 0;
+  z-index: 1;
   width: 100%;
   margin-top: 16px;
-  z-index: 1;
 `;
 
 export const ModalLayOut = styled.div`
@@ -184,9 +182,8 @@ const ButtonDiv = styled.div`
 
 const SearchButton = styled(BlueButton)`
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   padding: 8px;
-
   border-radius: 50%;
 `;

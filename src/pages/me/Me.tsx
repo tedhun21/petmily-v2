@@ -8,7 +8,7 @@ import { FaArrowLeft } from 'react-icons/fa6';
 import MyPetmily from '@pages/me/components/MyPetmily';
 
 import { fetcherWithCookie } from 'api';
-import { ImageCentered, RoundedImageWrapper, Texts14h21 } from 'commonStyle';
+import { ImageCentered, RoundedImageWrapper, Texts14h21 } from 'styles/commonStyle';
 import MyPetsitterProfile from './components/MyPetsitterProfile';
 
 const API_URL = process.env.REACT_APP_API_URL;

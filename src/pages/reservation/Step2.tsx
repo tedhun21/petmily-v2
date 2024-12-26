@@ -6,7 +6,7 @@ import { Drawer } from '@mui/material';
 import { FiFilter } from 'react-icons/fi';
 import { CgOptions } from 'react-icons/cg';
 
-import { CenterContainer, Divider, Row, Texts18h27, Texts20h30 } from 'commonStyle';
+import { CenterContainer, Divider, Row, Texts18h27, Texts20h30 } from 'styles/commonStyle';
 import PossiblePetsitters from './component/step2/PossiblePetsitters';
 
 const filterList = [

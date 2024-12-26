@@ -5,7 +5,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { FaXmark } from 'react-icons/fa6';
 
-import { Divider, Row } from 'commonStyle';
+import { Divider, Row } from 'styles/commonStyle';
 import StartTimeOutModal from './StartEndTimeModal';
 import { AddText, InputDiv, Label, Modal, Wrapper, XButton } from '../SearchBox';
 

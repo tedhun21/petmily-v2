@@ -3,7 +3,7 @@ import useSWRInfinite from 'swr/infinite';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
 
-import { CenterContainer, Title } from 'commonStyle';
+import { CenterContainer, Title } from 'styles/commonStyle';
 
 import { infiniteFetcherWithCookie } from 'api';
 

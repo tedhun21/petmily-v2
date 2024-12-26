@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { ModalLayOut } from '../SearchBox';
-import { Column, Divider, Row, Texts12h18 } from 'commonStyle';
+import { Column, Divider, Row, Texts12h18 } from 'styles/commonStyle';
 import { useFormContext } from 'react-hook-form';
 
 const locations = ['강남구', '강동구', '서초구', '용산구', '종로구'];

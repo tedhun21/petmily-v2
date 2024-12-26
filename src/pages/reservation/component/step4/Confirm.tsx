@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { FaRegCircleCheck, FaCircleCheck } from 'react-icons/fa6';
 import { Modal } from '@mui/material';
 
-import { BlueButton, Column, SubTitle, Texts12h18, Texts16h24, Texts20h30, Title } from 'commonStyle';
+import { BlueButton, Column, SubTitle, Texts12h18, Texts16h24, Texts20h30, Title } from 'styles/commonStyle';
 
 export default function Confirm({ isChecked, setIsChecked }: any) {
   const [open, setOpen] = useState(false);

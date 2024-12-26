@@ -11,7 +11,7 @@ import { FaXmark } from 'react-icons/fa6';
 
 import Loading from '@components/Loading';
 import { fetcherWithCookie, posterWithCookie, updaterWithCookie } from 'api';
-import { BlueButton, CenterContainer, Texts14h21, Texts16h24, Title } from 'commonStyle';
+import { BlueButton, CenterContainer, Texts14h21, Texts16h24, Title } from 'styles/commonStyle';
 
 const API_URL = process.env.REACT_APP_API_URL;
 

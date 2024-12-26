@@ -2,7 +2,7 @@ import { useRef, ChangeEvent } from 'react';
 
 import styled from 'styled-components';
 
-import { Column, ImageCentered, RoundedImageWrapper } from 'commonStyle';
+import { Column, ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
 
 export default function UploadProfileImg({ serverImageUrl, previewImage, setPreviewImage, defaultImage }: any) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);

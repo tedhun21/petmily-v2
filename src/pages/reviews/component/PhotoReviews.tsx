@@ -1,5 +1,5 @@
 import { infiniteFetcher } from 'api';
-import { CenterContainer } from 'commonStyle';
+import { CenterContainer } from 'styles/commonStyle';
 import styled from 'styled-components';
 import useSWRInfinite from 'swr/infinite';
 import ReviewPhotoCard from './ReviewPhotoCard';
@@ -51,7 +51,7 @@ export default function PhotoReviews() {
         data[0]?.results.length > 0 &&
         data?.map((page) => page?.results.map((review: any) => <ReviewPhotoCard key={review.id} review={review} />))}
 
-      {!isEnd && (
+      {data && !isEnd && (
         <CenterContainer ref={ref}>
           <Loading color="#279EFF" />
         </CenterContainer>

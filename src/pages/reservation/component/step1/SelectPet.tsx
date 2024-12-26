@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import styled from 'styled-components';
-import { ImageCentered, RoundedImageWrapper } from 'commonStyle';
+import { ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
 
 export default function SelectPet({ pet }: any) {
   const { setValue, watch } = useFormContext();

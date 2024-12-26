@@ -1,4 +1,4 @@
-import { Texts18h27 } from 'commonStyle';
+import { Texts18h27 } from 'styles/commonStyle';
 import styled from 'styled-components';
 import { dateAgo, dayFormat, timeRange } from 'utils/date';
 

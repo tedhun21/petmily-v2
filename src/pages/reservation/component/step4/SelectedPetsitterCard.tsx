@@ -4,7 +4,7 @@ import { MdOutlineRateReview } from 'react-icons/md';
 import { PiStarFill } from 'react-icons/pi';
 
 import { formatKrDays } from 'utils/date';
-import { Column, Divider, ImageCentered, RoundedImageWrapper, Row, Texts14h21, Texts18h27 } from 'commonStyle';
+import { Column, Divider, ImageCentered, RoundedImageWrapper, Row, Texts14h21, Texts18h27 } from 'styles/commonStyle';
 
 export default function SelectedPetsitter({ petsitter }: any) {
   return (

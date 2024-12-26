@@ -1,4 +1,4 @@
-import { Texts12h18 } from 'commonStyle';
+import { Texts12h18 } from 'styles/commonStyle';
 import { IoArrowBackOutline } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';

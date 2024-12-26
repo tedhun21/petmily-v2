@@ -1,17 +1,7 @@
-import { useState } from 'react';
 import styled from 'styled-components';
 
-import { Texts20h30 } from 'commonStyle';
-import SearchInput from './component/SearchInput';
-import RecentSearches from './component/RecentSearches';
 import Results from './component/Results';
 import SearchBox from './component/SearchBox';
-import { FormProvider, useForm } from 'react-hook-form';
-import useSWRInfinite from 'swr/infinite';
-import { infiniteFetcher } from 'api';
-import dayjs from 'dayjs';
-
-const API_URL = process.env.REACT_APP_API_URL;
 
 export default function Search() {
   return (

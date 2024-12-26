@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { Texts18h27 } from 'commonStyle';
+import { Texts18h27 } from 'styles/commonStyle';
 import MyPetsitterSettings from './MyPetistterSetting';
 import MySchedule from './MySchedule';
 

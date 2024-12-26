@@ -16,7 +16,7 @@ import dayjs, { Dayjs } from 'dayjs';
 
 import { checkInDisableTime, checkOutDisableTime, reservationDisableDate } from 'utils/date';
 
-import { BlueButton, BottomFixed, Column, Float, Row } from 'commonStyle';
+import { BlueButton, BottomFixed, Column, Float, Row } from 'styles/commonStyle';
 import PetContainer from './component/step1/PetContainer';
 
 export default function Step1({ onNext }: any) {

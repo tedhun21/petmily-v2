@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { PiStarFill } from 'react-icons/pi';
 
 import { formatKrDays, timeRange } from 'utils/date';
-import { Column, ImageCentered, RoundedImageWrapper, Row, Texts12h18, Texts18h27 } from 'commonStyle';
+import { Column, ImageCentered, RoundedImageWrapper, Row, Texts12h18, Texts18h27 } from 'styles/commonStyle';
 
 export default function UsedPetsitterCard({ petsitter }: any) {
   const { nickname, star, photo, possibleDays, possibleStartTime, possibleEndTime } = petsitter;

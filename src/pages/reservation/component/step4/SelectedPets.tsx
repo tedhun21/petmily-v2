@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { TbGenderMale, TbGenderFemale } from 'react-icons/tb';
 
-import { ImageCentered, RoundedImageWrapper, Texts14h21 } from 'commonStyle';
+import { ImageCentered, RoundedImageWrapper, Texts14h21 } from 'styles/commonStyle';
 
 export default function SelectedPets({ checkedPets }: any) {
   return (
