@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { LuBadgePlus } from 'react-icons/lu';
 
-import { Row, Texts18h27 } from 'commonStyle';
+import { Row, Texts18h27 } from 'styles/commonStyle';
 import MyPetContainer from './MyPetContainer';
 
 export default function MyPetmily() {

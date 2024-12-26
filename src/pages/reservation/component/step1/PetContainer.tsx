@@ -4,7 +4,7 @@ import useSWRInfinite from 'swr/infinite';
 import { FiMoreHorizontal } from 'react-icons/fi';
 
 import SelectPet from './SelectPet';
-import { CenterContainer } from 'commonStyle';
+import { CenterContainer } from 'styles/commonStyle';
 
 import { infiniteFetcherWithCookie } from 'api';
 import Loading from '@components/Loading';

@@ -1,5 +1,5 @@
 import { infiniteFetcherWithCookie } from 'api';
-import { SubTitle } from 'commonStyle';
+import { SubTitle } from 'styles/commonStyle';
 import styled from 'styled-components';
 import useSWRInfinite from 'swr/infinite';
 import PetItem from './PetItem';

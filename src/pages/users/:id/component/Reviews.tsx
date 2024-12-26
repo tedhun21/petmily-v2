@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { fetcher } from 'api';
-import { ImageCentered, RoundedImageWrapper, Row, Texts12h18, Title } from 'commonStyle';
+import { ImageCentered, RoundedImageWrapper, Row, Texts12h18, Title } from 'styles/commonStyle';
 import ReadOnlyRating from '@components/ReadOnlyRating';
 
 import useSWR from 'swr';

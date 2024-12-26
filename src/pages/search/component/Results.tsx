@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import { infiniteFetcher } from 'api';
 import Result from './Result';
-import { CenterContainer } from 'commonStyle';
+import { CenterContainer } from 'styles/commonStyle';
 import Loading from '@components/Loading';
 import { useEffect, useRef } from 'react';
 import { useInView } from 'framer-motion';
@@ -57,7 +57,7 @@ export default function Results() {
         </section>
       )}
 
-      {!isEnd && (
+      {data && !isEnd && (
         <CenterContainer ref={ref}>
           <Loading color="#279EFF" />
         </CenterContainer>

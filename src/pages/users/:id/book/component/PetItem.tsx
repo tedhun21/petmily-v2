@@ -1,4 +1,4 @@
-import { ImageCentered, RoundedImageWrapper } from 'commonStyle';
+import { ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
 import { useFormContext } from 'react-hook-form';
 import styled from 'styled-components';
 

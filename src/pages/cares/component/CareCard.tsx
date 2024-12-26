@@ -10,7 +10,7 @@ import {
   Texts14h21,
   Texts16h24,
   Texts18h27,
-} from 'commonStyle';
+} from 'styles/commonStyle';
 import { formatStatus } from 'utils/misc';
 import { dayFormat, timeRange } from 'utils/date';
 

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import useSWRInfinite from 'swr/infinite';
 
-import { CenterContainer, Column } from 'commonStyle';
+import { CenterContainer, Column } from 'styles/commonStyle';
 import { useFormContext } from 'react-hook-form';
 import { infiniteFetcher, infiniteFetcherWithCookie } from 'api';
 

@@ -1,4 +1,4 @@
-import { Column, ImageCentered, RoundedImageWrapper, Row, Texts12h18, Texts14h21 } from 'commonStyle';
+import { Column, ImageCentered, RoundedImageWrapper, Row, Texts12h18, Texts14h21 } from 'styles/commonStyle';
 import styled from 'styled-components';
 import { PiStarFill } from 'react-icons/pi';
 import { dateAgo } from 'utils/date';

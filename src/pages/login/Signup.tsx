@@ -13,7 +13,7 @@ import DaumPostcode from 'react-daum-postcode';
 
 import { SubmitButton } from './Login';
 import { poster } from 'api';
-import { Column, ErrorMessage, Input, Texts16h24, Texts20h30 } from 'commonStyle';
+import { Column, ErrorMessage, Input, Texts16h24, Texts20h30 } from 'styles/commonStyle';
 import { toast } from 'react-toastify';
 import Loading from '@components/Loading';
 

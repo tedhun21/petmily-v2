@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { MdOutlineRateReview } from 'react-icons/md';
 import { PiCatBold, PiDogBold, PiStarFill } from 'react-icons/pi';
-import { Column, ImageCentered, RoundedImageWrapper, Row } from 'commonStyle';
+import { Column, ImageCentered, RoundedImageWrapper, Row } from 'styles/commonStyle';
 import { Link } from 'react-router-dom';
 
 export default function Result({ petsitter }: any) {

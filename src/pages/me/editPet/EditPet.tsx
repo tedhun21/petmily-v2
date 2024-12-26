@@ -31,7 +31,7 @@ import {
   GenderWrapper,
   Form,
 } from '../register/CreatePet';
-import { BottomFixed, ErrorMessage, Row, Texts20h30 } from 'commonStyle';
+import { BottomFixed, ErrorMessage, Row, Texts20h30 } from 'styles/commonStyle';
 
 import { FaXmark } from 'react-icons/fa6';
 import styled from 'styled-components';

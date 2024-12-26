@@ -20,7 +20,7 @@ import {
   RoundedImageWrapper,
   Texts18h27,
   Title,
-} from 'commonStyle';
+} from 'styles/commonStyle';
 
 import ReadOnlyRating from '@components/ReadOnlyRating';
 

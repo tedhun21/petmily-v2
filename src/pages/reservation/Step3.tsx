@@ -13,7 +13,7 @@ import {
   RoundedImageWrapper,
   Row,
   Texts18h27,
-} from 'commonStyle';
+} from 'styles/commonStyle';
 
 export default function Step3({ onNext }: any) {
   const { getValues } = useFormContext();

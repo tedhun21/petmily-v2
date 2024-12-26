@@ -1,4 +1,4 @@
-import { Texts14h21 } from 'commonStyle';
+import { Texts14h21 } from 'styles/commonStyle';
 import { PiCatBold, PiDogBold } from 'react-icons/pi';
 import styled from 'styled-components';
 import { Species } from 'types/pet.type';

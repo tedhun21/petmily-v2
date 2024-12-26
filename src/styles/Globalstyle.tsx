@@ -29,6 +29,7 @@ const GlobalStyle = createGlobalStyle`
         color:inherit;
         background-color: transparent;
         cursor: pointer;
+        font-family: inherit;
     }
 
     input {

@@ -1,11 +1,3 @@
-import { DefaultTheme } from 'styled-components';
-
-// 1. 활성 텍스트
-// 2. 비활성 텍스트
-// 3. 강조 텍스트
-// 4. 보조 텍스트
-// 5. 에러 텍스트
-
 const baseTheme = {
   fontSize: {
     s12h18: 'font-size: 12px; line-height: 18px;',
@@ -14,9 +6,7 @@ const baseTheme = {
     s18h27: 'font-size: 18px; line-height: 27px;',
     s20h30: 'font-size: 20px; line-height: 30px;',
   },
-  text: {
-    white: '#FFFFF0',
-  },
+
   fontWeight: {
     light: 400,
     normal: 500,
@@ -25,11 +15,11 @@ const baseTheme = {
   },
 };
 
-const lightTheme: DefaultTheme = {
+const lightTheme = {
   ...baseTheme,
 
   text: {
-    ...baseTheme.text,
+    white: '#FFFFF0',
     active: '#1A1A1A',
     inactive: '#999999',
     highlight: '#279EFF',
@@ -64,11 +54,11 @@ const lightTheme: DefaultTheme = {
   },
 };
 
-const darkTheme: DefaultTheme = {
+const darkTheme = {
   ...baseTheme,
 
   text: {
-    ...baseTheme.text,
+    white: '#FFFFF0',
     active: '#EAEAEA',
     inactive: '#6B6B6B',
     highlight: '#1A73E8',
@@ -90,7 +80,7 @@ const darkTheme: DefaultTheme = {
     deepHighlight: '#1451A5',
     darkHighlight: '#0D3B73',
     box: {
-      default: { primary: '#2C2C2C', hover: '#292929', active: '#404040', opposite: '#F2F2F2' },
+      default: { primary: '#2C2C2C', hover: '#3B3B3B', active: '#404040', opposite: '#F2F2F2' },
       blue: { primary: '#1A73E8', hover: '#1451A5', active: '#0D3B73', disabled: '#787878' },
     },
     input: { primary: '#232323', hover: '#383838' },

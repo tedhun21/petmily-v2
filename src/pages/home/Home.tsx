@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import HomeAd from '@components/HomeAd';
 // import Footer from '@components/footer/Footer';
 
-import { Texts14h21, Title } from 'commonStyle';
+import { Texts14h21, Title } from 'styles/commonStyle';
 import RealTimeReviews from './component/RealTimeReviews';
 import UsedPetsitters from './component/UsedPetsitters';
 import useSWR from 'swr';
@@ -21,7 +21,7 @@ export default function Home() {
         <HomeAd />
         <LinkContainer>
           <PetsitterLink to="/search">펫시터 검색</PetsitterLink>
-          <PetsitterLink to="/qna">펫시터 QnA</PetsitterLink>
+          <PetsitterLink to="/faq">자주 묻는 질문</PetsitterLink>
         </LinkContainer>
         <AdSubContainer>
           <AdSubText>{'첫 만남\n 50% 할인 쿠폰'}</AdSubText>

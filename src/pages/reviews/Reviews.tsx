@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { Title } from 'commonStyle';
+import { Title } from 'styles/commonStyle';
 import PhotoReviews from './component/PhotoReviews';
 
 export default function Reviews() {

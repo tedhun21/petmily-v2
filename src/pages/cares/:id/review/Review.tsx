@@ -8,7 +8,16 @@ import { toast } from 'react-toastify';
 
 import Loading from '@components/Loading';
 import { fetcherWithCookie, posterWithCookie, updaterWithCookie } from 'api';
-import { BlueButton, BottomFixed, CenterContainer, Column, Float, Texts14h21, Texts16h24, Title } from 'commonStyle';
+import {
+  BlueButton,
+  BottomFixed,
+  CenterContainer,
+  Column,
+  Float,
+  Texts14h21,
+  Texts16h24,
+  Title,
+} from 'styles/commonStyle';
 import { useNavigate, useParams } from 'react-router-dom';
 import useSWR from 'swr';
 import HoverRating from '@components/HoverRating';

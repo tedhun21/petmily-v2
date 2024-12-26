@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { ModalLayOut } from '../SearchBox';
-import { Column } from 'commonStyle';
+import { Column } from 'styles/commonStyle';
 import { timeOptions } from 'utils/date';
 import { useFormContext } from 'react-hook-form';
 import dayjs from 'dayjs';
@@ -79,7 +79,6 @@ const TimeContainer = styled(Column)`
 const List = styled.ul`
   display: flex;
   flex-wrap: wrap;
-
   row-gap: 1px;
   justify-content: center;
 `;
@@ -92,17 +91,15 @@ const CapsuleWrapper = styled.div<{ $isBetween: boolean; $isstartTime: boolean; 
 
 const TimeCapsule = styled.li<{ $isSelected: boolean }>`
   display: flex;
-  justify-content: center;
   align-items: center;
-  cursor: pointer;
-  border-radius: 20px;
+  justify-content: center;
   padding: 12px 16px;
   border: 1px solid transparent;
-  font-weight: ${({ theme }) => theme.fontWeight.light};
-
+  border-radius: 20px;
   color: ${({ $isSelected, theme }) => $isSelected && theme.text.opposite};
-
+  font-weight: ${({ theme }) => theme.fontWeight.light};
   background-color: ${({ theme, $isSelected }) => $isSelected && theme.background.box.default.opposite};
+  cursor: pointer;
 
   &:hover {
     border: 1px solid ${({ theme }) => theme.line.box.highlight};

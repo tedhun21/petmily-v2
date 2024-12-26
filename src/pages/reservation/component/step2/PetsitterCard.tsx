@@ -1,4 +1,4 @@
-import { ImageCentered, RoundedImageWrapper, Row, Texts12h18, Texts14h21, Texts16h24 } from 'commonStyle';
+import { ImageCentered, RoundedImageWrapper, Row, Texts12h18, Texts14h21, Texts16h24 } from 'styles/commonStyle';
 
 import styled from 'styled-components';
 
@@ -50,7 +50,7 @@ export default function PetsitterCard({ petsitter, onNext }: any) {
 
 const Card = styled.button`
   display: flex;
-  justify-contnet: space-between;
+  justify-content: space-between;
   padding: 12px;
   border-radius: 12px;
   color: inherit;

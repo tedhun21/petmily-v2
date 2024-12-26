@@ -11,7 +11,7 @@ import { poster } from 'api';
 import { setCookie } from 'utils/cookie';
 import GoogleOAuthButton from '@components/buttons/OAuthButton';
 import Loading from '@components/Loading';
-import { BlueButton, Column, ErrorMessage, Input } from 'commonStyle';
+import { BlueButton, Column, ErrorMessage, Input } from 'styles/commonStyle';
 import { toast } from 'react-toastify';
 
 const schema = yup.object().shape({

@@ -6,7 +6,7 @@ import { updaterWithCookie } from 'api';
 
 import { useNavigate } from 'react-router-dom';
 import Loading from '@components/Loading';
-import { BlueButton } from 'commonStyle';
+import { BlueButton } from 'styles/commonStyle';
 
 const API_URL = process.env.REACT_APP_API_URL;
 

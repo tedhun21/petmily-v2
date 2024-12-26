@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 
-import { Row, Title } from 'commonStyle';
+import { Row, Title } from 'styles/commonStyle';
 import { reservationDisableDate, timeOptions } from 'utils/date';
 import { motion, AnimatePresence } from 'framer-motion';
 import { fetcher } from 'api';

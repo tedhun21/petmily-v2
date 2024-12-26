@@ -10,7 +10,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { PiCatBold, PiDogBold } from 'react-icons/pi';
 
 import UploadProfileImg from '@components/UploadProfileImg';
-import { BlueButton, BottomFixed, Column, ErrorMessage, Float, Input, Row, Texts20h30 } from 'commonStyle';
+import { BlueButton, BottomFixed, Column, ErrorMessage, Float, Input, Row, Texts20h30 } from 'styles/commonStyle';
 
 import useSWRMutation from 'swr/mutation';
 import { posterWithCookie } from 'api';

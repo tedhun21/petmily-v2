@@ -1,4 +1,4 @@
-import { ImageCentered, RoundedImageWrapper, Row, Texts18h27 } from 'commonStyle';
+import { ImageCentered, RoundedImageWrapper, Row, Texts18h27 } from 'styles/commonStyle';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 

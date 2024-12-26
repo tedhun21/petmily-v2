@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 import styled from 'styled-components';
 
-import { Column } from 'commonStyle';
+import { Column } from 'styles/commonStyle';
 import NavBar from './components/NavBar';
 import MeButton from './components/MeButton';
 

@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useInView } from 'framer-motion';
 
-import { CenterContainer } from 'commonStyle';
+import { CenterContainer } from 'styles/commonStyle';
 
 import PetmilyCard from './PetmilyCard';
 import { infiniteFetcherWithCookie } from 'api';

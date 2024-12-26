@@ -1,5 +1,5 @@
 import { deleterWithCookie, fetcherWithCookie, posterWithCookie, updaterWithCookie } from 'api';
-import { CenterContainer, ImageCentered, RoundedImageWrapper, Row, Texts18h27 } from 'commonStyle';
+import { CenterContainer, ImageCentered, RoundedImageWrapper, Row, Texts18h27 } from 'styles/commonStyle';
 import { FaXmark } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';

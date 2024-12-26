@@ -17,7 +17,7 @@ const themeSlice = createSlice({
     toggleTheme: (state, action) => {
       if (action.payload === 'dark') {
         state.isDarkMode = true;
-      } else {
+      } else if (action.payload === 'light') {
         state.isDarkMode = false;
       }
     },

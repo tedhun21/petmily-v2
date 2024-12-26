@@ -1,4 +1,4 @@
-import { CenterContainer, Column, ImageCentered, RoundedImageWrapper, Row, Texts12h18 } from 'commonStyle';
+import { CenterContainer, Column, ImageCentered, RoundedImageWrapper, Row, Texts12h18 } from 'styles/commonStyle';
 import styled from 'styled-components';
 
 import { Link } from 'react-router-dom';

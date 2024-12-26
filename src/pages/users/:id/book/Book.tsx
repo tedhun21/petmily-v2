@@ -21,7 +21,7 @@ import {
   Texts14h21,
   Texts16h24,
   Title,
-} from 'commonStyle';
+} from 'styles/commonStyle';
 import SelectedPetsitter from '@pages/reservation/component/step4/SelectedPetsitterCard';
 import Confirm from '@pages/reservation/component/step4/Confirm';
 import useSWRMutation from 'swr/mutation';

@@ -1,6 +1,6 @@
 import Loading from '@components/Loading';
 import { posterWithCookie, updaterWithCookie } from 'api';
-import { BlueButton, CenterContainer, Texts14h21, Texts16h24, Title } from 'commonStyle';
+import { BlueButton, CenterContainer, Texts14h21, Texts16h24, Title } from 'styles/commonStyle';
 import { ChangeEvent, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { FaXmark } from 'react-icons/fa6';

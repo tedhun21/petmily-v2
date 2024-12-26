@@ -1,18 +1,26 @@
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 import useSWR from 'swr';
 import styled from 'styled-components';
 import { useNavigate, Link } from 'react-router-dom';
 
 import { deleteCookie } from 'utils/cookie';
-import { ImageCentered, RoundedImageWrapper } from 'commonStyle';
+import { ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
 import { fetcherWithCookie } from 'api';
 import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'store';
+import { toggleTheme } from 'store/themeSlice';
+import { MdLightbulbOutline, MdNightlightRound } from 'react-icons/md';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
 export default function MeButton() {
+  const userContainer = document.getElementById('user-container');
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { isDarkMode } = useSelector((state: RootState) => state.theme);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modalRef = useRef<HTMLDivElement | null>(null);
@@ -24,9 +32,11 @@ export default function MeButton() {
     setIsModalOpen((prev) => !prev);
   };
 
-  const handleOutsideClick = (e: MouseEvent) => {
-    if (isModalOpen && modalRef.current && !modalRef.current.contains(e.target as Node)) {
-      setIsModalOpen(false);
+  const handleDarkMode = () => {
+    if (isDarkMode) {
+      dispatch(toggleTheme('light'));
+    } else {
+      dispatch(toggleTheme('dark'));
     }
   };
 
@@ -39,37 +49,49 @@ export default function MeButton() {
   };
 
   useEffect(() => {
-    if (isModalOpen) {
-      // 모달이 열려있을 때만 클릭 이벤트 리스너를 추가
-      window.addEventListener('click', handleOutsideClick);
-    } else {
-      // 모달이 닫혔을 때는 클릭 이벤트 리스너를 제거
-      window.removeEventListener('click', handleOutsideClick);
-    }
+    const handleOutsideClick = (e: MouseEvent) => {
+      const target = e.target as Node;
+
+      if (modalRef.current && !modalRef.current.contains(target)) {
+        setIsModalOpen(false);
+      }
+    };
+
+    window.addEventListener('click', handleOutsideClick);
 
     // 컴포넌트 언마운트 시 클릭 이벤트 리스너를 정리
     return () => window.removeEventListener('click', handleOutsideClick);
-  }, [isModalOpen]);
+  }, []);
 
   return (
-    <UserContainer>
+    <UserContainer id="user-container">
       {me ? (
-        <UserWrapper>
+        <>
           <UserButton type="button" onClick={handleMenuOpen}>
             <UserImage>
               <ImageCentered src={me.photo ? `${me.photo}` : '/imgs/DefaultUserProfile.jpg'} alt="user_photo" />
             </UserImage>
           </UserButton>
 
-          {isModalOpen && me && (
-            <LoginNavModal ref={modalRef}>
-              <MypageLink to="/me" onClick={() => setIsModalOpen(false)}>
-                마이페이지
-              </MypageLink>
-              <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
-            </LoginNavModal>
-          )}
-        </UserWrapper>
+          {isModalOpen &&
+            me &&
+            userContainer &&
+            createPortal(
+              <LoginNavModal ref={modalRef}>
+                <Nav>
+                  <StyledNavLink to="/me" onClick={() => setIsModalOpen(false)}>
+                    마이페이지
+                  </StyledNavLink>
+                  <StyledNavButton onClick={handleDarkMode}>
+                    <span>{isDarkMode ? '라이트모드: ' : '다크모드: '}</span>
+                    {isDarkMode ? <MdLightbulbOutline /> : <MdNightlightRound />}
+                  </StyledNavButton>
+                  <StyledNavButton onClick={handleLogout}>로그아웃</StyledNavButton>
+                </Nav>
+              </LoginNavModal>,
+              userContainer,
+            )}
+        </>
       ) : (
         <LoginNavLink to="/login">로그인/회원가입</LoginNavLink>
       )}
@@ -80,9 +102,6 @@ export default function MeButton() {
 const UserContainer = styled.div`
   display: flex;
   gap: 12px;
-`;
-
-const UserWrapper = styled.div`
   position: relative;
 `;
 
@@ -115,30 +134,48 @@ const LoginNavLink = styled(Link)`
   }
 `;
 
-const LoginNavModal = styled.nav`
-  display: flex;
-  flex-direction: column;
+const LoginNavModal = styled.div`
   align-items: center;
   justify-content: center;
   position: absolute;
   top: 24px;
   right: 24px;
-  z-index: 999;
-  width: 100px;
-  height: 80px;
+  z-index: 1;
+`;
+
+const Nav = styled.nav`
+  display: flex;
+  flex-direction: column;
+  width: 120px;
+  padding: 8px;
   border-radius: 8px;
-  background-color: ${({ theme }) => theme.background.highlight};
-  gap: 12px;
+  background-color: ${({ theme }) => theme.background.box.default.primary};
   box-shadow: ${({ theme }) => theme.shadow.dp03};
 `;
 
-const MypageLink = styled(Link)`
-  cursor: pointer;
-  padding: 4px;
-  border-radius: 4px;
+const StyledNavLink = styled(Link)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 4px;
+  border-radius: 8px;
   ${({ theme }) => theme.fontSize.s14h21};
+
+  &:hover {
+    background-color: ${({ theme }) => theme.background.box.default.hover};
+  }
 `;
 
-const LogoutButton = styled.button`
+const StyledNavButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 4px;
+  border-radius: 4px;
+
   ${({ theme }) => theme.fontSize.s14h21};
+
+  &:hover {
+    background-color: ${({ theme }) => theme.background.box.default.hover};
+  }
 `;

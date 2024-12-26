@@ -25,8 +25,8 @@ const StyledRating = styled(Rating)`
 
 
   & .MuiRating-decimal {
-    position: 'relative',
-    overflow: 'hidden',
+    position: relative;
+    overflow: hidden;
   },
 `;
 
