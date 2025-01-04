@@ -10,7 +10,7 @@ import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { Modal } from '@mui/joy';
+import { Modal } from '@mui/material';
 
 import {
   BlueButton,
@@ -95,7 +95,7 @@ export default function EditMe() {
 
   const {
     register,
-    getValues,
+
     clearErrors,
     setValue,
     handleSubmit,
@@ -297,7 +297,7 @@ export default function EditMe() {
                 <InputWrapper>
                   <InputLabel>케어가능동물</InputLabel>
                   <PetSpciesButtonContainer>
-                    <TypeRadioLabel isSelected={watch('possiblePetSpecies')?.includes('Dog')}>
+                    <TypeRadioLabel $isSelected={watch('possiblePetSpecies')?.includes('Dog')}>
                       <input
                         hidden
                         type="checkbox"
@@ -307,7 +307,7 @@ export default function EditMe() {
                       />
                       <PiDogBold size="20px" color="white" />
                     </TypeRadioLabel>
-                    <TypeRadioLabel isSelected={watch('possiblePetSpecies')?.includes('Cat')}>
+                    <TypeRadioLabel $isSelected={watch('possiblePetSpecies')?.includes('Cat')}>
                       <input
                         hidden
                         type="checkbox"
@@ -339,7 +339,7 @@ export default function EditMe() {
 
                     <LocationInputContainer>
                       <LocationInput
-                        placeholder="예) 서울시, 서울시 용산구"
+                        placeholder="예) 서울, 서울 용산구"
                         value={newLocation}
                         onChange={(e) => setNewLocation(e.target.value)}
                       />
@@ -353,7 +353,7 @@ export default function EditMe() {
                   <InputLabel>케어가능요일</InputLabel>
                   <WeekdaysWrapper>
                     {weekdays.map((day: any) => (
-                      <DayLabel key={day.id} isSelected={watch('possibleDays')?.includes(day.value)}>
+                      <DayLabel key={day.id} $isSelected={watch('possibleDays')?.includes(day.value)}>
                         <input
                           hidden
                           type="checkbox"
@@ -371,50 +371,46 @@ export default function EditMe() {
                   <TimePickerContainer>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DemoContainer components={['TimePicker']} sx={{ flex: 1 }}>
-                        <StyledTimePicker>
-                          <Controller
-                            name="possibleStartTime"
-                            control={control}
-                            render={({ field: { value, onChange } }) => (
-                              <TimePicker
-                                label="시작"
-                                minutesStep={30}
-                                skipDisabled={true}
-                                minTime={dayjs(new Date(0, 0, 0, 8))}
-                                maxTime={dayjs(new Date(0, 0, 0, 21))}
-                                ampm={false}
-                                value={value || null}
-                                onChange={onChange}
-                                // shouldDisableTime={(value, view) => checkInDisableTime(value, view, watch('date'))}
-                                sx={{ width: '100%' }}
-                              />
-                            )}
-                          />
-                        </StyledTimePicker>
+                        <Controller
+                          name="possibleStartTime"
+                          control={control}
+                          render={({ field: { value, onChange } }) => (
+                            <StyledTimePicker
+                              label="시작"
+                              minutesStep={30}
+                              skipDisabled={true}
+                              minTime={dayjs(new Date(0, 0, 0, 8))}
+                              maxTime={dayjs(new Date(0, 0, 0, 21))}
+                              ampm={false}
+                              value={value || null}
+                              onChange={onChange}
+                              // shouldDisableTime={(value, view) => checkInDisableTime(value, view, watch('date'))}
+                              sx={{ minWidth: 'none' }}
+                            />
+                          )}
+                        />
                       </DemoContainer>
                     </LocalizationProvider>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DemoContainer components={['TimePicker']} sx={{ flex: 1 }}>
-                        <StyledTimePicker>
-                          <Controller
-                            name="possibleEndTime"
-                            control={control}
-                            render={({ field: { value, onChange } }) => (
-                              <TimePicker
-                                label="끝"
-                                minutesStep={30}
-                                skipDisabled={true}
-                                minTime={dayjs(new Date(0, 0, 0, 8))}
-                                maxTime={dayjs(new Date(0, 0, 0, 21))}
-                                ampm={false}
-                                value={value || null}
-                                onChange={onChange}
-                                // shouldDisableTime={(value, view) => checkInDisableTime(value, view, watch('date'))}
-                                sx={{ width: '100%' }}
-                              />
-                            )}
-                          />
-                        </StyledTimePicker>
+                        <Controller
+                          name="possibleEndTime"
+                          control={control}
+                          render={({ field: { value, onChange } }) => (
+                            <StyledTimePicker
+                              label="끝"
+                              minutesStep={30}
+                              skipDisabled={true}
+                              minTime={dayjs(new Date(0, 0, 0, 8))}
+                              maxTime={dayjs(new Date(0, 0, 0, 21))}
+                              ampm={false}
+                              value={value || null}
+                              onChange={onChange}
+                              // shouldDisableTime={(value, view) => checkInDisableTime(value, view, watch('date'))}
+                              sx={{ minWidth: 'none' }}
+                            />
+                          )}
+                        />
                       </DemoContainer>
                     </LocalizationProvider>
                   </TimePickerContainer>
@@ -452,6 +448,7 @@ const MainContainer = styled.section`
 const InputContainer = styled(Column)`
   padding: 20px;
   gap: 20px;
+  padding-bottom: 124px;
 `;
 
 const EmailWrapper = styled.div`
@@ -476,10 +473,13 @@ const InputError = styled(Column)`
 
 const MeInput = styled(Input)`
   width: 100%;
-  border: 2px solid ${({ theme }) => theme.line.input.blue};
   border-radius: 8px;
   padding: 8px;
   ${({ theme }) => theme.fontSize.s16h24}
+
+  &:focus {
+    border: 1px solid ${({ theme }) => theme.line.input.blue};
+  }
 `;
 
 const LocationInputWrapper = styled(Column)`
@@ -508,12 +508,21 @@ const LocationInputContainer = styled(Row)`
   justify-content: space-between;
 `;
 
-const LocationInput = styled.input`
+const LocationInput = styled(Input)`
   width: 100%;
-  border: 2px solid ${({ theme }) => theme.line.input.blue};
+
   border-radius: 8px;
   padding: 8px;
   ${({ theme }) => theme.fontSize.s16h24};
+  background-color: ${({ theme }) => theme.background.input.primary};
+
+  &:hover {
+    background-color: ${({ theme }) => theme.background.input.hover};
+  }
+
+  &:focus {
+    border: 1px solid ${({ theme }) => theme.line.input.blue};
+  }
 `;
 
 const AddLocationButton = styled.button`
@@ -524,15 +533,20 @@ const AddLocationButton = styled.button`
 
 const TextArea = styled.textarea`
   width: 80%;
-  border: 2px solid ${({ theme }) => theme.line.input.blue};
+
   border-radius: 8px;
   padding: 8px;
   color: ${({ theme }) => theme.text.active};
+  border: 1px solid ${({ theme }) => theme.line.input.default};
   background-color: ${({ theme }) => theme.background.input.primary};
   ${({ theme }) => theme.fontSize.s16h24};
 
   &:hover {
     background-color: ${({ theme }) => theme.background.input.hover};
+  }
+  &:focus {
+    outline: none;
+    border: 1px solid ${({ theme }) => theme.line.input.blue};
   }
 `;
 
@@ -546,11 +560,11 @@ const WeekdaysWrapper = styled.div`
   justify-content: space-between;
 `;
 
-const DayLabel = styled.label<{ isSelected?: boolean }>`
+const DayLabel = styled.label<{ $isSelected?: boolean }>`
   padding: 8px;
   color: white;
-  background-color: ${({ theme, isSelected }) =>
-    isSelected ? theme.background.box.blue.primary : theme.background.box.blue.disabled};
+  background-color: ${({ theme, $isSelected }) =>
+    $isSelected ? theme.background.box.blue.primary : theme.background.box.blue.disabled};
   cursor: pointer;
   border-radius: 8px;
 
@@ -569,18 +583,28 @@ const TimePickerContainer = styled(Row)`
   gap: 8px;
 `;
 
-const StyledTimePicker = styled.div`
-  // TimePicker 컴포넌트의 스타일을 수정하기 위한
-  display: flex;
-  justify-content: center;
-  align-items: center;
+const StyledTimePicker = styled(TimePicker)`
+  .MuiInputBase-root {
+    border-radius: 8px;
+    background-color: ${({ theme }) => theme.background.input.primary};
+    &:hover {
+      background-color: ${({ theme }) => theme.background.input.hover};
+    }
+  }
+
+  .MuiOutlinedInput-notchedOutline {
+    border-color: ${({ theme }) => theme.line.input.default};
+    &:hover {
+      border-color: red;
+    }
+  }
 `;
 
 const FloatContainer = styled(Float)`
   left: 0;
   bottom: 0;
   width: 100%;
-  padding: 20px;
+  padding: 0 20px 20px 20px;
   display: flex;
   flex-direction: column;
   gap: 20px;

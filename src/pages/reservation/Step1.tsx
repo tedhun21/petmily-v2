@@ -3,13 +3,13 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 
-import { TextField } from '@mui/material';
+import { Modal, TextField } from '@mui/material';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers';
-import { Modal, Sheet } from '@mui/joy';
+
 import DaumPostcode from 'react-daum-postcode';
 
 import dayjs, { Dayjs } from 'dayjs';
@@ -221,9 +221,9 @@ export default function Step1({ onNext }: any) {
               onClose={() => setIsModalOpen(false)}
               sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
             >
-              <Sheet sx={{ width: '360px;' }}>
+              <div style={{ width: '360px;' }}>
                 <DaumPostcode onComplete={handleComplete} />
-              </Sheet>
+              </div>
             </Modal>
           </Container>
 

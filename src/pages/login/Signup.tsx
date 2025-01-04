@@ -3,12 +3,12 @@ import { useNavigate } from 'react-router-dom';
 
 import { useForm } from 'react-hook-form';
 import useSWRMutation from 'swr/mutation';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import GoogleOAuthButton from '@components/buttons/OAuthButton';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { Modal, Sheet } from '@mui/joy';
+import { Modal } from '@mui/material';
 import DaumPostcode from 'react-daum-postcode';
 
 import { SubmitButton } from './Login';
@@ -225,9 +225,9 @@ export default function Signup() {
           onClose={() => setIsModalOpen(false)}
           sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
         >
-          <Sheet sx={{ width: '360px;' }}>
+          <div style={{ width: '360px;' }}>
             <DaumPostcode onComplete={handleComplete} />
-          </Sheet>
+          </div>
         </Modal>
       )}
     </MainContainer>

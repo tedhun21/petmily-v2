@@ -3,8 +3,6 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import useSWR from 'swr';
 
-import { FaArrowLeft } from 'react-icons/fa6';
-
 import MyPetmily from '@pages/me/components/MyPetmily';
 
 import { fetcherWithCookie } from 'api';
@@ -17,43 +15,31 @@ export default function Me() {
   const { data: me } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);
 
   return (
-    <>
-      <StyledLink to="/">
-        <FaArrowLeft color="#279EFF" size="24px" />
-      </StyledLink>
-      <MypageContainer>
-        <MyProfileContianer>
-          <MyProfile>
-            <MyImage>
-              <ImageCentered
-                src={me?.photo ? `${me?.photo}` : 'imgs/DefaultUserProfile.jpg'}
-                alt="user profile image"
-              />
-            </MyImage>
+    <MypageContainer>
+      <MyProfileContianer>
+        <MyProfile>
+          <MyImage>
+            <ImageCentered src={me?.photo ? `${me?.photo}` : 'imgs/DefaultUserProfile.jpg'} alt="user profile image" />
+          </MyImage>
 
-            <TextWrapper>
-              <HelloText>안녕하세요!</HelloText>
-              {me?.nickname ? (
-                <NameText>{`${me?.nickname} 님`}</NameText>
-              ) : (
-                <Texts14h21>닉네임을 설정해주세요</Texts14h21>
-              )}
-            </TextWrapper>
-          </MyProfile>
-          <EditLink to="/me/edit">
-            <span>회원정보 수정</span>
-          </EditLink>
-        </MyProfileContianer>
+          <TextWrapper>
+            <HelloText>안녕하세요!</HelloText>
+            {me?.nickname ? (
+              <NameText>{`${me?.nickname} 님`}</NameText>
+            ) : (
+              <Texts14h21>닉네임을 설정해주세요</Texts14h21>
+            )}
+          </TextWrapper>
+        </MyProfile>
+        <EditLink to="/me/edit">
+          <span>회원정보 수정</span>
+        </EditLink>
+      </MyProfileContianer>
 
-        {me?.role === 'Client' ? <MyPetmily /> : <MyPetsitterProfile me={me} />}
-      </MypageContainer>
-    </>
+      {me?.role === 'Client' ? <MyPetmily /> : <MyPetsitterProfile me={me} />}
+    </MypageContainer>
   );
 }
-
-const StyledLink = styled(Link)`
-  padding: 20px;
-`;
 
 // 전체 페이지
 const MypageContainer = styled.main`
