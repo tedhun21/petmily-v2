@@ -51,7 +51,7 @@ const LinkContainer = styled.div`
 `;
 
 const StyledDefaultLink = styled(Link)`
-  border: 1px solid ${({ theme }) => theme.line.box.default};
+  border: 1px solid ${({ theme }) => theme.line.box.primary};
   color: ${({ theme }) => theme.text.active};
   background-color: ${({ theme }) => theme.background.box.default.primary};
 
@@ -67,7 +67,7 @@ const PetsitterLink = styled(Link)`
   padding: 24px;
   color: ${({ theme }) => theme.text.active};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
-  border: 1px solid ${({ theme }) => theme.line.box.default};
+  border: 1px solid ${({ theme }) => theme.line.box.primary};
   border-radius: 16px;
   background-color: ${({ theme }) => theme.background.box.default.primary};
   ${({ theme }) => theme.fontSize.s16h24};

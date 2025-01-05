@@ -68,7 +68,7 @@ const MyProfile = styled.div`
 const MyImage = styled(RoundedImageWrapper)`
   width: 60px;
   height: 60px;
-  border: 2px solid ${({ theme }) => theme.line.box.blue};
+  border: 2px solid ${({ theme }) => theme.line.box.highlight};
 `;
 
 const TextWrapper = styled.div`
@@ -94,7 +94,7 @@ const EditLink = styled(Link)`
   align-items: center;
   justify-content: center;
   padding: 8px;
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.radius};
   color: white;
   background-color: ${({ theme }) => theme.background.box.blue.primary};
 

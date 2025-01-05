@@ -21,7 +21,7 @@ const NavLi = styled.li<{ $isActive: boolean }>`
   align-items: center;
   justify-content: center;
   flex: 1;
-  border-bottom: ${({ $isActive, theme }) => ($isActive ? `2px solid ${theme.line.box.blue}` : '')};
+  border-bottom: ${({ $isActive, theme }) => ($isActive ? `2px solid ${theme.line.box.highlight}` : '')};
 `;
 
 const CustomLink = styled(Link)<{ $isActive: boolean }>`
@@ -34,6 +34,6 @@ const CustomLink = styled(Link)<{ $isActive: boolean }>`
 
 const LinkLabel = styled(Texts12h18)<{ $isActive: boolean }>`
   padding: 4px 8px;
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.radius};
   color: ${({ $isActive, theme }) => ($isActive ? theme.text.active : theme.text.inactive)};
 `;

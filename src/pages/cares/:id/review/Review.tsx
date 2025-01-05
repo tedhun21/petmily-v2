@@ -268,7 +268,7 @@ const TextArea = styled.textarea`
   width: 100%;
   height: 100px;
   padding: 8px;
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.radius};
   color: ${({ theme }) => theme.text.active};
   background-color: ${({ theme }) => theme.background.input.primary};
   ${({ theme }) => theme.fontSize.s14h21};
@@ -296,7 +296,7 @@ const ImageSelectWrapper = styled.div`
 
 const ImageSelectButton = styled(BlueButton)`
   padding: 4px 8px;
-  border-radius: 4px;
+  border-radius: ${({ theme }) => theme.radius};
   ${({ theme }) => theme.fontSize.s14h21};
 `;
 
@@ -314,7 +314,7 @@ const ImagePreviewItem = styled.div`
 
 const Img = styled.img`
   width: 100px;
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.radius};
 `;
 
 const RemoveButton = styled.button`
@@ -326,7 +326,7 @@ const RemoveButton = styled.button`
   right: 0;
   width: 24px;
   height: 24px;
-  border: 1px solid ${({ theme }) => theme.line.box.default};
+  border: 1px solid ${({ theme }) => theme.line.box.primary};
   border-radius: 50%;
   background-color: ${({ theme }) => theme.background.highlight};
 `;
@@ -342,7 +342,7 @@ const FloatButtonContainer = styled(Float)`
 const SubmitButton = styled(BlueButton)`
   padding: 8px;
   width: 100%;
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.radius};
 
   ${({ theme }) => theme.fontSize.s16h24};
 `;

@@ -142,7 +142,7 @@ const PetsitterContainer = styled(Row)`
   align-items: center;
   justify-content: space-between;
   padding: 12px;
-  border: 2px solid ${({ theme }) => theme.line.box.blue};
+  border: 2px solid ${({ theme }) => theme.line.box.highlight};
   border-radius: 16px;
   gap: 8px;
 `;
@@ -155,7 +155,7 @@ const PetsitterInfo = styled(Row)`
 const PetsitterImage = styled(RoundedImageWrapper)`
   width: 40px;
   height: 40px;
-  border: 2px solid ${({ theme }) => theme.line.box.blue};
+  border: 2px solid ${({ theme }) => theme.line.box.highlight};
 `;
 
 const PetsitterDetailLink = styled(Link)`
@@ -165,7 +165,7 @@ const PetsitterDetailLink = styled(Link)`
   background-color: ${({ theme }) => theme.background.box.blue.primary};
   ${({ theme }) => theme.fontSize.s14h21}
   padding: 4px 8px;
-  border-radius: 4px;
+  border-radius: ${({ theme }) => theme.radius};
   color: white;
 
   &:hover {

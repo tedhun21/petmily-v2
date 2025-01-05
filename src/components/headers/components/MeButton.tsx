@@ -121,7 +121,7 @@ const LoginNavLink = styled(Link)`
   color: ${({ theme }) => theme.text.white};
   background-color: ${({ theme }) => theme.background.box.blue.primary};
   padding: 4px 8px;
-  border-radius: 4px;
+  border-radius: ${({ theme }) => theme.radius};
   ${({ theme }) => theme.fontSize.s14h21}
 
   &:hover {
@@ -148,7 +148,7 @@ const Nav = styled.nav`
   flex-direction: column;
   width: 120px;
   padding: 8px;
-  border-radius: 8px;
+  border-radius: 12px;
   background-color: ${({ theme }) => theme.background.box.default.primary};
   box-shadow: ${({ theme }) => theme.shadow.dp03};
 `;
@@ -158,7 +158,7 @@ const StyledNavLink = styled(Link)`
   justify-content: center;
   align-items: center;
   padding: 8px 4px;
-  border-radius: 8px;
+  border-radius: 12px;
   ${({ theme }) => theme.fontSize.s14h21};
 
   &:hover {
@@ -171,7 +171,7 @@ const StyledNavButton = styled.button`
   justify-content: center;
   align-items: center;
   padding: 8px 4px;
-  border-radius: 4px;
+  border-radius: ${({ theme }) => theme.radius};
 
   ${({ theme }) => theme.fontSize.s14h21};
 

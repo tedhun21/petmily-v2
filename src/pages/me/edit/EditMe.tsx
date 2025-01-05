@@ -473,12 +473,12 @@ const InputError = styled(Column)`
 
 const MeInput = styled(Input)`
   width: 100%;
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.radius};
   padding: 8px;
   ${({ theme }) => theme.fontSize.s16h24}
 
   &:focus {
-    border: 1px solid ${({ theme }) => theme.line.input.blue};
+    border: 1px solid ${({ theme }) => theme.line.input.highlight};
   }
 `;
 
@@ -495,7 +495,7 @@ const LocationList = styled.ul`
 const LocationItem = styled.li`
   display: flex;
   align-items: center;
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.radius};
   gap: 4px;
   padding: 4px;
   color: white;
@@ -511,7 +511,7 @@ const LocationInputContainer = styled(Row)`
 const LocationInput = styled(Input)`
   width: 100%;
 
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.radius};
   padding: 8px;
   ${({ theme }) => theme.fontSize.s16h24};
   background-color: ${({ theme }) => theme.background.input.primary};
@@ -521,7 +521,7 @@ const LocationInput = styled(Input)`
   }
 
   &:focus {
-    border: 1px solid ${({ theme }) => theme.line.input.blue};
+    border: 1px solid ${({ theme }) => theme.line.input.highlight};
   }
 `;
 
@@ -534,10 +534,10 @@ const AddLocationButton = styled.button`
 const TextArea = styled.textarea`
   width: 80%;
 
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.radius};
   padding: 8px;
   color: ${({ theme }) => theme.text.active};
-  border: 1px solid ${({ theme }) => theme.line.input.default};
+  border: 1px solid ${({ theme }) => theme.line.input.primary};
   background-color: ${({ theme }) => theme.background.input.primary};
   ${({ theme }) => theme.fontSize.s16h24};
 
@@ -546,7 +546,7 @@ const TextArea = styled.textarea`
   }
   &:focus {
     outline: none;
-    border: 1px solid ${({ theme }) => theme.line.input.blue};
+    border: 1px solid ${({ theme }) => theme.line.input.highlight};
   }
 `;
 
@@ -566,7 +566,7 @@ const DayLabel = styled.label<{ $isSelected?: boolean }>`
   background-color: ${({ theme, $isSelected }) =>
     $isSelected ? theme.background.box.blue.primary : theme.background.box.blue.disabled};
   cursor: pointer;
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.radius};
 
   /* Adding transition for smooth effect */
   transition:
@@ -585,7 +585,7 @@ const TimePickerContainer = styled(Row)`
 
 const StyledTimePicker = styled(TimePicker)`
   .MuiInputBase-root {
-    border-radius: 8px;
+    border-radius: ${({ theme }) => theme.radius};
     background-color: ${({ theme }) => theme.background.input.primary};
     &:hover {
       background-color: ${({ theme }) => theme.background.input.hover};
@@ -593,7 +593,7 @@ const StyledTimePicker = styled(TimePicker)`
   }
 
   .MuiOutlinedInput-notchedOutline {
-    border-color: ${({ theme }) => theme.line.input.default};
+    border-color: ${({ theme }) => theme.line.input.primary};
     &:hover {
       border-color: red;
     }
@@ -617,7 +617,7 @@ const SubmitButton = styled(BlueButton)`
   justify-content: center;
   align-items: center;
 
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.radius};
   padding: 8px;
   ${({ theme }) => theme.fontSize.s18h27};
   font-weight: ${({ theme }) => theme.fontWeight.bold};

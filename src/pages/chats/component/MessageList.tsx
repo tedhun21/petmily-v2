@@ -130,7 +130,7 @@ const Content = styled(Texts16h24)<{ isMyMessage: boolean }>`
   color: white;
   background-color: ${({ theme, isMyMessage }) =>
     isMyMessage ? theme.background.box.blue.primary : theme.background.box.blue.hover};
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.radius};
   max-width: 70%; // 최대 너비를 설정하여 상대방 영역 침범 방지
   word-wrap: break-word; // 긴 단어가 있을 경우 줄 바꿈 처리
 `;

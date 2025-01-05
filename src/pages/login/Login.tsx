@@ -86,14 +86,12 @@ export default function Login() {
             <LoginInput type="password" placeholder="비밀번호" {...register('password', { required: true })} />
             {errors?.password && <ErrorMessage>{errors.password?.message}</ErrorMessage>}
           </InputError>
-          <div>
-            <SubmitButton type="submit" disabled={isMutating}>
-              {isMutating ? <Loading /> : '로 그 인'}
-            </SubmitButton>
-          </div>
-          <GoogleOAuthButton>
-            <span>Log in with Google</span>
-          </GoogleOAuthButton>
+
+          <SubmitButton type="submit" disabled={isMutating}>
+            {isMutating ? <Loading /> : '로 그 인'}
+          </SubmitButton>
+
+          <GoogleOAuthButton>Log in with Google</GoogleOAuthButton>
         </FormContainer>
         <div>
           <span>처음이신가요? </span>
@@ -133,19 +131,14 @@ const FormContainer = styled.form`
 const LoginInput = styled(Input)`
   width: 100%;
   padding: 8px;
-  border-radius: 8px;
 
   ${({ theme }) => theme.fontSize.s14h21};
-
-  &:focus {
-    border: 1px solid ${({ theme }) => theme.line.input.blue};
-  }
 `;
 
 export const SubmitButton = styled(BlueButton)`
   width: 100%;
   padding: 8px;
-  border-radius: 12px;
+
   ${({ theme }) => theme.fontSize.s16h24};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;

@@ -55,7 +55,7 @@ const ClientImageName = styled(Row)`
 const ClientImage = styled(RoundedImageWrapper)`
   width: 46px;
   height: 46px;
-  border: 2px solid ${({ theme }) => theme.line.box.blue};
+  border: 2px solid ${({ theme }) => theme.line.box.highlight};
 `;
 
 const ContentContainer = styled(Column)`

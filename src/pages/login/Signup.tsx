@@ -266,13 +266,13 @@ const InputFormWrapper = styled.div``;
 
 const SignupInputStyle = styled(Input)<{ error: boolean | null }>`
   width: 100%;
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.radius};
   padding: 8px;
-  border: 1px solid ${({ theme, error }) => (error ? theme.line.input.error : theme.line.input.default)};
+  border: 1px solid ${({ theme, error }) => (error ? theme.line.input.error : theme.line.input.primary)};
   ${({ theme }) => theme.fontSize.s14h21}
 
   &:focus {
-    border: 1px solid ${({ theme }) => theme.line.input.blue};
+    border: 1px solid ${({ theme }) => theme.line.input.highlight};
   }
 `;
 

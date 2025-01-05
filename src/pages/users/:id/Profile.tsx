@@ -192,7 +192,7 @@ const UserImage = styled(RoundedImageWrapper)`
 
 const StarReview = styled.div`
   display: flex;
-  border: 1px solid ${({ theme }) => theme.line.box.default};
+  border: 1px solid ${({ theme }) => theme.line.box.primary};
   border-radius: 12px;
   padding: 20px 0;
   width: 100%;
@@ -218,7 +218,7 @@ const CardItem = styled.li`
   gap: 8px;
   padding: 8px;
   border-radius: 12px;
-  border: 2px solid ${({ theme }) => theme.line.box.blue};
+  border: 2px solid ${({ theme }) => theme.line.box.highlight};
 `;
 
 const PetList = styled.ul`
@@ -265,7 +265,7 @@ const StyledLink = styled(Link)<{ disabled: boolean }>`
   align-items: center;
   justify-content: center;
   padding: 12px;
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.radius};
   width: 100%;
   color: ${({ theme }) => theme.text.white};
 

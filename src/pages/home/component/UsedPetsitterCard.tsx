@@ -73,7 +73,7 @@ const ImageNameContainer = styled(Row)`
 const ImageWrapper = styled(RoundedImageWrapper)`
   width: 60px;
   height: 60px;
-  border: 2px solid ${({ theme }) => theme.line.box.blue};
+  border: 2px solid ${({ theme }) => theme.line.box.highlight};
 `;
 
 const LowerContainer = styled.div`

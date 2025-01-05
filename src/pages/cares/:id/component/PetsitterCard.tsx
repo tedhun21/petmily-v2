@@ -66,7 +66,7 @@ const ImageName = styled(Column)`
 const PetsitterImage = styled(RoundedImageWrapper)`
   width: 100px;
   height: 100px;
-  border: 2px solid ${({ theme }) => theme.line.box.blue};
+  border: 2px solid ${({ theme }) => theme.line.box.highlight};
 `;
 
 const PetsitterInfo = styled(Column)`
@@ -89,7 +89,7 @@ const StyledLink = styled(Link)`
   align-items: center;
   justify-content: center;
   padding: 8px;
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.radius};
   color: white;
   background-color: ${({ theme }) => theme.background.box.blue.primary};
 
