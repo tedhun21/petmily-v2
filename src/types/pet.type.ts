@@ -1,3 +1,5 @@
+import { CoreType } from './common.type';
+
 export enum Gender {
   MALE = 'Male',
   FEMALE = 'Female',
@@ -8,7 +10,7 @@ export enum Species {
   CAT = 'Cat',
 }
 
-export interface Pet {
+export interface Pet extends CoreType {
   id: number;
   name: string;
   gender: Gender;

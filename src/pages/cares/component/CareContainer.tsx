@@ -12,6 +12,7 @@ import CareCard from './CareCard';
 import { getCookie } from 'utils/cookie';
 
 const API_URL = process.env.REACT_APP_API_URL;
+
 export default function CareContainer({ filter, order }: any) {
   const ref = useRef(null);
   const isInView = useInView(ref);
@@ -37,7 +38,7 @@ export default function CareContainer({ filter, order }: any) {
 
   if (isLoading) {
     return (
-      <CenterContainer>
+      <CenterContainer style={{ height: '100%' }}>
         <Loading color="#279EFF" />
       </CenterContainer>
     );
@@ -45,7 +46,7 @@ export default function CareContainer({ filter, order }: any) {
 
   if (isEmpty) {
     return (
-      <CenterContainer>
+      <CenterContainer style={{ height: '100%' }}>
         <span>No Reservation</span>
       </CenterContainer>
     );

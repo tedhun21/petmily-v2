@@ -15,6 +15,7 @@ import { formatStatus } from 'utils/misc';
 import { dayFormat, timeRange } from 'utils/date';
 
 export default function CareCard({ reservation }: any) {
+  console.log(reservation);
   return (
     <Card to={`/cares/${reservation?.id}`}>
       <FirstContainer>

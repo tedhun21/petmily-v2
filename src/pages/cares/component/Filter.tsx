@@ -1,11 +1,14 @@
 import styled from 'styled-components';
 
 import { Row, Texts12h18 } from 'styles/commonStyle';
+import { Status } from 'types/reservation.type';
 
 const filters = [
-  { id: 1, label: '모두', value: 'all' },
-  { id: 2, label: '예정', value: `expected` },
-  { id: 3, label: '완료', value: `done` },
+  { id: 1, label: '전체', value: 'all' },
+  { id: 2, label: '대기', value: Status.PENDING },
+  { id: 3, label: '예정', value: Status.ACCEPTED },
+  { id: 4, label: '완료', value: Status.COMPLETED },
+  { id: 5, label: '취소', value: Status.CANCELED },
 ];
 
 const orders = [
@@ -101,11 +104,13 @@ const CustomLabel = styled.label<{ $isSelected: boolean }>`
   transition:
     background-color 0.2s,
     color 0.2s;
+
+  ${({ theme }) => theme.fontSize.s14h21};
 `;
 
 const CustomOrderLabel = styled.label<{ $isSelected: boolean }>`
   cursor: pointer;
   color: ${({ $isSelected, theme }) => ($isSelected ? theme.text.highlight : theme.text.inactive)};
   font-weight: ${({ $isSelected, theme }) => ($isSelected ? theme.fontWeight.bold : theme.fontWeight.normal)};
-  ${({ theme }) => theme.fontSize.s14h21}
+  ${({ theme }) => theme.fontSize.s14h21};
 `;
