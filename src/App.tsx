@@ -94,7 +94,6 @@ const router = createBrowserRouter(
         <Route path="cares" element={<Cares />} />
       </Route>
       <Route element={<BackHeaderLayout />}>
-        <Route path="me" element={<Me />} />
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />
         <Route path="me/edit" element={<EditMe />} />
@@ -108,7 +107,7 @@ const router = createBrowserRouter(
         <Route path="users/:nickname/book" element={<Book />} />
         {/* <Route path="petsitters/:memberId/schedule" element={<SitterSchedule />} /> */}
       </Route>
-
+      <Route path="me" element={<Me />} />
       <Route path="auth/connect/google/callback" element={<Redirect />} />
       <Route path="chats/:opponentId" element={<Chat />} />
       <Route path="*" element={<NotFound />} />

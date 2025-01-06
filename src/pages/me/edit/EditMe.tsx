@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
-import DaumPostcode from 'react-daum-postcode';
 
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -42,6 +41,9 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import dayjs from 'dayjs';
 import { FaArrowUp, FaXmark } from 'react-icons/fa6';
+import CustomDaumPostcode from '@components/CustomDaumPostcode';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store';
 
 const schema = yup.object().shape({
   nickname: yup
@@ -50,10 +52,11 @@ const schema = yup.object().shape({
     .matches(/^[a-zA-Z0-9\uac00-\ud7a3\s]+$/, '닉네임에는 한국어, 영어, 숫자, 공백만 허용됩니다.'),
   phone: yup
     .string()
-    .nullable()
-    .matches(/^010\d{8}$/, '연락처는 010으로 시작하는 11자리 숫자여야 합니다.'),
+    .matches(/^010\d{8}$/, '연락처는 010으로 시작하는 11자리 숫자여야 합니다.')
+    .nullable(),
   address: yup.string().nullable(),
   detailAddress: yup.string().nullable(),
+  zipcode: yup.string(),
   body: yup.string().nullable(),
   possiblePetSpecies: yup.array().of(yup.string()).nullable(),
   possibleDays: yup.array().of(yup.string()).nullable(),
@@ -68,6 +71,7 @@ const API_URL = process.env.REACT_APP_API_URL;
 
 export default function EditMe() {
   const navigate = useNavigate();
+  const { isDarkMode } = useSelector((state: RootState) => state.theme);
 
   const [previewImage, setPreviewImage] = useState<File | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -95,7 +99,7 @@ export default function EditMe() {
 
   const {
     register,
-
+    getValues,
     clearErrors,
     setValue,
     handleSubmit,
@@ -111,13 +115,14 @@ export default function EditMe() {
   };
 
   const handleComplete = (data: any) => {
+    const { address, zonecode } = data;
+
     if (data) {
       clearErrors('address');
     }
 
-    const splitAddress = data.address.split(' ').splice(2).join(' ');
-
-    setValue('address', `${data.zonecode} ${data.sido} ${data.sigungu} ${splitAddress}`);
+    setValue('address', address);
+    setValue('zipcode', zonecode);
 
     setIsModalOpen(false);
   };
@@ -178,8 +183,13 @@ export default function EditMe() {
 
     const formData = new FormData();
 
-    const formattedData = {
+    const updatedData = {
       ...data,
+      zipcode: getValues('zipcode'),
+    };
+
+    const formattedData = {
+      ...updatedData,
       possibleStartTime: formattedStartTime,
       possibleEndTime: formattedEndTime,
     };
@@ -275,7 +285,7 @@ export default function EditMe() {
                 sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
               >
                 <div style={{ width: '360px' }}>
-                  <DaumPostcode onComplete={handleComplete} />
+                  <CustomDaumPostcode onComplete={handleComplete} theme={isDarkMode ? 'dark' : 'light'} />
                 </div>
               </Modal>
             </InputWrapper>

@@ -3,11 +3,15 @@ import styled from 'styled-components';
 
 import { FaArrowLeft } from 'react-icons/fa6';
 
-export default function BackHeader() {
+interface IProps {
+  link?: string;
+}
+
+export default function BackHeader({ link }: IProps) {
   const navigate = useNavigate();
   return (
     <Container>
-      <StyledBackButton onClick={() => navigate(-1)}>
+      <StyledBackButton onClick={() => (link ? navigate(link) : navigate(-1))}>
         <FaArrowLeft color="#279EFF" size="24px" />
       </StyledBackButton>
     </Container>

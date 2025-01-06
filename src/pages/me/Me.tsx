@@ -8,6 +8,7 @@ import MyPetmily from '@pages/me/components/MyPetmily';
 import { fetcherWithCookie } from 'api';
 import { ImageCentered, RoundedImageWrapper, Texts14h21 } from 'styles/commonStyle';
 import MyPetsitterProfile from './components/MyPetsitterProfile';
+import BackHeader from '@components/headers/BackHeader';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -15,29 +16,35 @@ export default function Me() {
   const { data: me } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);
 
   return (
-    <MypageContainer>
-      <MyProfileContianer>
-        <MyProfile>
-          <MyImage>
-            <ImageCentered src={me?.photo ? `${me?.photo}` : 'imgs/DefaultUserProfile.jpg'} alt="user profile image" />
-          </MyImage>
+    <>
+      <BackHeader link="/" />
+      <MypageContainer>
+        <MyProfileContianer>
+          <MyProfile>
+            <MyImage>
+              <ImageCentered
+                src={me?.photo ? `${me?.photo}` : 'imgs/DefaultUserProfile.jpg'}
+                alt="user profile image"
+              />
+            </MyImage>
 
-          <TextWrapper>
-            <HelloText>안녕하세요!</HelloText>
-            {me?.nickname ? (
-              <NameText>{`${me?.nickname} 님`}</NameText>
-            ) : (
-              <Texts14h21>닉네임을 설정해주세요</Texts14h21>
-            )}
-          </TextWrapper>
-        </MyProfile>
-        <EditLink to="/me/edit">
-          <span>회원정보 수정</span>
-        </EditLink>
-      </MyProfileContianer>
+            <TextWrapper>
+              <HelloText>안녕하세요!</HelloText>
+              {me?.nickname ? (
+                <NameText>{`${me?.nickname} 님`}</NameText>
+              ) : (
+                <Texts14h21>닉네임을 설정해주세요</Texts14h21>
+              )}
+            </TextWrapper>
+          </MyProfile>
+          <EditLink to="/me/edit">
+            <span>회원정보 수정</span>
+          </EditLink>
+        </MyProfileContianer>
 
-      {me?.role === 'Client' ? <MyPetmily /> : <MyPetsitterProfile me={me} />}
-    </MypageContainer>
+        {me?.role === 'Client' ? <MyPetmily /> : <MyPetsitterProfile me={me} />}
+      </MypageContainer>
+    </>
   );
 }
 

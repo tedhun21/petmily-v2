@@ -10,14 +10,13 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers';
 
-import DaumPostcode from 'react-daum-postcode';
-
 import dayjs, { Dayjs } from 'dayjs';
 
 import { checkInDisableTime, checkOutDisableTime, reservationDisableDate } from 'utils/date';
 
 import { BlueButton, BottomFixed, Column, Float, Row } from 'styles/commonStyle';
 import PetContainer from './component/step1/PetContainer';
+import CustomDaumPostcode from '@components/CustomDaumPostcode';
 
 export default function Step1({ onNext }: any) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -222,7 +221,7 @@ export default function Step1({ onNext }: any) {
               sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
             >
               <div style={{ width: '360px;' }}>
-                <DaumPostcode onComplete={handleComplete} />
+                <CustomDaumPostcode onComplete={handleComplete} />
               </div>
             </Modal>
           </Container>
