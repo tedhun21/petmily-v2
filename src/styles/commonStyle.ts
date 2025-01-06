@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const Column = styled.div`
@@ -109,6 +110,14 @@ export const BlueButton = styled(Button)`
   &:active {
     background-color: ${({ theme }) => theme.background.box.blue.active};
     box-shadow: ${({ theme }) => theme.shadow.inset};
+  }
+`;
+
+export const DefaultLink = styled(Link)`
+  background-color: ${({ theme }) => theme.background.box.default.primary};
+
+  &:hover {
+    background-color: ${({ theme }) => theme.background.box.default.hover};
   }
 `;
 

@@ -1,13 +1,18 @@
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+
+import useSWR from 'swr';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/pagination';
+
+import { Pagination } from 'swiper/modules';
 
 import HomeAd from '@components/HomeAd';
 // import Footer from '@components/footer/Footer';
 
-import { Texts14h21, Title } from 'styles/commonStyle';
+import { DefaultLink } from 'styles/commonStyle';
 import RealTimeReviews from './component/RealTimeReviews';
 import UsedPetsitters from './component/UsedPetsitters';
-import useSWR from 'swr';
 import { fetcherWithCookie } from 'api';
 
 const API_URL = process.env.REACT_APP_API_URL;
@@ -20,13 +25,42 @@ export default function Home() {
       <HomeContainer>
         <HomeAd />
         <LinkContainer>
-          <PetsitterLink to="/search">펫시터 검색</PetsitterLink>
           <PetsitterLink to="/faq">자주 묻는 질문</PetsitterLink>
         </LinkContainer>
-        <AdSubContainer>
-          <AdSubText>{'첫 만남\n 50% 할인 쿠폰'}</AdSubText>
-        </AdSubContainer>
-        <img src="/imgs/HomeTitleAd.svg" alt="Advertising" width="100%" />
+
+        <EventContainer>
+          <EventSwiper modules={[Pagination]} pagination={{ dynamicBullets: true }}>
+            {[
+              <SwiperSlide key="1">
+                <EventBox>{'첫 만남\n 50% 할인 쿠폰'}</EventBox>
+              </SwiperSlide>,
+              <SwiperSlide key="2">
+                <EventBox>{'첫 만남\n 50% 할인 쿠폰'}</EventBox>
+              </SwiperSlide>,
+              <SwiperSlide key="3">
+                <EventBox>{'첫 만남\n 50% 할인 쿠폰'}</EventBox>
+              </SwiperSlide>,
+            ]}
+          </EventSwiper>
+        </EventContainer>
+
+        <AdContainer>
+          <AdSwiper modules={[Pagination]} pagination={{ dynamicBullets: true }}>
+            {[
+              <SwiperSlide key="1">
+                <AdBox>
+                  <img src="/imgs/HomeTitleAd.svg" alt="Advertising" style={{ width: '100%' }} />
+                </AdBox>
+              </SwiperSlide>,
+              <SwiperSlide key="2">
+                <img src="/imgs/HomeTitleAd.svg" alt="Advertising" style={{ width: '100%' }} />
+              </SwiperSlide>,
+              <SwiperSlide key="3">
+                <img src="/imgs/HomeTitleAd.svg" alt="Advertising" style={{ width: '100%' }} />
+              </SwiperSlide>,
+            ]}
+          </AdSwiper>
+        </AdContainer>
 
         {me && <UsedPetsitters />}
 
@@ -50,56 +84,42 @@ const LinkContainer = styled.div`
   gap: 12px;
 `;
 
-const StyledDefaultLink = styled(Link)`
-  border: 1px solid ${({ theme }) => theme.line.box.primary};
-  color: ${({ theme }) => theme.text.active};
-  background-color: ${({ theme }) => theme.background.box.default.primary};
-
-  &:hover {
-    background-color: ${({ theme }) => theme.background.box.default.hover};
-  }
-`;
-
-const PetsitterLink = styled(Link)`
-  flex: 1;
+const PetsitterLink = styled(DefaultLink)`
   display: flex;
   justify-content: center;
   padding: 24px;
-  color: ${({ theme }) => theme.text.active};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
-  border: 1px solid ${({ theme }) => theme.line.box.primary};
   border-radius: 16px;
-  background-color: ${({ theme }) => theme.background.box.default.primary};
+
   ${({ theme }) => theme.fontSize.s16h24};
 
-  &:visited {
-    text-decoration: none;
-  }
-
-  &:hover {
-    background-color: ${({ theme }) => theme.background.box.default.hover};
-  }
+  // &:visited {
+  //   text-decoration: none;
+  // }
 `;
 
-const AdSubContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px;
+const EventContainer = styled.div`
   border-radius: 16px;
-  background-color: ${({ theme }) => theme.background.box.default.primary};
 `;
 
-const AdSubText = styled(Texts14h21)`
-  color: ${({ theme }) => theme.text.active};
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
-  white-space: pre-line;
+const EventBox = styled.div`
+  padding: 24px;
 `;
 
-export const ImageContainer = styled.div`
-  overflow: hidden;
-  position: relative;
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
+const EventSwiper = styled(Swiper)`
+  width: 100%;
+  border-radius: 16px;
+  box-shadow: ${({ theme }) => theme.shadow.dp01};
 `;
+
+const AdContainer = styled.div`
+  border-radius: 16px;
+`;
+
+const AdSwiper = styled(Swiper)`
+  width: 100%;
+  border-radius: 16px;
+  box-shadow: ${({ theme }) => theme.shadow.dp01};
+`;
+
+const AdBox = styled.div``;
