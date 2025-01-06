@@ -38,17 +38,17 @@ const InputSection = styled.section<{ $isFocused: boolean }>`
   align-items: center;
   gap: 8px;
   padding: 8px;
-  border: 2px solid ${({ theme }) => theme.line.box.blue};
+  border: 2px solid ${({ theme }) => theme.line.box.highlight};
   border-radius: 20px;
   background-color: ${({ theme }) => theme.background.box.default.primary};
 
   &:hover {
-    border-color: ${({ theme }) => theme.line.box.blue};
+    border-color: ${({ theme }) => theme.line.box.highlight};
     background-color: ${({ theme }) => theme.background.box.default.hover};
   }
 
   &:focus-within {
-    border-color: ${({ theme }) => theme.line.box.blue};
+    border-color: ${({ theme }) => theme.line.box.highlight};
   }
 `;
 

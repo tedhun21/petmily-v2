@@ -4,13 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
-import DaumPostcode from 'react-daum-postcode';
 
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { Modal } from '@mui/joy';
+import { Modal } from '@mui/material';
 
 import {
   BlueButton,
@@ -42,6 +41,9 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import dayjs from 'dayjs';
 import { FaArrowUp, FaXmark } from 'react-icons/fa6';
+import CustomDaumPostcode from '@components/CustomDaumPostcode';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store';
 
 const schema = yup.object().shape({
   nickname: yup
@@ -50,10 +52,11 @@ const schema = yup.object().shape({
     .matches(/^[a-zA-Z0-9\uac00-\ud7a3\s]+$/, '닉네임에는 한국어, 영어, 숫자, 공백만 허용됩니다.'),
   phone: yup
     .string()
-    .nullable()
-    .matches(/^010\d{8}$/, '연락처는 010으로 시작하는 11자리 숫자여야 합니다.'),
+    .matches(/^010\d{8}$/, '연락처는 010으로 시작하는 11자리 숫자여야 합니다.')
+    .nullable(),
   address: yup.string().nullable(),
   detailAddress: yup.string().nullable(),
+  zipcode: yup.string(),
   body: yup.string().nullable(),
   possiblePetSpecies: yup.array().of(yup.string()).nullable(),
   possibleDays: yup.array().of(yup.string()).nullable(),
@@ -68,6 +71,7 @@ const API_URL = process.env.REACT_APP_API_URL;
 
 export default function EditMe() {
   const navigate = useNavigate();
+  const { isDarkMode } = useSelector((state: RootState) => state.theme);
 
   const [previewImage, setPreviewImage] = useState<File | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -111,13 +115,14 @@ export default function EditMe() {
   };
 
   const handleComplete = (data: any) => {
+    const { address, zonecode } = data;
+
     if (data) {
       clearErrors('address');
     }
 
-    const splitAddress = data.address.split(' ').splice(2).join(' ');
-
-    setValue('address', `${data.zonecode} ${data.sido} ${data.sigungu} ${splitAddress}`);
+    setValue('address', address);
+    setValue('zipcode', zonecode);
 
     setIsModalOpen(false);
   };
@@ -178,8 +183,13 @@ export default function EditMe() {
 
     const formData = new FormData();
 
-    const formattedData = {
+    const updatedData = {
       ...data,
+      zipcode: getValues('zipcode'),
+    };
+
+    const formattedData = {
+      ...updatedData,
       possibleStartTime: formattedStartTime,
       possibleEndTime: formattedEndTime,
     };
@@ -275,7 +285,7 @@ export default function EditMe() {
                 sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
               >
                 <div style={{ width: '360px' }}>
-                  <DaumPostcode onComplete={handleComplete} />
+                  <CustomDaumPostcode onComplete={handleComplete} theme={isDarkMode ? 'dark' : 'light'} />
                 </div>
               </Modal>
             </InputWrapper>
@@ -297,7 +307,7 @@ export default function EditMe() {
                 <InputWrapper>
                   <InputLabel>케어가능동물</InputLabel>
                   <PetSpciesButtonContainer>
-                    <TypeRadioLabel isSelected={watch('possiblePetSpecies')?.includes('Dog')}>
+                    <TypeRadioLabel $isSelected={watch('possiblePetSpecies')?.includes('Dog')}>
                       <input
                         hidden
                         type="checkbox"
@@ -307,7 +317,7 @@ export default function EditMe() {
                       />
                       <PiDogBold size="20px" color="white" />
                     </TypeRadioLabel>
-                    <TypeRadioLabel isSelected={watch('possiblePetSpecies')?.includes('Cat')}>
+                    <TypeRadioLabel $isSelected={watch('possiblePetSpecies')?.includes('Cat')}>
                       <input
                         hidden
                         type="checkbox"
@@ -339,7 +349,7 @@ export default function EditMe() {
 
                     <LocationInputContainer>
                       <LocationInput
-                        placeholder="예) 서울시, 서울시 용산구"
+                        placeholder="예) 서울, 서울 용산구"
                         value={newLocation}
                         onChange={(e) => setNewLocation(e.target.value)}
                       />
@@ -353,7 +363,7 @@ export default function EditMe() {
                   <InputLabel>케어가능요일</InputLabel>
                   <WeekdaysWrapper>
                     {weekdays.map((day: any) => (
-                      <DayLabel key={day.id} isSelected={watch('possibleDays')?.includes(day.value)}>
+                      <DayLabel key={day.id} $isSelected={watch('possibleDays')?.includes(day.value)}>
                         <input
                           hidden
                           type="checkbox"
@@ -371,50 +381,46 @@ export default function EditMe() {
                   <TimePickerContainer>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DemoContainer components={['TimePicker']} sx={{ flex: 1 }}>
-                        <StyledTimePicker>
-                          <Controller
-                            name="possibleStartTime"
-                            control={control}
-                            render={({ field: { value, onChange } }) => (
-                              <TimePicker
-                                label="시작"
-                                minutesStep={30}
-                                skipDisabled={true}
-                                minTime={dayjs(new Date(0, 0, 0, 8))}
-                                maxTime={dayjs(new Date(0, 0, 0, 21))}
-                                ampm={false}
-                                value={value || null}
-                                onChange={onChange}
-                                // shouldDisableTime={(value, view) => checkInDisableTime(value, view, watch('date'))}
-                                sx={{ width: '100%' }}
-                              />
-                            )}
-                          />
-                        </StyledTimePicker>
+                        <Controller
+                          name="possibleStartTime"
+                          control={control}
+                          render={({ field: { value, onChange } }) => (
+                            <StyledTimePicker
+                              label="시작"
+                              minutesStep={30}
+                              skipDisabled={true}
+                              minTime={dayjs(new Date(0, 0, 0, 8))}
+                              maxTime={dayjs(new Date(0, 0, 0, 21))}
+                              ampm={false}
+                              value={value || null}
+                              onChange={onChange}
+                              // shouldDisableTime={(value, view) => checkInDisableTime(value, view, watch('date'))}
+                              sx={{ minWidth: 'none' }}
+                            />
+                          )}
+                        />
                       </DemoContainer>
                     </LocalizationProvider>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DemoContainer components={['TimePicker']} sx={{ flex: 1 }}>
-                        <StyledTimePicker>
-                          <Controller
-                            name="possibleEndTime"
-                            control={control}
-                            render={({ field: { value, onChange } }) => (
-                              <TimePicker
-                                label="끝"
-                                minutesStep={30}
-                                skipDisabled={true}
-                                minTime={dayjs(new Date(0, 0, 0, 8))}
-                                maxTime={dayjs(new Date(0, 0, 0, 21))}
-                                ampm={false}
-                                value={value || null}
-                                onChange={onChange}
-                                // shouldDisableTime={(value, view) => checkInDisableTime(value, view, watch('date'))}
-                                sx={{ width: '100%' }}
-                              />
-                            )}
-                          />
-                        </StyledTimePicker>
+                        <Controller
+                          name="possibleEndTime"
+                          control={control}
+                          render={({ field: { value, onChange } }) => (
+                            <StyledTimePicker
+                              label="끝"
+                              minutesStep={30}
+                              skipDisabled={true}
+                              minTime={dayjs(new Date(0, 0, 0, 8))}
+                              maxTime={dayjs(new Date(0, 0, 0, 21))}
+                              ampm={false}
+                              value={value || null}
+                              onChange={onChange}
+                              // shouldDisableTime={(value, view) => checkInDisableTime(value, view, watch('date'))}
+                              sx={{ minWidth: 'none' }}
+                            />
+                          )}
+                        />
                       </DemoContainer>
                     </LocalizationProvider>
                   </TimePickerContainer>
@@ -452,6 +458,7 @@ const MainContainer = styled.section`
 const InputContainer = styled(Column)`
   padding: 20px;
   gap: 20px;
+  padding-bottom: 124px;
 `;
 
 const EmailWrapper = styled.div`
@@ -476,10 +483,13 @@ const InputError = styled(Column)`
 
 const MeInput = styled(Input)`
   width: 100%;
-  border: 2px solid ${({ theme }) => theme.line.input.blue};
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.radius};
   padding: 8px;
   ${({ theme }) => theme.fontSize.s16h24}
+
+  &:focus {
+    border: 1px solid ${({ theme }) => theme.line.input.highlight};
+  }
 `;
 
 const LocationInputWrapper = styled(Column)`
@@ -495,7 +505,7 @@ const LocationList = styled.ul`
 const LocationItem = styled.li`
   display: flex;
   align-items: center;
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.radius};
   gap: 4px;
   padding: 4px;
   color: white;
@@ -508,12 +518,21 @@ const LocationInputContainer = styled(Row)`
   justify-content: space-between;
 `;
 
-const LocationInput = styled.input`
+const LocationInput = styled(Input)`
   width: 100%;
-  border: 2px solid ${({ theme }) => theme.line.input.blue};
-  border-radius: 8px;
+
+  border-radius: ${({ theme }) => theme.radius};
   padding: 8px;
   ${({ theme }) => theme.fontSize.s16h24};
+  background-color: ${({ theme }) => theme.background.input.primary};
+
+  &:hover {
+    background-color: ${({ theme }) => theme.background.input.hover};
+  }
+
+  &:focus {
+    border: 1px solid ${({ theme }) => theme.line.input.highlight};
+  }
 `;
 
 const AddLocationButton = styled.button`
@@ -524,15 +543,20 @@ const AddLocationButton = styled.button`
 
 const TextArea = styled.textarea`
   width: 80%;
-  border: 2px solid ${({ theme }) => theme.line.input.blue};
-  border-radius: 8px;
+
+  border-radius: ${({ theme }) => theme.radius};
   padding: 8px;
   color: ${({ theme }) => theme.text.active};
+  border: 1px solid ${({ theme }) => theme.line.input.primary};
   background-color: ${({ theme }) => theme.background.input.primary};
   ${({ theme }) => theme.fontSize.s16h24};
 
   &:hover {
     background-color: ${({ theme }) => theme.background.input.hover};
+  }
+  &:focus {
+    outline: none;
+    border: 1px solid ${({ theme }) => theme.line.input.highlight};
   }
 `;
 
@@ -546,13 +570,13 @@ const WeekdaysWrapper = styled.div`
   justify-content: space-between;
 `;
 
-const DayLabel = styled.label<{ isSelected?: boolean }>`
+const DayLabel = styled.label<{ $isSelected?: boolean }>`
   padding: 8px;
   color: white;
-  background-color: ${({ theme, isSelected }) =>
-    isSelected ? theme.background.box.blue.primary : theme.background.box.blue.disabled};
+  background-color: ${({ theme, $isSelected }) =>
+    $isSelected ? theme.background.box.blue.primary : theme.background.box.blue.disabled};
   cursor: pointer;
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.radius};
 
   /* Adding transition for smooth effect */
   transition:
@@ -569,18 +593,28 @@ const TimePickerContainer = styled(Row)`
   gap: 8px;
 `;
 
-const StyledTimePicker = styled.div`
-  // TimePicker 컴포넌트의 스타일을 수정하기 위한
-  display: flex;
-  justify-content: center;
-  align-items: center;
+const StyledTimePicker = styled(TimePicker)`
+  .MuiInputBase-root {
+    border-radius: ${({ theme }) => theme.radius};
+    background-color: ${({ theme }) => theme.background.input.primary};
+    &:hover {
+      background-color: ${({ theme }) => theme.background.input.hover};
+    }
+  }
+
+  .MuiOutlinedInput-notchedOutline {
+    border-color: ${({ theme }) => theme.line.input.primary};
+    &:hover {
+      border-color: red;
+    }
+  }
 `;
 
 const FloatContainer = styled(Float)`
   left: 0;
   bottom: 0;
   width: 100%;
-  padding: 20px;
+  padding: 0 20px 20px 20px;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -593,7 +627,7 @@ const SubmitButton = styled(BlueButton)`
   justify-content: center;
   align-items: center;
 
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.radius};
   padding: 8px;
   ${({ theme }) => theme.fontSize.s18h27};
   font-weight: ${({ theme }) => theme.fontWeight.bold};

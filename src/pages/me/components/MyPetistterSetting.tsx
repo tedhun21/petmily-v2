@@ -66,7 +66,7 @@ const InfoItem = styled.li`
   flex-direction: column;
   padding: 8px;
   gap: 8px;
-  border: 2px solid ${({ theme }) => theme.line.box.blue};
+  border: 2px solid ${({ theme }) => theme.line.box.highlight};
   border-radius: 12px;
 `;
 
@@ -81,7 +81,7 @@ const ItemLabel = styled(Texts14h21)`
   align-items: center;
   justify-content: center;
   padding: 4px 8px;
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.radius};
   color: white;
   background-color: ${({ theme }) => theme.text.highlight};
 `;

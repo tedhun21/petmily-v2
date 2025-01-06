@@ -105,11 +105,11 @@ export default function CreatePet() {
           <Container>
             {/* 타입 */}
             <ButtonContainer>
-              <TypeRadioLabel isSelected={watch('species') === 'Dog'}>
+              <TypeRadioLabel $isSelected={watch('species') === 'Dog'}>
                 <input hidden type="radio" value="Dog" {...register('species')} onClick={handlePetType} />
                 <PiDogBold size="20px" color="white" />
               </TypeRadioLabel>
-              <TypeRadioLabel isSelected={watch('species') === 'Cat'}>
+              <TypeRadioLabel $isSelected={watch('species') === 'Cat'}>
                 <input hidden type="radio" value="Cat" {...register('species')} onClick={handlePetType} />
                 <PiCatBold size="20px" color="white" />
               </TypeRadioLabel>
@@ -215,17 +215,17 @@ export const ButtonContainer = styled.div`
   display: flex;
   overflow: hidden;
   width: 100%;
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.radius};
 `;
 
-export const TypeRadioLabel = styled.label<{ isSelected?: boolean }>`
+export const TypeRadioLabel = styled.label<{ $isSelected?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
   flex: 1;
   padding: 8px;
   cursor: pointer;
-  background-color: ${({ theme, isSelected }) => (isSelected ? theme.background.highlight : theme.text.inactive)};
+  background-color: ${({ theme, $isSelected }) => ($isSelected ? theme.background.highlight : theme.text.inactive)};
 
   /* Adding transition for smooth effect */
   transition:
@@ -233,7 +233,7 @@ export const TypeRadioLabel = styled.label<{ isSelected?: boolean }>`
     transform 0.3s ease-in-out;
 
   &:hover {
-    background-color: ${({ theme, isSelected }) => (isSelected ? '' : theme.background.box.blue.hover)};
+    background-color: ${({ theme, $isSelected }) => ($isSelected ? '' : theme.background.box.blue.hover)};
   }
 `;
 
@@ -265,7 +265,7 @@ export const InputLabel = styled.label`
 export const PetInput = styled(Input)`
   width: 100%;
   padding: 8px;
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.radius};
 `;
 
 export const InputContainer = styled.div`
@@ -305,8 +305,8 @@ export const PetTextarea = styled.textarea`
   flex: auto;
   width: 100%;
   padding: 8px;
-  border: 1px solid ${({ theme }) => theme.line.input.default};
-  border-radius: 8px;
+  border: 1px solid ${({ theme }) => theme.line.input.primary};
+  border-radius: ${({ theme }) => theme.radius};
   color: inherit;
   background-color: ${({ theme }) => theme.background.input.primary};
 `;
@@ -325,6 +325,6 @@ export const SubmitButton = styled(BlueButton)`
   align-items: center;
   width: 100%;
   padding: 8px;
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.radius};
   ${({ theme }) => theme.fontSize.s18h27};
 `;

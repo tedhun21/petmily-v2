@@ -3,19 +3,21 @@ import { useNavigate } from 'react-router-dom';
 
 import { useForm } from 'react-hook-form';
 import useSWRMutation from 'swr/mutation';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import GoogleOAuthButton from '@components/buttons/OAuthButton';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store';
 
-import { Modal, Sheet } from '@mui/joy';
-import DaumPostcode from 'react-daum-postcode';
+import { Modal } from '@mui/material';
 
 import { SubmitButton } from './Login';
 import { poster } from 'api';
 import { Column, ErrorMessage, Input, Texts16h24, Texts20h30 } from 'styles/commonStyle';
 import { toast } from 'react-toastify';
 import Loading from '@components/Loading';
+import CustomDaumPostcode from '@components/CustomDaumPostcode';
 
 const schema = yup.object().shape({
   username: yup
@@ -29,6 +31,7 @@ const schema = yup.object().shape({
     .required('전화번호는 필수입니다.'),
   address: yup.string().required('주소는 필수입니다.'),
   detailAddress: yup.string().required('상세주소는 필수입니다.'),
+  zipcode: yup.string(),
   email: yup.string().email('이메일 형식을 지켜주세요.').required('Email은 필수입니다.'),
   nickname: yup
     .string()
@@ -55,8 +58,11 @@ export default function Signup() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const { isDarkMode } = useSelector((state: RootState) => state.theme);
+
   const {
     register,
+    getValues,
     setValue,
     handleSubmit,
     setError,
@@ -82,10 +88,10 @@ export default function Signup() {
     if (data) {
       clearErrors('address');
     }
+    const { address, zonecode } = data;
 
-    const splitAddress = data.address.split(' ').splice(2).join(' ');
-
-    setValue('address', `${data.zonecode} ${data.sido} ${data.sigungu} ${splitAddress}`);
+    setValue('address', address);
+    setValue('zipcode', zonecode);
 
     setIsModalOpen(false);
   };
@@ -104,6 +110,7 @@ export default function Signup() {
       username,
       phone,
       address,
+      zipcode: getValues('zipcode'),
       detailAddress,
       email,
       nickname,
@@ -142,7 +149,7 @@ export default function Signup() {
               placeholder="이름"
               type="text"
               {...register('username', { required: true })}
-              error={errors.username ? true : false}
+              error={errors.username ? true : undefined}
             />
             {errors.username?.message && <ErrorMessage>{errors.username?.message}</ErrorMessage>}
           </InputFormWrapper>
@@ -150,7 +157,7 @@ export default function Signup() {
             <SignupInputStyle
               placeholder="연락처"
               {...register('phone', { required: true })}
-              error={errors.phone ? true : false}
+              error={errors.phone ? true : undefined}
             />
             {errors.phone?.message && <ErrorMessage>{errors.phone?.message}</ErrorMessage>}
           </InputFormWrapper>
@@ -160,15 +167,26 @@ export default function Signup() {
               {...register('address', { required: true })}
               onClick={onToggleModal}
               onKeyDown={onToggleModal}
-              error={errors.address ? true : false}
+              error={errors.address ? true : undefined}
+              autoComplete="off"
             />
             {errors.address?.message && <ErrorMessage>{errors.address?.message}</ErrorMessage>}
+
+            <Modal
+              open={isModalOpen}
+              onClose={() => setIsModalOpen(false)}
+              sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+            >
+              <div style={{ width: '360px' }}>
+                <CustomDaumPostcode onComplete={handleComplete} theme={isDarkMode ? 'dark' : 'light'} />
+              </div>
+            </Modal>
           </InputFormWrapper>
           <InputFormWrapper>
             <SignupInputStyle
               placeholder="상세주소"
               {...register('detailAddress', { required: true })}
-              error={errors.detailAddress ? true : false}
+              error={errors.detailAddress ? true : undefined}
             />
             {errors.detailAddress?.message && <ErrorMessage>{errors.detailAddress?.message}</ErrorMessage>}
           </InputFormWrapper>
@@ -177,7 +195,7 @@ export default function Signup() {
               placeholder="이메일"
               type="email"
               {...register('email', { required: true })}
-              error={errors.email ? true : false}
+              error={errors.email ? true : undefined}
             />
             {errors.email?.message && <ErrorMessage>{errors.email?.message}</ErrorMessage>}
           </InputFormWrapper>
@@ -185,7 +203,7 @@ export default function Signup() {
             <SignupInputStyle
               placeholder="닉네임"
               {...register('nickname', { required: true })}
-              error={errors.nickname ? true : false}
+              error={errors.nickname ? true : undefined}
             />
             {errors.nickname?.message && <ErrorMessage>{errors.nickname?.message}</ErrorMessage>}
           </InputFormWrapper>
@@ -194,7 +212,7 @@ export default function Signup() {
               placeholder="비밀번호"
               type="password"
               {...register('password', { required: true })}
-              error={errors.password ? true : false}
+              error={errors.password ? true : undefined}
             />
             {errors.password?.message && <ErrorMessage>{errors.password?.message}</ErrorMessage>}
           </InputFormWrapper>
@@ -203,7 +221,7 @@ export default function Signup() {
               placeholder="비밀번호 확인"
               type="password"
               {...register('passwordConfirm', { required: true })}
-              error={errors.passwordConfirm ? true : false}
+              error={errors.passwordConfirm ? true : undefined}
             />
             {errors.passwordConfirm?.message && <ErrorMessage>{errors.passwordConfirm?.message}</ErrorMessage>}
           </InputFormWrapper>
@@ -219,17 +237,6 @@ export default function Signup() {
           </ButtonContainer>
         </InputFormContainer>
       </SignupContainer>
-      {isModalOpen && (
-        <Modal
-          open={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-        >
-          <Sheet sx={{ width: '360px;' }}>
-            <DaumPostcode onComplete={handleComplete} />
-          </Sheet>
-        </Modal>
-      )}
     </MainContainer>
   );
 }
@@ -264,15 +271,15 @@ const InputFormContainer = styled.form`
 
 const InputFormWrapper = styled.div``;
 
-const SignupInputStyle = styled(Input)<{ error: boolean | null }>`
+const SignupInputStyle = styled(Input)<{ error?: boolean }>`
   width: 100%;
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.radius};
   padding: 8px;
-  border: 1px solid ${({ theme, error }) => (error ? theme.line.input.error : theme.line.input.default)};
+  border: 1px solid ${({ theme, error }) => (error ? theme.line.input.error : theme.line.input.primary)};
   ${({ theme }) => theme.fontSize.s14h21}
 
   &:focus {
-    border: 1px solid ${({ theme }) => theme.line.input.blue};
+    border: 1px solid ${({ theme }) => theme.line.input.highlight};
   }
 `;
 

@@ -164,11 +164,11 @@ export default function EditPet() {
           <Container>
             {/* 타입 */}
             <ButtonContainer>
-              <TypeRadioLabel isSelected={watch('species') === 'Dog'}>
+              <TypeRadioLabel $isSelected={watch('species') === 'Dog'}>
                 <input hidden type="radio" value="Dog" {...register('species')} onClick={handlePetType} />
                 <PiDogBold size="20px" color="white" />
               </TypeRadioLabel>
-              <TypeRadioLabel isSelected={watch('species') === 'Cat'}>
+              <TypeRadioLabel $isSelected={watch('species') === 'Cat'}>
                 <input hidden type="radio" value="Cat" {...register('species')} onClick={handlePetType} />
                 <PiCatBold size="20px" color="white" />
               </TypeRadioLabel>

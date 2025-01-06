@@ -179,7 +179,7 @@ const ChatInput = styled.input`
   flex: auto;
   border-radius: 24px;
   padding: 8px 12px;
-  border: 2px solid ${({ theme }) => theme.line.input.blue};
+  border: 2px solid ${({ theme }) => theme.line.input.highlight};
   ${({ theme }) => theme.fontSize.s18h27};
 `;
 

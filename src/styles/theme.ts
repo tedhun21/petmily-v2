@@ -13,6 +13,8 @@ const baseTheme = {
     bold: 600,
     extrabold: 700,
   },
+
+  radius: '12px',
 };
 
 const lightTheme = {
@@ -28,9 +30,9 @@ const lightTheme = {
     error: '#FF6161',
   },
   line: {
-    input: { default: '#D4D4D4', blue: '#279EFF', error: '#FF6161' },
-    box: { default: '#CDCDCD', highlight: '#525252', blue: '#279EFF' },
-    divider: { default: '#DEEDE0', blue: '#1A73E8' },
+    input: { primary: '#D4D4D4', hover: '#808080', highlight: '#279EFF', error: '#FF6161' },
+    box: { primary: '#CDCDCD', hover: '#525252', highlight: '#279EFF' },
+    divider: { primary: '#DEEDE0', highlight: '#1A73E8' },
   },
   background: {
     primary: '#FFFFFF',
@@ -68,9 +70,9 @@ const darkTheme = {
   },
 
   line: {
-    input: { default: '#474747', blue: '#1A73E8', error: '#FF5A5A' },
-    box: { default: '#525252', highlight: '#CDCDCD', blue: '#1A73E8' },
-    divider: { default: '#525252', blue: '#1A73E8' },
+    input: { primary: '#474747', hover: '#636363', highlight: '#1A73E8', error: '#FF5A5A' },
+    box: { primary: '#525252', hover: '#CDCDCD', highlight: '#1A73E8' },
+    divider: { primary: '#525252', highlight: '#1A73E8' },
   },
 
   background: {

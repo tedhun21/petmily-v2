@@ -3,13 +3,12 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import useSWR from 'swr';
 
-import { FaArrowLeft } from 'react-icons/fa6';
-
 import MyPetmily from '@pages/me/components/MyPetmily';
 
 import { fetcherWithCookie } from 'api';
 import { ImageCentered, RoundedImageWrapper, Texts14h21 } from 'styles/commonStyle';
 import MyPetsitterProfile from './components/MyPetsitterProfile';
+import BackHeader from '@components/headers/BackHeader';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -18,9 +17,7 @@ export default function Me() {
 
   return (
     <>
-      <StyledLink to="/">
-        <FaArrowLeft color="#279EFF" size="24px" />
-      </StyledLink>
+      <BackHeader link="/" />
       <MypageContainer>
         <MyProfileContianer>
           <MyProfile>
@@ -51,10 +48,6 @@ export default function Me() {
   );
 }
 
-const StyledLink = styled(Link)`
-  padding: 20px;
-`;
-
 // 전체 페이지
 const MypageContainer = styled.main`
   display: flex;
@@ -82,7 +75,7 @@ const MyProfile = styled.div`
 const MyImage = styled(RoundedImageWrapper)`
   width: 60px;
   height: 60px;
-  border: 2px solid ${({ theme }) => theme.line.box.blue};
+  border: 2px solid ${({ theme }) => theme.line.box.highlight};
 `;
 
 const TextWrapper = styled.div`
@@ -108,7 +101,7 @@ const EditLink = styled(Link)`
   align-items: center;
   justify-content: center;
   padding: 8px;
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.radius};
   color: white;
   background-color: ${({ theme }) => theme.background.box.blue.primary};
 

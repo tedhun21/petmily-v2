@@ -152,7 +152,7 @@ const SubItem = styled(Texts12h18)`
 const CheckButton = styled(BlueButton)`
   width: 100%;
   padding: 12px;
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.radius};
 
   ${({ theme }) => theme.fontSize.s16h24}
 `;

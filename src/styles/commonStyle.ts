@@ -69,11 +69,15 @@ export const ErrorMessage = styled(Texts12h18)`
 `;
 
 export const Input = styled.input`
+  border-radius: 12px;
   background-color: ${({ theme }) => theme.background.input.primary};
-  border: 1px solid ${({ theme }) => theme.line.input.default};
+  border: 1px solid ${({ theme }) => theme.line.input.primary};
 
   &:hover {
-    background-color: ${({ theme }) => theme.background.input.hover};
+    border: 1px solid ${({ theme }) => theme.line.input.hover};
+  }
+  &:focus {
+    border: 1px solid ${({ theme }) => theme.line.input.highlight};
   }
 `;
 
@@ -81,9 +85,9 @@ export const Button = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 12px;
 
-  border: 1px solid ${({ theme }) => theme.line.box.default};
-  background-color: ${({ theme }) => theme.background.box.default};
+  background-color: ${({ theme }) => theme.background.box.default.primary};
 
   &:hover {
     background-color: ${({ theme }) => theme.background.box.default.hover};
@@ -96,8 +100,7 @@ export const Button = styled.button`
 `;
 
 export const BlueButton = styled(Button)`
-  color: white;
-  border: none;
+  color: ${({ theme }) => theme.text.white};
   background-color: ${({ theme }) => theme.background.box.blue.primary};
 
   &:hover {
@@ -123,7 +126,7 @@ export const Divider = styled.div<{
   thickness?: string;
   length?: string;
 }>`
-  background-color: ${({ theme }) => theme.line.divider.default};
+  background-color: ${({ theme }) => theme.line.divider.primary};
 
   ${({ orientation, thickness, length }) =>
     orientation === 'vertical'

@@ -59,7 +59,7 @@ const Capsule = styled.li`
   justify-content: center;
   align-items: center;
   border-radius: 32px;
-  border: 1px solid ${({ theme }) => theme.line.box.default};
+  border: 1px solid ${({ theme }) => theme.line.box.primary};
   padding: 8px 20px;
   cursor: pointer;
   font-weight: ${({ theme }) => theme.fontWeight.light};

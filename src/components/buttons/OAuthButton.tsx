@@ -20,9 +20,10 @@ const GoogleOAuthButtonStyle = styled(Button)`
   width: 100%;
   padding: 8px;
   border-radius: 12px;
+  border: 1px solid ${({ theme }) => theme.line.box.primary};
 
   div {
-    color: ${({ theme }) => theme.text.secondary};
+    color: ${({ theme }) => theme.text.active};
     ${({ theme }) => theme.fontSize.s16h24};
   }
 `;

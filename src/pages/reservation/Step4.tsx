@@ -10,7 +10,16 @@ import dayjs from 'dayjs';
 
 import { GoChecklist } from 'react-icons/go';
 
-import { BlueButton, BottomFixed, CenterContainer, Column, Row, Texts12h18, Texts14h21, Texts16h24 } from 'styles/commonStyle';
+import {
+  BlueButton,
+  BottomFixed,
+  CenterContainer,
+  Column,
+  Row,
+  Texts12h18,
+  Texts14h21,
+  Texts16h24,
+} from 'styles/commonStyle';
 import SelectedPetsitter from './component/step4/SelectedPetsitterCard';
 import SelectedPets from './component/step4/SelectedPets';
 import Confirm from './component/step4/Confirm';
@@ -249,7 +258,7 @@ const ButtonContainer = styled(CenterContainer)`
 `;
 
 const StyledButton = styled(BlueButton)`
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.radius};
   width: 100%;
   padding: 12px;
   border: none;

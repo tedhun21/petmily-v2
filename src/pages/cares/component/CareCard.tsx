@@ -88,7 +88,7 @@ const PetsitterName = styled(Row)`
 const PetsitterImage = styled(RoundedImageWrapper)`
   width: 60px;
   height: 60px;
-  border: 2px solid ${({ theme }) => theme.line.box.blue};
+  border: 2px solid ${({ theme }) => theme.line.box.highlight};
 `;
 
 const ReservationContainer = styled(Column)`

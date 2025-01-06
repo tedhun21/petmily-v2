@@ -101,7 +101,7 @@ const FloatButtonContainer = styled(Float)`
 `;
 
 const StyledButton = styled(BlueButton)`
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.radius};
   width: 100%;
   padding: 12px;
 

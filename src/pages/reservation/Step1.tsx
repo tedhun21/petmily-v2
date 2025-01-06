@@ -3,14 +3,12 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 
-import { TextField } from '@mui/material';
+import { Modal, TextField } from '@mui/material';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers';
-import { Modal, Sheet } from '@mui/joy';
-import DaumPostcode from 'react-daum-postcode';
 
 import dayjs, { Dayjs } from 'dayjs';
 
@@ -18,6 +16,7 @@ import { checkInDisableTime, checkOutDisableTime, reservationDisableDate } from 
 
 import { BlueButton, BottomFixed, Column, Float, Row } from 'styles/commonStyle';
 import PetContainer from './component/step1/PetContainer';
+import CustomDaumPostcode from '@components/CustomDaumPostcode';
 
 export default function Step1({ onNext }: any) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -221,9 +220,9 @@ export default function Step1({ onNext }: any) {
               onClose={() => setIsModalOpen(false)}
               sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
             >
-              <Sheet sx={{ width: '360px;' }}>
-                <DaumPostcode onComplete={handleComplete} />
-              </Sheet>
+              <div style={{ width: '360px;' }}>
+                <CustomDaumPostcode onComplete={handleComplete} />
+              </div>
             </Modal>
           </Container>
 
@@ -292,7 +291,7 @@ const StyledDatePicker = styled(DatePicker)`
   }
 
   .MuiOutlinedInput-notchedOutline {
-    border-color: ${({ theme }) => theme.line.input.default};
+    border-color: ${({ theme }) => theme.line.input.primary};
   }
 `;
 
@@ -321,7 +320,7 @@ const StyledTimePicker = styled(TimePicker)`
   }
 
   .MuiOutlinedInput-notchedOutline {
-    border-color: ${({ theme }) => theme.line.input.default};
+    border-color: ${({ theme }) => theme.line.input.primary};
   }
 `;
 
@@ -369,7 +368,7 @@ const FloatButtonContainer = styled(Float)`
 `;
 
 const StyledButton = styled(BlueButton)`
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.radius};
   width: 100%;
   padding: 12px;
 

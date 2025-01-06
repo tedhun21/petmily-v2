@@ -72,5 +72,5 @@ const PetList = styled.ul`
 `;
 
 const PetCapsule = styled.li`
-  // border: 1px solid ${({ theme }) => theme.line.box.blue};
+  // border: 1px solid ${({ theme }) => theme.line.box.highlight};
 `;

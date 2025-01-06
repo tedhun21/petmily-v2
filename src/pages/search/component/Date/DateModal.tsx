@@ -121,7 +121,7 @@ const DatepickerWrapper = styled.div`
 
             &:not(.react-datepicker__day--selected):not([aria-disabled='true']):hover {
               border-radius: 50%;
-              border: 1px solid ${({ theme }) => theme.line.box.default};
+              border: 1px solid ${({ theme }) => theme.line.box.primary};
               background-color: transparent; // 변경된 부분
             }
           }

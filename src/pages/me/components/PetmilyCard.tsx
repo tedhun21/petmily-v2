@@ -57,7 +57,7 @@ const PetCard = styled(Link)`
   justify-content: space-between;
   width: 100%;
   padding: 8px;
-  border: 2px solid ${({ theme }) => theme.line.box.blue};
+  border: 2px solid ${({ theme }) => theme.line.box.highlight};
   border-radius: 16px;
   color: inherit;
   gap: 8px;

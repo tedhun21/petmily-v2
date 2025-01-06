@@ -3,7 +3,7 @@ import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 import useSWR from 'swr';
-import DaumPostcode from 'react-daum-postcode';
+
 import styled from 'styled-components';
 
 import { timeRange } from 'utils/date';
@@ -30,6 +30,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import dayjs from 'dayjs';
 import { toast } from 'react-toastify';
 import Loading from '@components/Loading';
+import CustomDaumPostcode from '@components/CustomDaumPostcode';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store';
 
 const schema = yup.object().shape({
   checkedPets: yup.array().min(1, '적도오 한 마리의 펫을 선택해야 합니다.'),
@@ -48,6 +51,8 @@ export default function Book() {
   const date = searchParams.get('date');
   const startTime = searchParams.get('checkIn');
   const endTime = searchParams.get('checkOut');
+
+  const { isDarkMode } = useSelector((state: RootState) => state.theme);
 
   // 주소 모달
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -74,12 +79,14 @@ export default function Book() {
 
   const handleComplete = (data: any) => {
     const { address, zonecode } = data;
+
     if (data) {
       methods.clearErrors('address');
     }
 
     methods.setValue('address', address);
     methods.setValue('zipcode', zonecode);
+
     setIsModalOpen(false);
   };
 
@@ -173,7 +180,7 @@ export default function Book() {
                     sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                   >
                     <div style={{ width: '360px' }}>
-                      <DaumPostcode onComplete={handleComplete} />
+                      <CustomDaumPostcode onComplete={handleComplete} theme={isDarkMode ? 'dark' : 'light'} />
                     </div>
                   </Modal>
                 </AddressSection>
@@ -301,7 +308,7 @@ const FloatButtonContainer = styled(Float)`
 `;
 
 const StyledButton = styled(BlueButton)<{ disabled: boolean }>`
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.radius};
   width: 100%;
   padding: 12px;
 

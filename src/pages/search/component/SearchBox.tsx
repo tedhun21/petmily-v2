@@ -95,7 +95,7 @@ export default function SearchBox() {
 const Container = styled(Row)<{ $isSelected: string | null }>`
   align-items: center;
   position: relative;
-  border: 1px solid ${({ theme }) => theme.line.input.default};
+  border: 1px solid ${({ theme }) => theme.line.input.primary};
   border-radius: 28px;
   background-color: ${({ theme, $isSelected }) => $isSelected && theme.background.box.default.active};
   box-shadow: ${({ theme }) => theme.shadow.dp02};
