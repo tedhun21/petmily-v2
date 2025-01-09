@@ -2,20 +2,24 @@ import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import { useMemo, useState } from 'react';
 import useMeasure from 'hooks/useMeasure';
-import { CenterContainer } from 'styles/commonStyle';
+import { Button, CenterContainer } from 'styles/commonStyle';
 import useCoords from 'hooks/useCoords';
+import { FaXmark } from 'react-icons/fa6';
+import { HiOutlineLocationMarker } from 'react-icons/hi';
+import { TbCurrentLocation } from 'react-icons/tb';
+import { GrMapLocation } from 'react-icons/gr';
 
 interface IProps {
   address?: string;
   map: any;
-  geocode: any;
+  geocode?: any;
 }
 
 export default function MapsDrawer({ address, map, geocode }: IProps) {
   const [isOpen, setIsOpen] = useState(true);
   const [contentRef, contentBounds] = useMeasure();
   const headerHeight = 52;
-  const { addresses } = geocode;
+
   const { latitude, longitude } = useCoords();
 
   // 초과하지 않게
@@ -41,7 +45,7 @@ export default function MapsDrawer({ address, map, geocode }: IProps) {
   const handleMarkerCenter = () => {
     const { naver } = window as any;
 
-    const centerPosition = new naver.maps.LatLng(addresses[0].y, addresses[0].x);
+    const centerPosition = new naver.maps.LatLng(geocode.addresses[0].y - 0.005, geocode.addresses[0].x);
 
     // 지도 중심 변경
     map.setCenter(centerPosition);
@@ -73,6 +77,34 @@ export default function MapsDrawer({ address, map, geocode }: IProps) {
     map.setZoom(15);
   };
 
+  const handleRouteSearch = () => {
+    if (geocode && address) {
+      const startLng = longitude; // 현재 위치 경도
+      const startLat = latitude; // 현재 위치 위도
+
+      // 목적지 경도 및 위도 가져오기
+      const endLng = geocode.addresses[0]?.x;
+      const endLat = geocode.addresses[0]?.y;
+
+      if (!startLng || !startLat || !endLng || !endLat) {
+        console.error('경로를 계산할 수 없습니다. 필요한 좌표가 없습니다.');
+        return;
+      }
+
+      // 출발지와 도착지 이름 설정 (주소 또는 임의 문자열)
+      const startPlace = '내위치'; // 출발지명
+      const endPlace = address || '도착지'; // 도착지명
+
+      // URL 생성
+      const url = `https://map.naver.com/v5/directions/${startLng},${startLat},${startPlace},,/${endLng},${endLat},${endPlace},,/-/transit`;
+
+      // 새 탭에서 열기
+      window.open(url, '_blank');
+    } else {
+      console.error('Geocode 또는 Address 데이터가 부족합니다.');
+    }
+  };
+
   return (
     <StyledMotionDiv
       drag="y"
@@ -81,21 +113,36 @@ export default function MapsDrawer({ address, map, geocode }: IProps) {
       onDragEnd={onDragEnd}
       dragElastic={0.2}
     >
-      <div style={{ width: '100%' }}>
+      <div style={{ position: 'relative', width: '100%' }}>
         <DrawerHeader>
           <DrawerHandle />
         </DrawerHeader>
         <Content ref={contentRef}>
-          <span>{address}</span>
-          <div>
-            <button onClick={handleMarkerCenter}>
+          <CenterContainer>
+            <span>{address}</span>
+          </CenterContainer>
+          <ButtonWrapper>
+            <StyledButton onClick={handleMarkerCenter}>
+              <HiOutlineLocationMarker size="24px" />
               <span>주소 위치</span>
-            </button>
-            <button onClick={handleMyLocation}>
+            </StyledButton>
+            <StyledButton onClick={handleMyLocation}>
+              <TbCurrentLocation size="24px" />
               <span>내 위치</span>
-            </button>
-          </div>
+            </StyledButton>
+
+            <StyledButton onClick={handleRouteSearch}>
+              <GrMapLocation size="24px" />
+              <span>길 찾기</span>
+            </StyledButton>
+          </ButtonWrapper>
         </Content>
+
+        {isOpen && (
+          <XButton onClick={() => setIsOpen(false)}>
+            <FaXmark size="20px" />
+          </XButton>
+        )}
       </div>
     </StyledMotionDiv>
   );
@@ -126,7 +173,29 @@ const DrawerHandle = styled.div`
   cursor: grab;
 `;
 
-const Content = styled.div`
-  text-align: center;
-  color: ${({ theme }) => theme.text.active};
+const Content = styled.div``;
+
+const XButton = styled(Button)`
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 4px;
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  padding: 20px;
+  gap: 4px;
+
+  button {
+    flex: 1;
+  }
+`;
+
+const StyledButton = styled(Button)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 40px;
 `;

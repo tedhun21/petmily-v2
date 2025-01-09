@@ -4,6 +4,7 @@ import { useSearchParams } from 'react-router-dom';
 import useSWR from 'swr';
 
 import MapsDrawer from './component/Drawer';
+
 const API_URL = process.env.REACT_APP_API_URL;
 const NAVER_MAPS_CLIENT_ID = process.env.REACT_APP_NAVER_MAPS_CLIENT_ID;
 
@@ -66,8 +67,8 @@ export default function Maps() {
   return (
     <div style={{ position: 'relative', height: '100%', overflow: 'hidden' }}>
       <div ref={mapRef} style={{ width: '100%', height: '100%' }} />
-      {/* <div style={{ width: '100%', height: '100%', backgroundColor: 'black' }} /> */}
-      <MapsDrawer address={address ?? undefined} map={mapObj} geocode={geocode} />
+      {/* <div style={{ width: '100%', height: '100%', backgroundColor: 'white' }} /> */}
+      <MapsDrawer address={address ?? undefined} map={mapObj} geocode={geocode ?? undefined} />
     </div>
   );
 }
