@@ -227,7 +227,7 @@ export default function Book() {
 const Main = styled.main`
   height: 100%;
   overflow: auto;
-  padding-bottom: 160px;
+  margin-bottom: 160px;
 `;
 
 const Reservation = styled.section`
@@ -308,7 +308,7 @@ const FloatButtonContainer = styled(Float)`
 `;
 
 const StyledButton = styled(BlueButton)<{ disabled: boolean }>`
-  border-radius: ${({ theme }) => theme.radius};
+  border-radius: ${({ theme }) => theme.radius.normal};
   width: 100%;
   padding: 12px;
 

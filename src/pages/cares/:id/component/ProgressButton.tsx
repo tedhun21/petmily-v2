@@ -123,16 +123,16 @@ const ButtonContainer = styled.div`
 `;
 
 // 1. 고객
-// 1-1. progress === "PENDING" => 취소 active
-// 1-2. progress === "CONFIRMED" => 진행중 inActive
-// 1-3. progress === "CANCELED" => 취소됨 inActive
-// 1-4. progress === "FINISHED" => 리뷰 작성하기 active
+// 1-1. status => "PENDING" --- 예약 신청
+// 1-2. status === "CANCELED" --- PENDING 상태에서 취소할 수 있음
+// 1-3. status === "CANCELED" => 취소됨 inActive
+// 1-4. status === "FINISHED" => 리뷰 작성하기 active
 
 // 2. 펫시터
-// 1-1. progress === "PENDING" => 수락 active
-// 1-2. progress === "CONFIRMED" => 진행중 inActive
-// 1-3. progress === "CANCELED" => 취소됨 inActive
-// 1-4. progress === "FINISHED" => 일지 작성하기 active
+// 1-1. status === "PENDING" => 수락 active
+// 1-2. status === "CONFIRMED" => 진행중 inActive
+// 1-3. status === "CANCELED" => 취소됨 inActive
+// 1-4. status === "FINISHED" => 일지 작성하기 active
 
 const Button = styled(BlueButton)<{ disabled?: boolean }>`
   display: flex;
@@ -140,7 +140,7 @@ const Button = styled(BlueButton)<{ disabled?: boolean }>`
   align-items: center;
   width: 100%;
 
-  border-radius: 16px;
+  border-radius: ${({ theme }) => theme.radius.normal};
   padding: 8px;
 
   // hover와 active 스타일을 disabled일 때 비활성화

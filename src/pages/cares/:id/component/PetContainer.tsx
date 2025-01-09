@@ -56,7 +56,7 @@ export default function PetContainer({ pets }: any) {
 const CustomSwiper = styled(Swiper)`
   width: 100%;
   height: 140px;
-  border-radius: 20px;
+  border-radius: ${({ theme }) => theme.radius.large};
   box-shadow: ${({ theme }) => theme.shadow.dp03};
 `;
 
@@ -64,7 +64,6 @@ const PetCard = styled(Column)`
   justify-content: space-between;
   height: 100%;
   padding: 20px;
-  // background-color: ${({ theme }) => theme.background.box.default.primary};
 `;
 
 const PetImageName = styled(Row)`

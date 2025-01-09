@@ -458,7 +458,7 @@ const MainContainer = styled.section`
 const InputContainer = styled(Column)`
   padding: 20px;
   gap: 20px;
-  padding-bottom: 124px;
+  margin-bottom: 124px;
 `;
 
 const EmailWrapper = styled.div`
@@ -483,7 +483,7 @@ const InputError = styled(Column)`
 
 const MeInput = styled(Input)`
   width: 100%;
-  border-radius: ${({ theme }) => theme.radius};
+  border-radius: ${({ theme }) => theme.radius.normal};
   padding: 8px;
   ${({ theme }) => theme.fontSize.s16h24}
 
@@ -505,7 +505,7 @@ const LocationList = styled.ul`
 const LocationItem = styled.li`
   display: flex;
   align-items: center;
-  border-radius: ${({ theme }) => theme.radius};
+  border-radius: ${({ theme }) => theme.radius.normal};
   gap: 4px;
   padding: 4px;
   color: white;
@@ -521,7 +521,7 @@ const LocationInputContainer = styled(Row)`
 const LocationInput = styled(Input)`
   width: 100%;
 
-  border-radius: ${({ theme }) => theme.radius};
+  border-radius: ${({ theme }) => theme.radius.normal};
   padding: 8px;
   ${({ theme }) => theme.fontSize.s16h24};
   background-color: ${({ theme }) => theme.background.input.primary};
@@ -544,7 +544,7 @@ const AddLocationButton = styled.button`
 const TextArea = styled.textarea`
   width: 80%;
 
-  border-radius: ${({ theme }) => theme.radius};
+  border-radius: ${({ theme }) => theme.radius.normal};
   padding: 8px;
   color: ${({ theme }) => theme.text.active};
   border: 1px solid ${({ theme }) => theme.line.input.primary};
@@ -576,7 +576,7 @@ const DayLabel = styled.label<{ $isSelected?: boolean }>`
   background-color: ${({ theme, $isSelected }) =>
     $isSelected ? theme.background.box.blue.primary : theme.background.box.blue.disabled};
   cursor: pointer;
-  border-radius: ${({ theme }) => theme.radius};
+  border-radius: ${({ theme }) => theme.radius.normal};
 
   /* Adding transition for smooth effect */
   transition:
@@ -595,7 +595,7 @@ const TimePickerContainer = styled(Row)`
 
 const StyledTimePicker = styled(TimePicker)`
   .MuiInputBase-root {
-    border-radius: ${({ theme }) => theme.radius};
+    border-radius: ${({ theme }) => theme.radius.normal};
     background-color: ${({ theme }) => theme.background.input.primary};
     &:hover {
       background-color: ${({ theme }) => theme.background.input.hover};
@@ -627,7 +627,7 @@ const SubmitButton = styled(BlueButton)`
   justify-content: center;
   align-items: center;
 
-  border-radius: ${({ theme }) => theme.radius};
+  border-radius: ${({ theme }) => theme.radius.normal};
   padding: 8px;
   ${({ theme }) => theme.fontSize.s18h27};
   font-weight: ${({ theme }) => theme.fontWeight.bold};

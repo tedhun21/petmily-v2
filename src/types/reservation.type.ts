@@ -1,4 +1,5 @@
 import { CoreType } from './common.type';
+import { Pet } from './pet.type';
 import { User } from './user.type';
 
 export enum Status {
@@ -19,4 +20,5 @@ export interface Reservation extends CoreType {
   client: User;
   Petsitter: User;
   body: string;
+  pets: Pet[];
 }

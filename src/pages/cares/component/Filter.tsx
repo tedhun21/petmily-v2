@@ -96,7 +96,7 @@ const OrderRadio = styled.div`
 const CustomLabel = styled.label<{ $isSelected: boolean }>`
   padding: 4px 8px;
   border: ${({ theme, $isSelected }) => ($isSelected ? 'none' : `1px solid ${theme.line.box.primary}`)};
-  border-radius: ${({ theme }) => theme.radius};
+  border-radius: ${({ theme }) => theme.radius.normal};
   color: ${({ $isSelected, theme }) => ($isSelected ? 'white' : theme.text.inactive)};
   background-color: ${({ theme, $isSelected }) =>
     $isSelected ? theme.background.box.blue.primary : theme.background.box.default.primary};

@@ -40,7 +40,7 @@ export default function Maps({ reservation }: any) {
 const LocationImageWrapper = styled.div`
   display: flex;
   overflow: hidden;
-  border-radius: 20px;
+  border-radius: ${({ theme }) => theme.radius.large};
   box-shadow: ${({ theme }) => theme.shadow.dp03};
 `;
 

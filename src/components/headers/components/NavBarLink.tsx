@@ -34,6 +34,6 @@ const CustomLink = styled(Link)<{ $isActive: boolean }>`
 
 const LinkLabel = styled(Texts12h18)<{ $isActive: boolean }>`
   padding: 4px 8px;
-  border-radius: ${({ theme }) => theme.radius};
+  border-radius: ${({ theme }) => theme.radius.normal};
   color: ${({ $isActive, theme }) => ($isActive ? theme.text.active : theme.text.inactive)};
 `;

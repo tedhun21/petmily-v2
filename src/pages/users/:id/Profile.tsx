@@ -265,7 +265,7 @@ const StyledLink = styled(Link)<{ disabled: boolean }>`
   align-items: center;
   justify-content: center;
   padding: 12px;
-  border-radius: ${({ theme }) => theme.radius};
+  border-radius: ${({ theme }) => theme.radius.normal};
   width: 100%;
   color: ${({ theme }) => theme.text.white};
 

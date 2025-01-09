@@ -2,10 +2,10 @@ import styled from 'styled-components';
 
 import { PiStarFill } from 'react-icons/pi';
 
-import { Column, ImageCentered, RoundedImageWrapper, Row, Texts18h27 } from 'styles/commonStyle';
+import { BlueLink, Column, ImageCentered, RoundedImageWrapper, Row, Texts18h27 } from 'styles/commonStyle';
 import { PetInfoCapsule, PetInfoContainer } from '@pages/cares/:id/CareDetail';
 import { formatKrDays, timeRange } from 'utils/date';
-import { Link } from 'react-router-dom';
+
 import { MdOutlineRateReview } from 'react-icons/md';
 
 export default function PetsitterCard({ petsitter }: any) {
@@ -19,7 +19,10 @@ export default function PetsitterCard({ petsitter }: any) {
           />
         </PetsitterImage>
         <PetsitterName>{petsitter?.nickname} 님</PetsitterName>
-        <StyledLink to={`/chats/${petsitter?.id}`}>채팅 하기</StyledLink>
+        <Row>
+          <StyledLink to={`/chats/${petsitter?.id}`}>채팅 하기</StyledLink>
+          <StyledLink to={`/users/${petsitter?.nickname}`}>프로필 보기</StyledLink>
+        </Row>
       </ImageName>
       <PetsitterInfo>
         <StarReviewWrapper>
@@ -84,27 +87,12 @@ const PetsitterName = styled(Texts18h27)`
   font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;
 
-const StyledLink = styled(Link)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
+const StyledLink = styled(BlueLink)`
+  // display: flex;
+  // align-items: center;
+  // justify-content: center;
   padding: 8px;
-  border-radius: ${({ theme }) => theme.radius};
-  color: white;
-  background-color: ${({ theme }) => theme.background.box.blue.primary};
-
-  &:hover {
-    background-color: ${({ theme }) => theme.background.box.blue.hover};
-  }
-
-  &:active {
-    background-color: ${({ theme }) => theme.background.box.blue.active};
-    box-shadow: ${({ theme }) => theme.shadow.inset};
-  }
-
-  > span {
-    color: inherit;
-  }
+  border-radius: ${({ theme }) => theme.radius.normal};
 `;
 
 const StarReviewWrapper = styled(Row)`

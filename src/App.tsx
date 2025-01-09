@@ -65,6 +65,7 @@ import Book from '@pages/users/:id/book/Book';
 import { darkTheme, lightTheme } from 'styles/theme';
 import GlobalStyle from 'styles/Globalstyle';
 import { ITheme, toggleTheme } from 'store/themeSlice';
+import Maps from '@pages/cares/:id/maps/Maps';
 
 const NavHeaderLayout = () => {
   return (
@@ -103,6 +104,7 @@ const router = createBrowserRouter(
         <Route path="cares/:id" element={<CareDetail />} />
         <Route path="cares/:id/review" element={<Review />} />
         <Route path="cares/:id/journal" element={<Journal />} />
+        <Route path="cares/:id/maps" element={<Maps />} />
         <Route path="users/:nickname" element={<Profile />} />
         <Route path="users/:nickname/book" element={<Book />} />
         {/* <Route path="petsitters/:memberId/schedule" element={<SitterSchedule />} /> */}

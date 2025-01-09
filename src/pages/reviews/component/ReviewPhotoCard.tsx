@@ -165,7 +165,7 @@ const PetsitterDetailLink = styled(Link)`
   background-color: ${({ theme }) => theme.background.box.blue.primary};
   ${({ theme }) => theme.fontSize.s14h21}
   padding: 4px 8px;
-  border-radius: ${({ theme }) => theme.radius};
+  border-radius: ${({ theme }) => theme.radius.normal};
   color: white;
 
   &:hover {

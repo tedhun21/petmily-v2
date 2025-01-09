@@ -80,7 +80,7 @@ const NameText = styled(Texts16h24)`
 const Possiblebox = styled(Texts12h18)`
   margin: 6px 0;
   padding: 2px 8px;
-  border-radius: ${({ theme }) => theme.radius};
+  border-radius: ${({ theme }) => theme.radius.normal};
   color: white;
   font-weight: ${({ theme }) => theme.fontWeight.light};
   background-color: ${({ theme }) => theme.background.highlight};

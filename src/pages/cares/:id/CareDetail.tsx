@@ -16,7 +16,7 @@ import Maps from './component/Maps';
 import { useEffect, useState } from 'react';
 import { getCookie } from 'utils/cookie';
 import { io } from 'socket.io-client';
-import { BottomFixed, CenterContainer, Float, Texts20h30 } from 'styles/commonStyle';
+import { BottomFixed, CenterContainer, Column, Float } from 'styles/commonStyle';
 
 const API_URL = process.env.REACT_APP_API_URL;
 const SOCKET_URL = process.env.REACT_APP_WEBSOCKET_URL;
@@ -57,11 +57,11 @@ export default function CareDetail() {
   }, [reservation]);
 
   return (
-    <Main>
+    <main>
       <Container>
-        <CenterContainer>
-          <Status>{formatStatus(reservation?.status)}...</Status>
-        </CenterContainer>
+        <TitleStatus>
+          <span>{formatStatus(reservation?.status)}...</span>
+        </TitleStatus>
         {me?.role === UserRole.PETSITTER ? (
           <ClientCard client={reservation?.client} />
         ) : me?.role === UserRole.CLIENT ? (
@@ -80,25 +80,22 @@ export default function CareDetail() {
           <ProgressButton meRole={me?.role} reservation={reservation} socket={socket} />
         </FloatButtonContainer>
       </BottomFixed>
-    </Main>
+    </main>
   );
 }
 
-const Main = styled.main`
-  display: flex;
-  flex-direction: column;
-  border-radius: 20px;
-  gap: 20px;
+const TitleStatus = styled(CenterContainer)`
+  span:first-child {
+    color: ${({ theme }) => theme.text.highlight};
+    font-weight: ${({ theme }) => theme.fontWeight.extrabold};
+    ${({ theme }) => theme.fontSize.s20h30}
+  }
 `;
 
-const Container = styled.div`
+const Container = styled(Column)`
   padding: 20px;
-  gap: 16px;
-`;
-
-const Status = styled(Texts20h30)`
-  color: ${({ theme }) => theme.text.highlight};
-  font-weight: ${({ theme }) => theme.fontWeight.extrabold};
+  gap: 20px;
+  margin-bottom: 86px;
 `;
 
 export const PetInfoContainer = styled.ul`
