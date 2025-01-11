@@ -1,4 +1,4 @@
-import { Texts18h27 } from 'styles/commonStyle';
+import { Texts12h18, Texts18h27 } from 'styles/commonStyle';
 import styled from 'styled-components';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 import { FaChevronRight } from 'react-icons/fa6';
@@ -28,11 +28,12 @@ export default function DetailReservation({ reservation }: any) {
           <CustomChevronRight />
         </LocationLink>
       </Wrapper>
-      <div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
         <Label>요청 사항</Label>
-        <p>{reservation?.body}</p>
+        <RequestParagraph>{reservation?.body}</RequestParagraph>
       </div>
-      <span>{dateAgo(reservation?.createdAt)}</span>
+
+      <Texts12h18>{dateAgo(reservation?.createdAt)}</Texts12h18>
     </DetailRservation>
   );
 }
@@ -66,4 +67,9 @@ const CustomLocationMarker = styled(HiOutlineLocationMarker)`
 
 const CustomChevronRight = styled(FaChevronRight)`
   color: ${({ theme }) => theme.text.highlight};
+`;
+
+const RequestParagraph = styled.p`
+  ${({ theme }) => theme.fontSize.s14h21};
+  padding-left: 8px;
 `;

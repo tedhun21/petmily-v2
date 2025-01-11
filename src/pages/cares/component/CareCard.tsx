@@ -83,6 +83,7 @@ const PetsitterContainer = styled(Row)`
 
 const PetsitterName = styled(Row)`
   gap: 4px;
+  align-items: flex-end;
 `;
 
 const PetsitterImage = styled(RoundedImageWrapper)`

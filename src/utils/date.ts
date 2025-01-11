@@ -213,3 +213,13 @@ export const timeOptions = (): string[] => {
   }
   return times;
 };
+
+// 오늘
+export const today = () => {
+  const today = dayjs();
+
+  const year = today.format('YYYY');
+  const month = today.format('MM');
+  const day = today.format('DD');
+  return { year, month, day };
+};

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { Row, Texts12h18 } from 'styles/commonStyle';
+import { Row } from 'styles/commonStyle';
 import { Status } from 'types/reservation.type';
 
 const filters = [
@@ -11,12 +11,15 @@ const filters = [
   { id: 5, label: '취소', value: Status.CANCELED },
 ];
 
-const orders = [
-  { id: 1, label: '최신순', value: 'desc' },
-  { id: 2, label: '오래된 순', value: 'asc' },
-];
+export default function Filter({ filter, handleFilter, date, setDate }: any) {
+  const handleMonthChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setDate((prev: any) => ({ ...prev, month: e.target.value }));
+  };
 
-export default function Filter({ filter, order, handleFilter, handleOrder }: any) {
+  const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setDate((prev: any) => ({ ...prev, year: e.target.value }));
+  };
+
   return (
     <FilterContainer>
       <StatusFilters>
@@ -36,32 +39,42 @@ export default function Filter({ filter, order, handleFilter, handleOrder }: any
           </FilterRadio>
         ))}
       </StatusFilters>
-      <OrderFilters>
-        {orders.map((el, index) => (
-          <OrderRadio key={el.id}>
-            <input
-              type="radio"
-              id={`order-${el.id}`}
-              name="order"
-              value={el.value}
-              checked={order.value === el.value}
-              onChange={() => handleOrder(el)}
-            />
-            <CustomOrderLabel htmlFor={`order-${el.id}`} $isSelected={order.value === el.value}>
-              {el.label}
-            </CustomOrderLabel>
-            {index === 0 && <Texts12h18>•</Texts12h18>}
-          </OrderRadio>
-        ))}
-      </OrderFilters>
+
+      <SelectWrapper>
+        <StyledSelect name="month" value={date.month} onChange={handleMonthChange}>
+          <option value="12">12월</option>
+          <option value="11">11월</option>
+          <option value="10">10월</option>
+          <option value="09">9월</option>
+          <option value="08">8월</option>
+          <option value="07">7월</option>
+          <option value="06">6월</option>
+          <option value="05">5월</option>
+          <option value="04">4월</option>
+          <option value="03">3월</option>
+          <option value="02">2월</option>
+          <option value="01">1월</option>
+        </StyledSelect>
+        <StyledSelect name="year" value={date.year} onChange={handleYearChange}>
+          <option value="2024">2024년</option>
+          <option value="2025">2025년</option>
+          <option value="2026">2026년</option>
+          <option value="2027">2027년</option>
+          <option value="2028">2028년</option>
+          <option value="2029">2029년</option>
+          <option value="2030">2030년</option>
+          <option value="2031">2031년</option>
+          <option value="2032">2032년</option>
+        </StyledSelect>
+      </SelectWrapper>
     </FilterContainer>
   );
 }
 
 const FilterContainer = styled(Row)`
+  flex: 1;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
 `;
 
 const StatusFilters = styled(Row)`
@@ -69,21 +82,6 @@ const StatusFilters = styled(Row)`
 `;
 
 const FilterRadio = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 4px;
-
-  input {
-    display: none; /* Hide the default radio button */
-  }
-`;
-
-const OrderFilters = styled(Row)`
-  gap: 8px;
-  align-items: flex-end;
-`;
-
-const OrderRadio = styled.div`
   display: flex;
   align-items: center;
   gap: 4px;
@@ -108,9 +106,20 @@ const CustomLabel = styled.label<{ $isSelected: boolean }>`
   ${({ theme }) => theme.fontSize.s14h21};
 `;
 
-const CustomOrderLabel = styled.label<{ $isSelected: boolean }>`
-  cursor: pointer;
-  color: ${({ $isSelected, theme }) => ($isSelected ? theme.text.highlight : theme.text.inactive)};
-  font-weight: ${({ $isSelected, theme }) => ($isSelected ? theme.fontWeight.bold : theme.fontWeight.normal)};
+const SelectWrapper = styled(Row)`
+  gap: 4px;
+`;
+
+const StyledSelect = styled.select`
+  padding: 6px 8px;
+  border: 1px solid ${({ theme }) => theme.line.input.primary};
+  border-radius: ${({ theme }) => theme.radius.normal};
+  background-color: ${({ theme }) => theme.background.box.default.primary};
+  color: inherit;
   ${({ theme }) => theme.fontSize.s14h21};
+
+  &:focus {
+    outline: none;
+    border: 1px solid ${({ theme }) => theme.line.input.highlight};
+  }
 `;

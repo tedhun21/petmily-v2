@@ -10,10 +10,16 @@ import { infiniteFetcherWithCookie } from 'api';
 import Loading from '@components/Loading';
 import CareCard from './CareCard';
 import { getCookie } from 'utils/cookie';
+import { useSearchParams } from 'react-router-dom';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-export default function CareContainer({ filter, order }: any) {
+export default function CareContainer() {
+  const [searchParams] = useSearchParams();
+  const year = searchParams.get('year');
+  const month = searchParams.get('month');
+  const filter = searchParams.get('filter');
+
   const ref = useRef(null);
   const isInView = useInView(ref);
   const pageSize = 10;
@@ -23,7 +29,7 @@ export default function CareContainer({ filter, order }: any) {
     if (!access_token) return null;
 
     if (previousPageData && !previousPageData.length) return null;
-    return `${API_URL}/reservations?page=${pageIndex + 1}&pageSize=${pageSize}&status=${filter.value}&order=${order.value}`;
+    return `${API_URL}/reservations?page=${pageIndex + 1}&pageSize=${pageSize}&status=${filter}&date=${year}-${month}`;
   };
   const { data, size, setSize, isLoading } = useSWRInfinite(getKey, infiniteFetcherWithCookie);
 
@@ -70,6 +76,8 @@ export default function CareContainer({ filter, order }: any) {
 }
 
 const CareCardContainer = styled.div`
+  flex: auto;
+  height: 100%;
   display: flex;
   flex-direction: column;
   padding-top: 16px;

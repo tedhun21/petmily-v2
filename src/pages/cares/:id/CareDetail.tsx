@@ -70,8 +70,6 @@ export default function CareDetail() {
 
         <PetContainer pets={reservation?.pets} />
 
-        {/* <Maps reservation={reservation} /> */}
-
         <DetailReservation reservation={reservation} />
       </Container>
 
