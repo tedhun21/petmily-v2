@@ -1,23 +1,29 @@
+import dayjs from 'dayjs';
 import styled from 'styled-components';
 
 import { Row } from 'styles/commonStyle';
-import { Status } from 'types/reservation.type';
 
-const filters = [
+import { Status } from 'types/reservation.type';
+import { FilterType } from '../Cares';
+
+const filters: FilterType[] = [
   { id: 1, label: '전체', value: 'all' },
   { id: 2, label: '대기', value: Status.PENDING },
   { id: 3, label: '예정', value: Status.ACCEPTED },
   { id: 4, label: '완료', value: Status.COMPLETED },
   { id: 5, label: '취소', value: Status.CANCELED },
 ];
+interface IProps {
+  filter: FilterType;
+  handleFilter: (filter: FilterType) => void;
+  date: string | null;
+  setDate: (date: string) => void;
+  monthData: string[];
+}
 
-export default function Filter({ filter, handleFilter, date, setDate }: any) {
+export default function Filter({ filter, handleFilter, date, setDate, monthData }: IProps) {
   const handleMonthChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setDate((prev: any) => ({ ...prev, month: e.target.value }));
-  };
-
-  const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setDate((prev: any) => ({ ...prev, year: e.target.value }));
+    setDate(e.target.value);
   };
 
   return (
@@ -41,30 +47,16 @@ export default function Filter({ filter, handleFilter, date, setDate }: any) {
       </StatusFilters>
 
       <SelectWrapper>
-        <StyledSelect name="month" value={date.month} onChange={handleMonthChange}>
-          <option value="12">12월</option>
-          <option value="11">11월</option>
-          <option value="10">10월</option>
-          <option value="09">9월</option>
-          <option value="08">8월</option>
-          <option value="07">7월</option>
-          <option value="06">6월</option>
-          <option value="05">5월</option>
-          <option value="04">4월</option>
-          <option value="03">3월</option>
-          <option value="02">2월</option>
-          <option value="01">1월</option>
-        </StyledSelect>
-        <StyledSelect name="year" value={date.year} onChange={handleYearChange}>
-          <option value="2024">2024년</option>
-          <option value="2025">2025년</option>
-          <option value="2026">2026년</option>
-          <option value="2027">2027년</option>
-          <option value="2028">2028년</option>
-          <option value="2029">2029년</option>
-          <option value="2030">2030년</option>
-          <option value="2031">2031년</option>
-          <option value="2032">2032년</option>
+        <StyledSelect name="month" value={date || ''} onChange={handleMonthChange}>
+          {monthData && monthData.length > 0 ? (
+            monthData.map((month: string) => (
+              <option key={month} value={month}>
+                {dayjs(month).format('YYYY년 MM월')}
+              </option>
+            ))
+          ) : (
+            <option value="">----</option>
+          )}
         </StyledSelect>
       </SelectWrapper>
     </FilterContainer>
