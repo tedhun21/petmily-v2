@@ -1,49 +1,34 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import styled from 'styled-components';
 
-import useSWRMutation from 'swr/mutation';
-
-import { updaterWithCookie } from 'api';
-
-import { useNavigate } from 'react-router-dom';
 import Loading from '@components/Loading';
 import { BlueButton } from 'styles/commonStyle';
-
-const API_URL = process.env.REACT_APP_API_URL;
+import { Status } from 'types/reservation.type';
+import { UserRole } from 'types/user.type';
 
 export default function ProgressButton({ meRole, reservation, socket }: any) {
   const navigate = useNavigate();
-  const { isMutating, trigger } = useSWRMutation(`${API_URL}/reservations/${reservation?.id}`, updaterWithCookie);
+  const [isLoading, setIsLoading] = useState(false);
 
   // 예약 수락
   const handleAccept = () => {
-    trigger(
-      { formData: { status: 'Accepted' } },
-      {
-        onSuccess: () => {
-          // 성공 시 웹소켓을 통해 상태 업데이트 이벤트 발송
-          socket.emit('updateStatus', { reservationId: reservation?.id, newStatus: 'Accepted' });
-        },
-        onError: () => {
-          // 에러 발생 시 처리 (rollback이 자동으로 됨)
-        },
-      },
-    );
+    setIsLoading(true);
+    if (reservation) {
+      socket.emit('updateStatus', { reservationId: reservation.id, newStatus: Status.ACCEPTED });
+    }
+    setIsLoading(false);
   };
 
   // 예약 취소
   const handleCancel = () => {
-    trigger(
-      { formData: { status: 'Canceled' } },
-      {
-        onSuccess: () => {
-          // 성공 시 웹소켓을 통해 상태 업데이트 이벤트 발송
-          socket.emit('updateStatus', { reservationId: reservation?.id, newStatus: 'Canceled' });
-        },
-        onError: () => {
-          // 에러 발생 시 처리 (rollback이 자동으로 됨)
-        },
-      },
-    );
+    setIsLoading(true);
+    if (reservation) {
+      socket.emit('updateStatus', { reservationId: reservation.id, newStatus: Status.CANCELED });
+    }
+
+    setIsLoading(false);
   };
 
   const handleLinkReview = () => {
@@ -55,25 +40,25 @@ export default function ProgressButton({ meRole, reservation, socket }: any) {
   };
 
   const renderButton = () => {
-    if (meRole === 'Petsitter') {
+    if (meRole === UserRole.PETSITTER) {
       // 펫시터
       switch (reservation?.status) {
-        case 'Pending':
+        case Status.PENDING:
           return (
-            <Button disabled={isMutating} onClick={handleAccept}>
-              {isMutating ? <Loading /> : '수락'}
+            <Button disabled={isLoading} onClick={handleAccept}>
+              {isLoading ? <Loading /> : '수락'}
             </Button>
           );
-        case 'Accepted':
+        case Status.ACCEPTED:
           // CONFIRMED => "FINISHED"
           return (
-            <Button disabled={isMutating} onClick={handleCancel}>
-              {isMutating ? <Loading /> : '취소'}
+            <Button disabled={isLoading} onClick={handleCancel}>
+              {isLoading ? <Loading /> : '취소'}
             </Button>
           );
-        case 'Canceled':
+        case Status.CANCELED:
           return <Button disabled>취소됨</Button>;
-        case 'Completed':
+        case Status.COMPLETED:
           return (
             <>
               <Button onClick={handleLinkJournal}>{reservation?.journal ? '케어일지 수정' : '케어일지 작성'}</Button>
@@ -83,25 +68,25 @@ export default function ProgressButton({ meRole, reservation, socket }: any) {
         default:
           return null;
       }
-    } else if (meRole === 'Client') {
+    } else if (meRole === UserRole.CLIENT) {
       // 고객
       switch (reservation?.status) {
-        case 'Pending':
+        case Status.PENDING:
           // "PENDING" => "CANCELED"
           return (
-            <Button disabled={isMutating} onClick={handleCancel}>
-              {isMutating ? <Loading /> : '취소'}
+            <Button disabled={isLoading} onClick={handleCancel}>
+              {isLoading ? <Loading /> : '취소'}
             </Button>
           );
-        case 'Accepted':
+        case Status.ACCEPTED:
           return (
             <Button disabled onClick={handleCancel}>
-              {isMutating ? <Loading /> : '진행중'}
+              {isLoading ? <Loading /> : '진행중'}
             </Button>
           );
-        case 'Canceled':
+        case Status.CANCELED:
           return <Button disabled>취소됨</Button>;
-        case 'Completed':
+        case Status.COMPLETED:
           return (
             <>
               <Button onClick={handleLinkReview}>{reservation?.review ? '후기 수정' : '후기 작성'}</Button>

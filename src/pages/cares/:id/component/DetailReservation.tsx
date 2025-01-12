@@ -1,10 +1,11 @@
-import { Texts12h18, Texts18h27 } from 'styles/commonStyle';
+import { Link } from 'react-router-dom';
+
 import styled from 'styled-components';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 import { FaChevronRight } from 'react-icons/fa6';
 
 import { dateAgo, dayFormat, timeRange } from 'utils/date';
-import { Link } from 'react-router-dom';
+import { Texts12h18, Texts18h27 } from 'styles/commonStyle';
 
 export default function DetailReservation({ reservation }: any) {
   return (
@@ -57,6 +58,7 @@ const Label = styled(Texts18h27)`
 `;
 
 const LocationLink = styled(Link)`
+  display: flex;
   align-items: center;
   gap: 4px;
 `;
