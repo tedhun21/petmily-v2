@@ -101,7 +101,7 @@ const EditLink = styled(Link)`
   align-items: center;
   justify-content: center;
   padding: 8px;
-  border-radius: ${({ theme }) => theme.radius};
+  border-radius: ${({ theme }) => theme.radius.normal};
   color: white;
   background-color: ${({ theme }) => theme.background.box.blue.primary};
 

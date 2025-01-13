@@ -238,7 +238,7 @@ const TextArea = styled.textarea`
   width: 100%;
   height: 100px;
   padding: 8px;
-  border-radius: ${({ theme }) => theme.radius};
+  border-radius: ${({ theme }) => theme.radius.normal};
   font-family: inherit;
   ${({ theme }) => theme.fontSize.s14h21}
 `;
@@ -262,7 +262,7 @@ const ImageSelectWrapper = styled.div`
 const ImageSelectButton = styled(BlueButton)`
   ${({ theme }) => theme.fontSize.s14h21}
   padding:4px 8px;
-  border-radius: ${({ theme }) => theme.radius};
+  border-radius: ${({ theme }) => theme.radius.normal};
 `;
 
 const ImagePreview = styled.div`
@@ -279,7 +279,7 @@ const ImagePreviewItem = styled.div`
 
 const Img = styled.img`
   width: 100px;
-  border-radius: ${({ theme }) => theme.radius};
+  border-radius: ${({ theme }) => theme.radius.normal};
 `;
 
 const RemoveButton = styled.button`
@@ -298,7 +298,7 @@ const RemoveButton = styled.button`
 const SubmitButton = styled(BlueButton)`
   padding: 8px;
   width: 100%;
-  border-radius: ${({ theme }) => theme.radius};
+  border-radius: ${({ theme }) => theme.radius.normal};
 
   ${({ theme }) => theme.fontSize.s16h24}
 `;

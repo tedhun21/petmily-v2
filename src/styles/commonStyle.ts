@@ -69,7 +69,7 @@ export const ErrorMessage = styled(Texts12h18)`
 `;
 
 export const Input = styled.input`
-  border-radius: 12px;
+  border-radius: ${({ theme }) => theme.radius.normal};
   background-color: ${({ theme }) => theme.background.input.primary};
   border: 1px solid ${({ theme }) => theme.line.input.primary};
 
@@ -85,7 +85,7 @@ export const Button = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 12px;
+  border-radius: ${({ theme }) => theme.radius.normal};
 
   background-color: ${({ theme }) => theme.background.box.default.primary};
 
@@ -114,10 +114,25 @@ export const BlueButton = styled(Button)`
 `;
 
 export const DefaultLink = styled(Link)`
+  border-radius: ${({ theme }) => theme.radius.normal};
   background-color: ${({ theme }) => theme.background.box.default.primary};
 
   &:hover {
     background-color: ${({ theme }) => theme.background.box.default.hover};
+  }
+`;
+
+export const BlueLink = styled(DefaultLink)`
+  background-color: ${({ theme }) => theme.background.box.blue.primary};
+  color: ${({ theme }) => theme.text.white};
+
+  &:hover {
+    background-color: ${({ theme }) => theme.background.box.blue.hover};
+  }
+
+  &:active {
+    background-color: ${({ theme }) => theme.background.box.blue.active};
+    box-shadow: ${({ theme }) => theme.shadow.inset};
   }
 `;
 

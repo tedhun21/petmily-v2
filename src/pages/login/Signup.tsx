@@ -273,7 +273,7 @@ const InputFormWrapper = styled.div``;
 
 const SignupInputStyle = styled(Input)<{ error?: boolean }>`
   width: 100%;
-  border-radius: ${({ theme }) => theme.radius};
+  border-radius: ${({ theme }) => theme.radius.normal};
   padding: 8px;
   border: 1px solid ${({ theme, error }) => (error ? theme.line.input.error : theme.line.input.primary)};
   ${({ theme }) => theme.fontSize.s14h21}

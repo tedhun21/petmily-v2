@@ -91,7 +91,7 @@ const TitleText = styled(Texts20h30)`
 
 const ItemCountbox = styled(CenterContainer)`
   padding: 4px 8px;
-  border-radius: ${({ theme }) => theme.radius};
+  border-radius: ${({ theme }) => theme.radius.normal};
   font-size: 14px;
   background-color: ${({ theme }) => theme.background.box.default.primary};
 `;

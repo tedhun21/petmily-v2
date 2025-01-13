@@ -215,7 +215,7 @@ export const ButtonContainer = styled.div`
   display: flex;
   overflow: hidden;
   width: 100%;
-  border-radius: ${({ theme }) => theme.radius};
+  border-radius: ${({ theme }) => theme.radius.normal};
 `;
 
 export const TypeRadioLabel = styled.label<{ $isSelected?: boolean }>`
@@ -265,7 +265,7 @@ export const InputLabel = styled.label`
 export const PetInput = styled(Input)`
   width: 100%;
   padding: 8px;
-  border-radius: ${({ theme }) => theme.radius};
+  border-radius: ${({ theme }) => theme.radius.normal};
 `;
 
 export const InputContainer = styled.div`
@@ -306,7 +306,7 @@ export const PetTextarea = styled.textarea`
   width: 100%;
   padding: 8px;
   border: 1px solid ${({ theme }) => theme.line.input.primary};
-  border-radius: ${({ theme }) => theme.radius};
+  border-radius: ${({ theme }) => theme.radius.normal};
   color: inherit;
   background-color: ${({ theme }) => theme.background.input.primary};
 `;
@@ -325,6 +325,6 @@ export const SubmitButton = styled(BlueButton)`
   align-items: center;
   width: 100%;
   padding: 8px;
-  border-radius: ${({ theme }) => theme.radius};
+  border-radius: ${({ theme }) => theme.radius.normal};
   ${({ theme }) => theme.fontSize.s18h27};
 `;

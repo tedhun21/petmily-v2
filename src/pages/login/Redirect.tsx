@@ -101,7 +101,7 @@ const ImageButton = styled.button`
   position: relative;
   border: none;
   transition: all 0.2s linear;
-  border-radius: ${({ theme }) => theme.radius};
+  border-radius: ${({ theme }) => theme.radius.normal};
   background-color: transparent;
 
   &:hover {

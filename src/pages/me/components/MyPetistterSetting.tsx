@@ -81,7 +81,7 @@ const ItemLabel = styled(Texts14h21)`
   align-items: center;
   justify-content: center;
   padding: 4px 8px;
-  border-radius: ${({ theme }) => theme.radius};
+  border-radius: ${({ theme }) => theme.radius.normal};
   color: white;
   background-color: ${({ theme }) => theme.text.highlight};
 `;

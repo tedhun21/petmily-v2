@@ -15,6 +15,13 @@ declare module 'styled-components' {
       bold: number;
       extrabold: number;
     };
+
+    radius: {
+      circle: string;
+      normal: string;
+      large: string;
+    };
+
     text: {
       white: string;
       active: string;

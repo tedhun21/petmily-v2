@@ -14,7 +14,11 @@ const baseTheme = {
     extrabold: 700,
   },
 
-  radius: '12px',
+  radius: {
+    circle: '50%',
+    normal: '12px',
+    large: '20px',
+  },
 };
 
 const lightTheme = {

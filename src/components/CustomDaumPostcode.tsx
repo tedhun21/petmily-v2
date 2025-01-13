@@ -41,7 +41,7 @@ export default function CustomDaumPostcode({ onComplete, style, theme }: IProps)
     document.body.appendChild(script);
 
     script.onload = () => {
-      const daum = (window as any).daum;
+      const { daum } = window as any;
       if (daum && daum.Postcode) {
         // 주소 검색 UI를 body에 직접 삽입
         const postcode = new daum.Postcode({

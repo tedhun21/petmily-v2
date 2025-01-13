@@ -121,7 +121,7 @@ const LoginNavLink = styled(Link)`
   color: ${({ theme }) => theme.text.white};
   background-color: ${({ theme }) => theme.background.box.blue.primary};
   padding: 4px 8px;
-  border-radius: ${({ theme }) => theme.radius};
+  border-radius: ${({ theme }) => theme.radius.normal};
   ${({ theme }) => theme.fontSize.s14h21}
 
   &:hover {
@@ -171,7 +171,7 @@ const StyledNavButton = styled.button`
   justify-content: center;
   align-items: center;
   padding: 8px 4px;
-  border-radius: ${({ theme }) => theme.radius};
+  border-radius: ${({ theme }) => theme.radius.normal};
 
   ${({ theme }) => theme.fontSize.s14h21};
 

@@ -33,6 +33,7 @@ const ImageName = styled(Row)`
 const ClientImage = styled(RoundedImageWrapper)`
   width: 80px;
   height: 80px;
+  border: 2px solid ${({ theme }) => theme.line.box.highlight};
 `;
 
 const ClientName = styled(Texts18h27)`
@@ -44,7 +45,7 @@ const StyledLink = styled(Link)`
   align-items: center;
   justify-content: center;
   padding: 8px;
-  border-radius: ${({ theme }) => theme.radius};
+  border-radius: ${({ theme }) => theme.radius.normal};
   color: white;
   background-color: ${({ theme }) => theme.background.box.blue.primary};
 

@@ -12,8 +12,6 @@ export default function FaQ() {
     setOpen({ ...open, [list]: !open[list] });
   };
 
-  console.log(open);
-
   return (
     <MainContainer>
       <HeaderTitle>자주 묻는 질문</HeaderTitle>
@@ -733,7 +731,7 @@ const ListItemButton = styled.button`
   align-items: center;
 
   hover: {
-    background-color: ${({ theme }) => theme.background.box.hover};
+    background-color: ${({ theme }) => theme.background.box.default.hover};
   }
 `;
 

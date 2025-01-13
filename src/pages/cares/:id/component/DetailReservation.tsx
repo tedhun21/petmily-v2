@@ -1,6 +1,11 @@
-import { Texts18h27 } from 'styles/commonStyle';
+import { Link } from 'react-router-dom';
+
 import styled from 'styled-components';
+import { HiOutlineLocationMarker } from 'react-icons/hi';
+import { FaChevronRight } from 'react-icons/fa6';
+
 import { dateAgo, dayFormat, timeRange } from 'utils/date';
+import { Texts12h18, Texts18h27 } from 'styles/commonStyle';
 
 export default function DetailReservation({ reservation }: any) {
   return (
@@ -16,11 +21,20 @@ export default function DetailReservation({ reservation }: any) {
         <Label>예약 시간</Label>
         <span>{timeRange(reservation?.startTime, reservation?.endTime)}</span>
       </Wrapper>
-      <div>
+      <Wrapper>
+        <Label>예약 장소</Label>
+        <LocationLink to={`/cares/${reservation?.id}/maps?address=${reservation?.address}`}>
+          <CustomLocationMarker />
+          <span>{reservation?.address}</span>
+          <CustomChevronRight />
+        </LocationLink>
+      </Wrapper>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
         <Label>요청 사항</Label>
-        <p>{reservation?.body}</p>
+        <RequestParagraph>{reservation?.body}</RequestParagraph>
       </div>
-      <span>{dateAgo(reservation?.createdAt)}</span>
+
+      <Texts12h18>{dateAgo(reservation?.createdAt)}</Texts12h18>
     </DetailRservation>
   );
 }
@@ -41,4 +55,23 @@ const Wrapper = styled.div`
 
 const Label = styled(Texts18h27)`
   font-weight: ${({ theme }) => theme.fontWeight.bold};
+`;
+
+const LocationLink = styled(Link)`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+`;
+
+const CustomLocationMarker = styled(HiOutlineLocationMarker)`
+  color: ${({ theme }) => theme.text.highlight};
+`;
+
+const CustomChevronRight = styled(FaChevronRight)`
+  color: ${({ theme }) => theme.text.highlight};
+`;
+
+const RequestParagraph = styled.p`
+  ${({ theme }) => theme.fontSize.s14h21};
+  padding-left: 8px;
 `;

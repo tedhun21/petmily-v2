@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 
+import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import useSWRInfinite from 'swr/infinite';
 import { useInView } from 'framer-motion';
@@ -12,7 +13,13 @@ import CareCard from './CareCard';
 import { getCookie } from 'utils/cookie';
 
 const API_URL = process.env.REACT_APP_API_URL;
-export default function CareContainer({ filter, order }: any) {
+
+export default function CareContainer() {
+  const [searchParams] = useSearchParams();
+  const date = searchParams.get('date');
+
+  const filter = searchParams.get('filter');
+
   const ref = useRef(null);
   const isInView = useInView(ref);
   const pageSize = 10;
@@ -22,7 +29,9 @@ export default function CareContainer({ filter, order }: any) {
     if (!access_token) return null;
 
     if (previousPageData && !previousPageData.length) return null;
-    return `${API_URL}/reservations?page=${pageIndex + 1}&pageSize=${pageSize}&status=${filter.value}&order=${order.value}`;
+    return filter && date
+      ? `${API_URL}/reservations?page=${pageIndex + 1}&pageSize=${pageSize}&status=${filter}&date=${date}`
+      : null;
   };
   const { data, size, setSize, isLoading } = useSWRInfinite(getKey, infiniteFetcherWithCookie);
 
@@ -37,7 +46,7 @@ export default function CareContainer({ filter, order }: any) {
 
   if (isLoading) {
     return (
-      <CenterContainer>
+      <CenterContainer style={{ height: '100%' }}>
         <Loading color="#279EFF" />
       </CenterContainer>
     );
@@ -45,7 +54,7 @@ export default function CareContainer({ filter, order }: any) {
 
   if (isEmpty) {
     return (
-      <CenterContainer>
+      <CenterContainer style={{ height: '100%' }}>
         <span>No Reservation</span>
       </CenterContainer>
     );
@@ -69,6 +78,8 @@ export default function CareContainer({ filter, order }: any) {
 }
 
 const CareCardContainer = styled.div`
+  flex: auto;
+  height: 100%;
   display: flex;
   flex-direction: column;
   padding-top: 16px;
