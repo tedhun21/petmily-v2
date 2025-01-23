@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { FaRegCircleCheck, FaCircleCheck } from 'react-icons/fa6';
 import { Modal } from '@mui/material';
 
-import { BlueButton, Column, SubTitle, Texts12h18, Texts16h24, Texts20h30, Title } from 'styles/commonStyle';
+import { BlueButton, Column, SubTitle, Texts12h18, Texts16h24, Title } from 'styles/commonStyle';
 
 export default function Confirm({ isChecked, setIsChecked }: any) {
   const [open, setOpen] = useState(false);
@@ -19,7 +19,7 @@ export default function Confirm({ isChecked, setIsChecked }: any) {
     <ConfirmContainer>
       <Check>{isChecked ? <FaCircleCheck size="28px" color="279EFF" /> : <FaRegCircleCheck size="28px" />}</Check>
       <Column>
-        <ConfirmText isChecked={isChecked}>안내사항을 모두 확인하였습니다</ConfirmText>
+        <ConfirmText $isChecked={isChecked}>안내사항을 모두 확인하였습니다</ConfirmText>
         <TermsButton type="button" onClick={handleOpen}>
           펫밀리 안내사항 보기
         </TermsButton>
@@ -163,8 +163,8 @@ const Check = styled.div`
   left: 8px;
 `;
 
-const ConfirmText = styled(Texts16h24)<{ isChecked: boolean }>`
-  color: ${({ isChecked, theme }) => (isChecked ? theme.text.highlight : theme.text.inactive)};
+const ConfirmText = styled(Texts16h24)<{ $isChecked: boolean }>`
+  color: ${({ $isChecked, theme }) => ($isChecked ? theme.text.highlight : theme.text.inactive)};
 `;
 
 const TermsButton = styled.button`
