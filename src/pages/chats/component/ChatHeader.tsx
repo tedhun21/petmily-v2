@@ -10,7 +10,7 @@ import { Texts20h30 } from 'styles/commonStyle';
 
 export default function ChatHeader() {
   const navigate = useNavigate();
-  const { chatRoom, opponetId } = useContext(ChatContext);
+  const { chatRoom, opponentId } = useContext(ChatContext);
 
   return (
     <Header>
@@ -18,7 +18,12 @@ export default function ChatHeader() {
         <FaArrowLeft color="#279EFF" size="24px" />
       </StyledBackButton>
       <Texts20h30>
-        {chatRoom?.client.id === Number(opponetId) ? chatRoom?.petsitter?.nickname : chatRoom?.client?.nickname} 님
+        {chatRoom?.client.id === Number(opponentId)
+          ? chatRoom?.client?.nickname
+          : chatRoom?.petsitter.id === Number(opponentId)
+            ? chatRoom?.petsitter?.nickname
+            : null}
+        님
       </Texts20h30>
       <button>
         <FiMenu size="24px" color="#279EFF" />

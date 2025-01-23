@@ -17,14 +17,7 @@ interface IProps {
   setSize: React.Dispatch<SetStateAction<number>>;
 }
 
-export default function ChatMessageComponent({
-  index,
-  message,
-  isMyMessage,
-  previousMessage,
-  nextMessage,
-  setSize,
-}: IProps) {
+export default function ChatMessage({ index, message, isMyMessage, previousMessage, nextMessage, setSize }: IProps) {
   const viewRefIndex = 2;
   const ref = useRef<HTMLLIElement>(null);
   const isInView = useInView(ref, { once: true });

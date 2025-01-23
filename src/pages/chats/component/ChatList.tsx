@@ -15,7 +15,6 @@ const API_URL = process.env.REACT_APP_API_URL;
 
 export default function ChatList() {
   const pageSize = 30;
-
   const listRef = useRef<HTMLUListElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
   const isBottomInView = useInView(bottomRef);
@@ -23,8 +22,7 @@ export default function ChatList() {
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [isFirstRender, setIsFirstRender] = useState(true);
-
-  // const [isNewMessage, setIsNewMessage] = useState(false);
+  const [isNewMessage, setIsNewMessage] = useState(false);
   const [showDownButton, setShowDownButton] = useState<boolean>(false);
 
   const scrollToBottom = (ref: React.RefObject<HTMLElement>) => {
@@ -86,6 +84,9 @@ export default function ChatList() {
 
           return updatedPages;
         }, false); // 네트워크 요청 없이 캐시만 업데이트
+
+        // 새 메시지가 도착했음을 표시
+        setIsNewMessage(true);
       });
 
       // 언마운트시 클리어
@@ -104,7 +105,7 @@ export default function ChatList() {
     }
   }, [messages]);
 
-  // down 버튼 로직
+  // down 버튼 로직이 생기는 로직
   useEffect(() => {
     if (!listRef.current) return;
 
@@ -139,6 +140,20 @@ export default function ChatList() {
     };
   }, []);
 
+  // 새 메시지 처리 (새 매세지가 있고, 지금 제일 밑에 포커스 돼있을 때 계속 스크롤 밑으로)
+  useEffect(() => {
+    if (isNewMessage && listRef.current && isBottomInView) {
+      scrollToBottom(listRef);
+    }
+  }, [isNewMessage]);
+
+  useEffect(() => {
+    if (isBottomInView) {
+      setIsNewMessage(false);
+      setShowDownButton(false);
+    }
+  }, [isBottomInView]);
+
   return (
     <Div>
       <List ref={listRef}>
@@ -164,7 +179,22 @@ export default function ChatList() {
         <Bottom ref={bottomRef} />
       </List>
 
-      {showDownButton && (
+      {isNewMessage && !isBottomInView && (
+        <Fixed>
+          <FixedBottom>
+            <BottomWrapper>
+              <NewMessage>
+                <span>새 메세지</span>
+              </NewMessage>
+              <button style={{ flex: 1 }}>
+                <FaChevronDown />
+              </button>
+            </BottomWrapper>
+          </FixedBottom>
+        </Fixed>
+      )}
+
+      {!isNewMessage && showDownButton && (
         <Fixed>
           <BottomRight>
             <DownButton onClick={() => scrollToBottom(listRef)}>
@@ -186,6 +216,7 @@ const List = styled.ul`
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+
   height: 100%;
   gap: 8px;
   padding: 16px;
@@ -210,6 +241,25 @@ const BottomRight = styled.div`
   position: absolute;
   right: 8px;
   bottom: 8px;
+`;
+
+const FixedBottom = styled.div`
+  position: absolute;
+  bottom: 16px;
+  width: 100%;
+`;
+
+const BottomWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  padding: 12px;
+  background-color: blue;
+`;
+
+const NewMessage = styled.div`
+  flex: auto;
+  width: 100%;
+  background-color: red;
 `;
 
 const DownButton = styled(Button)`

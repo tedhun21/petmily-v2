@@ -4,8 +4,7 @@ import styled from 'styled-components';
 
 import ChatProvider from './component/ChatProvider';
 import ChatHeader from './component/ChatHeader';
-import ChatFooter from './component/ChatFooter';
-import ChatList from './component/ChatList';
+import ChatSection from './component/ChatSection';
 
 export default function Chat() {
   const { opponentId } = useParams<{ opponentId: string }>();
@@ -15,9 +14,7 @@ export default function Chat() {
       <MainContainer>
         <ChatHeader />
 
-        <ChatList />
-
-        <ChatFooter />
+        <ChatSection />
       </MainContainer>
     </ChatProvider>
   );
@@ -28,15 +25,11 @@ const MainContainer = styled.main`
   flex-direction: column;
   height: 100vh;
 
-  header {
+  > header {
     flex: 1;
   }
 
-  > div {
+  > section {
     flex: auto;
-  }
-
-  footer {
-    flex: 1;
   }
 `;
