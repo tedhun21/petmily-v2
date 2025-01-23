@@ -4,7 +4,7 @@ import 'dayjs/locale/ko';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import updateLocale from 'dayjs/plugin/updateLocale';
 import isBetween from 'dayjs/plugin/isBetween';
-import { Message } from 'types/chat.type';
+import { Message } from 'types/message.type';
 
 dayjs.locale('ko');
 dayjs.extend(relativeTime);
@@ -150,7 +150,7 @@ export function formatToLocaleAMPM(dateString: string) {
   return dayjs(dateString).locale('ko').format('A h:mm');
 }
 
-// 같은 시간의 메세지면 첫번째 메세지에서만 사진 보여주기
+// 같은 시간 && 같은 발신자 => 사진표시
 export const shouldShowSenderPhoto = (currentMessage: Message, previousMessage?: Message) => {
   // 이전 메시지가 없으면 항상 표시
   if (!previousMessage) return true;
