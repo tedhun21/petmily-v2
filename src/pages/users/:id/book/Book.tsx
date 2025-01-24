@@ -22,8 +22,8 @@ import {
   Texts16h24,
   Title,
 } from 'styles/commonStyle';
-import SelectedPetsitter from '@pages/reservation/component/step4/SelectedPetsitterCard';
-import Confirm from '@pages/reservation/component/step4/Confirm';
+
+import Confirm from '@pages/users/:id/book/component/Confirm';
 import useSWRMutation from 'swr/mutation';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -33,6 +33,7 @@ import Loading from '@components/Loading';
 import CustomDaumPostcode from '@components/CustomDaumPostcode';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store';
+import SelectedPetsitter from './component/SelectedPetsitter';
 
 const schema = yup.object().shape({
   checkedPets: yup.array().min(1, '적도오 한 마리의 펫을 선택해야 합니다.'),

@@ -179,11 +179,11 @@ export default function PossibleDate({ petsitter }: any) {
                       {/* {isSelected && <Hover isSelected={isSelected}>체크인 시간</Hover>} */}
                       <TimeButton
                         disabled={disabled}
-                        isBetween={isBetween}
-                        isSelected={isSelected}
+                        $isBetween={isBetween}
+                        $isSelected={isSelected}
                         onClick={() => handleButtonClick(time)}
                       >
-                        <TimeText disabled={disabled} isBetween={isBetween} isSelected={isSelected}>
+                        <TimeText disabled={disabled} $isBetween={isBetween} $isSelected={isSelected}>
                           {time}
                         </TimeText>
                       </TimeButton>
@@ -256,7 +256,7 @@ const Hover = styled.div<{ isSelected: boolean }>`
   transition: opacity 0.3s ease;
 `;
 
-const TimeButton = styled.button<{ disabled: boolean; isSelected: boolean; isBetween: boolean }>`
+const TimeButton = styled.button<{ disabled: boolean; $isSelected: boolean; $isBetween: boolean }>`
   width: 100%;
   display: flex;
   justify-content: center;
@@ -267,13 +267,13 @@ const TimeButton = styled.button<{ disabled: boolean; isSelected: boolean; isBet
   // hover와 active 스타일을 disabled일 때 비활성화
   pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
 
-  background-color: ${({ isSelected, isBetween, theme }) =>
-    isSelected ? theme.background.box.blue.active : isBetween ? theme.background.box.blue.primary : 'transparent'};
+  background-color: ${({ $isSelected, $isBetween, theme }) =>
+    $isSelected ? theme.background.box.blue.active : $isBetween ? theme.background.box.blue.primary : 'transparent'};
 `;
 
-const TimeText = styled.span<{ disabled: boolean; isBetween: boolean; isSelected: boolean }>`
-  color: ${({ disabled, isSelected, isBetween, theme }) =>
-    isSelected || isBetween ? theme.text.white : disabled ? theme.text.inactive : theme.text.active};
+const TimeText = styled.span<{ disabled: boolean; $isBetween: boolean; $isSelected: boolean }>`
+  color: ${({ disabled, $isSelected, $isBetween, theme }) =>
+    $isSelected || $isBetween ? theme.text.white : disabled ? theme.text.inactive : theme.text.active};
   text-decoration: ${({ disabled }) => (disabled ? 'line-through' : 'none')};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;
