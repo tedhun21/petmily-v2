@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { PiStarFill } from 'react-icons/pi';
 
 import { BlueLink, Column, ImageCentered, RoundedImageWrapper, Row, Texts18h27 } from 'styles/commonStyle';
-import { PetInfoCapsule, PetInfoContainer } from '@pages/cares/:id/CareDetail';
+import { PetInfoCapsule, PetInfoContainer } from '@pages/cares/:id/Care';
 import { formatKrDays, timeRange } from 'utils/date';
 
 import { MdOutlineRateReview } from 'react-icons/md';
@@ -19,10 +19,10 @@ export default function PetsitterCard({ petsitter }: any) {
           />
         </PetsitterImage>
         <PetsitterName>{petsitter?.nickname} 님</PetsitterName>
-        <Row>
+        <LinkWrapper>
           <StyledLink to={`/chats/${petsitter?.id}`}>채팅 하기</StyledLink>
           <StyledLink to={`/users/${petsitter?.nickname}`}>프로필 보기</StyledLink>
-        </Row>
+        </LinkWrapper>
       </ImageName>
       <PetsitterInfo>
         <StarReviewWrapper>
@@ -85,6 +85,10 @@ const PetsitterInfo = styled(Column)`
 
 const PetsitterName = styled(Texts18h27)`
   font-weight: ${({ theme }) => theme.fontWeight.bold};
+`;
+
+const LinkWrapper = styled(Row)`
+  gap: 8px;
 `;
 
 const StyledLink = styled(BlueLink)`

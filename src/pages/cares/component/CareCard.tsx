@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import {
   Column,
+  DefaultLink,
   ImageCentered,
   RoundedImageWrapper,
   Row,
@@ -31,6 +31,7 @@ export default function CareCard({ reservation }: any) {
         </PetsitterContainer>
         <PropgressSpan>{formatStatus(reservation?.status)}</PropgressSpan>
       </FirstContainer>
+
       <ReservationContainer>
         <Wrapper>
           <Texts14h21>일시:</Texts14h21>
@@ -53,21 +54,16 @@ export default function CareCard({ reservation }: any) {
   );
 }
 
-const Card = styled(Link)`
+const Card = styled(DefaultLink)`
   display: flex;
   flex-direction: column;
   gap: 8px;
   padding: 20px;
-  box-shadow: ${({ theme }) => theme.shadow.dp01};
-  border-radius: 16px;
-  color: black;
 
-  &:visited {
-    color: inherit;
-  }
+  border-radius: ${({ theme }) => theme.radius.large};
 
   &:hover {
-    box-shadow: ${({ theme }) => theme.shadow.dp03};
+    box-shadow: ${({ theme }) => theme.shadow.dp02};
   }
 `;
 

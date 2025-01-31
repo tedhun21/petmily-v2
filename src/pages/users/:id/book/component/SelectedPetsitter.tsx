@@ -57,9 +57,10 @@ export default function SelectedPetsitter({ petsitter }: any) {
 }
 
 const PetsitterSection = styled.section`
-  overflow: hidden;
+  flex-shrink: 0;
   position: relative;
-  border-radius: 12px;
+  overflow: hidden;
+  border-radius: ${({ theme }) => theme.radius.large};
   box-shadow: ${({ theme }) => theme.shadow.dp01};
 `;
 

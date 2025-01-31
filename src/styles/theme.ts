@@ -44,6 +44,7 @@ const lightTheme = {
     highlight: '#279EFF',
     deepHighlight: '#1D8CE7',
     darkHighlight: '#096DBE',
+    red: '#FF6161',
     box: {
       default: { primary: '#F2F2F2', hover: '#E8E8E8', active: '#D6D6D6', opposite: '#2C2C2C' },
       blue: { primary: '#279EFF', hover: '#1D8CE7', active: '#096DBE', disabled: '#757575' },
@@ -85,6 +86,7 @@ const darkTheme = {
     highlight: '#1A73E8',
     deepHighlight: '#1451A5',
     darkHighlight: '#0D3B73',
+    red: '#FF5A5A',
     box: {
       default: { primary: '#2C2C2C', hover: '#3B3B3B', active: '#404040', opposite: '#F2F2F2' },
       blue: { primary: '#1A73E8', hover: '#1451A5', active: '#0D3B73', disabled: '#787878' },

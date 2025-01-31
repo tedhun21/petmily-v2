@@ -1,32 +1,25 @@
 import styled from 'styled-components';
-import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+
+import { useParams, Link } from 'react-router-dom';
 
 import dayjs from 'dayjs';
 
 import Reviews from './component/Reviews';
 import useSWR from 'swr';
-import { fetcher } from 'api';
+import { fetcher, fetcherWithCookie, updaterWithCookie } from 'api';
 import { UserRole } from 'types/user.type';
 import { PiCatBold, PiDogBold } from 'react-icons/pi';
 import { formatKrDays, timeRange } from 'utils/date';
 import { MdOutlineRateReview } from 'react-icons/md';
-import {
-  BottomFixed,
-  Column,
-  Divider,
-  Float,
-  ImageCentered,
-  RoundedImageWrapper,
-  Texts18h27,
-  Title,
-} from 'styles/commonStyle';
+import { Column, Divider, ImageCentered, RoundedImageWrapper, Row, Texts18h27, Title } from 'styles/commonStyle';
 
 import ReadOnlyRating from '@components/ReadOnlyRating';
 
 import PossibleDate from './component/PossibleDate';
 import { FormProvider, useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import BackHeader from '@components/headers/BackHeader';
+import { FaHeart, FaRegHeart } from 'react-icons/fa6';
+import useSWRMutation from 'swr/mutation';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -47,14 +40,43 @@ export default function Profile() {
   });
   const { date, startTime, endTime } = methods.watch();
 
-  // 유저 정보 가져오기
-  const { data: userData } = useSWR(`${API_URL}/users?q=${nickname}`, fetcher);
+  // 나의 찜
+  const { data: favorites, mutate } = useSWR(`${API_URL}/users/me/favorites`, fetcherWithCookie);
 
-  const [isBookmarked, setIsBookmarked] = useState(false);
+  const { trigger } = useSWRMutation(`${API_URL}/users/me/favorites`, updaterWithCookie);
+
+  // 유저 정보 가져오기
+  const { data: userData } = useSWR(`${API_URL}/users?q=${nickname}`, fetcher, {});
+
+  // userData가 없을 경우 초기값을 false로 설정
+  const isFavorite = userData && favorites ? favorites.some((favorite: any) => favorite.id === userData.id) : false;
+
+  const handleFavoriteClick = async () => {
+    const formData = {
+      action: isFavorite ? 'unfavorite' : 'favorite',
+      opponentId: userData.id,
+    };
+
+    const optimisticFavorite = isFavorite
+      ? favorites.filter((fav: any) => fav.id !== userData.id)
+      : [...favorites, { id: userData.id, nickname: userData.nickname, photo: userData.photo }];
+
+    try {
+      // 실제 API 요청 실행
+      await trigger({ formData }, { revalidate: false });
+
+      //  optimistic update 적용
+      mutate(optimisticFavorite, { rollbackOnError: true, revalidate: false });
+    } catch (e) {
+      console.error(e);
+      mutate(favorites, { rollbackOnError: true, revalidate: false });
+    }
+  };
 
   return (
     <FormProvider {...methods}>
-      <MainContainer>
+      <Main>
+        <BackHeader title={nickname} />
         {/* 프로필 상단: 기본 정보 */}
         <Container>
           <Section>
@@ -75,11 +97,19 @@ export default function Profile() {
             {/* 3. 평점 및 리뷰 수 */}
             <StarReview>
               <Wrapper>
+                <button type="button" onClick={handleFavoriteClick}>
+                  {isFavorite ? <FaHeart size="24px" color="red" /> : <FaRegHeart size="24px" color="red" />}
+                </button>
+              </Wrapper>
+
+              <Divider $orientation="vertical" />
+
+              <Wrapper>
                 <span>{userData?.star}</span>
                 <ReadOnlyRating size="20px" value={userData?.star || 0} />
               </Wrapper>
 
-              <Divider />
+              <Divider $orientation="vertical" />
 
               <Wrapper>
                 <span>{userData?.reviewCount} 개</span>
@@ -150,28 +180,31 @@ export default function Profile() {
           <PossibleDate petsitter={userData} />
         </Container>
 
-        <BottomFixed>
-          <FloatButtonContainer>
-            <StyledLink
-              to={`book?date=${dayjs(date).format('YYYY-MM-DD')}&checkIn=${startTime}&checkOut=${endTime}`}
-              disabled={!date || !startTime || !endTime}
-            >
-              <span>예약하기</span>
-            </StyledLink>
-          </FloatButtonContainer>
-        </BottomFixed>
-      </MainContainer>
+        <ButtonContainer>
+          <StyledLink
+            to={`book?date=${dayjs(date).format('YYYY-MM-DD')}&checkIn=${startTime}&checkOut=${endTime}`}
+            disabled={!date || !startTime || !endTime}
+          >
+            <span>예약하기</span>
+          </StyledLink>
+        </ButtonContainer>
+      </Main>
     </FormProvider>
   );
 }
 
-const MainContainer = styled.main`
-  margin-bottom: 80px;
+const Main = styled.main`
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 `;
 
 const Container = styled(Column)`
+  flex: auto;
+  height: 100%;
   gap: 20px;
   padding: 20px;
+  overflow-y: auto;
 `;
 
 const Section = styled.section`
@@ -190,16 +223,16 @@ const UserImage = styled(RoundedImageWrapper)`
   height: 80px;
 `;
 
-const StarReview = styled.div`
-  display: flex;
+const StarReview = styled(Row)`
   border: 1px solid ${({ theme }) => theme.line.box.primary};
   border-radius: 12px;
-  padding: 20px 0;
+  padding: 20px;
   width: 100%;
 `;
 
 const Wrapper = styled(Column)`
   flex: 1;
+  justify-content: center;
   align-items: center;
   gap: 8px;
 `;
@@ -250,12 +283,10 @@ const DayItem = styled.li`
   padding: 8px;
 `;
 
-const FloatButtonContainer = styled(Float)`
-  left: 0;
-  bottom: 0;
+const ButtonContainer = styled.div`
+  flex: 1;
   display: flex;
   justify-content: center;
-  width: 100%;
   padding: 20px;
   background-color: ${({ theme }) => theme.background.primary};
 `;

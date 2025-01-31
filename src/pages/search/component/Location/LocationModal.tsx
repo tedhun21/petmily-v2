@@ -22,7 +22,7 @@ export default function LocationModal({ setIsSelected }: any) {
             <div>
               <Texts12h18>최근 검색 내역</Texts12h18>
             </div>
-            <Divider orientation="vertical" thickness="1px" />
+            <Divider $orientation="vertical" $thickness="1px" />
           </>
         }
         <SeoulContainer>

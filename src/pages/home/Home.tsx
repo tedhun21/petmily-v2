@@ -14,6 +14,7 @@ import { DefaultLink } from 'styles/commonStyle';
 import RealTimeReviews from './component/RealTimeReviews';
 import UsedPetsitters from './component/UsedPetsitters';
 import { fetcherWithCookie } from 'api';
+import NavHeader from '@components/headers/NavHeader';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -22,7 +23,8 @@ export default function Home() {
 
   return (
     <>
-      <HomeContainer>
+      <NavHeader />
+      <Main>
         <HomeAd />
         <LinkContainer>
           <PetsitterLink to="/faq">자주 묻는 질문</PetsitterLink>
@@ -65,13 +67,12 @@ export default function Home() {
         {me && <UsedPetsitters />}
 
         <RealTimeReviews />
-      </HomeContainer>
-      {/* <Footer /> */}
+      </Main>
     </>
   );
 }
 
-const HomeContainer = styled.main`
+const Main = styled.main`
   display: flex;
   flex-direction: column;
   width: 100%;

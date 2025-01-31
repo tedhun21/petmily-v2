@@ -114,11 +114,16 @@ export const BlueButton = styled(Button)`
 `;
 
 export const DefaultLink = styled(Link)`
+  color: inherit;
   border-radius: ${({ theme }) => theme.radius.normal};
   background-color: ${({ theme }) => theme.background.box.default.primary};
 
   &:hover {
     background-color: ${({ theme }) => theme.background.box.default.hover};
+  }
+
+  &:active {
+    box-shadow: ${({ theme }) => theme.shadow.inset};
   }
 `;
 
@@ -137,21 +142,22 @@ export const BlueLink = styled(DefaultLink)`
 `;
 
 export const Divider = styled.div<{
-  orientation?: 'horizontal' | 'vertical';
-  thickness?: string;
-  length?: string;
+  $orientation?: 'horizontal' | 'vertical';
+  $thickness?: string;
+  $length?: string;
 }>`
   background-color: ${({ theme }) => theme.line.divider.primary};
+  flex-shrink: 0;
 
-  ${({ orientation, thickness, length }) =>
-    orientation === 'vertical'
+  ${({ $orientation, $thickness, $length }) =>
+    $orientation === 'vertical'
       ? `
-        width: ${thickness || '1px'};
-        height: ${length || '100%'};
+        width: ${$thickness || '1px'};
+        height: ${$length || '100%'};
       `
       : `
-        height: ${thickness || '1px'};
-        width: ${length || '100%'};
+        height: ${$thickness || '1px'};
+        width: ${$length || '100%'};
       `};
 `;
 

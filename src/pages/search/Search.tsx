@@ -2,25 +2,29 @@ import styled from 'styled-components';
 
 import Results from './component/Results';
 import SearchBox from './component/SearchBox';
+import NavHeader from '@components/headers/NavHeader';
 
 export default function Search() {
   return (
-    <SearchContainer>
-      {/* input */}
-      {/* <SearchInput input={input} setInput={setInput} /> */}
+    <>
+      <NavHeader />
+      <Main>
+        {/* input */}
+        {/* <SearchInput input={input} setInput={setInput} /> */}
 
-      <SearchBox />
+        <SearchBox />
 
-      {/* 검색 결과 */}
-      <Results />
+        {/* 검색 결과 */}
+        <Results />
 
-      {/* 최근 검색어 */}
-      {/* <RecentSearches input={input} /> */}
-    </SearchContainer>
+        {/* 최근 검색어 */}
+        {/* <RecentSearches input={input} /> */}
+      </Main>
+    </>
   );
 }
 
-const SearchContainer = styled.main`
+const Main = styled.main`
   display: flex;
   flex-direction: column;
   gap: 16px;

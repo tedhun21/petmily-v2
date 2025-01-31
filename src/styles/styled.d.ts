@@ -42,6 +42,7 @@ declare module 'styled-components' {
       highlight: string;
       deepHighlight: string;
       darkHighlight: string;
+      red: string;
       box: {
         default: { primary: string; hover: string; active: string; opposite: string };
         blue: { primary: string; hover: string; active: string; disabled: string };

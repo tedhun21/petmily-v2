@@ -6,7 +6,7 @@ import 'swiper/css/pagination';
 import { Mousewheel, Pagination } from 'swiper/modules';
 import styled from 'styled-components';
 import { Column, ImageCentered, RoundedImageWrapper, Row } from 'styles/commonStyle';
-import { PetInfoCapsule, PetInfoContainer } from '@pages/cares/:id/CareDetail';
+import { PetInfoCapsule, PetInfoContainer } from '@pages/cares/:id/Care';
 
 export default function PetContainer({ pets }: any) {
   return (
@@ -56,6 +56,7 @@ export default function PetContainer({ pets }: any) {
 const CustomSwiper = styled(Swiper)`
   width: 100%;
   height: 140px;
+  flex-shrink: 0; /* 부모 크기 줄어듦에 따라 높이 축소 방지 */
   border-radius: ${({ theme }) => theme.radius.large};
   box-shadow: ${({ theme }) => theme.shadow.dp03};
 `;

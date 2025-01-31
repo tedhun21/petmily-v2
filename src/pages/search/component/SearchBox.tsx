@@ -72,11 +72,11 @@ export default function SearchBox() {
           <BoxWrapper>
             <LocationBox isSelected={isSelected} setIsSelected={setIsSelected} />
 
-            <Divider orientation="vertical" length="32px" />
+            <Divider $orientation="vertical" $length="32px" />
 
             <DateBox isSelected={isSelected} setIsSelected={setIsSelected} />
 
-            <Divider orientation="vertical" length="32px" />
+            <Divider $orientation="vertical" $length="32px" />
 
             <StartEndTimeBox isSelected={isSelected} setIsSelected={setIsSelected} />
           </BoxWrapper>

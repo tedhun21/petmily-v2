@@ -15,12 +15,13 @@ import ProgressButton from './component/ProgressButton';
 import ClientCard from './component/ClientCard';
 import { UserRole } from 'types/user.type';
 import { getCookie } from 'utils/cookie';
-import { BottomFixed, CenterContainer, Column, Float } from 'styles/commonStyle';
+import { CenterContainer } from 'styles/commonStyle';
+import BackHeader from '@components/headers/BackHeader';
 
 const API_URL = process.env.REACT_APP_API_URL;
 const SOCKET_URL = process.env.REACT_APP_WEBSOCKET_URL;
 
-export default function CareDetail() {
+export default function Care() {
   const { id } = useParams();
 
   const [socket, setSocket] = useState<any>(null);
@@ -64,8 +65,9 @@ export default function CareDetail() {
   }, [reservation]);
 
   return (
-    <main>
-      <Container>
+    <Main>
+      <BackHeader />
+      <Section>
         <TitleStatus>
           <span>{formatStatus(reservation?.status)}...</span>
         </TitleStatus>
@@ -78,16 +80,30 @@ export default function CareDetail() {
         <PetContainer pets={reservation?.pets} />
 
         <DetailReservation reservation={reservation} />
-      </Container>
+      </Section>
 
-      <BottomFixed>
-        <FloatButtonContainer>
-          <ProgressButton meRole={me?.role} reservation={reservation} socket={socket} />
-        </FloatButtonContainer>
-      </BottomFixed>
-    </main>
+      <ButtonContainer>
+        <ProgressButton meRole={me?.role} reservation={reservation} socket={socket} />
+      </ButtonContainer>
+    </Main>
   );
 }
+
+const Main = styled.main`
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+`;
+
+const Section = styled.section`
+  flex: auto;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  height: 100%;
+  gap: 20px;
+`;
 
 const TitleStatus = styled(CenterContainer)`
   span:first-child {
@@ -95,12 +111,6 @@ const TitleStatus = styled(CenterContainer)`
     font-weight: ${({ theme }) => theme.fontWeight.extrabold};
     ${({ theme }) => theme.fontSize.s20h30}
   }
-`;
-
-const Container = styled(Column)`
-  padding: 20px;
-  gap: 20px;
-  margin-bottom: 86px;
 `;
 
 export const PetInfoContainer = styled.ul`
@@ -117,13 +127,7 @@ export const PetInfoCapsule = styled.li`
   ${({ theme }) => theme.fontSize.s14h21};
 `;
 
-const FloatButtonContainer = styled(Float)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  bottom: 0;
-  left: 0;
-  width: 100%;
+const ButtonContainer = styled.div`
+  flex: 1;
   padding: 20px;
-  background-color: ${({ theme }) => theme.background.primary};
 `;
