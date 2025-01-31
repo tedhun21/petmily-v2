@@ -18,6 +18,7 @@ import { Column, ErrorMessage, Input, Texts16h24, Texts20h30 } from 'styles/comm
 import { toast } from 'react-toastify';
 import Loading from '@components/Loading';
 import CustomDaumPostcode from '@components/CustomDaumPostcode';
+import BackHeader from '@components/headers/BackHeader';
 
 const schema = yup.object().shape({
   username: yup
@@ -137,111 +138,114 @@ export default function Signup() {
   };
 
   return (
-    <MainContainer>
-      <SignupContainer>
-        <TitleContainer>
-          <Texts20h30>We&apos;re Petmily!</Texts20h30>
-          <Texts16h24>회원가입</Texts16h24>
-        </TitleContainer>
-        <InputFormContainer onSubmit={handleSubmit(onSubmit)}>
-          <InputFormWrapper>
-            <SignupInputStyle
-              placeholder="이름"
-              type="text"
-              {...register('username', { required: true })}
-              error={errors.username ? true : undefined}
-            />
-            {errors.username?.message && <ErrorMessage>{errors.username?.message}</ErrorMessage>}
-          </InputFormWrapper>
-          <InputFormWrapper>
-            <SignupInputStyle
-              placeholder="연락처"
-              {...register('phone', { required: true })}
-              error={errors.phone ? true : undefined}
-            />
-            {errors.phone?.message && <ErrorMessage>{errors.phone?.message}</ErrorMessage>}
-          </InputFormWrapper>
-          <InputFormWrapper>
-            <SignupInputStyle
-              placeholder="주소"
-              {...register('address', { required: true })}
-              onClick={onToggleModal}
-              onKeyDown={onToggleModal}
-              error={errors.address ? true : undefined}
-              autoComplete="off"
-            />
-            {errors.address?.message && <ErrorMessage>{errors.address?.message}</ErrorMessage>}
+    <>
+      <BackHeader />
+      <Main>
+        <SignupContainer>
+          <TitleContainer>
+            <Texts20h30>We&apos;re Petmily!</Texts20h30>
+            <Texts16h24>회원가입</Texts16h24>
+          </TitleContainer>
+          <InputFormContainer onSubmit={handleSubmit(onSubmit)}>
+            <InputFormWrapper>
+              <SignupInputStyle
+                placeholder="이름"
+                type="text"
+                {...register('username', { required: true })}
+                error={errors.username ? true : undefined}
+              />
+              {errors.username?.message && <ErrorMessage>{errors.username?.message}</ErrorMessage>}
+            </InputFormWrapper>
+            <InputFormWrapper>
+              <SignupInputStyle
+                placeholder="연락처"
+                {...register('phone', { required: true })}
+                error={errors.phone ? true : undefined}
+              />
+              {errors.phone?.message && <ErrorMessage>{errors.phone?.message}</ErrorMessage>}
+            </InputFormWrapper>
+            <InputFormWrapper>
+              <SignupInputStyle
+                placeholder="주소"
+                {...register('address', { required: true })}
+                onClick={onToggleModal}
+                onKeyDown={onToggleModal}
+                error={errors.address ? true : undefined}
+                autoComplete="off"
+              />
+              {errors.address?.message && <ErrorMessage>{errors.address?.message}</ErrorMessage>}
 
-            <Modal
-              open={isModalOpen}
-              onClose={() => setIsModalOpen(false)}
-              sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-            >
-              <div style={{ width: '360px' }}>
-                <CustomDaumPostcode onComplete={handleComplete} theme={isDarkMode ? 'dark' : 'light'} />
-              </div>
-            </Modal>
-          </InputFormWrapper>
-          <InputFormWrapper>
-            <SignupInputStyle
-              placeholder="상세주소"
-              {...register('detailAddress', { required: true })}
-              error={errors.detailAddress ? true : undefined}
-            />
-            {errors.detailAddress?.message && <ErrorMessage>{errors.detailAddress?.message}</ErrorMessage>}
-          </InputFormWrapper>
-          <InputFormWrapper>
-            <SignupInputStyle
-              placeholder="이메일"
-              type="email"
-              {...register('email', { required: true })}
-              error={errors.email ? true : undefined}
-            />
-            {errors.email?.message && <ErrorMessage>{errors.email?.message}</ErrorMessage>}
-          </InputFormWrapper>
-          <InputFormWrapper>
-            <SignupInputStyle
-              placeholder="닉네임"
-              {...register('nickname', { required: true })}
-              error={errors.nickname ? true : undefined}
-            />
-            {errors.nickname?.message && <ErrorMessage>{errors.nickname?.message}</ErrorMessage>}
-          </InputFormWrapper>
-          <InputFormWrapper>
-            <SignupInputStyle
-              placeholder="비밀번호"
-              type="password"
-              {...register('password', { required: true })}
-              error={errors.password ? true : undefined}
-            />
-            {errors.password?.message && <ErrorMessage>{errors.password?.message}</ErrorMessage>}
-          </InputFormWrapper>
-          <InputFormWrapper>
-            <SignupInputStyle
-              placeholder="비밀번호 확인"
-              type="password"
-              {...register('passwordConfirm', { required: true })}
-              error={errors.passwordConfirm ? true : undefined}
-            />
-            {errors.passwordConfirm?.message && <ErrorMessage>{errors.passwordConfirm?.message}</ErrorMessage>}
-          </InputFormWrapper>
-          <CheckBoxWrapper>
-            <CheckBoxLabel htmlFor="isPetsitter">펫시터로 가입하기</CheckBoxLabel>
-            <input type="checkbox" id="isPetsitter" {...register('isPetsitter')} />
-          </CheckBoxWrapper>
-          <ButtonContainer>
-            <SubmitButton type="submit" disabled={isMutating}>
-              {isMutating ? <Loading /> : '펫밀리 등록'}
-            </SubmitButton>
-            <GoogleOAuthButton>Sign up with Google</GoogleOAuthButton>
-          </ButtonContainer>
-        </InputFormContainer>
-      </SignupContainer>
-    </MainContainer>
+              <Modal
+                open={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+              >
+                <div style={{ width: '360px' }}>
+                  <CustomDaumPostcode onComplete={handleComplete} theme={isDarkMode ? 'dark' : 'light'} />
+                </div>
+              </Modal>
+            </InputFormWrapper>
+            <InputFormWrapper>
+              <SignupInputStyle
+                placeholder="상세주소"
+                {...register('detailAddress', { required: true })}
+                error={errors.detailAddress ? true : undefined}
+              />
+              {errors.detailAddress?.message && <ErrorMessage>{errors.detailAddress?.message}</ErrorMessage>}
+            </InputFormWrapper>
+            <InputFormWrapper>
+              <SignupInputStyle
+                placeholder="이메일"
+                type="email"
+                {...register('email', { required: true })}
+                error={errors.email ? true : undefined}
+              />
+              {errors.email?.message && <ErrorMessage>{errors.email?.message}</ErrorMessage>}
+            </InputFormWrapper>
+            <InputFormWrapper>
+              <SignupInputStyle
+                placeholder="닉네임"
+                {...register('nickname', { required: true })}
+                error={errors.nickname ? true : undefined}
+              />
+              {errors.nickname?.message && <ErrorMessage>{errors.nickname?.message}</ErrorMessage>}
+            </InputFormWrapper>
+            <InputFormWrapper>
+              <SignupInputStyle
+                placeholder="비밀번호"
+                type="password"
+                {...register('password', { required: true })}
+                error={errors.password ? true : undefined}
+              />
+              {errors.password?.message && <ErrorMessage>{errors.password?.message}</ErrorMessage>}
+            </InputFormWrapper>
+            <InputFormWrapper>
+              <SignupInputStyle
+                placeholder="비밀번호 확인"
+                type="password"
+                {...register('passwordConfirm', { required: true })}
+                error={errors.passwordConfirm ? true : undefined}
+              />
+              {errors.passwordConfirm?.message && <ErrorMessage>{errors.passwordConfirm?.message}</ErrorMessage>}
+            </InputFormWrapper>
+            <CheckBoxWrapper>
+              <CheckBoxLabel htmlFor="isPetsitter">펫시터로 가입하기</CheckBoxLabel>
+              <input type="checkbox" id="isPetsitter" {...register('isPetsitter')} />
+            </CheckBoxWrapper>
+            <ButtonContainer>
+              <SubmitButton type="submit" disabled={isMutating}>
+                {isMutating ? <Loading /> : '펫밀리 등록'}
+              </SubmitButton>
+              <GoogleOAuthButton>Sign up with Google</GoogleOAuthButton>
+            </ButtonContainer>
+          </InputFormContainer>
+        </SignupContainer>
+      </Main>
+    </>
   );
 }
 
-const MainContainer = styled.main`
+const Main = styled.main`
   display: flex;
   align-items: center;
   justify-content: center;

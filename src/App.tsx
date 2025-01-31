@@ -1,11 +1,9 @@
 // import { Suspense, lazy } from 'react';
 import { useEffect } from 'react';
-import { createBrowserRouter, RouterProvider, Outlet, Route, createRoutesFromElements } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, Route, createRoutesFromElements } from 'react-router-dom';
 import { styled, ThemeProvider as StyledComponentsThemeProvider } from 'styled-components';
 import { createTheme, ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 
-import NavHeader from '@components/headers/NavHeader';
-import BackHeader from '@components/headers/BackHeader';
 // import LoadingFallback from '@components/LoadingFallback';
 
 // const Home = lazy(() => import('@pages/main/Home'));
@@ -44,7 +42,7 @@ import CreatePet from '@pages/me/register/CreatePet';
 import EditPet from '@pages/me/editPet/EditPet';
 
 import Cares from '@pages/cares/Cares';
-import CareDetail from '@pages/cares/:id/CareDetail';
+import Care from '@pages/cares/:id/Care';
 
 import Search from '@pages/search/Search';
 import FaQ from '@pages/home/FaQ';
@@ -67,50 +65,27 @@ import GlobalStyle from 'styles/Globalstyle';
 import { ITheme, toggleTheme } from 'store/themeSlice';
 import Maps from '@pages/cares/:id/maps/Maps';
 
-const NavHeaderLayout = () => {
-  return (
-    <>
-      <NavHeader />
-      <Outlet />
-    </>
-  );
-};
-
-const BackHeaderLayout = () => {
-  return (
-    <>
-      <BackHeader />
-      <Outlet />
-    </>
-  );
-};
-
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/">
-      <Route element={<NavHeaderLayout />}>
-        <Route path="" element={<Home />} />
-        <Route path="reviews" element={<Reviews />} />
-        <Route path="search" element={<Search />} />
-        <Route path="cares" element={<Cares />} />
-      </Route>
-      <Route element={<BackHeaderLayout />}>
-        <Route path="login" element={<Login />} />
-        <Route path="signup" element={<Signup />} />
-        <Route path="me/edit" element={<EditMe />} />
-        <Route path="me/register" element={<CreatePet />} />
-        <Route path="me/:petId/edit" element={<EditPet />} />
-        <Route path="faq" element={<FaQ />} />
-        <Route path="cares/:id" element={<CareDetail />} />
-        <Route path="cares/:id/review" element={<Review />} />
-        <Route path="cares/:id/journal" element={<Journal />} />
-        <Route path="cares/:id/maps" element={<Maps />} />
-        <Route path="users/:nickname" element={<Profile />} />
-        <Route path="users/:nickname/book" element={<Book />} />
-        {/* <Route path="petsitters/:memberId/schedule" element={<SitterSchedule />} /> */}
-      </Route>
-      <Route path="me" element={<Me />} />
+      <Route path="" element={<Home />} />
+      <Route path="reviews" element={<Reviews />} />
+      <Route path="search" element={<Search />} />
+      <Route path="cares" element={<Cares />} />
+      <Route path="login" element={<Login />} />
+      <Route path="signup" element={<Signup />} />
       <Route path="auth/connect/google/callback" element={<Redirect />} />
+      <Route path="me" element={<Me />} />
+      <Route path="me/edit" element={<EditMe />} />
+      <Route path="me/register" element={<CreatePet />} />
+      <Route path="me/:petId/edit" element={<EditPet />} />
+      <Route path="faq" element={<FaQ />} />
+      <Route path="cares/:id" element={<Care />} />
+      <Route path="cares/:id/review" element={<Review />} />
+      <Route path="cares/:id/journal" element={<Journal />} />
+      <Route path="cares/:id/maps" element={<Maps />} />
+      <Route path="users/:nickname" element={<Profile />} />
+      <Route path="users/:nickname/book" element={<Book />} />
       <Route path="chats/:opponentId" element={<Chat />} />
       <Route path="*" element={<NotFound />} />
     </Route>,

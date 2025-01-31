@@ -34,6 +34,7 @@ import CustomDaumPostcode from '@components/CustomDaumPostcode';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store';
 import SelectedPetsitter from './component/SelectedPetsitter';
+import BackHeader from '@components/headers/BackHeader';
 
 const schema = yup.object().shape({
   checkedPets: yup.array().min(1, '적도오 한 마리의 펫을 선택해야 합니다.'),
@@ -127,11 +128,10 @@ export default function Book() {
 
   return (
     <FormProvider {...methods}>
-      <Main>
-        <form onSubmit={methods.handleSubmit(onSubmit)}>
+      <form onSubmit={methods.handleSubmit(onSubmit)}>
+        <Main>
+          <BackHeader title="예약 요청" />
           <Container>
-            <Title>예약 요청</Title>
-
             <SelectedPetsitter petsitter={petsitter} />
 
             <Reservation>
@@ -212,23 +212,29 @@ export default function Book() {
             )}
           </Container>
 
-          <BottomFixed>
-            <FloatButtonContainer>
-              <Confirm isChecked={isChecked} setIsChecked={setIsChecked} />
+          <ButtonContainer>
+            <Confirm isChecked={isChecked} setIsChecked={setIsChecked} />
 
-              <StyledButton disabled={disabled}>{isMutating ? <Loading /> : <span>예약하기</span>}</StyledButton>
-            </FloatButtonContainer>
-          </BottomFixed>
-        </form>
-      </Main>
+            <StyledButton disabled={disabled}>{isMutating ? <Loading /> : <span>예약하기</span>}</StyledButton>
+          </ButtonContainer>
+        </Main>
+      </form>
     </FormProvider>
   );
 }
 
 const Main = styled.main`
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+`;
+
+const Container = styled(Column)`
+  flex: auto;
   height: 100%;
-  overflow: auto;
-  margin-bottom: 160px;
+  padding: 20px;
+  gap: 20px;
+  overflow-y: auto;
 `;
 
 const Reservation = styled.section`
@@ -239,11 +245,6 @@ const Reservation = styled.section`
   gap: 16px;
   background-color: ${({ theme }) => theme.background.box.default.primary};
   box-shadow: ${({ theme }) => theme.shadow.dp01};
-`;
-
-const Container = styled(Column)`
-  padding: 16px;
-  gap: 16px;j
 `;
 
 const ReservationWrapper = styled(Row)`
@@ -296,15 +297,13 @@ const RequestSection = styled.section`
   gap: 16px;
 `;
 
-const FloatButtonContainer = styled(Float)`
-  left: 0;
-  bottom: 0;
+const ButtonContainer = styled.div`
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 8px;
-  width: 100%;
-  padding: 0px 20px 20px 20px;
+  padding: 20px;
   background-color: ${({ theme }) => theme.background.primary};
 `;
 

@@ -13,32 +13,27 @@ import UploadProfileImg from '../../../components/UploadProfileImg';
 
 import {
   ButtonContainer,
-  GenderRadioLabel,
-  PetInput,
+  Form,
+  GenderWrapper,
   InputContainer,
   InputLabel,
   InputWrapper,
+  Main,
+  PetInput,
+  PetSpeciesButtonContainer,
   PetTextarea,
   RadioContainer,
-  RadioWrapper,
-  Section,
+  RowWrapper,
   SubmitButton,
-  TitleContainer,
   TypeRadioLabel,
-  UnitText,
-  Container,
-  FloatButtonContainer,
-  GenderWrapper,
-  Form,
 } from '../register/CreatePet';
-import { BottomFixed, ErrorMessage, Row, Texts20h30 } from 'styles/commonStyle';
 
-import { FaXmark } from 'react-icons/fa6';
-import styled from 'styled-components';
 import { deleterWithCookie, fetcher, updaterWithCookie } from 'api';
 import Loading from '@components/Loading';
 import { toast } from 'react-toastify';
 import { TbGenderFemale, TbGenderMale } from 'react-icons/tb';
+import BackHeader from '@components/headers/BackHeader';
+import { FaXmark } from 'react-icons/fa6';
 
 const schema = yup.object().shape({
   species: yup.string().oneOf(['Dog', 'Cat'], '강아지인가요 고양이인가요?').required('이 항목은 필수입니다.'),
@@ -70,7 +65,8 @@ export default function EditPet() {
   const navigate = useNavigate();
 
   const { petId } = useParams();
-  const [previewImage, setPreviewImage] = useState<File | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [serverImageUrl, setServerImageUrl] = useState<string | null>(null);
 
   const {
     register,
@@ -104,20 +100,20 @@ export default function EditPet() {
     },
   });
 
-  // handle pet type radio
-  const handlePetType = (e: MouseEvent<HTMLInputElement>) => {
+  const handlePetSpecies = (e: MouseEvent<HTMLInputElement>) => {
     const value = (e.target as HTMLInputElement).value as 'Dog' | 'Cat'; // 타입 캐스팅
     setValue('species', value);
   };
 
   // 펫 수정
   const onSubmit = async (data: IEditPet) => {
+    console.log(data);
     const formData = new FormData();
 
     formData.append('data', JSON.stringify(data));
 
-    if (previewImage) {
-      formData.append('file', previewImage);
+    if (imageFile) {
+      formData.append('file', imageFile);
     }
 
     await updateTrigger({ formData });
@@ -143,126 +139,109 @@ export default function EditPet() {
       setValue('weight', pet.weight);
       setValue('gender', pet.gender);
       setValue('body', pet.body);
+      setServerImageUrl(pet.photo);
     }
   }, [pet]);
 
   return (
-    <main>
-      <EditTitleContainer>
-        <Texts20h30>나의 Petmily 수정</Texts20h30>
-        <button type="button" onClick={handleDeletePet}>
-          <FaXmark size="28px" color="#279EFF" />
-        </button>
-      </EditTitleContainer>
-      <Section>
-        <UploadProfileImg
-          previewImage={previewImage}
-          setPreviewImage={setPreviewImage}
-          defaultImage={watch('species') === 'Dog' ? '/imgs/DogProfile.png' : '/imgs/CatProfile.png'}
-        />
-        <Form onSubmit={handleSubmit(onSubmit)}>
-          <Container>
-            {/* 타입 */}
-            <ButtonContainer>
+    <Main>
+      <BackHeader title="나의 펫밀리 수정" />
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <InputContainer>
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <button type="button" onClick={handleDeletePet}>
+              <FaXmark size="24px" />
+            </button>
+          </div>
+          <UploadProfileImg
+            setImageFile={setImageFile}
+            defaultImage={watch('species') === 'Dog' ? '/imgs/DogProfile.png' : '/imgs/CatProfile.png'}
+            serverImageUrl={serverImageUrl}
+            setServerImageUrl={setServerImageUrl}
+          />
+
+          {/* 펫타입 */}
+          <InputWrapper>
+            <PetSpeciesButtonContainer>
               <TypeRadioLabel $isSelected={watch('species') === 'Dog'}>
-                <input hidden type="radio" value="Dog" {...register('species')} onClick={handlePetType} />
+                <input id="dog" type="radio" value="Dog" {...register('species')} onClick={handlePetSpecies} hidden />
                 <PiDogBold size="20px" color="white" />
               </TypeRadioLabel>
               <TypeRadioLabel $isSelected={watch('species') === 'Cat'}>
-                <input hidden type="radio" value="Cat" {...register('species')} onClick={handlePetType} />
+                <input id="cat" type="radio" value="Cat" {...register('species')} onClick={handlePetSpecies} hidden />
                 <PiCatBold size="20px" color="white" />
               </TypeRadioLabel>
-            </ButtonContainer>
-            {errors.species && <ErrorMessage>{errors.species.message}</ErrorMessage>}
+            </PetSpeciesButtonContainer>
+          </InputWrapper>
 
-            {/* 이름 */}
-            <InputContainer>
-              <InputLabel htmlFor="name">이름</InputLabel>
-              <InputWrapper>
-                <PetInput type="text" placeholder="e.g. 도기" {...register('name')} />
-                {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
-              </InputWrapper>
-            </InputContainer>
+          {/* 이름 */}
+          <InputWrapper>
+            <InputLabel htmlFor="name">이름</InputLabel>
+            <PetInput id="name" type="text" placeholder="e.g. 도기" {...register('name')} />
+          </InputWrapper>
 
-            {/* 성별 */}
-            <InputContainer>
-              <InputLabel>성별</InputLabel>
-              <RadioContainer>
-                <RadioWrapper>
-                  <input type="radio" value="Male" {...register('gender')} />
-                  <GenderWrapper>
-                    <TbGenderMale />
-                    <GenderRadioLabel htmlFor="Male">남자 아이</GenderRadioLabel>
-                  </GenderWrapper>
-                </RadioWrapper>
-                <RadioWrapper>
-                  <input type="radio" value="Female" {...register('gender')} />
-                  <GenderWrapper>
-                    <TbGenderFemale />
-                    <GenderRadioLabel htmlFor="Female">여자 아이</GenderRadioLabel>
-                  </GenderWrapper>
-                </RadioWrapper>
-              </RadioContainer>
-            </InputContainer>
+          {/* 성별 */}
+          <InputWrapper>
+            <InputLabel>성별</InputLabel>
+            <RadioContainer>
+              <GenderWrapper>
+                <input id="male" type="radio" value="Male" {...register('gender')} />
+                <label htmlFor="male">
+                  <TbGenderMale size="32px" />
+                </label>
+              </GenderWrapper>
+              <GenderWrapper>
+                <input id="female" type="radio" value="Female" {...register('gender')} />
+                <label htmlFor="female">
+                  <TbGenderFemale size="32px" />
+                </label>
+              </GenderWrapper>
+            </RadioContainer>
+          </InputWrapper>
 
-            {/* 중성화 */}
-            <InputContainer>
-              <InputLabel>중성화</InputLabel>
-              <input type="checkbox" {...register('neutering')} />
-            </InputContainer>
+          {/* 중성화 */}
+          <InputWrapper>
+            <InputLabel htmlFor="neutering">중성화</InputLabel>
+            <input id="neutering" type="checkbox" {...register('neutering')} />
+          </InputWrapper>
 
-            {/* 품종 */}
-            <InputContainer>
-              <InputLabel>품종</InputLabel>
-              <InputWrapper>
-                <PetInput type="text" placeholder="e.g. 골든 리트리버 or 샴" {...register('breed')} />
-                {errors.breed && <ErrorMessage>{errors.breed.message}</ErrorMessage>}
-              </InputWrapper>
-            </InputContainer>
+          {/* 품종 */}
+          <InputWrapper>
+            <InputLabel htmlFor="breed">품종</InputLabel>
+            <PetInput id="breed" type="text" placeholder="e.g. 골든 리트리버, 샴" {...register('breed')} />
+          </InputWrapper>
 
-            <InputContainer>
-              <InputLabel>나이</InputLabel>
-              <InputWrapper>
-                <Row>
-                  <PetInput type="number" min={0} placeholder="e.g. 5" {...register('age')} />
-                  <UnitText>살</UnitText>
-                </Row>
-                {errors.age && <ErrorMessage>{errors.age.message}</ErrorMessage>}
-              </InputWrapper>
-            </InputContainer>
+          {/* 나이 */}
+          <InputWrapper>
+            <InputLabel htmlFor="age">나이</InputLabel>
+            <RowWrapper>
+              <PetInput id="age" type="number" {...register('age')} />
+              <span>살</span>
+            </RowWrapper>
+          </InputWrapper>
 
-            <InputContainer>
-              <InputLabel>몸무게</InputLabel>
-              <InputWrapper>
-                <Row>
-                  <PetInput type="number" placeholder="e.g. 10" min={0} step={0.1} {...register('weight')} />
-                  <UnitText>kg</UnitText>
-                </Row>
-                {errors.weight && <ErrorMessage>{errors.weight.message}</ErrorMessage>}
-              </InputWrapper>
-            </InputContainer>
+          {/* 몸무게 */}
+          <InputWrapper>
+            <InputLabel htmlFor="weight">몸무게</InputLabel>
+            <RowWrapper>
+              <PetInput id="weight" type="number" {...register('weight')} />
+              <span>kg</span>
+            </RowWrapper>
+          </InputWrapper>
 
-            <InputContainer>
-              <InputLabel>펫 소개</InputLabel>
-              <PetTextarea rows={5} {...register('body')} />
-            </InputContainer>
-          </Container>
+          {/* 펫소개 */}
+          <InputWrapper>
+            <InputLabel htmlFor="body">소개</InputLabel>
+            <PetTextarea id="body" rows={5} {...register('body')} />
+          </InputWrapper>
+        </InputContainer>
 
-          <BottomFixed>
-            <FloatButtonContainer>
-              <SubmitButton type="submit" disabled={isMutating}>
-                {isMutating ? <Loading /> : <span>펫 수정하기</span>}
-              </SubmitButton>
-            </FloatButtonContainer>
-          </BottomFixed>
-        </Form>
-      </Section>
-    </main>
+        <ButtonContainer>
+          <SubmitButton type="submit" disabled={isMutating}>
+            {isMutating ? <Loading /> : <span>펫 수정하기</span>}
+          </SubmitButton>
+        </ButtonContainer>
+      </Form>
+    </Main>
   );
 }
-
-const EditTitleContainer = styled(TitleContainer)`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;

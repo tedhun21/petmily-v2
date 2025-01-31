@@ -150,7 +150,6 @@ export default function ChatSection() {
         setNewMessageDownButton(true);
       }
       if (scrollPercentage < 75) {
-        console.log('hi');
         setShowDownButton(true);
       }
 

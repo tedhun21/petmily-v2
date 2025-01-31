@@ -74,7 +74,7 @@ export default function Login() {
   };
 
   return (
-    <MainContainer>
+    <Main>
       <img src="/imgs/Logo.svg" alt="logo" width="150px" height="48px" />
       <LoginContainer>
         <FormContainer onSubmit={handleSubmit(onSubmit)}>
@@ -98,11 +98,11 @@ export default function Login() {
           <CustomLink to="/signup">회원가입하기</CustomLink>
         </div>
       </LoginContainer>
-    </MainContainer>
+    </Main>
   );
 }
 
-const MainContainer = styled.main`
+const Main = styled.main`
   display: flex;
   flex-direction: column;
   align-items: center;

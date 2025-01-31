@@ -18,6 +18,7 @@ import Loading from '@components/Loading';
 import { toast } from 'react-toastify';
 
 import { TbGenderFemale, TbGenderMale } from 'react-icons/tb';
+import BackHeader from '@components/headers/BackHeader';
 
 const schema = yup.object().shape({
   species: yup.string().oneOf(['Dog', 'Cat'], '강아지인가요 고양이인가요?').required('이 항목은 필수입니다.'),
@@ -47,7 +48,7 @@ const API_URL = process.env.REACT_APP_API_URL;
 
 export default function CreatePet() {
   const navigate = useNavigate();
-  const [previewImage, setPreviewImage] = useState<File | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
   const {
     register,
@@ -72,7 +73,7 @@ export default function CreatePet() {
     },
   });
 
-  const handlePetType = (e: MouseEvent<HTMLInputElement>) => {
+  const handlePetSpecies = (e: MouseEvent<HTMLInputElement>) => {
     const value = (e.target as HTMLInputElement).value as 'Dog' | 'Cat'; // 타입 캐스팅
     setValue('species', value);
   };
@@ -83,139 +84,138 @@ export default function CreatePet() {
 
     formData.append('data', JSON.stringify(data));
 
-    if (previewImage) {
-      formData.append('file', previewImage);
+    if (imageFile) {
+      formData.append('file', imageFile);
     }
 
     await trigger({ formData });
   };
 
   return (
-    <main>
-      <TitleContainer>
-        <Texts20h30>나의 Petmily 등록</Texts20h30>
-      </TitleContainer>
-      <Section>
-        <UploadProfileImg
-          previewImage={previewImage}
-          setPreviewImage={setPreviewImage}
-          defaultImage={watch('species') === 'Dog' ? '/imgs/DogProfile.png' : '/imgs/CatProfile.png'}
-        />
-        <Form onSubmit={handleSubmit(onSubmit)}>
-          <Container>
-            {/* 타입 */}
-            <ButtonContainer>
+    <Main>
+      <BackHeader title="나의 펫밀리 등록" />
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <InputContainer>
+          <UploadProfileImg
+            setImageFile={setImageFile}
+            defaultImage={watch('species') === 'Dog' ? '/imgs/DogProfile.png' : '/imgs/CatProfile.png'}
+          />
+          {/* 펫 타입 */}
+          <InputWrapper>
+            <PetSpeciesButtonContainer>
               <TypeRadioLabel $isSelected={watch('species') === 'Dog'}>
-                <input hidden type="radio" value="Dog" {...register('species')} onClick={handlePetType} />
+                <input hidden type="radio" value="Dog" {...register('species')} onClick={handlePetSpecies} />
                 <PiDogBold size="20px" color="white" />
               </TypeRadioLabel>
               <TypeRadioLabel $isSelected={watch('species') === 'Cat'}>
-                <input hidden type="radio" value="Cat" {...register('species')} onClick={handlePetType} />
+                <input hidden type="radio" value="Cat" {...register('species')} onClick={handlePetSpecies} />
                 <PiCatBold size="20px" color="white" />
               </TypeRadioLabel>
-            </ButtonContainer>
-            {errors.species && <ErrorMessage>{errors.species.message}</ErrorMessage>}
+            </PetSpeciesButtonContainer>
+          </InputWrapper>
 
-            {/* 이름 */}
-            <InputContainer>
-              <InputLabel htmlFor="name">이름</InputLabel>
-              <InputWrapper>
-                <PetInput type="text" placeholder="e.g. 도기" {...register('name')} />
-                {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
-              </InputWrapper>
-            </InputContainer>
+          {/* 이름 */}
+          <InputWrapper>
+            <InputLabel htmlFor="name">이름</InputLabel>
+            <PetInput type="text" placeholder="e.g. 도기" />
+          </InputWrapper>
 
-            {/* 성별 */}
-            <InputContainer>
-              <InputLabel>성별</InputLabel>
-              <RadioContainer>
-                <RadioWrapper>
-                  <input type="radio" value="Male" {...register('gender')} />
-                  <GenderWrapper>
-                    <TbGenderMale />
-                    <GenderRadioLabel htmlFor="Male">남자 아이</GenderRadioLabel>
-                  </GenderWrapper>
-                </RadioWrapper>
-                <RadioWrapper>
-                  <input type="radio" value="Female" {...register('gender')} />
-                  <GenderWrapper>
-                    <TbGenderFemale />
-                    <GenderRadioLabel htmlFor="Female">여자 아이</GenderRadioLabel>
-                  </GenderWrapper>
-                </RadioWrapper>
-              </RadioContainer>
-            </InputContainer>
+          {/* 성별 */}
+          <InputWrapper>
+            <InputLabel htmlFor="gender">성별</InputLabel>
+            <RadioContainer>
+              <GenderWrapper>
+                <input type="radio" value="Male" {...register('gender')} />
+                <TbGenderMale size="32px" />
+              </GenderWrapper>
+              <GenderWrapper>
+                <input type="radio" value="Female" {...register('gender')} />
+                <TbGenderFemale size="32px" />
+              </GenderWrapper>
+            </RadioContainer>
+          </InputWrapper>
 
-            {/* 중성화 */}
-            <InputContainer>
-              <InputLabel>중성화</InputLabel>
-              <input type="checkbox" {...register('neutering')} />
-            </InputContainer>
+          {/* 중성화 */}
+          <InputWrapper>
+            <InputLabel htmlFor="neutering">중성화</InputLabel>
+            <input type="checkbox" {...register('neutering')} />
+          </InputWrapper>
 
-            {/* 품종 */}
-            <InputContainer>
-              <InputLabel>품종</InputLabel>
-              <InputWrapper>
-                <PetInput type="text" placeholder="e.g. 골든 리트리버 or 샴" {...register('breed')} />
-                {errors.breed && <ErrorMessage>{errors.breed.message}</ErrorMessage>}
-              </InputWrapper>
-            </InputContainer>
+          {/* 품종 */}
+          <InputWrapper>
+            <InputLabel htmlFor="breed">품종</InputLabel>
+            <InputError>
+              <PetInput type="text" placeholder="e.g. 골든 리트리버, 샴" {...register('breed')} />
+            </InputError>
+          </InputWrapper>
 
-            <InputContainer>
-              <InputLabel>나이</InputLabel>
-              <InputWrapper>
-                <Row>
-                  <PetInput type="number" min={0} placeholder="e.g. 5" {...register('age')} />
-                  <UnitText>살</UnitText>
-                </Row>
-                {errors.age && <ErrorMessage>{errors.age.message}</ErrorMessage>}
-              </InputWrapper>
-            </InputContainer>
+          {/* 나이 */}
+          <InputWrapper>
+            <InputLabel htmlFor="age">나이</InputLabel>
 
-            <InputContainer>
-              <InputLabel>몸무게</InputLabel>
-              <InputWrapper>
-                <Row>
-                  <PetInput type="number" placeholder="e.g. 10" min={0} step={0.1} {...register('weight')} />
-                  <UnitText>kg</UnitText>
-                </Row>
-                {errors.weight && <ErrorMessage>{errors.weight.message}</ErrorMessage>}
-              </InputWrapper>
-            </InputContainer>
+            <RowWrapper>
+              <PetInput type="number" {...register('age')} />
+              <span>살</span>
+            </RowWrapper>
+          </InputWrapper>
 
-            <InputContainer>
-              <InputLabel>펫 소개</InputLabel>
-              <PetTextarea rows={5} {...register('body')} />
-            </InputContainer>
-          </Container>
+          {/* 몸무게 */}
+          <InputWrapper>
+            <InputLabel htmlFor="weight">몸무게</InputLabel>
+            <RowWrapper>
+              <PetInput type="number" {...register('weight')} />
+              <span>kg</span>
+            </RowWrapper>
+          </InputWrapper>
 
-          <BottomFixed>
-            <FloatButtonContainer>
-              <SubmitButton type="submit" disabled={isMutating}>
-                {isMutating ? <Loading /> : <span>펫 등록하기</span>}
-              </SubmitButton>
-            </FloatButtonContainer>
-          </BottomFixed>
-        </Form>
-      </Section>
-    </main>
+          {/* 펫소개 */}
+          <InputWrapper>
+            <InputLabel htmlFor="body">소개</InputLabel>
+            <PetTextarea rows={5} {...register('body')} />
+          </InputWrapper>
+        </InputContainer>
+        <ButtonContainer>
+          <SubmitButton type="submit" disabled={isMutating}>
+            {isMutating ? <Loading /> : <span>펫 등록하기</span>}
+          </SubmitButton>
+        </ButtonContainer>
+      </Form>
+    </Main>
   );
 }
-export const TitleContainer = styled.div`
-  padding: 20px;
-`;
 
-export const Section = styled.section`
+export const Main = styled.main`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  height: 100vh;
 `;
 
-export const ButtonContainer = styled.div`
+export const Form = styled.form`
+  flex: auto;
+  height: 100%;
   display: flex;
+  flex-direction: column;
   overflow: hidden;
+`;
+
+export const InputContainer = styled(Column)`
+  flex: auto;
+  overflow-y: auto;
+  padding: 20px;
+  gap: 20px;
+  height: 100%;
+`;
+
+export const InputWrapper = styled(Row)`
+  align-items: center;
+  width: 100%;
+`;
+
+export const PetSpeciesButtonContainer = styled.div`
+  display: flex;
   width: 100%;
   border-radius: ${({ theme }) => theme.radius.normal};
+  overflow: hidden;
 `;
 
 export const TypeRadioLabel = styled.label<{ $isSelected?: boolean }>`
@@ -237,55 +237,25 @@ export const TypeRadioLabel = styled.label<{ $isSelected?: boolean }>`
   }
 `;
 
-export const Form = styled.form`
-  display: flex;
-  width: 100%;
-`;
-
-export const Container = styled(Column)`
-  width: 100%;
-  gap: 24px;
-  padding: 60px;
-`;
-
-export const RegisterInputWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  margin-top: 20px;
-`;
-
 export const InputLabel = styled.label`
   width: 20%;
-  white-space: nowrap;
-  ${({ theme }) => theme.fontSize.s16h24};
+`;
+
+const InputError = styled(Column)`
+  width: 100%;
 `;
 
 export const PetInput = styled(Input)`
   width: 100%;
   padding: 8px;
+  ${({ theme }) => theme.fontSize.s16h24};
   border-radius: ${({ theme }) => theme.radius.normal};
-`;
-
-export const InputContainer = styled.div`
-  display: flex;
-  width: 100%;
-`;
-
-export const InputWrapper = styled(Column)`
-  flex: auto;
-  width: 100%;
 `;
 
 export const RadioContainer = styled(Row)`
   justify-content: space-around;
   flex: auto;
   gap: 4px;
-`;
-
-export const RadioWrapper = styled(Row)`
-  gap: 8px;
 `;
 
 export const GenderRadioLabel = styled.label`
@@ -295,10 +265,7 @@ export const GenderRadioLabel = styled.label`
 export const GenderWrapper = styled.div`
   display: flex;
   align-items: center;
-`;
-
-export const UnitText = styled.span`
-  padding: 8px;
+  gap: 8px;
 `;
 
 export const PetTextarea = styled.textarea`
@@ -311,12 +278,15 @@ export const PetTextarea = styled.textarea`
   background-color: ${({ theme }) => theme.background.input.primary};
 `;
 
-export const FloatButtonContainer = styled(Float)`
-  bottom: 0;
-  left: 0;
+export const RowWrapper = styled(Row)`
   width: 100%;
+  align-items: center;
+  gap: 8px;
+`;
+
+export const ButtonContainer = styled.div`
+  flex: 1;
   padding: 20px;
-  background-color: ${({ theme }) => theme.background.primary};
 `;
 
 export const SubmitButton = styled(BlueButton)`

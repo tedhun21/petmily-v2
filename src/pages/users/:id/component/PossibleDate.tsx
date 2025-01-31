@@ -143,7 +143,7 @@ export default function PossibleDate({ petsitter }: any) {
     <Section>
       <TitleContainer>
         <Title>예약 가능 날짜</Title>
-        <button onClick={deleteDate}>날짜 지우기</button>
+        {date && <button onClick={deleteDate}>날짜 지우기</button>}
       </TitleContainer>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <Controller
@@ -160,7 +160,7 @@ export default function PossibleDate({ petsitter }: any) {
           <div>
             <TitleContainer>
               <Title>예약 가능 시간</Title>
-              <button onClick={deleteTime}>시간 지우기</button>
+              {(startTime || endTime) && <button onClick={deleteTime}>시간 지우기</button>}
             </TitleContainer>
             <DropdownMenu
               initial={{ opacity: 0, height: 0 }}
@@ -245,15 +245,6 @@ const ButtonWrapper = styled.div<{ disabled: boolean }>`
   &:hover div {
     opacity: 1; /* On hover, set opacity of Hover element to 1 */
   }
-`;
-
-const Hover = styled.div<{ isSelected: boolean }>`
-  position: absolute;
-  top: -20px;
-  border-radius: 12px;
-  background-color: ${({ theme }) => theme.background.box.default.active};
-  opacity: ${({ isSelected }) => (isSelected ? 1 : 0)};
-  transition: opacity 0.3s ease;
 `;
 
 const TimeButton = styled.button<{ disabled: boolean; $isSelected: boolean; $isBetween: boolean }>`

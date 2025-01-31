@@ -60,7 +60,9 @@ export default function StartEndTimeBox({ isSelected, setIsSelected }: any) {
           </XButton>
         )}
       </InputDiv>
-      <Divider orientation="vertical" length="32px" />
+
+      <Divider $orientation="vertical" $length="32px" />
+
       <InputDiv onClick={(e) => handleendTimeBoxClick(e)} $isSelected={isSelected === 'endTime'}>
         <Wrapper>
           <Label>체크아웃</Label>

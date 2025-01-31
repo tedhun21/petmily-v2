@@ -8,6 +8,8 @@ import { fetcherWithCookie } from 'api';
 import useSWR from 'swr';
 import Loading from '@components/Loading';
 import { Status } from 'types/reservation.type';
+import NavHeader from '@components/headers/NavHeader';
+import { CenterContainer } from 'styles/commonStyle';
 
 export type FilterType = {
   id: number;
@@ -56,21 +58,26 @@ export default function Cares() {
 
   if (isMonthDataLoading) {
     return (
-      <MainContainer>
-        <Loading color="#279EFF" />
-      </MainContainer>
+      <Main>
+        <CenterContainer>
+          <Loading color="#279EFF" />
+        </CenterContainer>
+      </Main>
     );
   }
 
   return (
-    <MainContainer>
-      <Filter filter={filter} handleFilter={handleFilter} date={date} setDate={setDate} monthData={monthData} />
-      <CareContainer />
-    </MainContainer>
+    <>
+      <NavHeader />
+      <Main>
+        <Filter filter={filter} handleFilter={handleFilter} date={date} setDate={setDate} monthData={monthData} />
+        <CareContainer />
+      </Main>
+    </>
   );
 }
 
-const MainContainer = styled.main`
+const Main = styled.main`
   display: flex;
   flex-direction: column;
   height: 100%;
