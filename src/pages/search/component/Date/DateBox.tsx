@@ -1,13 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 
-import { AddText, InputDiv, Label, Modal, Wrapper, XButton } from '../SearchBox';
+import { AddText, InputDiv, Label, Modal, Wrapper, XButton } from '../../../../components/headers/SearchBox';
 import DateModal from './DateModal';
 import { useFormContext } from 'react-hook-form';
 import dayjs from 'dayjs';
 import { FaXmark } from 'react-icons/fa6';
 
-export default function DateBox({ isSelected, setIsSelected }: any) {
+export default function DateBox({ isSelected, setIsSelected, handleSetValue }: any) {
   const container = document.getElementById('container');
 
   const modalRef = useRef<HTMLDivElement | null>(null);
@@ -56,7 +56,7 @@ export default function DateBox({ isSelected, setIsSelected }: any) {
         container &&
         createPortal(
           <Modal ref={modalRef}>
-            <DateModal />
+            <DateModal handleSetValue={handleSetValue} />
           </Modal>,
           container,
         )}

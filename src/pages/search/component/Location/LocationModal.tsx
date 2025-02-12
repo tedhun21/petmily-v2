@@ -1,76 +1,72 @@
+import useSWR from 'swr';
 import styled from 'styled-components';
-import { ModalLayOut } from '../SearchBox';
+import { fetcher, fetcherWithCookie } from 'api';
+import { ModalLayOut } from '../../../../components/headers/SearchBox';
+import useDebounce from 'hooks/useDebounce';
 import { Column, Divider, Row, Texts12h18 } from 'styles/commonStyle';
+
+import RecentSearches from './RecentSearches';
+import SuggestLocations from './SuggestLocations';
+import LocationCapsuleContainer from './LocationCapsuleContainer';
 import { useFormContext } from 'react-hook-form';
 
-const locations = ['강남구', '강동구', '서초구', '용산구', '종로구'];
+const API_URL = process.env.REACT_APP_API_URL;
 
-export default function LocationModal({ setIsSelected }: any) {
-  const { setValue } = useFormContext();
+export default function LocationModal({ selectedLocation, setSelectedLocation, handleSetValue }: any) {
+  const { watch } = useFormContext();
+  const debouncedInput = useDebounce(watch('location') || null, 500);
 
-  const handleCapsuleClick = (e: React.MouseEvent, city: string, location: string) => {
+  const { data: suggestData } = useSWR(
+    debouncedInput && selectedLocation !== debouncedInput
+      ? `${API_URL}/search?index=locations&query=district:${debouncedInput}&size=5`
+      : null,
+    fetcher,
+  );
+
+  const { data: countLocations } = useSWR(`${API_URL}/search/location-count?size=12`, fetcher);
+  const { data: me } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);
+
+  const handleLocationClick = (e: React.MouseEvent, searchName: string) => {
     e.stopPropagation();
-    setValue('location', `${city} ${location}`);
-    setIsSelected('date');
+    handleSetValue('location', searchName);
   };
+
+  const hasRecentSearches = me?.recentSearches?.length > 0;
 
   return (
     <ModalLayOut>
-      <Content>
-        {
-          <>
-            <div>
-              <Texts12h18>최근 검색 내역</Texts12h18>
-            </div>
-            <Divider $orientation="vertical" $thickness="1px" />
-          </>
-        }
-        <SeoulContainer>
-          <Texts12h18>서울</Texts12h18>
-          <List>
-            {locations.map((location) => (
-              <Capsule key={location} onClick={(e) => handleCapsuleClick(e, '서울', location)}>
-                {location}
-              </Capsule>
-            ))}
-          </List>
-        </SeoulContainer>
-      </Content>
+      {suggestData && debouncedInput !== selectedLocation ? (
+        <SuggestLocations data={suggestData} handleLocationClick={handleLocationClick} />
+      ) : (
+        (debouncedInput === selectedLocation || !debouncedInput) && (
+          <Content>
+            {hasRecentSearches && (
+              <>
+                <RecentContainer>
+                  <RecentTitle>최근 검색 내역</RecentTitle>
+                  <RecentSearches data={me.recentSearches} />
+                </RecentContainer>
+                <Divider $orientation="vertical" $thickness="1px" />
+              </>
+            )}
+            {countLocations?.length > 0 && (
+              <LocationCapsuleContainer data={countLocations} handleLocationClick={handleLocationClick} />
+            )}
+          </Content>
+        )
+      )}
     </ModalLayOut>
   );
 }
 
 const Content = styled(Row)`
-  gap: 12px;
-`;
-
-const SeoulContainer = styled(Column)`
-  gap: 16px;
-`;
-
-const List = styled.ul`
-  display: flex;
-  flex-wrap: wrap;
+  width: 100%;
   gap: 8px;
 `;
 
-const Capsule = styled.li`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 32px;
-  border: 1px solid ${({ theme }) => theme.line.box.primary};
-  padding: 8px 20px;
-  cursor: pointer;
-  font-weight: ${({ theme }) => theme.fontWeight.light};
-  ${({ theme }) => theme.fontSize.s14h21};
-
-  &:hover {
-    border: 1px solid ${({ theme }) => theme.line.box.highlight};
-  }
-
-  &:active {
-    transform: scale(0.95);
-    transition: transform 0.1s ease-out;
-  }
+const RecentContainer = styled(Column)`
+  flex: 1;
+  gap: 20px;
 `;
+
+const RecentTitle = styled(Texts12h18)``;

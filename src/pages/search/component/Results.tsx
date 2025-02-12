@@ -1,14 +1,12 @@
-import { useSearchParams } from 'react-router-dom';
 import useSWRInfinite from 'swr/infinite';
-
 import styled from 'styled-components';
-
 import { infiniteFetcher } from 'api';
 import Result from './Result';
 import { CenterContainer } from 'styles/commonStyle';
 import Loading from '@components/Loading';
 import { useEffect, useRef } from 'react';
 import { useInView } from 'framer-motion';
+import { useSearchParams } from 'react-router-dom';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -24,18 +22,10 @@ export default function Results() {
     return `${API_URL}/users/petsitters/possible?${searchParams}&page=${pageIndex + 1}&pageSize=${pageSize}`;
   };
 
-  const { data, size, setSize, mutate } = useSWRInfinite(getKey, infiniteFetcher);
+  const { isLoading, data, size, setSize } = useSWRInfinite(getKey, infiniteFetcher);
 
   const isEmpty = data?.[0]?.results?.length === 0;
   const isEnd = data && data[data.length - 1]?.results?.length < pageSize;
-
-  if (isEmpty) {
-    return (
-      <CenterContainer>
-        <span>펫시터를 찾을 수 없습니다</span>
-      </CenterContainer>
-    );
-  }
 
   useEffect(() => {
     if (isInView) {
@@ -43,8 +33,24 @@ export default function Results() {
     }
   }, [isInView]);
 
+  if (isEmpty) {
+    return (
+      <AlternativeContainer>
+        <span>펫시터를 찾을 수 없습니다</span>
+      </AlternativeContainer>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <AlternativeContainer>
+        <Loading color="#279EFF" />
+      </AlternativeContainer>
+    );
+  }
+
   return (
-    <>
+    <Main>
       {data && (
         <section>
           <ResultsList>
@@ -62,9 +68,18 @@ export default function Results() {
           <Loading color="#279EFF" />
         </CenterContainer>
       )}
-    </>
+    </Main>
   );
 }
+
+const Main = styled.main`
+  padding: 12px;
+  height: 100%;
+`;
+
+const AlternativeContainer = styled(CenterContainer)`
+  height: 100%;
+`;
 
 const ResultsList = styled.ul`
   display: flex;

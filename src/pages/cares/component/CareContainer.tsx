@@ -82,6 +82,5 @@ const CareCardContainer = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding-top: 16px;
   gap: 16px;
 `;

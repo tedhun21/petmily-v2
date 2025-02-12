@@ -1,15 +1,16 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { createPortal } from 'react-dom';
 
 import { FaXmark } from 'react-icons/fa6';
 
-import { BoxInput, InputDiv, Label, Modal, Wrapper, XButton } from '../SearchBox';
+import { BoxInput, InputDiv, Label, Modal, Wrapper, XButton } from '../../../../components/headers/SearchBox';
 import LocationModal from './LocationModal';
 
-export default function LocationBox({ isSelected, setIsSelected }: any) {
+export default function LocationBox({ isSelected, setIsSelected, handleSetValue }: any) {
   const container = document.getElementById('container');
   const modalRef = useRef<HTMLDivElement>(null);
+  const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
 
   const { register, setValue, watch } = useFormContext();
 
@@ -43,7 +44,7 @@ export default function LocationBox({ isSelected, setIsSelected }: any) {
       <InputDiv onClick={handleBoxClick} $isSelected={isSelected === 'location'}>
         <Wrapper>
           <Label htmlFor="location">장소</Label>
-          <BoxInput placeholder="장소 추가" {...register('location')} autoComplete="off" />
+          <BoxInput id="location" placeholder="장소 추가" {...register('location')} autoComplete="off" />
         </Wrapper>
         {isSelected === 'location' && input?.length > 0 && (
           <XButton type="button" onClick={handleInputRemove}>
@@ -55,7 +56,11 @@ export default function LocationBox({ isSelected, setIsSelected }: any) {
         container &&
         createPortal(
           <Modal ref={modalRef}>
-            <LocationModal setIsSelected={setIsSelected} />
+            <LocationModal
+              selectedLocation={selectedLocation}
+              setSelectedLocation={setSelectedLocation}
+              handleSetValue={handleSetValue}
+            />
           </Modal>,
           container,
         )}

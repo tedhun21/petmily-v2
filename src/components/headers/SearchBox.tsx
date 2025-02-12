@@ -4,11 +4,11 @@ import styled from 'styled-components';
 import { FiSearch } from 'react-icons/fi';
 
 import { BlueButton, Column, Divider, Row, Texts14h21 } from 'styles/commonStyle';
-import LocationBox from './Location/LocationBox';
-import DateBox from './Date/DateBox';
-import StartEndTimeBox from './StartEndTime/StartEndTimeBox';
+import LocationBox from '../../pages/search/component/Location/LocationBox';
+import DateBox from '../../pages/search/component/Date/DateBox';
+import StartEndTimeBox from '../../pages/search/component/StartEndTime/StartEndTimeBox';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 
 type FormValues = {
@@ -19,36 +19,40 @@ type FormValues = {
 };
 
 export default function SearchBox() {
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const [isSelected, setIsSelected] = useState<string | null>(null);
 
   const methods = useForm<FormValues>({
     defaultValues: { location: null, date: null, startTime: null, endTime: null },
   });
 
-  const onSubmit = async (data: any) => {
-    const { location, date, startTime, endTime } = data;
+  const handleSetValue = (field: keyof FormValues, value: any) => {
+    methods.setValue(field, value);
 
-    const formData: { [key: string]: any } = {
-      location,
-      date: date ? dayjs(date).format('YYYY-MM-DD') : null,
-      startTime,
-      endTime,
-    };
+    // 현재 값이 null이 아닐 때만 다음 필드로 이동
+    const formValues = methods.getValues();
 
-    // null 값 제거
-    for (const key in formData) {
-      const value = formData[key];
-      if (value === null) {
-        delete formData[key];
+    if (value !== null) {
+      const nextField = Object.entries(formValues).find(([key, val]) => key !== field && val === null)?.[0];
+
+      if (nextField) {
+        setIsSelected(nextField);
       }
     }
+  };
 
-    const queryParams = new URLSearchParams(formData);
+  const onSubmit = async (data: FormValues) => {
+    const { location, date, startTime, endTime } = data;
 
-    // URL 이동
-    navigate(`/search?${queryParams.toString()}`);
+    const formData: Record<string, string> = {};
+
+    if (location) formData.location = location;
+    if (date) formData.date = dayjs(date).format('YYYY-MM-DD');
+    if (startTime) formData.startTime = startTime;
+    if (endTime) formData.endTime = endTime;
+
+    setSearchParams(new URLSearchParams(formData));
   };
 
   useEffect(() => {
@@ -66,31 +70,41 @@ export default function SearchBox() {
   }, [searchParams, methods]);
 
   return (
-    <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)}>
-        <Container id="container" $isSelected={isSelected}>
-          <BoxWrapper>
-            <LocationBox isSelected={isSelected} setIsSelected={setIsSelected} />
+    <Sticky>
+      <FormProvider {...methods}>
+        <form onSubmit={methods.handleSubmit(onSubmit)}>
+          <Container id="container" $isSelected={isSelected}>
+            <BoxWrapper>
+              <LocationBox isSelected={isSelected} setIsSelected={setIsSelected} handleSetValue={handleSetValue} />
 
-            <Divider $orientation="vertical" $length="32px" />
+              <Divider $orientation="vertical" $length="32px" />
 
-            <DateBox isSelected={isSelected} setIsSelected={setIsSelected} />
+              <DateBox isSelected={isSelected} setIsSelected={setIsSelected} handleSetValue={handleSetValue} />
 
-            <Divider $orientation="vertical" $length="32px" />
+              <Divider $orientation="vertical" $length="32px" />
 
-            <StartEndTimeBox isSelected={isSelected} setIsSelected={setIsSelected} />
-          </BoxWrapper>
+              <StartEndTimeBox isSelected={isSelected} setIsSelected={setIsSelected} handleSetValue={handleSetValue} />
+            </BoxWrapper>
 
-          <ButtonDiv>
-            <SearchButton type="submit">
-              <FiSearch size="24px" color="white" />
-            </SearchButton>
-          </ButtonDiv>
-        </Container>
-      </form>
-    </FormProvider>
+            <ButtonDiv>
+              <SearchButton type="submit">
+                <FiSearch size="24px" color="white" />
+              </SearchButton>
+            </ButtonDiv>
+          </Container>
+        </form>
+      </FormProvider>
+    </Sticky>
   );
 }
+
+const Sticky = styled.div`
+  position: sticky;
+  top: 100px;
+  z-index: 10;
+  padding: 8px 0px;
+  background-color: inherit;
+`;
 
 const Container = styled(Row)<{ $isSelected: string | null }>`
   align-items: center;

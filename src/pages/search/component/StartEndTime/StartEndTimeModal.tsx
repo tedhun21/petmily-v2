@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ModalLayOut } from '../SearchBox';
+import { ModalLayOut } from '../../../../components/headers/SearchBox';
 import { Column } from 'styles/commonStyle';
 import { timeOptions } from 'utils/date';
 import { useFormContext } from 'react-hook-form';
