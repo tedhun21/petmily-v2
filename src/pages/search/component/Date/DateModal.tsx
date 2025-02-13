@@ -4,10 +4,10 @@ import 'react-datepicker/dist/react-datepicker.css';
 import styled from 'styled-components';
 import { ko } from 'date-fns/locale';
 
-import { ModalLayOut } from '../SearchBox';
+import { ModalLayOut } from '../../../../components/headers/SearchBox';
 
-export default function DateModal() {
-  const { setValue, watch, control } = useFormContext();
+export default function DateModal({ handleSetValue }: any) {
+  const { watch, control } = useFormContext();
   const selectedDate = watch('date');
 
   return (
@@ -16,22 +16,20 @@ export default function DateModal() {
         <Controller
           control={control}
           name="date"
-          render={({ field }) => {
-            return (
-              <DatePicker
-                locale={ko}
-                dateFormatCalendar="yyyy년 MM월"
-                selected={selectedDate ? new Date(selectedDate) : null}
-                onChange={(date: Date | null) => field.onChange(date ? date.toString() : null)}
-                // 오늘 이전 날짜 선택 불가
-                minDate={new Date()}
-                // 오늘부터 2개월 이후까지 선택 가능
-                maxDate={new Date(new Date().setMonth(new Date().getMonth() + 2))}
-                // 달력만 보이기 (input 없애기)
-                inline
-              />
-            );
-          }}
+          render={({ field }) => (
+            <DatePicker
+              locale={ko}
+              dateFormatCalendar="yyyy년 MM월"
+              selected={selectedDate ? new Date(selectedDate) : null}
+              onChange={(date: Date | null) => {
+                field.onChange(date ? date.toString() : null);
+                handleSetValue('date', date);
+              }}
+              minDate={new Date()}
+              maxDate={new Date(new Date().setMonth(new Date().getMonth() + 2))}
+              inline
+            />
+          )}
         />
       </DatepickerWrapper>
     </ModalLayOut>
