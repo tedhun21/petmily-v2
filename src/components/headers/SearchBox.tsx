@@ -27,6 +27,7 @@ export default function SearchBox() {
     defaultValues: { location: null, date: null, startTime: null, endTime: null },
   });
 
+  // null인 input으로 넘어가기
   const handleSetValue = (field: keyof FormValues, value: any) => {
     methods.setValue(field, value);
 
@@ -181,13 +182,18 @@ export const Modal = styled.div`
   margin-top: 16px;
 `;
 
-export const ModalLayOut = styled.div`
+export const ModalLayOut = styled.div<{ isHalf?: boolean }>`
   display: flex;
-  width: 100%;
+  width: ${({ isHalf }) => (isHalf ? '50%' : '100%')};
   padding: 20px;
   border-radius: 32px;
   background-color: ${({ theme }) => theme.background.primary};
   box-shadow: ${({ theme }) => theme.shadow.dp02};
+`;
+
+export const HalfModalLayOut = styled(ModalLayOut)`
+  width: 50%;
+  height: 300px;
 `;
 
 const ButtonDiv = styled.div`

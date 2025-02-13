@@ -1,70 +1,101 @@
 import useSWR from 'swr';
 import styled from 'styled-components';
-import { fetcher, fetcherWithCookie } from 'api';
-import { ModalLayOut } from '../../../../components/headers/SearchBox';
-import useDebounce from 'hooks/useDebounce';
-import { Column, Divider, Row, Texts12h18 } from 'styles/commonStyle';
+import { useFormContext } from 'react-hook-form';
 
+import { fetcher, fetcherWithCookie } from 'api';
+import useDebounce from 'hooks/useDebounce';
+import { CenterContainer, Column, Divider, Row, Texts12h18 } from 'styles/commonStyle';
 import RecentSearches from './RecentSearches';
 import SuggestLocations from './SuggestLocations';
 import LocationCapsuleContainer from './LocationCapsuleContainer';
-import { useFormContext } from 'react-hook-form';
+import { useState } from 'react';
+import Loading from '@components/Loading';
+import { ModalLayOut, HalfModalLayOut } from '@components/headers/SearchBox';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-export default function LocationModal({ selectedLocation, setSelectedLocation, handleSetValue }: any) {
-  const { watch } = useFormContext();
-  const debouncedInput = useDebounce(watch('location') || null, 500);
+export default function LocationModal({ handleSetValue }: any) {
+  const { getValues, watch } = useFormContext();
+  // 입력값을 가져오고 디바운스 처리 (빈 문자열이면 '')
+  const inputValue = watch('location') || '';
+  const debouncedInput = useDebounce(inputValue, 500);
 
-  const { data: suggestData } = useSWR(
-    debouncedInput && selectedLocation !== debouncedInput
-      ? `${API_URL}/search?index=locations&query=district:${debouncedInput}&size=5`
-      : null,
+  // 이전에 선택했던 위치 (예: URL에서 가져온 값 혹은 이전 입력값)
+  const [selectedLocation, setSelectedLocation] = useState(getValues('location') || '');
+
+  // debouncedInput과 선택된 위치가 다르면, 검색을 수행해야 한다.
+  const shouldFetchSuggestions = debouncedInput !== selectedLocation;
+
+  // debouncedInput을 바로 검색 쿼리로 사용 (빈 문자열이어도 API에서 처리할 수 있다면)
+  const { data: suggestData, isLoading: isSuggestDataLoading } = useSWR(
+    shouldFetchSuggestions ? `${API_URL}/search?index=locations&query=district:${debouncedInput}&size=5` : null,
     fetcher,
   );
 
   const { data: countLocations } = useSWR(`${API_URL}/search/location-count?size=12`, fetcher);
   const { data: me } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);
+  const hasRecentSearches = me?.recentSearches?.length > 0;
 
   const handleLocationClick = (e: React.MouseEvent, searchName: string) => {
     e.stopPropagation();
+    setSelectedLocation(searchName);
+    // 선택하면 입력값과 달라진 상태를 초기화해 불필요한 재검색을 막음
     handleSetValue('location', searchName);
   };
 
-  const hasRecentSearches = me?.recentSearches?.length > 0;
+  console.log(isSuggestDataLoading);
 
   return (
-    <ModalLayOut>
-      {suggestData && debouncedInput !== selectedLocation ? (
-        <SuggestLocations data={suggestData} handleLocationClick={handleLocationClick} />
+    <>
+      {shouldFetchSuggestions && debouncedInput.length > 0 ? (
+        <HalfModalLayOut>
+          {isSuggestDataLoading ? (
+            <AlternativeContainer>
+              <Loading />
+            </AlternativeContainer>
+          ) : (
+            <SuggestLocations data={suggestData} handleLocationClick={handleLocationClick} />
+          )}
+        </HalfModalLayOut>
       ) : (
-        (debouncedInput === selectedLocation || !debouncedInput) && (
+        <ModalLayOut>
           <Content>
             {hasRecentSearches && (
-              <>
-                <RecentContainer>
+              <RecentContainer>
+                <RecentWrapper>
                   <RecentTitle>최근 검색 내역</RecentTitle>
                   <RecentSearches data={me.recentSearches} />
-                </RecentContainer>
+                </RecentWrapper>
                 <Divider $orientation="vertical" $thickness="1px" />
-              </>
+              </RecentContainer>
             )}
             {countLocations?.length > 0 && (
               <LocationCapsuleContainer data={countLocations} handleLocationClick={handleLocationClick} />
             )}
           </Content>
-        )
+        </ModalLayOut>
       )}
-    </ModalLayOut>
+    </>
   );
 }
+
+const AlternativeContainer = styled(CenterContainer)`
+  width: 100%;
+  height: 100%;
+`;
 
 const Content = styled(Row)`
   width: 100%;
   gap: 8px;
 `;
 
-const RecentContainer = styled(Column)`
+const RecentContainer = styled(Row)`
+  width: 20%;
+  display: flex;
+  gap: 4px;
+`;
+
+const RecentWrapper = styled(Column)`
   flex: 1;
   gap: 20px;
 `;

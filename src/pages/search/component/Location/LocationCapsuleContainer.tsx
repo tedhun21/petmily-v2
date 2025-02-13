@@ -1,11 +1,36 @@
+import { useRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Column, Texts12h18 } from 'styles/commonStyle';
 
 export default function LocationCapsuleContainer({ data, handleLocationClick }: any) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [columnCount, setColumnCount] = useState(3); // 기본값 3
+
+  useEffect(() => {
+    const updateColumnCount = () => {
+      if (containerRef.current) {
+        const width = containerRef.current.clientWidth;
+
+        if (width >= 400) {
+          setColumnCount(4); // 600px 이상이면 4개
+        } else {
+          setColumnCount(3); // 600px 미만이면 3개
+        }
+      }
+    };
+
+    updateColumnCount(); // 초기 렌더 시 실행
+    window.addEventListener('resize', updateColumnCount);
+
+    return () => {
+      window.removeEventListener('resize', updateColumnCount);
+    };
+  }, []);
+
   return (
-    <Container>
+    <Container ref={containerRef}>
       <Texts12h18>서울</Texts12h18>
-      <List>
+      <List $columnCount={columnCount}>
         {data.map((location: string) => (
           <Item key={location}>
             <Button type="button" onClick={(e) => handleLocationClick(e, location)}>
@@ -19,13 +44,13 @@ export default function LocationCapsuleContainer({ data, handleLocationClick }: 
 }
 
 const Container = styled(Column)`
-  flex: auto;
+  width: 80%;
   gap: 16px;
 `;
 
-const List = styled.ul`
+const List = styled.ul<{ $columnCount: number }>`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(${({ $columnCount }) => $columnCount}, 1fr);
   gap: 8px;
 `;
 
@@ -33,15 +58,15 @@ const Item = styled.li`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid ${({ theme }) => theme.line.box.primary};
+  border: 2px solid ${({ theme }) => theme.line.box.primary};
   border-radius: ${({ theme }) => theme.radius.large};
-  padding: 8px;
+  padding: 6px 8px;
   cursor: pointer;
   font-weight: ${({ theme }) => theme.fontWeight.light};
   ${({ theme }) => theme.fontSize.s14h21};
 
   &:hover {
-    border: 1px solid ${({ theme }) => theme.line.box.highlight};
+    border: 2px solid ${({ theme }) => theme.line.box.highlight};
   }
 
   $:active {

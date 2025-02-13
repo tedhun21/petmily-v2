@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { createPortal } from 'react-dom';
 
@@ -10,7 +10,6 @@ import LocationModal from './LocationModal';
 export default function LocationBox({ isSelected, setIsSelected, handleSetValue }: any) {
   const container = document.getElementById('container');
   const modalRef = useRef<HTMLDivElement>(null);
-  const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
 
   const { register, setValue, watch } = useFormContext();
 
@@ -56,11 +55,7 @@ export default function LocationBox({ isSelected, setIsSelected, handleSetValue 
         container &&
         createPortal(
           <Modal ref={modalRef}>
-            <LocationModal
-              selectedLocation={selectedLocation}
-              setSelectedLocation={setSelectedLocation}
-              handleSetValue={handleSetValue}
-            />
+            <LocationModal handleSetValue={handleSetValue} />
           </Modal>,
           container,
         )}
