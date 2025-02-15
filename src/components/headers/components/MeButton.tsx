@@ -1,22 +1,18 @@
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-import useSWR from 'swr';
 import styled from 'styled-components';
 import { useNavigate, Link } from 'react-router-dom';
 
 import { deleteCookie } from 'utils/cookie';
 import { ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
-import { fetcherWithCookie } from 'api';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
 import { toggleTheme } from 'store/themeSlice';
 import { MdLightbulbOutline, MdNightlightRound } from 'react-icons/md';
 
-const API_URL = process.env.REACT_APP_API_URL;
-
-export default function MeButton() {
+export default function MeButton({ me }: any) {
   const userContainer = document.getElementById('user-container');
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -24,8 +20,6 @@ export default function MeButton() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modalRef = useRef<HTMLDivElement | null>(null);
-
-  const { data: me } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);
 
   const handleMenuOpen = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation(); // 이벤트 전파를 막음

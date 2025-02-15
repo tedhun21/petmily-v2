@@ -10,6 +10,7 @@ import StartEndTimeBox from '../../pages/search/component/StartEndTime/StartEndT
 import { FormProvider, useForm } from 'react-hook-form';
 import { useSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs';
+import { saveToRecentSearch } from 'utils/localStorage';
 
 type FormValues = {
   location: string | null;
@@ -18,7 +19,7 @@ type FormValues = {
   endTime: string | null;
 };
 
-export default function SearchBox() {
+export default function SearchBox({ me }: any) {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [isSelected, setIsSelected] = useState<string | null>(null);
@@ -31,9 +32,18 @@ export default function SearchBox() {
   const handleSetValue = (field: keyof FormValues, value: any) => {
     methods.setValue(field, value);
 
-    // 현재 값이 null이 아닐 때만 다음 필드로 이동
+    // 현재 폼의 모든 값 가져오기
     const formValues = methods.getValues();
 
+    // 모든 필드가 채워져 있으면 setIsSelected를 null로 설정
+    const allFieldsFilled = Object.values(formValues).every((val) => val !== null);
+
+    if (allFieldsFilled) {
+      setIsSelected(null);
+      return;
+    }
+
+    // 현재 값이 null이 아닐 때만 다음 필드로 이동
     if (value !== null) {
       const nextField = Object.entries(formValues).find(([key, val]) => key !== field && val === null)?.[0];
 
@@ -54,6 +64,11 @@ export default function SearchBox() {
     if (endTime) formData.endTime = endTime;
 
     setSearchParams(new URLSearchParams(formData));
+
+    if (location) {
+      // localStorage 저장
+      saveToRecentSearch('recentSearches', location);
+    }
   };
 
   useEffect(() => {
@@ -76,7 +91,12 @@ export default function SearchBox() {
         <form onSubmit={methods.handleSubmit(onSubmit)}>
           <Container id="container" $isSelected={isSelected}>
             <BoxWrapper>
-              <LocationBox isSelected={isSelected} setIsSelected={setIsSelected} handleSetValue={handleSetValue} />
+              <LocationBox
+                me={me}
+                isSelected={isSelected}
+                setIsSelected={setIsSelected}
+                handleSetValue={handleSetValue}
+              />
 
               <Divider $orientation="vertical" $length="32px" />
 
@@ -182,9 +202,9 @@ export const Modal = styled.div`
   margin-top: 16px;
 `;
 
-export const ModalLayOut = styled.div<{ isHalf?: boolean }>`
+export const ModalLayOut = styled.div`
   display: flex;
-  width: ${({ isHalf }) => (isHalf ? '50%' : '100%')};
+  width: 100%;
   padding: 20px;
   border-radius: 32px;
   background-color: ${({ theme }) => theme.background.primary};
@@ -193,7 +213,6 @@ export const ModalLayOut = styled.div<{ isHalf?: boolean }>`
 
 export const HalfModalLayOut = styled(ModalLayOut)`
   width: 50%;
-  height: 300px;
 `;
 
 const ButtonDiv = styled.div`

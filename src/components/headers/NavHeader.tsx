@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 
+import useSWR from 'swr';
 import styled from 'styled-components';
 
 import { Column } from 'styles/commonStyle';
@@ -7,9 +8,14 @@ import NavBar from './components/NavBar';
 import MeButton from './components/MeButton';
 import SearchBox from './SearchBox';
 import Filter from './Filter';
+import { fetcherWithCookie } from 'api';
+
+const API_URL = process.env.REACT_APP_API_URL;
 
 export default function NavHeader() {
   const { pathname } = useLocation();
+
+  const { data: me } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);
 
   return (
     <>
@@ -19,12 +25,12 @@ export default function NavHeader() {
             <Link to="/">
               <img src="/imgs/Logo.svg" alt="logo" />
             </Link>
-            <MeButton />
+            <MeButton me={me} />
           </TopHeader>
           <NavBar />
         </HeaderContatiner>
       </Header>
-      {pathname === '/search' && <SearchBox />}
+      {pathname === '/search' && <SearchBox me={me} />}
       {pathname === '/cares' && <Filter />}
     </>
   );
