@@ -13,7 +13,7 @@ export default function StartEndTimeBox({ isSelected, setIsSelected }: any) {
   const container = document.getElementById('container');
   const modalRef = useRef<HTMLDivElement>(null);
 
-  const { register, setValue, watch } = useFormContext();
+  const { setValue, watch } = useFormContext();
 
   const startTime = watch('startTime');
   const endTime = watch('endTime');

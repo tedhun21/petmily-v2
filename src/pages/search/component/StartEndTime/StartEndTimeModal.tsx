@@ -11,15 +11,16 @@ export default function StartEndTimeModal({ isSelected, setIsSelected }: any) {
   const startTime = watch('startTime');
   const endTime = watch('endTime');
 
+  // 시간을 선택했을 때
   const handleCapsuleClick = (e: React.MouseEvent, time: string) => {
     e.stopPropagation();
+
     if (isSelected === 'startTime') {
       if (dayjs(time, 'HH:mm').isAfter(dayjs(endTime, 'HH:mm'))) {
         setValue('startTime', time);
         setValue('endTime', null);
       }
 
-      setValue('startTime', time);
       setIsSelected('endTime');
     } else if (isSelected === 'endTime') {
       if (dayjs(time, 'HH:mm').isBefore(dayjs(startTime, 'HH:mm'))) {

@@ -1,17 +1,16 @@
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 import styled from 'styled-components';
+import { Texts14h21 } from 'styles/commonStyle';
 
 export default function SuggestLocations({ data, handleLocationClick }: any) {
   return (
     <List>
-      {data.map((location: string, index: number) => (
-        <Item key={index}>
-          <Button type="button" onClick={(e) => handleLocationClick(e, location)}>
-            <Icon>
-              <HiOutlineLocationMarker size="20px" />
-            </Icon>
-            <span>{location}</span>
-          </Button>
+      {data?.map((location: string, index: number) => (
+        <Item key={index} onClick={(e) => handleLocationClick(e, location)}>
+          <IconBox>
+            <HiOutlineLocationMarker size="20px" />
+          </IconBox>
+          <Texts14h21>{location}</Texts14h21>
         </Item>
       ))}
     </List>
@@ -25,26 +24,26 @@ const List = styled.ul`
 `;
 
 const Item = styled.li`
-  gap: 8px;
-  width: 100%;
-`;
-
-const Button = styled.button`
   display: flex;
   align-items: center;
   gap: 8px;
   width: 100%;
   padding: 8px;
   border-radius: ${({ theme }) => theme.radius.normal};
+  cursor: pointer;
 
   &:hover {
     background-color: ${({ theme }) => theme.background.highlight};
+
+    ${Texts14h21} {
+      color: white;
+    }
   }
 `;
 
-const Icon = styled.div`
+const IconBox = styled.div`
   display: flex;
-  justify-contnet: center;
+  justify-content: center;
   align-items: center;
   background-color: ${({ theme }) => theme.background.box.default.primary};
   padding: 8px;
