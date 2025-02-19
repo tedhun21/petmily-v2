@@ -1,4 +1,4 @@
-import { infiniteFetcherWithCookie } from 'api';
+import { fetcherWithCookie } from 'api';
 import { CenterContainer, SubTitle } from 'styles/commonStyle';
 import styled from 'styled-components';
 import useSWRInfinite from 'swr/infinite';
@@ -17,7 +17,7 @@ export default function SelectPets() {
   };
 
   // 내가 가진 펫 가져오기
-  const { data, size, setSize, isLoading } = useSWRInfinite(getKey, infiniteFetcherWithCookie);
+  const { data, size, setSize, isLoading } = useSWRInfinite(getKey, fetcherWithCookie);
 
   const isEmpty = data?.[0]?.results?.length === 0;
   const isEnd = data && data[data.length - 1]?.results?.length < pageSize;

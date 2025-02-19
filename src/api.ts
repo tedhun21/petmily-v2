@@ -45,33 +45,6 @@ export const fetcherWithCookie = async (url: string) => {
   }
 };
 
-// infinite fetcher
-export const infiniteFetcher = async (url: string) => {
-  try {
-    const { data } = await axios.get(`${url}`);
-    return data;
-  } catch (e: any) {
-    console.error(e);
-    throw e;
-  }
-};
-
-// infinite fetcher with token
-export const infiniteFetcherWithCookie = async (url: string) => {
-  const access_token = getCookie('access_token');
-
-  if (access_token) {
-    try {
-      const { data } = await axios.get(`${url}`, { headers: { Authorization: `Bearer ${access_token}` } });
-
-      return data;
-    } catch (e: any) {
-      console.error(e);
-      throw e;
-    }
-  }
-};
-
 export const poster = async (url: string, { arg }: { arg: any }) => {
   try {
     const { data } = await axios.post(`${url}`, arg);

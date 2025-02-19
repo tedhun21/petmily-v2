@@ -3,13 +3,13 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import useSWRInfinite from 'swr/infinite';
 
-import ChatMessage from './ChatMessage';
-import { ChatContext } from './ChatProvider';
 import { Message } from 'types/message.type';
-import { infiniteFetcherWithCookie } from 'api';
+import { fetcherWithCookie } from 'api';
 import { useInView } from 'framer-motion';
 import { FaChevronDown } from 'react-icons/fa6';
 import { Button } from 'styles/commonStyle';
+import ChatMessage from './ChatMessage';
+import { ChatContext } from './ChatProvider';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -37,7 +37,7 @@ export default function ChatList() {
   const getKey = (pageIndex: number, previousPageData: any) => {
     if (!chatRoom) return null;
 
-    const baseKey = `${API_URL}/chats/${chatRoom.id}/messages?opponentId=${opponentId}`;
+    const baseKey = `${API_URL}/chats/${chatRoom.id}/messages/${opponentId}`;
 
     // 첫번째 페이지 호출
     if (pageIndex === 0 && !previousPageData) {
@@ -53,7 +53,7 @@ export default function ChatList() {
   };
 
   // 채팅방의 메세지 가져오기
-  const { data, setSize, mutate } = useSWRInfinite(getKey, infiniteFetcherWithCookie);
+  const { data, setSize, mutate } = useSWRInfinite(getKey, fetcherWithCookie);
 
   // 새 메시지를 받으면, mutate로 캐시를 갱신한 후 messages 배열을 강제로 업데이트
   useEffect(() => {

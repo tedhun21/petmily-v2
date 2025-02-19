@@ -15,7 +15,7 @@ export default function ChatHeader() {
   return (
     <Header>
       <StyledBackButton onClick={() => navigate(-1)}>
-        <FaArrowLeft color="#279EFF" size="24px" />
+        <FaArrowLeft color="#279EFF" size="20px" />
       </StyledBackButton>
       <Texts20h30>
         {chatRoom?.client.id === Number(opponentId)
@@ -26,7 +26,7 @@ export default function ChatHeader() {
         님
       </Texts20h30>
       <button>
-        <FiMenu size="24px" color="#279EFF" />
+        <FiMenu size="20px" color="#279EFF" />
       </button>
     </Header>
   );

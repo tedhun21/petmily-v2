@@ -5,7 +5,7 @@ import { Pagination } from 'swiper/modules';
 
 import { CenterContainer, Title } from 'styles/commonStyle';
 
-import { infiniteFetcherWithCookie } from 'api';
+import { fetcherWithCookie } from 'api';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -23,7 +23,7 @@ export default function UsedPetsitters() {
     return `${API_URL}/users/petsitters/used?page=${pageIndex + 1}&pageSize=${pageSize}`;
   };
 
-  const { data, isLoading } = useSWRInfinite(getKey, infiniteFetcherWithCookie);
+  const { data, isLoading } = useSWRInfinite(getKey, fetcherWithCookie);
 
   const isEmpty = data?.[0]?.results?.length === 0;
   const isEnd = data && data[data.length - 1]?.results?.length < pageSize;

@@ -1,12 +1,16 @@
-import { posterWithCookie } from 'api';
 import { useContext } from 'react';
-import styled from 'styled-components';
-import { BlueButton, Input } from 'styles/commonStyle';
+
 import useSWRMutation from 'swr/mutation';
-import { ChatContext } from './ChatProvider';
+
 import { toast } from 'react-toastify';
 import { useForm } from 'react-hook-form';
+import styled from 'styled-components';
+
 import { IoMdArrowRoundUp } from 'react-icons/io';
+
+import { posterWithCookie } from 'api';
+import { ChatContext } from './ChatProvider';
+import { BlueButton, Input } from 'styles/commonStyle';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -50,14 +54,6 @@ export default function ChatFooter() {
     </footer>
   );
 }
-
-const Footer = styled.footer`
-  display: flex;
-  align-items: center;
-  padding: 8px;
-  gap: 16px;
-  box-shadow: ${({ theme }) => theme.shadow.dp03};
-`;
 
 const Div = styled.div`
   display: flex;

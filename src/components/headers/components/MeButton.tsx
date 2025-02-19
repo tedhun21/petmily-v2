@@ -7,16 +7,10 @@ import { useNavigate, Link } from 'react-router-dom';
 import { deleteCookie } from 'utils/cookie';
 import { ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
 import { toast } from 'react-toastify';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from 'store';
-import { toggleTheme } from 'store/themeSlice';
-import { MdLightbulbOutline, MdNightlightRound } from 'react-icons/md';
 
 export default function MeButton({ me }: any) {
   const userContainer = document.getElementById('user-container');
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { isDarkMode } = useSelector((state: RootState) => state.theme);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modalRef = useRef<HTMLDivElement | null>(null);
@@ -24,14 +18,6 @@ export default function MeButton({ me }: any) {
   const handleMenuOpen = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation(); // 이벤트 전파를 막음
     setIsModalOpen((prev) => !prev);
-  };
-
-  const handleDarkMode = () => {
-    if (isDarkMode) {
-      dispatch(toggleTheme('light'));
-    } else {
-      dispatch(toggleTheme('dark'));
-    }
   };
 
   // 로그아웃 클
@@ -76,10 +62,7 @@ export default function MeButton({ me }: any) {
                   <StyledNavLink to="/me" onClick={() => setIsModalOpen(false)}>
                     마이페이지
                   </StyledNavLink>
-                  <StyledNavButton onClick={handleDarkMode}>
-                    <span>{isDarkMode ? '라이트모드: ' : '다크모드: '}</span>
-                    {isDarkMode ? <MdLightbulbOutline /> : <MdNightlightRound />}
-                  </StyledNavButton>
+
                   <StyledNavButton onClick={handleLogout}>로그아웃</StyledNavButton>
                 </Nav>
               </LoginNavModal>,
@@ -134,7 +117,7 @@ const LoginNavModal = styled.div`
   position: absolute;
   top: 24px;
   right: 24px;
-  z-index: 1;
+  z-index: 20;
 `;
 
 const Nav = styled.nav`

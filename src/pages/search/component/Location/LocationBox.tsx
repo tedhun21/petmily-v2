@@ -7,7 +7,7 @@ import { FaXmark } from 'react-icons/fa6';
 import { BoxInput, InputDiv, Label, Modal, Wrapper, XButton } from '../../../../components/headers/SearchBox';
 import LocationModal from './LocationModal';
 
-export default function LocationBox({ me, isSelected, setIsSelected, handleSetValue }: any) {
+export default function LocationBox({ isSelected, setIsSelected, handleSetValue }: any) {
   const container = document.getElementById('container');
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -55,7 +55,7 @@ export default function LocationBox({ me, isSelected, setIsSelected, handleSetVa
         container &&
         createPortal(
           <Modal ref={modalRef}>
-            <LocationModal me={me} handleSetValue={handleSetValue} />
+            <LocationModal handleSetValue={handleSetValue} />
           </Modal>,
           container,
         )}

@@ -6,7 +6,7 @@ import useSWRInfinite from 'swr/infinite';
 import { useInView } from 'framer-motion';
 
 import { CenterContainer } from 'styles/commonStyle';
-import { infiniteFetcherWithCookie } from 'api';
+import { fetcherWithCookie } from 'api';
 
 import Loading from '@components/Loading';
 import CareCard from './CareCard';
@@ -33,7 +33,7 @@ export default function CareContainer() {
       ? `${API_URL}/reservations?page=${pageIndex + 1}&pageSize=${pageSize}&status=${filter}&date=${date}`
       : null;
   };
-  const { data, size, setSize, isLoading } = useSWRInfinite(getKey, infiniteFetcherWithCookie);
+  const { data, size, setSize, isLoading } = useSWRInfinite(getKey, fetcherWithCookie);
 
   const isEmpty = data?.[0]?.results?.length === 0;
   const isEnd = data && data[data.length - 1]?.results?.length < pageSize;

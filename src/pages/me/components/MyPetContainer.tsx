@@ -9,7 +9,7 @@ import { useInView } from 'framer-motion';
 import { CenterContainer } from 'styles/commonStyle';
 
 import PetmilyCard from './PetmilyCard';
-import { infiniteFetcherWithCookie } from 'api';
+import { fetcherWithCookie } from 'api';
 
 import Loading from '@components/Loading';
 const API_URL = process.env.REACT_APP_API_URL;
@@ -24,7 +24,7 @@ export default function MyPetContainer() {
     return `${API_URL}/pets?page=${pageIndex + 1}&pageSize=${pageSize}`;
   };
 
-  const { data, size, setSize, isLoading } = useSWRInfinite(getKey, infiniteFetcherWithCookie);
+  const { data, size, setSize, isLoading } = useSWRInfinite(getKey, fetcherWithCookie);
 
   const isEmpty = data?.[0]?.results?.length === 0;
   const isEnd = data && data[data.length - 1]?.results?.length < pageSize;

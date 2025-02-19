@@ -30,10 +30,7 @@ export default function ChatProvider({ children, value }: any) {
   const [chatRoom, setChatRoom] = useState<ChatRoom | null>(null);
 
   // 기존의 채팅방 정보 가져오기
-  const { data: fetchedChatRoom } = useSWR(
-    opponentId ? `${API_URL}/chats?opponentId=${opponentId}` : null,
-    fetcherWithCookie,
-  );
+  const { data: fetchedChatRoom } = useSWR(opponentId ? `${API_URL}/chats/${opponentId}` : null, fetcherWithCookie);
 
   useEffect(() => {
     if (fetchedChatRoom) {

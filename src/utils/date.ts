@@ -57,6 +57,25 @@ export const dateAgo = (date: string) => {
   return theDay.from(now);
 };
 
+// 채팅 리스트 업데이트 시간
+export const updatedAtAgo = (date: string) => {
+  const targetDate = dayjs(date);
+  const now = dayjs();
+  // 오늘이면 시간 표시
+  if (dayjs(date).isSame(dayjs(), 'day')) {
+    return dayjs(date).format('HH:mm');
+  } else if (dayjs(date).isSame(now.subtract(1, 'day'), 'day')) {
+    // 어제면 어제 표시
+    return '어제';
+  } else if (targetDate.isSame(now, 'year')) {
+    return targetDate.format('MM월 DD일');
+  } else {
+    return targetDate.format('YYYY년 MM월 DD일');
+  }
+
+  // 그 외는 날짜 표시
+};
+
 export const reservationDisableDate = (day: Dayjs) => {
   // 날짜에 할당된 숫자 구하기 (0이면 일요일, 1이면 월요일)
   const dayOfWeek = dayjs(day).day();

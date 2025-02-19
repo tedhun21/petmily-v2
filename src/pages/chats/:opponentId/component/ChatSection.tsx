@@ -10,7 +10,7 @@ import { FaChevronDown } from 'react-icons/fa6';
 import { IoMdArrowRoundUp } from 'react-icons/io';
 
 import { BlueButton, Button, ImageCentered, Input, RoundedImageWrapper, Row, Texts14h21 } from 'styles/commonStyle';
-import { infiniteFetcherWithCookie, posterWithCookie } from 'api';
+import { fetcherWithCookie, posterWithCookie } from 'api';
 import { ChatContext } from './ChatProvider';
 import { Message } from 'types/message.type';
 import ChatMessage from './ChatMessage';
@@ -56,7 +56,7 @@ export default function ChatSection() {
   };
 
   // 채팅방의 메세지 가져오기
-  const { data: messageData, setSize, mutate } = useSWRInfinite(getKey, infiniteFetcherWithCookie);
+  const { data: messageData, setSize, mutate } = useSWRInfinite(getKey, fetcherWithCookie);
 
   // 채팅방 만들기
   const { trigger } = useSWRMutation(`${API_URL}/chats`, posterWithCookie);

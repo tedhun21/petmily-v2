@@ -4,7 +4,7 @@ import useSWRInfinite from 'swr/infinite';
 import { CenterContainer } from 'styles/commonStyle';
 
 const API_URL = process.env.REACT_APP_API_URL;
-import { infiniteFetcherWithCookie } from 'api';
+import { fetcherWithCookie } from 'api';
 import Loading from '@components/Loading';
 import { useEffect, useRef } from 'react';
 import { useInView } from 'framer-motion';
@@ -19,7 +19,7 @@ export default function MySchedule() {
     return `${API_URL}/reservations?page=${pageIndex + 1}&pageSize=${pageSize}`;
   };
 
-  const { data, size, setSize, isLoading } = useSWRInfinite(getKey, infiniteFetcherWithCookie);
+  const { data, size, setSize, isLoading } = useSWRInfinite(getKey, fetcherWithCookie);
 
   const isEmpty = data?.[0]?.length === 0;
   const isEnd = data && data[data.length - 1]?.results.length < pageSize;

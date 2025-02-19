@@ -1,4 +1,4 @@
-import { infiniteFetcher } from 'api';
+import { fetcher } from 'api';
 import { CenterContainer } from 'styles/commonStyle';
 import styled from 'styled-components';
 import useSWRInfinite from 'swr/infinite';
@@ -18,7 +18,7 @@ export default function PhotoReviews() {
     return `${API_URL}/reviews?page=${pageIndex + 1}&pageSize=${pageSize}&photo=true`;
   };
 
-  const { data, size, setSize, isLoading } = useSWRInfinite(getKey, infiniteFetcher);
+  const { data, size, setSize, isLoading } = useSWRInfinite(getKey, fetcher);
 
   const isEmpty = data?.[0]?.results?.length === 0;
   const isEnd = data && data[data.length - 1]?.results?.length < pageSize;

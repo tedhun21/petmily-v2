@@ -48,7 +48,9 @@ import Search from '@pages/search/Search';
 import FaQ from '@pages/home/FaQ';
 import Profile from '@pages/users/:id/Profile';
 
-import Chat from '@pages/chats/Chat';
+import Chats from '@pages/chats/Chats';
+import Chat from '@pages/chats/:opponentId/Chat';
+
 import NotFound from '@pages/common/404';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -86,6 +88,7 @@ const router = createBrowserRouter(
       <Route path="cares/:id/maps" element={<Maps />} />
       <Route path="users/:nickname" element={<Profile />} />
       <Route path="users/:nickname/book" element={<Book />} />
+      <Route path="chats" element={<Chats />} />
       <Route path="chats/:opponentId" element={<Chat />} />
       <Route path="*" element={<NotFound />} />
     </Route>,
