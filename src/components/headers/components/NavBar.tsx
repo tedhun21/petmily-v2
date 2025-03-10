@@ -11,22 +11,23 @@ const navItem = [
 
 export default function NavBar() {
   return (
-    <NavContainer>
-      <NavUl>
+    <Nav>
+      <List>
         {navItem.map((item) => (
           <NavBarLink key={item.id} item={item} />
         ))}
-      </NavUl>
-    </NavContainer>
+      </List>
+    </Nav>
   );
 }
 
-const NavContainer = styled.nav`
+const Nav = styled.nav`
   flex: auto;
   width: 100%;
+  padding: 0 12px;
 `;
 
-const NavUl = styled.ul`
+const List = styled.ul`
   display: flex;
   justify-content: space-between;
   gap: 20px;

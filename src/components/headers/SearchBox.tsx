@@ -19,7 +19,7 @@ type FormValues = {
   endTime: string | null;
 };
 
-export default function SearchBox({ me }: any) {
+export default function SearchBox() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [isSelected, setIsSelected] = useState<string | null>(null);
@@ -91,12 +91,7 @@ export default function SearchBox({ me }: any) {
         <form onSubmit={methods.handleSubmit(onSubmit)}>
           <Container id="container" $isSelected={isSelected}>
             <BoxWrapper>
-              <LocationBox
-                me={me}
-                isSelected={isSelected}
-                setIsSelected={setIsSelected}
-                handleSetValue={handleSetValue}
-              />
+              <LocationBox isSelected={isSelected} setIsSelected={setIsSelected} handleSetValue={handleSetValue} />
 
               <Divider $orientation="vertical" $length="32px" />
 

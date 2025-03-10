@@ -48,7 +48,6 @@ export default function Care() {
 
         // SWR 캐시 업데이트
         mutate(async (currentData: typeof reservation) => {
-          console.log(currentData);
           // 성공적으로 상태를 업데이트하고 캐시만 업데이트
           return { ...currentData, status: newStatus };
         }, false);

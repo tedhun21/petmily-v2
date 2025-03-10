@@ -9,6 +9,10 @@ import { formatKrDays, timeRange } from 'utils/date';
 import { MdOutlineRateReview } from 'react-icons/md';
 
 export default function PetsitterCard({ petsitter }: any) {
+  const opponentIds = [petsitter?.id];
+  const params = new URLSearchParams();
+  params.append('opponentIds', opponentIds.join(',')); // opponentIds=1,2,3
+
   return (
     <Card>
       <ImageName>
@@ -20,7 +24,7 @@ export default function PetsitterCard({ petsitter }: any) {
         </PetsitterImage>
         <PetsitterName>{petsitter?.nickname} 님</PetsitterName>
         <LinkWrapper>
-          <StyledLink to={`/chats/${petsitter?.id}`}>채팅 하기</StyledLink>
+          <StyledLink to={`/chat?${params.toString()}`}>채팅 하기</StyledLink>
           <StyledLink to={`/users/${petsitter?.nickname}`}>프로필 보기</StyledLink>
         </LinkWrapper>
       </ImageName>

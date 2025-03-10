@@ -1,6 +1,6 @@
 import useSWRInfinite from 'swr/infinite';
 import styled from 'styled-components';
-import { infiniteFetcher } from 'api';
+import { fetcher } from 'api';
 import Result from './Result';
 import { CenterContainer } from 'styles/commonStyle';
 import Loading from '@components/Loading';
@@ -22,7 +22,7 @@ export default function Results() {
     return `${API_URL}/users/petsitters/possible?${searchParams}&page=${pageIndex + 1}&pageSize=${pageSize}`;
   };
 
-  const { isLoading, data, size, setSize } = useSWRInfinite(getKey, infiniteFetcher);
+  const { isLoading, data, size, setSize } = useSWRInfinite(getKey, fetcher);
 
   const isEmpty = data?.[0]?.results?.length === 0;
   const isEnd = data && data[data.length - 1]?.results?.length < pageSize;

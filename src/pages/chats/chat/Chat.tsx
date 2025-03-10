@@ -1,22 +1,24 @@
-import { useParams } from 'react-router-dom';
-
 import styled from 'styled-components';
 
-import ChatProvider from './component/ChatProvider';
+import ChatRoomProvider from './component/ChatRoomProvider';
 import ChatHeader from './component/ChatHeader';
 import ChatSection from './component/ChatSection';
+import { useParams, useSearchParams } from 'react-router-dom';
 
 export default function Chat() {
-  const { opponentId } = useParams<{ opponentId: string }>();
+  const { chatRoomId } = useParams();
+  const [searchParams] = useSearchParams();
+
+  const opponentIds = searchParams.getAll('opponentIds');
 
   return (
-    <ChatProvider value={{ opponentId }}>
+    <ChatRoomProvider value={{ chatRoomId, opponentIds }}>
       <MainContainer>
         <ChatHeader />
 
         <ChatSection />
       </MainContainer>
-    </ChatProvider>
+    </ChatRoomProvider>
   );
 }
 
@@ -31,5 +33,6 @@ const MainContainer = styled.main`
 
   > section {
     flex: auto;
+    height: 100%;
   }
 `;

@@ -10,7 +10,6 @@ import { useInView } from 'framer-motion';
 interface IProps {
   index: number;
   message: Message;
-
   isMyMessage: boolean;
   previousMessage?: Message;
   nextMessage?: Message;
@@ -18,7 +17,7 @@ interface IProps {
 }
 
 export default function ChatMessage({ index, message, isMyMessage, previousMessage, nextMessage, setSize }: IProps) {
-  const viewRefIndex = 2;
+  const viewRefIndex = 2; // 메세지 엔덱스에서 보이면 다음 페이지 불러오는 변수
   const ref = useRef<HTMLLIElement>(null);
   const isInView = useInView(ref, { once: true });
 
@@ -41,7 +40,7 @@ export default function ChatMessage({ index, message, isMyMessage, previousMessa
           <Date>{dayjs(message.createdAt).format('MMMM D[일], YYYY')}</Date>
         </DateDivider>
       )}
-      <MessageItem $isMyMessage={isMyMessage}>
+      <Item $isMyMessage={isMyMessage}>
         {!isMyMessage && showSenderPhoto ? (
           <SenderPhoto>
             <ImageCentered src={message.sender?.photo ? message.sender.photo : '/imgs/DefaultUserProfile.jpg'} />
@@ -51,9 +50,9 @@ export default function ChatMessage({ index, message, isMyMessage, previousMessa
         ) : null}
         <MessageContent $isMyMessage={isMyMessage}>
           <Content $isMyMessage={isMyMessage}>{message.content}</Content>
-          {showTime && <SendTime>{formatToLocaleAMPM(message.createdAt)}</SendTime>}
+          {showTime && <Texts12h18>{formatToLocaleAMPM(message.createdAt)}</Texts12h18>}
         </MessageContent>
-      </MessageItem>
+      </Item>
     </li>
   );
 }
@@ -70,9 +69,8 @@ const Date = styled(Texts14h21)`
   background-color: ${({ theme }) => theme.background.box.default.active};
 `;
 
-const MessageItem = styled.div<{ $isMyMessage: boolean }>`
+const Item = styled.div<{ $isMyMessage: boolean }>`
   display: flex;
-  align-items: center;
   gap: 8px;
   ${({ $isMyMessage }) =>
     $isMyMessage
@@ -105,6 +103,7 @@ const MessageContent = styled.div<{ $isMyMessage: boolean }>`
 `;
 
 const Content = styled(Texts16h24)<{ $isMyMessage: boolean }>`
+  display: inline-block;
   color: white;
   padding: 8px;
   border-radius: ${({ theme }) => theme.radius.normal};
@@ -114,4 +113,91 @@ const Content = styled(Texts16h24)<{ $isMyMessage: boolean }>`
   word-wrap: break-word; // 긴 단어가 있을 경우 줄 바꿈 처리
 `;
 
-const SendTime = styled(Texts12h18)``;
+// export default function ChatMessage({ index, message, isMyMessage, previousMessage, nextMessage, setSize }: IProps) {
+//   const viewRefIndex = 2;
+//   const ref = useRef<HTMLLIElement>(null);
+//   const isInView = useInView(ref, { once: true });
+
+//   const showSenderPhoto = shouldShowSenderPhoto(message, previousMessage);
+//   const showTime = shouldShowTime(message, previousMessage, nextMessage);
+//   const showDateDivider = shouldShowDateDivider(message, previousMessage);
+
+//   const focusRef = index === viewRefIndex ? ref : null;
+
+//   useEffect(() => {
+//     if (isInView) {
+//       setSize((prev: number) => prev + 1);
+//     }
+//   }, [isInView]);
+
+//   return (
+//     <li ref={focusRef}>
+//       {showDateDivider && (
+//         <DateDivider>
+//           <Date>{dayjs(message.createdAt).format('MMMM D[일], YYYY')}</Date>
+//         </DateDivider>
+//       )}
+//       <MessageItem $isMyMessage={isMyMessage}>
+//         {!isMyMessage && showSenderPhoto ? (
+//           <SenderPhoto>
+//             <ImageCentered src={message.sender?.photo ? message.sender.photo : '/imgs/DefaultUserProfile.jpg'} />
+//           </SenderPhoto>
+//         ) : !isMyMessage ? (
+//           <EmptySpace />
+//         ) : null}
+//         <MessageContent $isMyMessage={isMyMessage}>
+//           <Content $isMyMessage={isMyMessage}>{message.content}</Content>
+//           {showTime && <SendTime>{formatToLocaleAMPM(message.createdAt)}</SendTime>}
+//         </MessageContent>
+//       </MessageItem>
+//     </li>
+//   );
+// }
+
+// const DateDivider = styled.div`
+//   display: flex;
+//   justify-content: center;
+//   padding: 8px;
+// `;
+
+// const Date = styled(Texts14h21)`
+//   border-radius: ${({ theme }) => theme.radius.normal};
+//   padding: 8px;
+//   background-color: ${({ theme }) => theme.background.box.default.active};
+// `;
+
+// const MessageItem = styled.div<{ $isMyMessage: boolean }>`
+//   display: flex;
+//   align-items: center;
+//   gap: 8px;
+//   ${({ $isMyMessage }) =>
+//     $isMyMessage
+//       ? css`
+//           flex-direction: row-reverse;
+//           align-self: flex-end;
+//         `
+//       : css`
+//           flex-direction: row;
+//           align-self: flex-start;
+//         `}
+// `;
+
+// const SenderPhoto = styled(RoundedImageWrapper)`
+//   width: 40px;
+//   height: 40px;
+// `;
+
+// const EmptySpace = styled.div`
+//   width: 40px;
+//   height: 40px;
+// `;
+
+// const MessageContent = styled.div<{ $isMyMessage: boolean }>`
+//   flex: auto;
+//   display: flex;
+//   flex-direction: ${({ $isMyMessage }) => ($isMyMessage ? 'row-reverse' : 'row')};
+//   align-items: flex-end;
+//   gap: 8px;
+// `;
+
+// const SendTime = styled(Texts12h18)``;
