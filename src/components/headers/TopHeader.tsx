@@ -12,14 +12,19 @@ import { IoMdNotificationsOutline } from 'react-icons/io';
 import { MdNightlightRound } from 'react-icons/md';
 
 import { Row } from 'styles/commonStyle';
-import MeButton from './MeButton';
+import MeButton from './components/MeButton';
 import { fetcherWithCookie } from 'api';
+import { useContext } from 'react';
+import { MessageContext } from '@components/MessageProvider';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
 export default function TopHeader() {
   const dispatch = useDispatch();
   const { isDarkMode } = useSelector((state: RootState) => state.theme);
+  const { newMessages } = useContext(MessageContext);
+
+  const isNewMessages = newMessages?.length > 0;
 
   const { data: me } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);
 
@@ -47,6 +52,7 @@ export default function TopHeader() {
             </Button>
             <StyledLink to="/chats">
               <FaRegPaperPlane size="16px" />
+              {isNewMessages && <MessageLength />}
             </StyledLink>
           </>
         )}
@@ -79,6 +85,7 @@ const Button = styled.button`
 `;
 
 const StyledLink = styled(Link)`
+  position:relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -87,4 +94,14 @@ const StyledLink = styled(Link)`
 
   &:hover {
   background-color:${({ theme }) => theme.background.box.default.hover};
+`;
+
+const MessageLength = styled.div`
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background-color: ${({ theme }) => theme.background.red};
+  width: 8px;
+  height: 8px;
+  border-radius: ${({ theme }) => theme.radius.circle};
 `;

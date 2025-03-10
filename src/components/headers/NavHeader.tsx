@@ -5,8 +5,8 @@ import styled from 'styled-components';
 import { Column } from 'styles/commonStyle';
 import NavBar from './components/NavBar';
 import SearchBox from './SearchBox';
-import Filter from './Filter';
-import TopHeader from './components/TopHeader';
+import TopHeader from './TopHeader';
+import CareFilter from './components/CareFilter';
 
 export default function NavHeader() {
   const { pathname } = useLocation();
@@ -20,7 +20,7 @@ export default function NavHeader() {
         </HeaderContatiner>
       </Header>
       {pathname === '/search' && <SearchBox />}
-      {pathname === '/cares' && <Filter />}
+      {pathname === '/cares' && <CareFilter />}
     </>
   );
 }

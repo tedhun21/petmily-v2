@@ -49,7 +49,7 @@ import FaQ from '@pages/home/FaQ';
 import Profile from '@pages/users/:id/Profile';
 
 import Chats from '@pages/chats/Chats';
-import Chat from '@pages/chats/:opponentId/Chat';
+import Chat from '@pages/chats/chat/Chat';
 
 import NotFound from '@pages/common/404';
 
@@ -66,6 +66,7 @@ import { darkTheme, lightTheme } from 'styles/theme';
 import GlobalStyle from 'styles/Globalstyle';
 import { ITheme, toggleTheme } from 'store/themeSlice';
 import Maps from '@pages/cares/:id/maps/Maps';
+import MessageProvider from '@components/MessageProvider';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -89,7 +90,7 @@ const router = createBrowserRouter(
       <Route path="users/:nickname" element={<Profile />} />
       <Route path="users/:nickname/book" element={<Book />} />
       <Route path="chats" element={<Chats />} />
-      <Route path="chats/:opponentId" element={<Chat />} />
+      <Route path="chat/:chatRoomId?" element={<Chat />} />
       <Route path="*" element={<NotFound />} />
     </Route>,
   ),
@@ -121,20 +122,22 @@ export default function App() {
     <SWRConfig value={{ revalidateOnFocus: false, provider: () => new Map() }}>
       <StyledComponentsThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
         <MuiThemeProvider theme={isDarkMode ? muiDarkTheme : muiLightTheme}>
-          <GlobalStyle />
-          <Container>
-            <Wrapper>
-              <RouterProvider router={router} />
-              <ToastContainer
-                position="top-right"
-                autoClose={2000}
-                theme={isDarkMode ? 'dark' : 'light'}
-                hideProgressBar={true}
-                closeOnClick={true}
-                pauseOnFocusLoss={false}
-              />
-            </Wrapper>
-          </Container>
+          <MessageProvider>
+            <GlobalStyle />
+            <Container>
+              <Wrapper>
+                <RouterProvider router={router} />
+                <ToastContainer
+                  position="top-right"
+                  autoClose={2000}
+                  theme={isDarkMode ? 'dark' : 'light'}
+                  hideProgressBar={true}
+                  closeOnClick={true}
+                  pauseOnFocusLoss={false}
+                />
+              </Wrapper>
+            </Container>
+          </MessageProvider>
         </MuiThemeProvider>
       </StyledComponentsThemeProvider>
     </SWRConfig>

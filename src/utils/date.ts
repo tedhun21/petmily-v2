@@ -59,6 +59,8 @@ export const dateAgo = (date: string) => {
 
 // 채팅 리스트 업데이트 시간
 export const updatedAtAgo = (date: string) => {
+  if (!date) return null;
+
   const targetDate = dayjs(date);
   const now = dayjs();
   // 오늘이면 시간 표시
@@ -68,12 +70,10 @@ export const updatedAtAgo = (date: string) => {
     // 어제면 어제 표시
     return '어제';
   } else if (targetDate.isSame(now, 'year')) {
-    return targetDate.format('MM월 DD일');
+    return targetDate.format('M월 DD일');
   } else {
     return targetDate.format('YYYY년 MM월 DD일');
   }
-
-  // 그 외는 날짜 표시
 };
 
 export const reservationDisableDate = (day: Dayjs) => {

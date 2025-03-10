@@ -9,7 +9,7 @@ import styled from 'styled-components';
 import { IoMdArrowRoundUp } from 'react-icons/io';
 
 import { posterWithCookie } from 'api';
-import { ChatContext } from './ChatProvider';
+import { ChatContext } from './ChatRoomProvider';
 import { BlueButton, Input } from 'styles/commonStyle';
 
 const API_URL = process.env.REACT_APP_API_URL;

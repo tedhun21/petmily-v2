@@ -24,7 +24,7 @@ const filters: FilterType[] = [
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-export default function Filter() {
+export default function CareFilter() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const { register, watch, setValue } = useForm({

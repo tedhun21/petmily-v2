@@ -3,6 +3,10 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export default function ClientCard({ client }: any) {
+  const opponentIds = [client?.id];
+  const params = new URLSearchParams();
+  params.append('opponentIds', opponentIds.join(',')); // opponentIds=1,2,3
+
   return (
     <Card>
       <ImageName>
@@ -12,7 +16,7 @@ export default function ClientCard({ client }: any) {
         <ClientName>{client?.nickname} 님</ClientName>
       </ImageName>
 
-      <StyledLink to={`/chats/${client?.id}`}>채팅 하기</StyledLink>
+      <StyledLink to={`/chat?${params.toString()}`}>채팅 하기</StyledLink>
     </Card>
   );
 }

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import ChatRoomList from './component/ChatRoomList';
-import TopHeader from '@components/headers/components/TopHeader';
+import TopHeader from '@components/headers/TopHeader';
 
 export default function Chats() {
   return (

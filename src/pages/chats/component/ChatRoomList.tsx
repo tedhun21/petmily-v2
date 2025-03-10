@@ -27,7 +27,7 @@ export default function ChatRoomList() {
 
   const { data, isLoading, setSize } = useSWRInfinite(getKey, fetcherWithCookie);
 
-  const isEmpty = data?.[0].results?.length === 0;
+  const isEmpty = data?.[0]?.results?.length === 0;
   const isEnd = data && data[data.length - 1]?.results?.length < pageSize;
 
   useEffect(() => {
@@ -40,7 +40,10 @@ export default function ChatRoomList() {
     return <Loading color="279EFF" />;
   }
 
-  console.log(data);
+  if (isEmpty) {
+    return <div>채팅방이 없습니다.</div>;
+  }
+
   return (
     <Main>
       <ul>

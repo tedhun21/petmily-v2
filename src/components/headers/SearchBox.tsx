@@ -19,7 +19,7 @@ type FormValues = {
   endTime: string | null;
 };
 
-export default function SearchBox({ me }: any) {
+export default function SearchBox() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [isSelected, setIsSelected] = useState<string | null>(null);
