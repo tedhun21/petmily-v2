@@ -5,13 +5,13 @@ import styled from 'styled-components';
 import { FaArrowLeft } from 'react-icons/fa6';
 import { FiMenu } from 'react-icons/fi';
 
-import { ChatContext } from './ChatRoomProvider';
+import { ChatRoomContext } from './ChatRoomProvider';
 import { Texts20h30 } from 'styles/commonStyle';
 import { ChatUser } from 'types/message.type';
 
 export default function ChatHeader() {
   const navigate = useNavigate();
-  const { chatRoom } = useContext(ChatContext);
+  const { chatRoom } = useContext(ChatRoomContext);
 
   const othersName = chatRoom?.chatMembers?.others?.map((other: ChatUser) => other.nickname);
 

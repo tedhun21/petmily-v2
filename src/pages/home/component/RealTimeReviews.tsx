@@ -52,7 +52,7 @@ export default function RealTimeReviews() {
         centeredSlides={true}
         spaceBetween={20}
         grabCursor={true}
-        loop={!isEnd} // Enable loop if there are more reviews to load
+        loop={!isEnd}
         pagination={{
           dynamicBullets: true,
           clickable: true,

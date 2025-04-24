@@ -1,10 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import userReducer from './userSlice';
-import themeReducer from './themeSlice';
+import messageReducer from './messageSlice';
+import notificationReducer from './notificationSlice';
+import modalReducer from './modalSlice';
 
 const store = configureStore({
-  reducer: { user: userReducer, theme: themeReducer },
+  reducer: { message: messageReducer, notification: notificationReducer, modal: modalReducer },
 });
 
 export default store;

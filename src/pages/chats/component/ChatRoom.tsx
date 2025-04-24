@@ -1,13 +1,15 @@
-import { MessageContext } from '@components/MessageProvider';
-import { useContext } from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { RootState } from 'store';
+
 import styled from 'styled-components';
 import { Column, ImageCentered, RoundedImageWrapper, Row, Texts12h18 } from 'styles/commonStyle';
 import { Message } from 'types/message.type';
 import { updatedAtAgo } from 'utils/date';
 
 export default function ChatRoom({ chatRoom }: any) {
-  const { newMessages } = useContext(MessageContext);
+  const { newMessages } = useSelector((state: RootState) => state.message);
+
   const others = chatRoom.chatMembers.others;
 
   // 현재 채팅방의 새로운 메세지만 필터링
@@ -18,14 +20,14 @@ export default function ChatRoom({ chatRoom }: any) {
     return new Date(current.createdAt) > new Date(latest.createdAt) ? current : latest;
   }, newChatRoomMessages[0]);
 
-  // 읽지 않은 메세지 개수 (원래 unreadCount 값 + 새로 들어온 메세지 개수)
-  const unreadCount = (chatRoom.unreadCount ?? 0) + newChatRoomMessages?.length;
-
   // 최신 메세지 내용 (새로운 메세지가 없으면 기존 lastMessage 사용)
-  const lastMessage = newestMessage?.content || chatRoom.lastMessage?.content;
+  const lastMessage = newestMessage || chatRoom.lastMessage;
+
+  // 읽지 않은 메세지 개수 (원래 unreadCount 값 + 새로 들어온 메세지 개수)
+  const unreadCount = (chatRoom.chatMembers.unreadCount || 0) + newChatRoomMessages?.length;
 
   return (
-    <ChatRoomLink to={`/chat/${chatRoom.id}`}>
+    <ChatRoomLink to={`/chats/${chatRoom.id}`}>
       <PhotoName>
         <Photo>
           {others.map((other: any) => (
@@ -34,19 +36,18 @@ export default function ChatRoom({ chatRoom }: any) {
             </MemberPhoto>
           ))}
         </Photo>
-
         <NameMessageWrapper>
           <div>
             {others.map((other: any) => (
               <span key={other.id}>{other.nickname}</span>
             ))}
           </div>
-          <Texts12h18>{lastMessage}</Texts12h18>
+          <Texts12h18>{lastMessage.content}</Texts12h18>
         </NameMessageWrapper>
       </PhotoName>
       <TimeUnreadCount>
-        <Texts12h18>{updatedAtAgo(chatRoom.lastMessage?.createdAt)}</Texts12h18>
-        {unreadCount !== 0 && (
+        <Texts12h18>{updatedAtAgo(lastMessage?.createdAt)}</Texts12h18>
+        {unreadCount > 0 && (
           <NewMessage>
             <Texts12h18>{unreadCount}</Texts12h18>
           </NewMessage>
@@ -81,7 +82,7 @@ const NameMessageWrapper = styled(Column)`
 `;
 
 const TimeUnreadCount = styled(Column)`
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   gap: 8px;
 `;

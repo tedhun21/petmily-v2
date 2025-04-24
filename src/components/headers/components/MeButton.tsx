@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import { createPortal } from 'react-dom';
 
 import styled from 'styled-components';
@@ -7,17 +7,29 @@ import { useNavigate, Link } from 'react-router-dom';
 import { deleteCookie } from 'utils/cookie';
 import { ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
 import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'store';
+import { closeModal, ModalType, openModal } from 'store/modalSlice';
+import useOutsideClickModal from 'hooks/useOutsideClickModal';
 
 export default function MeButton({ me }: any) {
   const userContainer = document.getElementById('user-container');
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
+  const { currentModal } = useSelector((state: RootState) => state.modal);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const modalRef = useRef<HTMLDivElement | null>(null);
+  useOutsideClickModal(modalRef);
 
-  const handleMenuOpen = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const toggleMenu = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation(); // 이벤트 전파를 막음
-    setIsModalOpen((prev) => !prev);
+
+    if (currentModal === ModalType.MEBUTTON) {
+      dispatch(closeModal());
+    } else {
+      dispatch(openModal(ModalType.MEBUTTON));
+    }
   };
 
   // 로그아웃 클
@@ -28,50 +40,29 @@ export default function MeButton({ me }: any) {
     navigate(0);
   };
 
-  useEffect(() => {
-    const handleOutsideClick = (e: MouseEvent) => {
-      const target = e.target as Node;
-
-      if (modalRef.current && !modalRef.current.contains(target)) {
-        setIsModalOpen(false);
-      }
-    };
-
-    window.addEventListener('click', handleOutsideClick);
-
-    // 컴포넌트 언마운트 시 클릭 이벤트 리스너를 정리
-    return () => window.removeEventListener('click', handleOutsideClick);
-  }, []);
-
   return (
     <UserContainer id="user-container">
-      {me ? (
-        <>
-          <UserButton type="button" onClick={handleMenuOpen}>
-            <UserImage>
-              <ImageCentered src={me.photo ? `${me.photo}` : '/imgs/DefaultUserProfile.jpg'} alt="user_photo" />
-            </UserImage>
-          </UserButton>
+      <UserButton type="button" onClick={toggleMenu}>
+        <UserImage>
+          <ImageCentered src={me.photo ? `${me.photo}` : '/imgs/DefaultUserProfile.jpg'} alt="user_photo" />
+        </UserImage>
+      </UserButton>
 
-          {isModalOpen &&
-            me &&
-            userContainer &&
-            createPortal(
-              <LoginNavModal ref={modalRef}>
-                <Nav>
-                  <StyledNavLink to="/me" onClick={() => setIsModalOpen(false)}>
-                    마이페이지
-                  </StyledNavLink>
+      {currentModal === ModalType.MEBUTTON &&
+        me &&
+        userContainer &&
+        createPortal(
+          <LoginNavModal ref={modalRef}>
+            <Nav>
+              <StyledNavLink to="/me" onClick={() => dispatch(closeModal())}>
+                마이페이지
+              </StyledNavLink>
 
-                  <StyledNavButton onClick={handleLogout}>로그아웃</StyledNavButton>
-                </Nav>
-              </LoginNavModal>,
-              userContainer,
-            )}
-        </>
-      ) : (
-        <LoginNavLink to="/login">로그인/회원가입</LoginNavLink>
-      )}
+              <StyledNavButton onClick={handleLogout}>로그아웃</StyledNavButton>
+            </Nav>
+          </LoginNavModal>,
+          userContainer,
+        )}
     </UserContainer>
   );
 }
@@ -92,23 +83,6 @@ const UserButton = styled.button`
 const UserImage = styled(RoundedImageWrapper)`
   width: 36px;
   height: 36px;
-`;
-
-const LoginNavLink = styled(Link)`
-  color: ${({ theme }) => theme.text.white};
-  background-color: ${({ theme }) => theme.background.box.blue.primary};
-  padding: 4px 8px;
-  border-radius: ${({ theme }) => theme.radius.normal};
-  ${({ theme }) => theme.fontSize.s14h21}
-
-  &:hover {
-    background-color: ${({ theme }) => theme.background.box.blue.hover};
-  }
-
-  &:active {
-    background-color: ${({ theme }) => theme.background.box.blue.active};
-    box-shadow: ${({ theme }) => theme.shadow.inset};
-  }
 `;
 
 const LoginNavModal = styled.div`

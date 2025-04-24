@@ -10,18 +10,7 @@ import { timeRange } from 'utils/date';
 import { fetcherWithCookie, posterWithCookie } from 'api';
 import SelectPets from './component/SelectPets';
 import { Modal, TextField } from '@mui/material';
-import {
-  BlueButton,
-  BottomFixed,
-  Column,
-  Divider,
-  Float,
-  Row,
-  SubTitle,
-  Texts14h21,
-  Texts16h24,
-  Title,
-} from 'styles/commonStyle';
+import { BlueButton, Column, Divider, Row, SubTitle, Texts14h21, Texts16h24 } from 'styles/commonStyle';
 
 import Confirm from '@pages/users/:id/book/component/Confirm';
 import useSWRMutation from 'swr/mutation';
@@ -31,8 +20,7 @@ import dayjs from 'dayjs';
 import { toast } from 'react-toastify';
 import Loading from '@components/Loading';
 import CustomDaumPostcode from '@components/CustomDaumPostcode';
-import { useSelector } from 'react-redux';
-import { RootState } from 'store';
+
 import SelectedPetsitter from './component/SelectedPetsitter';
 import BackHeader from '@components/headers/BackHeader';
 
@@ -53,8 +41,6 @@ export default function Book() {
   const date = searchParams.get('date');
   const startTime = searchParams.get('checkIn');
   const endTime = searchParams.get('checkOut');
-
-  const { isDarkMode } = useSelector((state: RootState) => state.theme);
 
   // 주소 모달
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -181,7 +167,7 @@ export default function Book() {
                     sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                   >
                     <div style={{ width: '360px' }}>
-                      <CustomDaumPostcode onComplete={handleComplete} theme={isDarkMode ? 'dark' : 'light'} />
+                      <CustomDaumPostcode onComplete={handleComplete} />
                     </div>
                   </Modal>
                 </AddressSection>

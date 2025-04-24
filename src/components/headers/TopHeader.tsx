@@ -1,39 +1,35 @@
-import useSWR from 'swr';
-
-import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { RootState } from 'store';
-import { toggleTheme } from 'store/themeSlice';
+
+import useSWR from 'swr';
+import { useSelector } from 'react-redux';
+import styled from 'styled-components';
 
 import { FaRegPaperPlane } from 'react-icons/fa6';
 import { FiSun } from 'react-icons/fi';
-import { IoMdNotificationsOutline } from 'react-icons/io';
 import { MdNightlightRound } from 'react-icons/md';
 
+import { RootState } from 'store';
+import { fetcherWithCookie } from 'api';
 import { Row } from 'styles/commonStyle';
 import MeButton from './components/MeButton';
-import { fetcherWithCookie } from 'api';
-import { useContext } from 'react';
-import { MessageContext } from '@components/MessageProvider';
+import NotiButton from './components/NotiButton/NotiButton';
+import { ThemeContext } from '@components/ThemeProvider';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
 export default function TopHeader() {
-  const dispatch = useDispatch();
-  const { isDarkMode } = useSelector((state: RootState) => state.theme);
-  const { newMessages } = useContext(MessageContext);
-
-  const isNewMessages = newMessages?.length > 0;
+  const { isDarkMode, setIsDarkMode } = useContext(ThemeContext);
+  const { newMessages } = useSelector((state: RootState) => state.message);
 
   const { data: me } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);
 
+  const { data: fetchedUnreadCounts } = useSWR(`${API_URL}/chats/unread-counts`, fetcherWithCookie);
+
+  const totalUnreadCounts = (fetchedUnreadCounts || 0) + (newMessages.length > 0 && newMessages.length);
+
   const handleDarkMode = () => {
-    if (isDarkMode) {
-      dispatch(toggleTheme('light'));
-    } else {
-      dispatch(toggleTheme('dark'));
-    }
+    setIsDarkMode(!isDarkMode);
   };
 
   return (
@@ -42,21 +38,33 @@ export default function TopHeader() {
         <img src="/imgs/Logo.svg" alt="logo" />
       </Link>
       <Wrapper>
-        <Button type="button" onClick={handleDarkMode}>
-          {isDarkMode ? <FiSun size="20px" /> : <MdNightlightRound size="20px" />}
-        </Button>
-        {me && (
+        <ButtonContainer>
+          <Button type="button" onClick={handleDarkMode}>
+            {isDarkMode ? <FiSun size="20px" /> : <MdNightlightRound size="20px" />}
+          </Button>
+        </ButtonContainer>
+        {me ? (
           <>
-            <Button type="button">
-              <IoMdNotificationsOutline size="20px" />
-            </Button>
-            <StyledLink to="/chats">
-              <FaRegPaperPlane size="16px" />
-              {isNewMessages && <MessageLength />}
-            </StyledLink>
+            <ButtonContainer>
+              <NotiButton />
+            </ButtonContainer>
+
+            <ButtonContainer>
+              <StyledLink to="/chats">
+                <FaRegPaperPlane size="20px" />
+                {totalUnreadCounts > 0 && (
+                  <UnreadCountContainer>
+                    <UnreadCount></UnreadCount>
+                  </UnreadCountContainer>
+                )}
+              </StyledLink>
+            </ButtonContainer>
+
+            <MeButton me={me} />
           </>
+        ) : (
+          <LoginNavLink to="/login">로그인/회원가입</LoginNavLink>
         )}
-        <MeButton me={me} />
       </Wrapper>
     </Container>
   );
@@ -73,35 +81,74 @@ const Wrapper = styled(Row)`
   gap: 4px;
 `;
 
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 36px;
+  height: 36px;
+`;
+
 const Button = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 4px;
   border-radius: ${({ theme }) => theme.radius.normal};
+
   &:hover {
     background-color: ${({ theme }) => theme.background.box.default.hover};
   }
 `;
 
 const StyledLink = styled(Link)`
-  position:relative;
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 6px;
-  border-radius:${({ theme }) => theme.radius.normal};
+  padding: 4px;
+  border-radius: ${({ theme }) => theme.radius.normal};
 
   &:hover {
-  background-color:${({ theme }) => theme.background.box.default.hover};
+    background-color: ${({ theme }) => theme.background.box.default.hover};
+  }
 `;
 
-const MessageLength = styled.div`
+const LoginNavLink = styled(Link)`
+  color: ${({ theme }) => theme.text.white};
+  background-color: ${({ theme }) => theme.background.box.blue.primary};
+  padding: 4px 8px;
+  border-radius: ${({ theme }) => theme.radius.normal};
+  ${({ theme }) => theme.fontSize.s14h21}
+
+  &:hover {
+    background-color: ${({ theme }) => theme.background.box.blue.hover};
+  }
+
+  &:active {
+    background-color: ${({ theme }) => theme.background.box.blue.active};
+    box-shadow: ${({ theme }) => theme.shadow.inset};
+  }
+`;
+
+const UnreadCountContainer = styled.div`
   position: absolute;
-  top: 2px;
-  right: 2px;
+  right: 0;
+  top: 0;
+`;
+
+const UnreadCount = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4px;
+
   background-color: ${({ theme }) => theme.background.red};
-  width: 8px;
-  height: 8px;
   border-radius: ${({ theme }) => theme.radius.circle};
+
+  > span {
+    padding: 2px;
+    color: ${({ theme }) => theme.text.white};
+    ${({ theme }) => theme.fontSize.s12h18};
+  }
 `;

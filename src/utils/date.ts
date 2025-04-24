@@ -6,10 +6,15 @@ import updateLocale from 'dayjs/plugin/updateLocale';
 import isBetween from 'dayjs/plugin/isBetween';
 import { Message } from 'types/message.type';
 
-dayjs.locale('ko');
 dayjs.extend(relativeTime);
 dayjs.extend(updateLocale);
 dayjs.extend(isBetween);
+dayjs.locale('ko');
+
+// 오전/오후 표기 한글로 설정
+dayjs.updateLocale('ko', {
+  meridiem: (hour: number) => (hour < 12 ? '오전' : '오후'),
+});
 
 // date format
 
@@ -63,11 +68,10 @@ export const updatedAtAgo = (date: string) => {
 
   const targetDate = dayjs(date);
   const now = dayjs();
-  // 오늘이면 시간 표시
-  if (dayjs(date).isSame(dayjs(), 'day')) {
-    return dayjs(date).format('HH:mm');
-  } else if (dayjs(date).isSame(now.subtract(1, 'day'), 'day')) {
-    // 어제면 어제 표시
+
+  if (targetDate.isSame(now, 'day')) {
+    return targetDate.format('A h:mm');
+  } else if (targetDate.isSame(now.subtract(1, 'day'), 'day')) {
     return '어제';
   } else if (targetDate.isSame(now, 'year')) {
     return targetDate.format('M월 DD일');
@@ -176,7 +180,7 @@ export const shouldShowSenderPhoto = (currentMessage: Message, previousMessage?:
 
   // 현재 메시지와 이전 메시지가 같은 분인지 확인
   const isSameMinute = dayjs(currentMessage.createdAt).isSame(previousMessage.createdAt, 'minute');
-  const isSameSender = currentMessage.sender.id === previousMessage.sender.id;
+  const isSameSender = currentMessage.sender?.id === previousMessage.sender?.id;
 
   // 1. 이전과 같은 시간 && 이전과 같은 sender ===> 현재 메시지 사진 false
   if (isSameMinute && isSameSender) {
@@ -189,32 +193,58 @@ export const shouldShowSenderPhoto = (currentMessage: Message, previousMessage?:
   return true; // 조건 2, 3, 4의 경우 모두 사진을 표시
 };
 
+// 닉네임 표시
+// 1. 이전 메세지가 없을 경우
+// 2. 이전 메세지랑 현 메세지 작성자가 다른 사람일 때
+// 3. 요일에 첫번째 일때
+// 4. 이전 메세지와 분단위로 다를때
+export const shouldShowNickname = (currentMessage: Message, previousMessage?: Message, nextMessage?: Message) => {
+  // 이전 메세지가 없을 경우
+  if (!previousMessage) return true;
+
+  // 이전 메세지랑 현 메세지 작성자가가 다른 사람일 때
+  const isDifferentSender = previousMessage.sender?.id !== currentMessage.sender?.id;
+
+  // 요일에 첫번째일 때
+  const isFirstMessageOfDay = !dayjs(currentMessage.createdAt).isSame(previousMessage.createdAt, 'day');
+
+  // 이전 메세지와 분단위로 다를때
+  const isDifferentMinute = !dayjs(currentMessage.createdAt).isSame(previousMessage.createdAt, 'minute');
+
+  if (isDifferentSender || isFirstMessageOfDay || isDifferentMinute) {
+    return true;
+  }
+
+  return false;
+};
+
 // 같은 시간의 메세지면 마지막 메세지에만 시간 보여주기
 // 1. 다음 메시지가 현재랑 같고 && 같은 시간이면 현재 메세지에서는 false
 // 2. 같은 시간이어도 이전 메시지가 상대방이면 현재 메세지에서는 true
 export const shouldShowTime = (currentMessage: Message, previousMessage?: Message, nextMessage?: Message) => {
-  // 첫 번째 메시지인 경우 시간을 항상 표시
-  if (!previousMessage) return true;
+  const isSameMinuteWithPrevious = previousMessage
+    ? dayjs(currentMessage.createdAt).isSame(previousMessage.createdAt, 'minute')
+    : false;
 
-  // 현재 메시지와 이전 메시지를 비교
-  const isSameMinuteWithPrevious = dayjs(currentMessage.createdAt).isSame(previousMessage.createdAt, 'minute');
-  const isSameSenderWithPrevious = currentMessage.sender.id === previousMessage.sender.id;
+  const isSameSenderWithPrevious = previousMessage ? currentMessage.sender?.id === previousMessage.sender?.id : false;
 
-  // 현재 메시지와 다음 메시지를 비교
-  const isSameMinuteWithNext = nextMessage && dayjs(currentMessage.createdAt).isSame(nextMessage.createdAt, 'minute');
-  const isSameSenderWithNext = nextMessage && currentMessage.sender.id === nextMessage.sender.id;
+  const isSameMinuteWithNext = nextMessage
+    ? dayjs(currentMessage.createdAt).isSame(nextMessage.createdAt, 'minute')
+    : false;
 
-  // 1. 다음 메시지가 현재 메시지와 같고 같은 시간이면 현재 메시지에서는 false
+  const isSameSenderWithNext = nextMessage ? currentMessage.sender?.id === nextMessage.sender?.id : false;
+
+  // ✅ 다음 메시지와 같으면 false (시간 안 보여줌)
   if (isSameMinuteWithNext && isSameSenderWithNext) {
-    return false; // 시간 표시 안 함
+    return false;
   }
 
-  // 2. 같은 시간이어도 이전 메시지가 상대방이면 현재 메시지에서는 true
+  // ✅ 이전 메시지가 다른 사람이면 true (시간 보여줌)
   if (isSameMinuteWithPrevious && !isSameSenderWithPrevious) {
-    return true; // 시간 표시
+    return true;
   }
 
-  // 기본적으로 시간 표시
+  // ✅ 기본: 마지막 메시지거나 단독 메시지
   return true;
 };
 
@@ -231,14 +261,4 @@ export const timeOptions = (): string[] => {
     times.push(`${String(i).padStart(2, '0')}:30`);
   }
   return times;
-};
-
-// 오늘
-export const today = () => {
-  const today = dayjs();
-
-  const year = today.format('YYYY');
-  const month = today.format('MM');
-  const day = today.format('DD');
-  return { year, month, day };
 };

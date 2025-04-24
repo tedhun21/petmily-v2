@@ -11,6 +11,7 @@ const API_URL = process.env.REACT_APP_API_URL;
 
 export default function ChatRoomList() {
   const pageSize = 20;
+
   const ref = useRef<HTMLDivElement | null>(null);
   const isInView = useInView(ref);
 
@@ -41,7 +42,11 @@ export default function ChatRoomList() {
   }
 
   if (isEmpty) {
-    return <div>채팅방이 없습니다.</div>;
+    return (
+      <CenterContainer>
+        <span>채팅방이 없습니다.</span>
+      </CenterContainer>
+    );
   }
 
   return (

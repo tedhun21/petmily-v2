@@ -4,20 +4,25 @@ import ChatRoomProvider from './component/ChatRoomProvider';
 import ChatHeader from './component/ChatHeader';
 import ChatSection from './component/ChatSection';
 import { useParams, useSearchParams } from 'react-router-dom';
+import MessageProvider from './component/MessageProvider';
 
 export default function Chat() {
-  const { chatRoomId } = useParams();
+  const { id: chatRoomId } = useParams();
   const [searchParams] = useSearchParams();
 
   const opponentIds = searchParams.getAll('opponentIds');
 
-  return (
-    <ChatRoomProvider value={{ chatRoomId, opponentIds }}>
-      <MainContainer>
-        <ChatHeader />
+  const isTemp = chatRoomId === 'temp' ? null : chatRoomId;
 
-        <ChatSection />
-      </MainContainer>
+  return (
+    <ChatRoomProvider value={{ chatRoomId: isTemp, opponentIds }}>
+      <MessageProvider>
+        <MainContainer>
+          <ChatHeader />
+
+          <ChatSection />
+        </MainContainer>
+      </MessageProvider>
     </ChatRoomProvider>
   );
 }
@@ -27,12 +32,13 @@ const MainContainer = styled.main`
   flex-direction: column;
   height: 100vh;
 
+  // 보통 크기를 고정하거나 콘텍츠에 딱 맞추기
   > header {
-    flex: 1;
+    flex: 0 0 auto;
   }
 
+  // 남은 공간을 다 차지
   > section {
-    flex: auto;
-    height: 100%;
+    flex: 1 1 auto;
   }
 `;

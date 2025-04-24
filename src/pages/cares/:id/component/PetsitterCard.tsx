@@ -24,7 +24,7 @@ export default function PetsitterCard({ petsitter }: any) {
         </PetsitterImage>
         <PetsitterName>{petsitter?.nickname} 님</PetsitterName>
         <LinkWrapper>
-          <StyledLink to={`/chat?${params.toString()}`}>채팅 하기</StyledLink>
+          <StyledLink to={`/chats/${params.toString()}`}>채팅 하기</StyledLink>
           <StyledLink to={`/users/${petsitter?.nickname}`}>프로필 보기</StyledLink>
         </LinkWrapper>
       </ImageName>

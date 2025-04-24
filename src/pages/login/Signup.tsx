@@ -7,8 +7,6 @@ import styled from 'styled-components';
 import GoogleOAuthButton from '@components/buttons/OAuthButton';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useSelector } from 'react-redux';
-import { RootState } from 'store';
 
 import { Modal } from '@mui/material';
 
@@ -58,8 +56,6 @@ export default function Signup() {
   const navigate = useNavigate();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const { isDarkMode } = useSelector((state: RootState) => state.theme);
 
   const {
     register,
@@ -181,7 +177,7 @@ export default function Signup() {
                 sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
               >
                 <div style={{ width: '360px' }}>
-                  <CustomDaumPostcode onComplete={handleComplete} theme={isDarkMode ? 'dark' : 'light'} />
+                  <CustomDaumPostcode onComplete={handleComplete} />
                 </div>
               </Modal>
             </InputFormWrapper>

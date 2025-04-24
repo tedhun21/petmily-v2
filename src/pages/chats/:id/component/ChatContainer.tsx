@@ -4,25 +4,32 @@ import styled from 'styled-components';
 import { useInView } from 'framer-motion';
 import { FaChevronDown } from 'react-icons/fa6';
 
-import { ChatUser, Message } from 'types/message.type';
 import { Button, ImageCentered, RoundedImageWrapper, Texts14h21 } from 'styles/commonStyle';
-import { ChatContext } from './ChatRoomProvider';
-import ChatMessage from './ChatMessage';
+import { ChatRoomContext } from './ChatRoomProvider';
 
-export default function ChatContainer({ messages, newMessage, setNewMessage, isLoading, setSize }: any) {
-  const { chatRoom } = useContext(ChatContext);
+import ChatList from './ChatList';
+import { MessageContext } from './MessageProvider';
+
+export default function ChatContainer() {
+  const { chatRoom } = useContext(ChatRoomContext);
+  const { messages, newMessages, isLoading } = useContext(MessageContext);
+
   const chatRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
   const isBottomInView = useInView(bottomRef);
-
   const [isFirstRender, setIsFirstRender] = useState(true);
-
   const [showDownButton, setShowDownButton] = useState<boolean>(false);
-  const [showNewMessage, setShowNewMessage] = useState<boolean>(false);
+  const [showNewestMessage, setShowNewestMessage] = useState<boolean>(false);
+  const [newestMessage, setNewestMessage] = useState<any>(null);
 
-  const newMessageSender = newMessage
-    ? chatRoom?.chatMembers.others?.find((other: ChatUser) => other.id === newMessage?.sender.id)
-    : null;
+  const me = chatRoom?.chatMembers?.me;
+  const others = chatRoom?.chatMembers?.others;
+  const senderId = newestMessage?.sender?.id;
+  const myMessage = senderId === me?.id;
+  const newMessagesMaster = myMessage ? me : others?.find((user) => user.id === senderId);
+
+  const showDefaultDownButton = !newestMessage && showDownButton;
+  const showNewMessageDownButton = newestMessage && showNewestMessage && !isBottomInView;
 
   const scrollToBottom = () => {
     if (bottomRef.current) {
@@ -30,11 +37,16 @@ export default function ChatContainer({ messages, newMessage, setNewMessage, isL
     }
   };
 
+  useEffect(() => {
+    if (newMessages?.length > 0) {
+      setNewestMessage(newMessages[0]);
+    }
+  }, [newMessages]);
+
   // 처음 들어오면 채팅창 제일 밑
   useEffect(() => {
     if (bottomRef.current && messages.length > 0 && !isLoading && isFirstRender) {
-      bottomRef.current?.scrollIntoView();
-
+      bottomRef.current?.scrollIntoView({});
       setIsFirstRender(false);
     }
   }, [messages, isLoading]);
@@ -43,22 +55,20 @@ export default function ChatContainer({ messages, newMessage, setNewMessage, isL
   // 바닥에 포커스 되어있을 때, 새 매세지가 올때
   // 바닥에 포커스 안 되어있을 때, 내가 작성하면 바닥에 포커스
   useEffect(() => {
-    if (newMessage) {
-      const myMessage = newMessage.sender.id === chatRoom?.chatMembers.me?.user.id;
-
+    if (newestMessage) {
       if (isBottomInView || myMessage) {
         scrollToBottom();
-        setShowNewMessage(false); // 내 메시지거나 바닥이면 새 메시지 안 보여줌
+        setShowNewestMessage(false); // 내 메시지거나 바닥이면 새 메시지 안 보여줌
       } else {
-        setShowNewMessage(true); // 내가 보낸 게 아니고 바닥이 아닐 때만 표시
+        setShowNewestMessage(true); // 내가 보낸 게 아니고 바닥이 아닐 때만 표시
       }
     }
-  }, [newMessage]);
+  }, [newestMessage]);
 
   useEffect(() => {
     if (isBottomInView) {
-      setNewMessage(false);
-      setShowNewMessage(false); // 바닥에 있으면 새 메시지 UI 숨김
+      setShowNewestMessage(false); // 바닥에 있으면 새 메시지 UI 숨김
+      setNewestMessage(null); // 바닥에 있으면 새 메시지 초기화
     }
   }, [isBottomInView]);
 
@@ -66,8 +76,8 @@ export default function ChatContainer({ messages, newMessage, setNewMessage, isL
   useEffect(() => {
     const handleScroll = () => {
       const chatElement = chatRef.current;
-      if (!chatRef.current) return;
 
+      if (!chatRef.current) return;
       if (chatElement) {
         const scrollTop = chatElement.scrollTop; // 현재 스크롤 위치
         const scrollHeight = chatElement.scrollHeight; // listRef의 높이
@@ -76,21 +86,19 @@ export default function ChatContainer({ messages, newMessage, setNewMessage, isL
         // 스크롤 위치를 퍼센트로 계산
         const scrollPercentage = (scrollTop / (scrollHeight - clientHeight)) * 100;
 
-        // 스크롤이 80% 이상이면 버튼 숨기기, 아니면 표시
-        if (scrollPercentage < 80) {
-          setShowDownButton(true);
-        }
+        // 소수점 오차니 렌더링 차이 때문에 ===100이 잘 안나올 수 있다
+        const isAtBottom = scrollTop + clientHeight >= scrollHeight - 5;
 
-        // 스크롤이 끝에 도달했을 때 초기화
-        if (scrollPercentage >= 100) {
+        if (isAtBottom) {
           setShowDownButton(false);
+        } else if (scrollPercentage < 80) {
+          // 스크롤이 80% 이상이면 버튼 숨기기, 아니면 표시
+          setShowDownButton(true);
         }
       }
     };
-
     const chatElement = chatRef.current;
     chatElement?.addEventListener('scroll', handleScroll);
-
     return () => {
       chatElement?.removeEventListener('scroll', handleScroll);
     };
@@ -98,101 +106,64 @@ export default function ChatContainer({ messages, newMessage, setNewMessage, isL
 
   return (
     <Div ref={chatRef}>
-      <div style={{ height: '100%' }}>
-        <List>
-          {messages.map((message: Message, index: number) => {
-            const isMyMessage = message.sender.id === chatRoom?.chatMembers.me?.user.id;
-            const previousMessage = index > 0 ? messages[index - 1] : undefined;
-            const nextMessage = index < messages.length - 1 ? messages[index + 1] : undefined;
+      <ChatList />
 
-            return (
-              <ChatMessage
-                key={message.id}
-                index={index}
-                message={message}
-                isMyMessage={isMyMessage}
-                previousMessage={previousMessage}
-                nextMessage={nextMessage}
-                setSize={setSize}
-              />
-            );
-          })}
-        </List>
-        <Bottom ref={bottomRef} />
-      </div>
-
-      {!newMessage && showDownButton && (
-        <Fixed>
-          <AbsoluteBottomRight>
+      <Bottom ref={bottomRef} />
+      <Sticky>
+        {showDefaultDownButton && (
+          <AbsoluteBottomCenter>
             <DownButton type="button" onClick={scrollToBottom}>
-              <FaChevronDown size="20px" />
+              <FaChevronDown size="16px" />
             </DownButton>
-          </AbsoluteBottomRight>
-        </Fixed>
-      )}
-
-      {showNewMessage && !isBottomInView && (
-        <Fixed>
-          <AbsoluteFixedBottom>
+          </AbsoluteBottomCenter>
+        )}
+        {showNewMessageDownButton && (
+          <AbsolutBottom>
             <BottomWrapper>
               <NewMessageButton type="button" onClick={scrollToBottom}>
                 <NewMessageUser>
                   <NewMessageUserPhoto>
                     <ImageCentered
-                      src={newMessage.sender.photo ? newMessage.sender.photo : '/imgs/DefaultUserProfile.jpg'}
+                      src={newMessagesMaster?.photo ? newMessagesMaster.photo : '/imgs/DefaultUserProfile.jpg'}
                     />
                   </NewMessageUserPhoto>
-                  <span>{newMessageSender?.nickname}</span>
-                  <NewMessage>{newMessage.content}</NewMessage>
+                  <span>{newMessagesMaster?.nickname}</span>
+                  <NewMessage>{newestMessage.content}</NewMessage>
                 </NewMessageUser>
-
                 <div style={{ padding: '8px' }}>
                   <FaChevronDown size="16px" />
                 </div>
               </NewMessageButton>
             </BottomWrapper>
-          </AbsoluteFixedBottom>
-        </Fixed>
-      )}
+          </AbsolutBottom>
+        )}
+      </Sticky>
     </Div>
   );
 }
 
-const Div = styled.div`
-  height: 100%;
-  overflow-y: auto;
+const Sticky = styled.div`
+  position: sticky;
+  bottom: 0;
+  right: 0;
 `;
 
-const List = styled.ul`
+const Div = styled.div`
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
-  padding: 12px;
-  gap: 8px;
 `;
 
 const Bottom = styled.div``;
 
-// 이해 안 가는 부분:
-// fixed가 뷰포트 기준이라는데
-// 스크롤이되는 부모 엘리먼트 안에 있으면
-// 그 부모 엘리먼트를 기준으로 따라간다
-// 부모의 크기가 정확히 정해져서 그 부모의 하단이 뷰포트의 하단과 일치하는 경우,
-// fixed 요소가 뷰포트를 기준으로 배치되더라도 부모의 경계와 동일하게 보이게 된다.
-// 즉, 부모의 크기가 마치 뷰포트처럼 계산되면 fixed 요소가 그 부모 내부에 고정되어 있는 것처럼 보이게 된다.
-// 하지만 실제로 fixed는 항상 뷰포트를 기준으로 하므로, 부모의 크기가 다르면 그 모습도 달라질 수 있다.
-const Fixed = styled.div`
-  position: fixed;
-  width: 100%;
-  max-width: 600px;
-`;
-
-const AbsoluteBottomRight = styled.div`
+const AbsoluteBottomCenter = styled.div`
   position: absolute;
-  right: 8px;
   bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
 `;
 
-const AbsoluteFixedBottom = styled.div`
+const AbsolutBottom = styled.div`
   position: absolute;
   bottom: 0;
   width: 100%;
@@ -232,7 +203,7 @@ const NewMessage = styled(Texts14h21)`
 `;
 
 const DownButton = styled(Button)`
-  padding: 12px;
+  padding: 8px;
   border-radius: ${({ theme }) => theme.radius.circle};
   opacity: 0.9;
 `;

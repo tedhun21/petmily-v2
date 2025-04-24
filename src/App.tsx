@@ -1,8 +1,7 @@
 // import { Suspense, lazy } from 'react';
-import { useEffect } from 'react';
+
 import { createBrowserRouter, RouterProvider, Route, createRoutesFromElements } from 'react-router-dom';
-import { styled, ThemeProvider as StyledComponentsThemeProvider } from 'styled-components';
-import { createTheme, ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
+import { styled } from 'styled-components';
 
 // import LoadingFallback from '@components/LoadingFallback';
 
@@ -49,24 +48,22 @@ import FaQ from '@pages/home/FaQ';
 import Profile from '@pages/users/:id/Profile';
 
 import Chats from '@pages/chats/Chats';
-import Chat from '@pages/chats/chat/Chat';
+import Chat from '@pages/chats/:id/Chat';
 
 import NotFound from '@pages/common/404';
 
-import { useDispatch, useSelector } from 'react-redux';
 import { SWRConfig } from 'swr';
 
 import Redirect from '@pages/login/Redirect';
-import { ToastContainer } from 'react-toastify';
 import Review from '@pages/cares/:id/review/Review';
 import Journal from '@pages/cares/:id/journal/Journal';
 import Book from '@pages/users/:id/book/Book';
 
-import { darkTheme, lightTheme } from 'styles/theme';
 import GlobalStyle from 'styles/Globalstyle';
-import { ITheme, toggleTheme } from 'store/themeSlice';
+
 import Maps from '@pages/cares/:id/maps/Maps';
-import MessageProvider from '@components/MessageProvider';
+import SocketProvider from '@components/SocketProvider';
+import ThemeProvider from '@components/ThemeProvider';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -90,56 +87,25 @@ const router = createBrowserRouter(
       <Route path="users/:nickname" element={<Profile />} />
       <Route path="users/:nickname/book" element={<Book />} />
       <Route path="chats" element={<Chats />} />
-      <Route path="chat/:chatRoomId?" element={<Chat />} />
+      <Route path="chats/:id" element={<Chat />} />
       <Route path="*" element={<NotFound />} />
     </Route>,
   ),
 );
 
-const muiLightTheme = createTheme({ palette: { mode: 'light' } });
-const muiDarkTheme = createTheme({ palette: { mode: 'dark' } });
-
 export default function App() {
-  const dispatch = useDispatch();
-  const isDarkMode = useSelector((state: ITheme) => state.theme.isDarkMode);
-
-  // dark mode 설정
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleChange = (e: MediaQueryListEvent) => {
-      dispatch(toggleTheme(e.matches ? 'dark' : 'light'));
-    };
-
-    dispatch(toggleTheme(mediaQuery.matches ? 'dark' : 'light')); // 초기 테마 설정
-    mediaQuery.addEventListener('change', handleChange); // 시스템 테마 변경 감지
-
-    return () => {
-      mediaQuery.removeEventListener('change', handleChange); // 클린업
-    };
-  }, [dispatch]);
-
   return (
     <SWRConfig value={{ revalidateOnFocus: false, provider: () => new Map() }}>
-      <StyledComponentsThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
-        <MuiThemeProvider theme={isDarkMode ? muiDarkTheme : muiLightTheme}>
-          <MessageProvider>
-            <GlobalStyle />
-            <Container>
-              <Wrapper>
-                <RouterProvider router={router} />
-                <ToastContainer
-                  position="top-right"
-                  autoClose={2000}
-                  theme={isDarkMode ? 'dark' : 'light'}
-                  hideProgressBar={true}
-                  closeOnClick={true}
-                  pauseOnFocusLoss={false}
-                />
-              </Wrapper>
-            </Container>
-          </MessageProvider>
-        </MuiThemeProvider>
-      </StyledComponentsThemeProvider>
+      <SocketProvider>
+        <ThemeProvider>
+          <GlobalStyle />
+          <Container>
+            <Wrapper>
+              <RouterProvider router={router} />
+            </Wrapper>
+          </Container>
+        </ThemeProvider>
+      </SocketProvider>
     </SWRConfig>
   );
 }

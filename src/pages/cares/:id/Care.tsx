@@ -32,18 +32,21 @@ export default function Care() {
   // 웹소켓: 예약 상태 변경
   useEffect(() => {
     const token = getCookie('access_token');
-    if (reservation && token) {
+
+    if (!token) return;
+
+    if (reservation) {
       // 웹소켓 연결 설정
-      const socketConnection = io(`${SOCKET_URL}`, { auth: { token } });
+      const socket = io(`${SOCKET_URL}`, { auth: { token } });
 
       // 웹소켓이 연결되면 실행
-      socketConnection.on('connect', () => {
+      socket.on('connect', () => {
         // 서버로 joinReservation 이벤트 전송
-        socketConnection.emit('joinReservation', reservation.id?.toString());
+        socket.emit('joinReservation', reservation.id?.toString());
       });
 
       // 서버로부터 listenStatus 이벤트 수신
-      socketConnection.on('listenStatus', (updatedStatus) => {
+      socket.on('listenStatus', (updatedStatus) => {
         const { newStatus } = updatedStatus;
 
         // SWR 캐시 업데이트
@@ -54,11 +57,12 @@ export default function Care() {
       });
 
       // 소켓 상태 저장
-      setSocket(socketConnection);
+      setSocket(socket);
 
       // 컴포넌트 언마운트 시 웹소켓 연결 해제
       return () => {
-        socketConnection.disconnect();
+        socket.off('listenStatus');
+        socket.disconnect();
       };
     }
   }, [reservation]);

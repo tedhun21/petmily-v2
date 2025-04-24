@@ -1,17 +1,7 @@
 import styled from 'styled-components';
 import Button from '@mui/material/Button';
 
-import axios from 'axios';
-import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { IUser } from 'store/userSlice';
-import { getCookie } from 'utils/cookie';
-
-const apiUrl = process.env.REACT_APP_API_URL;
-const token = getCookie('access_token');
 export default function PetSitterHome() {
-  // const { memberId, petsitterBoolean, petsitterId } = useSelector((state: IUser) => state.user);
-
   return (
     <MainContainer>
       <ContentContainer>

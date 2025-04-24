@@ -1,9 +1,9 @@
-import { useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef } from 'react';
+import { ThemeContext } from './ThemeProvider';
 
 interface IProps {
   onComplete: (data: any) => void;
   style?: { width?: string; height?: string };
-  theme?: 'light' | 'dark';
 }
 
 const lightThemeObj = {
@@ -30,8 +30,9 @@ const darkThemeObj = {
   outlineColor: '#444444', //테두리
 };
 
-export default function CustomDaumPostcode({ onComplete, style, theme }: IProps) {
+export default function CustomDaumPostcode({ onComplete, style }: IProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const { isDarkMode } = useContext(ThemeContext);
 
   useEffect(() => {
     // Daum Postcode API 스크립트 로드
@@ -47,7 +48,7 @@ export default function CustomDaumPostcode({ onComplete, style, theme }: IProps)
         const postcode = new daum.Postcode({
           width: style?.width || '100%',
           height: style?.height || 'auto',
-          theme: theme === 'dark' ? darkThemeObj : lightThemeObj,
+          theme: isDarkMode ? darkThemeObj : lightThemeObj,
           oncomplete: (data: any) => {
             onComplete(data);
           },

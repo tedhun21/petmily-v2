@@ -16,7 +16,7 @@ export default function ClientCard({ client }: any) {
         <ClientName>{client?.nickname} 님</ClientName>
       </ImageName>
 
-      <StyledLink to={`/chat?${params.toString()}`}>채팅 하기</StyledLink>
+      <StyledLink to={`/chats/temp?${params.toString()}`}>채팅 하기</StyledLink>
     </Card>
   );
 }

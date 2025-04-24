@@ -32,8 +32,6 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import dayjs from 'dayjs';
 import { FaArrowUp, FaXmark } from 'react-icons/fa6';
 import CustomDaumPostcode from '@components/CustomDaumPostcode';
-import { useSelector } from 'react-redux';
-import { RootState } from 'store';
 import BackHeader from '@components/headers/BackHeader';
 
 const schema = yup.object().shape({
@@ -62,7 +60,6 @@ const API_URL = process.env.REACT_APP_API_URL;
 
 export default function EditMe() {
   const navigate = useNavigate();
-  const { isDarkMode } = useSelector((state: RootState) => state.theme);
 
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [serverImageUrl, setServerImageUrl] = useState<string | null>(null);
@@ -274,7 +271,7 @@ export default function EditMe() {
               sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
             >
               <div style={{ width: '360px' }}>
-                <CustomDaumPostcode onComplete={handleComplete} theme={isDarkMode ? 'dark' : 'light'} />
+                <CustomDaumPostcode onComplete={handleComplete} />
               </div>
             </Modal>
           </InputWrapper>
