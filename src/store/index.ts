@@ -6,7 +6,12 @@ import modalReducer from './modalSlice';
 import contextReducer from './contextSlice';
 
 const store = configureStore({
-  reducer: { message: messageReducer, notification: notificationReducer, modal: modalReducer, context: contextReducer },
+  reducer: {
+    message: messageReducer,
+    notification: notificationReducer,
+    modal: modalReducer,
+    context: contextReducer,
+  },
 });
 
 export default store;

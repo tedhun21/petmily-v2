@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 
-import { AddText, InputDiv, Label, Modal, Wrapper, XButton } from '../../../../components/headers/SearchBox';
+import { AddText, InputDiv, Label, Modal, Wrapper, XButton } from '../SearchBox';
 import DateModal from './DateModal';
 import { useFormContext } from 'react-hook-form';
 import dayjs from 'dayjs';

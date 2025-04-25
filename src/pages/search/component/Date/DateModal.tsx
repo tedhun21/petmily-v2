@@ -4,7 +4,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 import styled from 'styled-components';
 import { ko } from 'date-fns/locale';
 
-import { ModalLayOut } from '../../../../components/headers/SearchBox';
+import { ModalLayOut } from '../SearchBox';
+import dayjs from 'dayjs';
 
 export default function DateModal({ handleSetValue }: any) {
   const { watch, control } = useFormContext();
@@ -22,8 +23,8 @@ export default function DateModal({ handleSetValue }: any) {
               dateFormatCalendar="yyyy년 MM월"
               selected={selectedDate ? new Date(selectedDate) : null}
               onChange={(date: Date | null) => {
-                field.onChange(date ? date.toString() : null);
-                handleSetValue('date', date);
+                field.onChange(date ? dayjs(date).format('MM-DD') : null);
+                handleSetValue('date', dayjs(date).format('MM-DD'));
               }}
               minDate={new Date()}
               maxDate={new Date(new Date().setMonth(new Date().getMonth() + 2))}

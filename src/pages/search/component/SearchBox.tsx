@@ -1,20 +1,20 @@
 import { useEffect, useState } from 'react';
 
+import { FormProvider, useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { FiSearch } from 'react-icons/fi';
 
-import { BlueButton, Column, Divider, Row, Texts14h21 } from 'styles/commonStyle';
-import LocationBox from '../../pages/search/component/Location/LocationBox';
-import DateBox from '../../pages/search/component/Date/DateBox';
-import StartEndTimeBox from '../../pages/search/component/StartEndTime/StartEndTimeBox';
-import { FormProvider, useForm } from 'react-hook-form';
-import { useSearchParams } from 'react-router-dom';
-import dayjs from 'dayjs';
+import DateBox from './Date/DateBox';
+import LocationBox from './Location/LocationBox';
 import { saveToRecentSearch } from 'utils/localStorage';
+import StartEndTimeBox from './StartEndTime/StartEndTimeBox';
+import { BlueButton, Column, Divider, Row, Texts14h21 } from 'styles/commonStyle';
+
+import { useSearchParams } from 'react-router-dom';
 
 type FormValues = {
   location: string | null;
-  date: Date | null;
+  date: string | null;
   startTime: string | null;
   endTime: string | null;
 };
@@ -54,36 +54,31 @@ export default function SearchBox() {
   };
 
   const onSubmit = async (data: FormValues) => {
-    const { location, date, startTime, endTime } = data;
+    // 검색 파라미터를 URL로 설정
+    const queryParams = new URLSearchParams();
+    if (data.location) queryParams.set('location', data.location);
+    if (data.date) queryParams.set('date', data.date);
+    if (data.startTime) queryParams.set('startTime', data.startTime);
+    if (data.endTime) queryParams.set('endTime', data.endTime);
 
-    const formData: Record<string, string> = {};
-
-    if (location) formData.location = location;
-    if (date) formData.date = dayjs(date).format('YYYY-MM-DD');
-    if (startTime) formData.startTime = startTime;
-    if (endTime) formData.endTime = endTime;
-
-    setSearchParams(new URLSearchParams(formData));
-
-    if (location) {
-      // localStorage 저장
-      saveToRecentSearch('recentSearches', location);
+    // localStorage 저장
+    if (data.location) {
+      saveToRecentSearch('recentSearches', data.location);
     }
+
+    setSearchParams(queryParams);
   };
 
   useEffect(() => {
-    if (searchParams) {
-      const location = searchParams.get('location');
-      const date = searchParams.get('date');
-      const startTime = searchParams.get('startTime');
-      const endTime = searchParams.get('endTime');
+    methods.reset({
+      location: searchParams.get('location'),
+      date: searchParams.get('date'),
+      startTime: searchParams.get('startTime'),
+      endTime: searchParams.get('endTime'),
+    });
+  }, [searchParams]);
 
-      methods.setValue('location', location || null);
-      methods.setValue('date', date ? new Date(date) : null);
-      methods.setValue('startTime', startTime || null);
-      methods.setValue('endTime', endTime || null);
-    }
-  }, [searchParams, methods]);
+  console.log(methods.watch());
 
   return (
     <Sticky>
@@ -99,7 +94,7 @@ export default function SearchBox() {
 
               <Divider $orientation="vertical" $length="32px" />
 
-              <StartEndTimeBox isSelected={isSelected} setIsSelected={setIsSelected} handleSetValue={handleSetValue} />
+              <StartEndTimeBox isSelected={isSelected} setIsSelected={setIsSelected} />
             </BoxWrapper>
 
             <ButtonDiv>

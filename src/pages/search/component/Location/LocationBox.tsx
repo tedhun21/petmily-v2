@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom';
 
 import { FaXmark } from 'react-icons/fa6';
 
-import { BoxInput, InputDiv, Label, Modal, Wrapper, XButton } from '../../../../components/headers/SearchBox';
+import { BoxInput, InputDiv, Label, Modal, Wrapper, XButton } from '../SearchBox';
 import LocationModal from './LocationModal';
 
 export default function LocationBox({ isSelected, setIsSelected, handleSetValue }: any) {

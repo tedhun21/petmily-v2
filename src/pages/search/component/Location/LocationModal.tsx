@@ -10,7 +10,7 @@ import SuggestLocations from './SuggestLocations';
 import LocationCapsuleContainer from './LocationCapsuleContainer';
 import { useEffect, useState } from 'react';
 import Loading from '@components/Loading';
-import { ModalLayOut, HalfModalLayOut } from '@components/headers/SearchBox';
+import { ModalLayOut, HalfModalLayOut } from '@pages/search/component/SearchBox';
 import { getRecentSearches } from 'utils/localStorage';
 
 const API_URL = process.env.REACT_APP_API_URL;
@@ -45,7 +45,6 @@ export default function LocationModal({ handleSetValue }: any) {
   };
 
   useEffect(() => {
-    console.log(Array.isArray(getRecentSearches('recentSearches')));
     setRecentSearches(getRecentSearches('recentSearches'));
   }, []);
 

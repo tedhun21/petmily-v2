@@ -7,7 +7,7 @@ import { FaXmark } from 'react-icons/fa6';
 
 import { Divider, Row } from 'styles/commonStyle';
 import StartTimeOutModal from './StartEndTimeModal';
-import { AddText, InputDiv, Label, Modal, Wrapper, XButton } from '../../../../components/headers/SearchBox';
+import { AddText, InputDiv, Label, Modal, Wrapper, XButton } from '../SearchBox';
 
 export default function StartEndTimeBox({ isSelected, setIsSelected }: any) {
   const container = document.getElementById('container');
