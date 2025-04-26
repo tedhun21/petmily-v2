@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { FormProvider, useForm } from 'react-hook-form';
 import styled from 'styled-components';
@@ -14,6 +14,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
 import { closeModal, openModal } from 'store/modalSlice';
+import { isSearchModal } from 'utils/misc';
 
 type FormValues = {
   location: string | null;
@@ -85,7 +86,7 @@ export default function SearchBox() {
     <Sticky>
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onSubmit)}>
-          <Container id="container" $isSelected={currentModal}>
+          <Container id="container" $isSelected={isSearchModal(currentModal)}>
             <BoxWrapper>
               <LocationBox handleSetValue={handleSetValue} />
 
@@ -118,7 +119,7 @@ const Sticky = styled.div`
   background-color: inherit;
 `;
 
-const Container = styled(Row)<{ $isSelected: string | null }>`
+const Container = styled(Row)<{ $isSelected: boolean }>`
   align-items: center;
   position: relative;
   border: 1px solid ${({ theme }) => theme.line.input.primary};
