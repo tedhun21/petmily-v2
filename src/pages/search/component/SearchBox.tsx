@@ -11,6 +11,9 @@ import StartEndTimeBox from './StartEndTime/StartEndTimeBox';
 import { BlueButton, Column, Divider, Row, Texts14h21 } from 'styles/commonStyle';
 
 import { useSearchParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'store';
+import { closeModal, openModal } from 'store/modalSlice';
 
 type FormValues = {
   location: string | null;
@@ -21,8 +24,8 @@ type FormValues = {
 
 export default function SearchBox() {
   const [searchParams, setSearchParams] = useSearchParams();
-
-  const [isSelected, setIsSelected] = useState<string | null>(null);
+  const dispatch = useDispatch();
+  const { currentModal } = useSelector((state: RootState) => state.modal);
 
   const methods = useForm<FormValues>({
     defaultValues: { location: null, date: null, startTime: null, endTime: null },
@@ -39,7 +42,7 @@ export default function SearchBox() {
     const allFieldsFilled = Object.values(formValues).every((val) => val !== null);
 
     if (allFieldsFilled) {
-      setIsSelected(null);
+      dispatch(closeModal());
       return;
     }
 
@@ -48,7 +51,7 @@ export default function SearchBox() {
       const nextField = Object.entries(formValues).find(([key, val]) => key !== field && val === null)?.[0];
 
       if (nextField) {
-        setIsSelected(nextField);
+        dispatch(openModal(nextField));
       }
     }
   };
@@ -78,23 +81,21 @@ export default function SearchBox() {
     });
   }, [searchParams]);
 
-  console.log(methods.watch());
-
   return (
     <Sticky>
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onSubmit)}>
-          <Container id="container" $isSelected={isSelected}>
+          <Container id="container" $isSelected={currentModal}>
             <BoxWrapper>
-              <LocationBox isSelected={isSelected} setIsSelected={setIsSelected} handleSetValue={handleSetValue} />
+              <LocationBox handleSetValue={handleSetValue} />
 
               <Divider $orientation="vertical" $length="32px" />
 
-              <DateBox isSelected={isSelected} setIsSelected={setIsSelected} handleSetValue={handleSetValue} />
+              <DateBox handleSetValue={handleSetValue} />
 
               <Divider $orientation="vertical" $length="32px" />
 
-              <StartEndTimeBox isSelected={isSelected} setIsSelected={setIsSelected} />
+              <StartEndTimeBox />
             </BoxWrapper>
 
             <ButtonDiv>

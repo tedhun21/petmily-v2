@@ -8,8 +8,13 @@ import { FaXmark } from 'react-icons/fa6';
 import { Divider, Row } from 'styles/commonStyle';
 import StartTimeOutModal from './StartEndTimeModal';
 import { AddText, InputDiv, Label, Modal, Wrapper, XButton } from '../SearchBox';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'store';
+import { closeModal, ModalType, openModal } from 'store/modalSlice';
 
-export default function StartEndTimeBox({ isSelected, setIsSelected }: any) {
+export default function StartEndTimeBox() {
+  const dispatch = useDispatch();
+  const { currentModal } = useSelector((state: RootState) => state.modal);
   const container = document.getElementById('container');
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -20,12 +25,12 @@ export default function StartEndTimeBox({ isSelected, setIsSelected }: any) {
 
   const handlestartTimeBoxClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsSelected('startTime');
+    dispatch(openModal(ModalType.SEARCH_START_TIME));
   };
 
   const handleendTimeBoxClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsSelected('endTime');
+    dispatch(openModal(ModalType.SEARCH_END_TIME));
   };
 
   const handleInputRemove = () => {
@@ -38,7 +43,7 @@ export default function StartEndTimeBox({ isSelected, setIsSelected }: any) {
       const target = e.target as Node;
 
       if (modalRef.current && !modalRef.current.contains(target)) {
-        setIsSelected(null);
+        dispatch(closeModal());
       }
     };
 
@@ -49,12 +54,12 @@ export default function StartEndTimeBox({ isSelected, setIsSelected }: any) {
 
   return (
     <Row style={{ flex: 2, alignItems: 'center' }}>
-      <InputDiv onClick={(e) => handlestartTimeBoxClick(e)} $isSelected={isSelected === 'startTime'}>
+      <InputDiv onClick={(e) => handlestartTimeBoxClick(e)} $isSelected={currentModal === ModalType.SEARCH_START_TIME}>
         <Wrapper>
           <Label>체크인</Label>
           <AddText $isClicked={startTime?.length > 0}>{startTime ?? '시간 추가'}</AddText>
         </Wrapper>
-        {isSelected === 'startTime' && startTime?.length > 0 && (
+        {currentModal === ModalType.SEARCH_START_TIME && startTime?.length > 0 && (
           <XButton type="button" onClick={handleInputRemove}>
             <FaXmark size="12px" />
           </XButton>
@@ -63,22 +68,22 @@ export default function StartEndTimeBox({ isSelected, setIsSelected }: any) {
 
       <Divider $orientation="vertical" $length="32px" />
 
-      <InputDiv onClick={(e) => handleendTimeBoxClick(e)} $isSelected={isSelected === 'endTime'}>
+      <InputDiv onClick={(e) => handleendTimeBoxClick(e)} $isSelected={currentModal === ModalType.SEARCH_END_TIME}>
         <Wrapper>
           <Label>체크아웃</Label>
           <AddText $isClicked={endTime?.length > 0}>{endTime ?? '시간 추가'}</AddText>
         </Wrapper>
-        {isSelected === 'endTime' && endTime?.length > 0 && (
+        {currentModal === ModalType.SEARCH_END_TIME && endTime?.length > 0 && (
           <XButton type="button" onClick={handleInputRemove}>
             <FaXmark size="12px" />
           </XButton>
         )}
       </InputDiv>
-      {(isSelected === 'startTime' || isSelected === 'endTime') &&
+      {(currentModal === ModalType.SEARCH_START_TIME || currentModal === ModalType.SEARCH_END_TIME) &&
         container &&
         createPortal(
           <Modal ref={modalRef}>
-            <StartTimeOutModal isSelected={isSelected} setIsSelected={setIsSelected} />
+            <StartTimeOutModal />
           </Modal>,
           container,
         )}

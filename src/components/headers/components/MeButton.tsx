@@ -25,10 +25,10 @@ export default function MeButton({ me }: any) {
   const toggleMenu = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation(); // 이벤트 전파를 막음
 
-    if (currentModal === ModalType.MEBUTTON) {
+    if (currentModal === ModalType.ME_BUTTON) {
       dispatch(closeModal());
     } else {
-      dispatch(openModal(ModalType.MEBUTTON));
+      dispatch(openModal(ModalType.ME_BUTTON));
     }
   };
 
@@ -48,7 +48,7 @@ export default function MeButton({ me }: any) {
         </UserImage>
       </UserButton>
 
-      {currentModal === ModalType.MEBUTTON &&
+      {currentModal === ModalType.ME_BUTTON &&
         me &&
         userContainer &&
         createPortal(

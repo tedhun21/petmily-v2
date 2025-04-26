@@ -4,8 +4,13 @@ import { Column } from 'styles/commonStyle';
 import { timeOptions } from 'utils/date';
 import { useFormContext } from 'react-hook-form';
 import dayjs from 'dayjs';
+import { RootState } from 'store';
+import { useDispatch, useSelector } from 'react-redux';
+import { ModalType, openModal } from 'store/modalSlice';
 
-export default function StartEndTimeModal({ isSelected, setIsSelected }: any) {
+export default function StartEndTimeModal() {
+  const dispatch = useDispatch();
+  const { currentModal } = useSelector((state: RootState) => state.modal);
   const { setValue, watch } = useFormContext();
 
   const startTime = watch('startTime');
@@ -17,7 +22,7 @@ export default function StartEndTimeModal({ isSelected, setIsSelected }: any) {
 
     const selectedTime = dayjs(time, 'HH:mm');
 
-    if (isSelected === 'startTime') {
+    if (currentModal === ModalType.SEARCH_START_TIME) {
       // endTime이 먼저 있고, 선택한 시간이 endTime보다 더 이후일때
       // endTime은 null로 설정
       if (selectedTime.isAfter(dayjs(endTime, 'HH:mm'))) {
@@ -29,8 +34,8 @@ export default function StartEndTimeModal({ isSelected, setIsSelected }: any) {
         setValue('startTime', time);
       }
 
-      setIsSelected('endTime');
-    } else if (isSelected === 'endTime') {
+      dispatch(openModal(ModalType.SEARCH_END_TIME));
+    } else if (currentModal === ModalType.SEARCH_END_TIME) {
       // startTime이 먼저 있고,
       // 선택한 endTime이 startTime보다 더 이전일때
       if (selectedTime.isBefore(dayjs(startTime, 'HH:mm'))) {
@@ -45,7 +50,7 @@ export default function StartEndTimeModal({ isSelected, setIsSelected }: any) {
       }
 
       if (!startTime) {
-        setIsSelected('startTime');
+        dispatch(openModal(ModalType.SEARCH_START_TIME));
       }
     }
   };
@@ -63,7 +68,7 @@ export default function StartEndTimeModal({ isSelected, setIsSelected }: any) {
     <ModalLayOut>
       <Content>
         <TimeContainer>
-          <span>{isSelected === 'chekcIn' ? '체크인' : '체크아웃'} 시간 선택</span>
+          <span>{currentModal === ModalType.SEARCH_START_TIME ? '체크인' : '체크아웃'} 시간 선택</span>
           <List>
             {timeOptions().map((time: string) => {
               const inTime = startTime === time;

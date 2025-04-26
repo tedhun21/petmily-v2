@@ -2,8 +2,12 @@ import { createSlice } from '@reduxjs/toolkit';
 
 export enum ModalType {
   ADDRESS = 'address',
-  MEBUTTON = 'meButton',
+  ME_BUTTON = 'me_button',
   NOTIFICATION = 'notification',
+  SEARCH_LOCATION = 'search_location',
+  SEARCH_DATE = 'search_date',
+  SEARCH_START_TIME = 'search_start_time',
+  SEARCH_END_TIME = 'search_end_time',
 }
 
 export interface ModalState {

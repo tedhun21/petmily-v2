@@ -93,7 +93,7 @@ const Content = styled(Row)`
 `;
 
 const RecentContainer = styled(Row)`
-  width: 20%;
+  flex: 0 0 auto;
   display: flex;
   gap: 4px;
 `;

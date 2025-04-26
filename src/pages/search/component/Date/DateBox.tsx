@@ -6,10 +6,14 @@ import DateModal from './DateModal';
 import { useFormContext } from 'react-hook-form';
 import dayjs from 'dayjs';
 import { FaXmark } from 'react-icons/fa6';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'store';
+import { closeModal, ModalType, openModal } from 'store/modalSlice';
 
-export default function DateBox({ isSelected, setIsSelected, handleSetValue }: any) {
+export default function DateBox({ handleSetValue }: any) {
+  const dispatch = useDispatch();
+  const { currentModal } = useSelector((state: RootState) => state.modal);
   const container = document.getElementById('container');
-
   const modalRef = useRef<HTMLDivElement | null>(null);
 
   const { setValue, watch } = useFormContext();
@@ -17,7 +21,7 @@ export default function DateBox({ isSelected, setIsSelected, handleSetValue }: a
 
   const handleDateBoxClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsSelected('date');
+    dispatch(openModal(ModalType.SEARCH_DATE));
   };
 
   const handleInputRemove = () => {
@@ -29,7 +33,7 @@ export default function DateBox({ isSelected, setIsSelected, handleSetValue }: a
       const target = e.target as Node;
 
       if (modalRef.current && !modalRef.current.contains(target)) {
-        setIsSelected(null); // 외부 클릭 시 드롭다운 닫기
+        dispatch(closeModal()); // 외부 클릭 시 드롭다운 닫기
       }
     };
 
@@ -40,19 +44,19 @@ export default function DateBox({ isSelected, setIsSelected, handleSetValue }: a
 
   return (
     <>
-      <InputDiv onClick={handleDateBoxClick} $isSelected={isSelected === 'date'}>
+      <InputDiv onClick={handleDateBoxClick} $isSelected={currentModal === ModalType.SEARCH_DATE}>
         <Wrapper>
           <Label>날짜</Label>
           <AddText $isClicked={!!date}>{date ? dayjs(date).format('MM-DD') : '날짜 추가'}</AddText>
         </Wrapper>
-        {isSelected === 'date' && date && (
+        {currentModal === ModalType.SEARCH_DATE && date && (
           <XButton type="button" onClick={handleInputRemove}>
             <FaXmark size="12px" />
           </XButton>
         )}
       </InputDiv>
 
-      {isSelected === 'date' &&
+      {currentModal === ModalType.SEARCH_DATE &&
         container &&
         createPortal(
           <Modal ref={modalRef}>
