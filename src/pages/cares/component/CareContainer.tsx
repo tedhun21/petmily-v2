@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react';
 
-import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import useSWRInfinite from 'swr/infinite';
 import { useInView } from 'framer-motion';
@@ -11,26 +10,27 @@ import { fetcherWithCookie } from 'api';
 import Loading from '@components/Loading';
 import CareCard from './CareCard';
 import { getCookie } from 'utils/cookie';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
 export default function CareContainer() {
-  const [searchParams] = useSearchParams();
-  const date = searchParams.get('date');
-
-  const filter = searchParams.get('filter');
-
   const ref = useRef(null);
   const isInView = useInView(ref);
   const pageSize = 10;
+
+  const {
+    reservation: { month, filter },
+  } = useSelector((state: RootState) => state.context);
 
   const getKey = (pageIndex: number, previousPageData: any) => {
     const access_token = getCookie('access_token');
     if (!access_token) return null;
 
     if (previousPageData && !previousPageData.length) return null;
-    return filter && date
-      ? `${API_URL}/reservations?page=${pageIndex + 1}&pageSize=${pageSize}&status=${filter}&date=${date}`
+    return filter && month
+      ? `${API_URL}/reservations?page=${pageIndex + 1}&pageSize=${pageSize}&status=${filter}&date=${month}`
       : null;
   };
   const { data, size, setSize, isLoading } = useSWRInfinite(getKey, fetcherWithCookie);

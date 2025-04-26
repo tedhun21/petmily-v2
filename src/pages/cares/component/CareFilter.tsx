@@ -78,14 +78,11 @@ const Sticky = styled.div`
   top: 100px;
   padding: 8px;
   z-index: 10;
-  background-color: inherit;
-  box-shadow: ${({ theme }) => theme.shadow.onlyBottom};
 `;
 
 const FilterContainer = styled(Row)`
   align-items: center;
   justify-content: space-between;
-  background-color: inherit;
 `;
 
 const StatusFilters = styled(Row)`

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import CareContainer from './component/CareContainer';
 import NavHeader from '@components/headers/NavHeader';
+import CareFilter from '@pages/cares/component/CareFilter';
 
 export default function Cares() {
   return (
@@ -8,6 +9,7 @@ export default function Cares() {
       <NavHeader />
 
       <Main>
+        <CareFilter />
         <CareContainer />
       </Main>
     </>
@@ -15,6 +17,5 @@ export default function Cares() {
 }
 
 const Main = styled.main`
-  padding: 12px;
   height: 100%;
 `;
