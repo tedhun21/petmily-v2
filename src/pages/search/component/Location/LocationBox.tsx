@@ -4,10 +4,15 @@ import { createPortal } from 'react-dom';
 
 import { FaXmark } from 'react-icons/fa6';
 
-import { BoxInput, InputDiv, Label, Modal, Wrapper, XButton } from '../../../../components/headers/SearchBox';
+import { BoxInput, InputDiv, Label, Modal, Wrapper, XButton } from '../SearchBox';
 import LocationModal from './LocationModal';
+import { useDispatch, useSelector } from 'react-redux';
+import { closeModal, ModalType, openModal } from 'store/modalSlice';
+import { RootState } from 'store';
 
-export default function LocationBox({ isSelected, setIsSelected, handleSetValue }: any) {
+export default function LocationBox({ handleSetValue }: any) {
+  const dispatch = useDispatch();
+  const { currentModal } = useSelector((state: RootState) => state.modal);
   const container = document.getElementById('container');
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -17,7 +22,7 @@ export default function LocationBox({ isSelected, setIsSelected, handleSetValue 
 
   const handleBoxClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsSelected('location');
+    dispatch(openModal(ModalType.SEARCH_LOCATION));
   };
 
   const handleInputRemove = () => {
@@ -29,7 +34,7 @@ export default function LocationBox({ isSelected, setIsSelected, handleSetValue 
       const target = e.target as Node;
 
       if (modalRef.current && !modalRef.current.contains(target)) {
-        setIsSelected(null); // 외부 클릭 시 드롭다운 닫기
+        dispatch(closeModal()); // 외부 클릭 시 드롭다운 닫기
       }
     };
 
@@ -40,18 +45,18 @@ export default function LocationBox({ isSelected, setIsSelected, handleSetValue 
 
   return (
     <>
-      <InputDiv onClick={handleBoxClick} $isSelected={isSelected === 'location'}>
+      <InputDiv onClick={handleBoxClick} $isSelected={currentModal === ModalType.SEARCH_LOCATION}>
         <Wrapper>
           <Label htmlFor="location">장소</Label>
           <BoxInput id="location" placeholder="장소 추가" {...register('location')} autoComplete="off" />
         </Wrapper>
-        {isSelected === 'location' && input?.length > 0 && (
+        {currentModal === ModalType.SEARCH_LOCATION && input?.length > 0 && (
           <XButton type="button" onClick={handleInputRemove}>
             <FaXmark size="12px" />
           </XButton>
         )}
       </InputDiv>
-      {isSelected === 'location' &&
+      {currentModal === ModalType.SEARCH_LOCATION &&
         container &&
         createPortal(
           <Modal ref={modalRef}>

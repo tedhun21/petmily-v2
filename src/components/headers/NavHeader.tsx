@@ -4,7 +4,6 @@ import styled from 'styled-components';
 
 import { Column } from 'styles/commonStyle';
 import NavBar from './components/NavBar';
-import SearchBox from './SearchBox';
 import TopHeader from './TopHeader';
 import CareFilter from './components/CareFilter';
 
@@ -19,7 +18,7 @@ export default function NavHeader() {
           <NavBar />
         </HeaderContatiner>
       </Header>
-      {pathname === '/search' && <SearchBox />}
+
       {pathname === '/cares' && <CareFilter />}
     </>
   );

@@ -1,3 +1,5 @@
+import { ModalType } from 'store/modalSlice';
+
 // `filterType`에 따라 `date`와 ``를 설정하는 로직
 export const getFilter = (filterType: number, values: any) => {
   const { date, startTime, endTime, address, petType } = values;
@@ -73,4 +75,8 @@ export const findPetsittersURL = (ref: string, query: any, pageIndex: number, pa
 
   // Directly add pagination to the URL
   return `${baseUrl}${hasQueryParams ? '&' : '?'}page=${pageIndex + 1}&pageSize=${pageSize}`;
+};
+
+export const isSearchModal = (modalType: ModalType | null): boolean => {
+  return modalType !== null && modalType.startsWith('search_');
 };

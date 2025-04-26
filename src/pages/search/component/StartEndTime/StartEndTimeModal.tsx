@@ -1,11 +1,16 @@
 import styled from 'styled-components';
-import { ModalLayOut } from '../../../../components/headers/SearchBox';
+import { ModalLayOut } from '../SearchBox';
 import { Column } from 'styles/commonStyle';
 import { timeOptions } from 'utils/date';
 import { useFormContext } from 'react-hook-form';
 import dayjs from 'dayjs';
+import { RootState } from 'store';
+import { useDispatch, useSelector } from 'react-redux';
+import { ModalType, openModal } from 'store/modalSlice';
 
-export default function StartEndTimeModal({ isSelected, setIsSelected }: any) {
+export default function StartEndTimeModal() {
+  const dispatch = useDispatch();
+  const { currentModal } = useSelector((state: RootState) => state.modal);
   const { setValue, watch } = useFormContext();
 
   const startTime = watch('startTime');
@@ -15,23 +20,37 @@ export default function StartEndTimeModal({ isSelected, setIsSelected }: any) {
   const handleCapsuleClick = (e: React.MouseEvent, time: string) => {
     e.stopPropagation();
 
-    if (isSelected === 'startTime') {
-      if (dayjs(time, 'HH:mm').isAfter(dayjs(endTime, 'HH:mm'))) {
+    const selectedTime = dayjs(time, 'HH:mm');
+
+    if (currentModal === ModalType.SEARCH_START_TIME) {
+      // endTime이 먼저 있고, 선택한 시간이 endTime보다 더 이후일때
+      // endTime은 null로 설정
+      if (selectedTime.isAfter(dayjs(endTime, 'HH:mm'))) {
         setValue('startTime', time);
         setValue('endTime', null);
+      } else if (selectedTime.isSame(dayjs(startTime, 'HH:mm'))) {
+        setValue('startTime', null);
+      } else {
+        setValue('startTime', time);
       }
 
-      setIsSelected('endTime');
-    } else if (isSelected === 'endTime') {
-      if (dayjs(time, 'HH:mm').isBefore(dayjs(startTime, 'HH:mm'))) {
+      dispatch(openModal(ModalType.SEARCH_END_TIME));
+    } else if (currentModal === ModalType.SEARCH_END_TIME) {
+      // startTime이 먼저 있고,
+      // 선택한 endTime이 startTime보다 더 이전일때
+      if (selectedTime.isBefore(dayjs(startTime, 'HH:mm'))) {
         setValue('startTime', time);
         setValue('endTime', null);
+      } else if (selectedTime.isSame(dayjs(endTime, 'HH:mm'))) {
+        setValue('endTime', null);
+      } else if (selectedTime.isSame(dayjs(startTime, 'HH:mm'))) {
+        return;
       } else {
         setValue('endTime', time);
       }
 
       if (!startTime) {
-        setIsSelected('startTime');
+        dispatch(openModal(ModalType.SEARCH_START_TIME));
       }
     }
   };
@@ -49,7 +68,7 @@ export default function StartEndTimeModal({ isSelected, setIsSelected }: any) {
     <ModalLayOut>
       <Content>
         <TimeContainer>
-          <span>{isSelected === 'chekcIn' ? '체크인' : '체크아웃'} 시간 선택</span>
+          <span>{currentModal === ModalType.SEARCH_START_TIME ? '체크인' : '체크아웃'} 시간 선택</span>
           <List>
             {timeOptions().map((time: string) => {
               const inTime = startTime === time;
@@ -57,7 +76,7 @@ export default function StartEndTimeModal({ isSelected, setIsSelected }: any) {
               const isBetween = isTimeBetween(time);
 
               return (
-                <CapsuleWrapper key={time} $isBetween={isBetween} $isstartTime={inTime} $isendTime={outTime}>
+                <CapsuleWrapper key={time} $isBetween={isBetween} $isStartTime={inTime} $isEndTime={outTime}>
                   <TimeCapsule onClick={(e) => handleCapsuleClick(e, time)} $isSelected={inTime || outTime}>
                     {time}
                   </TimeCapsule>
@@ -84,9 +103,9 @@ const List = styled.ul`
   justify-content: center;
 `;
 
-const CapsuleWrapper = styled.div<{ $isBetween: boolean; $isstartTime: boolean; $isendTime: boolean }>`
-  border-radius: ${({ $isstartTime, $isendTime }) =>
-    $isstartTime ? '20px 0 0 20px' : $isendTime ? '0 20px 20px 0' : null};
+const CapsuleWrapper = styled.div<{ $isBetween: boolean; $isStartTime: boolean; $isEndTime: boolean }>`
+  border-radius: ${({ $isStartTime, $isEndTime }) =>
+    $isStartTime ? '20px 0 0 20px' : $isEndTime ? '0 20px 20px 0' : null};
   background-color: ${({ $isBetween, theme }) => ($isBetween ? theme.background.box.default.hover : null)};
 `;
 

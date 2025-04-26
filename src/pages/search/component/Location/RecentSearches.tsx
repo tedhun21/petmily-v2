@@ -32,11 +32,13 @@ const List = styled.ul`
 const Item = styled.li`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 4px 8px;
   border-radius: ${({ theme }) => theme.radius.normal};
   ${({ theme }) => theme.fontSize.s14h21};
 
   &:hover {
-    background-color: red;
+    color: ${({ theme }) => theme.text.white};
+    background-color: ${({ theme }) => theme.background.highlight};
   }
 `;

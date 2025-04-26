@@ -42,7 +42,7 @@ export default function LocationCapsuleContainer({ data, handleLocationClick }: 
 }
 
 const Container = styled(Column)`
-  width: 80%;
+  flex: 1 1 auto;
   gap: 16px;
 `;
 
