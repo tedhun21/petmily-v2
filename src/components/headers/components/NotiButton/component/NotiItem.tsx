@@ -1,23 +1,18 @@
-import { useInView } from 'framer-motion';
-import { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { Row, Texts12h18, Texts14h21 } from 'styles/commonStyle';
 import { dateAgo, dateFormat } from 'utils/date';
 
-export default function NotiItem({ notification, onInView }: any) {
+export default function NotiItem({ notification, onReadClick }: any) {
   const isRead = notification.readStatus[0].isRead;
 
-  const itemRef = useRef(null);
-  const isInView = useInView(itemRef, { once: true });
-
-  useEffect(() => {
-    if (isInView && !isRead) {
-      onInView(notification.id);
+  const handleClick = () => {
+    if (!isRead) {
+      onReadClick(notification.id);
     }
-  }, [isInView]);
+  };
 
   return (
-    <Item ref={itemRef} key={notification.id}>
+    <Item key={notification.id} onClick={handleClick} $isRead={isRead}>
       <TopDiv>
         <DayDiv>
           <Day>{`${dateFormat(notification.createdAt).year}.${dateFormat(notification.createdAt).month}.${dateFormat(notification.createdAt).day}`}</Day>
@@ -30,10 +25,11 @@ export default function NotiItem({ notification, onInView }: any) {
   );
 }
 
-const Item = styled.li`
+const Item = styled.li<{ $isRead: boolean }>`
   display: flex;
   flex-direction: column;
   padding: 4px;
+  cursor: ${({ $isRead }) => ($isRead ? 'default' : 'pointer')};
 `;
 
 const TopDiv = styled(Row)`

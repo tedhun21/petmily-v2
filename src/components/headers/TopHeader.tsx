@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import useSWR from 'swr';
@@ -21,12 +21,14 @@ const API_URL = process.env.REACT_APP_API_URL;
 export default function TopHeader() {
   const { isDarkMode, setIsDarkMode } = useContext(ThemeContext);
   const { newMessages } = useSelector((state: RootState) => state.message);
+  const { newNotifications } = useSelector((state: RootState) => state.notification);
 
   const { data: me } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);
 
-  const { data: fetchedUnreadCounts } = useSWR(`${API_URL}/chats/unread-counts`, fetcherWithCookie);
+  const { data: unreadCount } = useSWR(`${API_URL}/notifications/unreadCount`, fetcherWithCookie);
 
-  const totalUnreadCounts = (fetchedUnreadCounts || 0) + (newMessages.length > 0 && newMessages.length);
+  const unreadChatCount: number = me?.unreadChatCount + newMessages.length;
+  const unreadNotificationCount: number = unreadCount + newNotifications.length;
 
   const handleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
@@ -47,17 +49,26 @@ export default function TopHeader() {
           <>
             <ButtonContainer>
               <NotiButton />
+              {unreadNotificationCount > 0 && (
+                <UnreadCountContainer>
+                  <UnreadCount>
+                    <span>{unreadNotificationCount}</span>
+                  </UnreadCount>
+                </UnreadCountContainer>
+              )}
             </ButtonContainer>
 
             <ButtonContainer>
               <StyledLink to="/chats">
                 <FaRegPaperPlane size="20px" />
-                {totalUnreadCounts > 0 && (
-                  <UnreadCountContainer>
-                    <UnreadCount></UnreadCount>
-                  </UnreadCountContainer>
-                )}
               </StyledLink>
+              {unreadChatCount > 0 && (
+                <UnreadCountContainer>
+                  <UnreadCount>
+                    <span>{unreadChatCount}</span>
+                  </UnreadCount>
+                </UnreadCountContainer>
+              )}
             </ButtonContainer>
 
             <MeButton me={me} />
@@ -82,6 +93,7 @@ const Wrapper = styled(Row)`
 `;
 
 const ButtonContainer = styled.div`
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -102,7 +114,6 @@ const Button = styled.button`
 `;
 
 const StyledLink = styled(Link)`
-  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -141,13 +152,13 @@ const UnreadCount = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 4px;
+  min-width: 16px;
+  height: 16px;
 
   background-color: ${({ theme }) => theme.background.red};
   border-radius: ${({ theme }) => theme.radius.circle};
 
   > span {
-    padding: 2px;
     color: ${({ theme }) => theme.text.white};
     ${({ theme }) => theme.fontSize.s12h18};
   }
