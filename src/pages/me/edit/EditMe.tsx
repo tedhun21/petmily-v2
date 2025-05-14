@@ -13,7 +13,6 @@ import { Modal } from '@mui/material';
 
 import { BlueButton, Column, ErrorMessage, Input, Row, Texts14h21 } from 'styles/commonStyle';
 
-import UploadProfileImg from '../../../components/UploadProfileImg';
 import { deleteCookie } from 'utils/cookie';
 import { TypeRadioLabel } from '../register/CreatePet';
 
@@ -33,6 +32,7 @@ import dayjs from 'dayjs';
 import { FaArrowUp, FaXmark } from 'react-icons/fa6';
 import CustomDaumPostcode from '@components/CustomDaumPostcode';
 import BackHeader from '@components/headers/BackHeader';
+import EditableProfileImage from '../../../components/EditableProfileImage';
 
 const schema = yup.object().shape({
   nickname: yup
@@ -65,6 +65,7 @@ export default function EditMe() {
   const [serverImageUrl, setServerImageUrl] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [newLocation, setNewLocation] = useState<string>('');
+  const [deletePhoto, setDeletePhoto] = useState<string | null>(null);
 
   const { data: me, isLoading } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);
 
@@ -174,6 +175,7 @@ export default function EditMe() {
 
     const updatedData = {
       ...data,
+      ...(deletePhoto ? { deletePhoto } : {}),
       zipcode: getValues('zipcode'),
     };
 
@@ -212,25 +214,36 @@ export default function EditMe() {
       setValue('address', me.address);
       setValue('detailAddress', me.detailAddress);
       setValue('body', me.body);
-      setValue('possiblePetSpecies', me?.possiblePetSpecies);
-      setValue('possibleDays', me?.possibleDays);
-      setValue('possibleLocations', me?.possibleLocations);
-      setValue('possibleStartTime', dayjs(me.possibleStartTime, 'HH:mm'));
-      setValue('possibleEndTime', dayjs(me.possibleEndTime, 'HH:mm'));
-      setServerImageUrl(serverImageUrl);
+
+      if (me.possiblePetSpecies) setValue('possiblePetSpecies', me.possiblePetSpecies);
+      if (me.possibleDays) setValue('possibleDays', me.possibleDays);
+      if (me.possibleLocations) setValue('possibleLocations', me.possibleLocations);
+
+      if (me.possibleStartTime) {
+        setValue('possibleStartTime', dayjs(me.possibleStartTime, 'HH:mm'));
+      }
+
+      if (me.possibleEndTime) {
+        setValue('possibleEndTime', dayjs(me.possibleEndTime, 'HH:mm'));
+      }
+
+      if (me.photo) setServerImageUrl(me.photo);
     }
   }, [isLoading, me]);
+
+  console.log('delete', deletePhoto);
 
   return (
     <Main>
       <BackHeader title="회원 정보 수정" />
       <Form onSubmit={handleSubmit(onSubmit)}>
         <InputContainer>
-          <UploadProfileImg
+          <EditableProfileImage
             setImageFile={setImageFile}
-            defaultImage="/imgs/DefaultUserProfile.jpg"
             serverImageUrl={serverImageUrl}
             setServerImageUrl={setServerImageUrl}
+            setDeletePhoto={setDeletePhoto}
+            defaultImage="/imgs/DefaultUserProfile.jpg"
           />
           <InputWrapper>
             <InputLabel htmlFor="username">이름</InputLabel>

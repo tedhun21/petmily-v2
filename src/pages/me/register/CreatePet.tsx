@@ -9,8 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import { PiCatBold, PiDogBold } from 'react-icons/pi';
 
-import UploadProfileImg from '@components/UploadProfileImg';
-import { BlueButton, BottomFixed, Column, ErrorMessage, Float, Input, Row, Texts20h30 } from 'styles/commonStyle';
+import { BlueButton, Column, Input, Row } from 'styles/commonStyle';
 
 import useSWRMutation from 'swr/mutation';
 import { posterWithCookie } from 'api';
@@ -19,6 +18,7 @@ import { toast } from 'react-toastify';
 
 import { TbGenderFemale, TbGenderMale } from 'react-icons/tb';
 import BackHeader from '@components/headers/BackHeader';
+import EditableProfileImage from '@components/EditableProfileImage';
 
 const schema = yup.object().shape({
   species: yup.string().oneOf(['Dog', 'Cat'], '강아지인가요 고양이인가요?').required('이 항목은 필수입니다.'),
@@ -96,7 +96,7 @@ export default function CreatePet() {
       <BackHeader title="나의 펫밀리 등록" />
       <Form onSubmit={handleSubmit(onSubmit)}>
         <InputContainer>
-          <UploadProfileImg
+          <EditableProfileImage
             setImageFile={setImageFile}
             defaultImage={watch('species') === 'Dog' ? '/imgs/DogProfile.png' : '/imgs/CatProfile.png'}
           />
