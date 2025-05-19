@@ -2,7 +2,7 @@ import { createContext, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { io, Socket } from 'socket.io-client';
 import { addNewMessage } from 'store/messageSlice';
-import { addNotification } from 'store/notificationSlice';
+import { addNewNotification } from 'store/notificationSlice';
 import { getCookie } from 'utils/cookie';
 
 const SOCKET_URL = process.env.REACT_APP_WEBSOCKET_URL;
@@ -34,7 +34,7 @@ export default function SocketProvider({ children }: any) {
     });
 
     socket.on('notification', (newNotification) => {
-      dispatch(addNotification(newNotification));
+      dispatch(addNewNotification(newNotification));
     });
     socket.on('directMessage', (newMessage) => {
       dispatch(addNewMessage(newMessage));

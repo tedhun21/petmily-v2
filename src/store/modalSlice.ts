@@ -12,10 +12,12 @@ export enum ModalType {
 
 export interface ModalState {
   currentModal: ModalType | null;
+  previousModal: ModalType | null;
 }
 
 const initialState: ModalState = {
   currentModal: null,
+  previousModal: null,
 };
 
 const modalSlice = createSlice({
@@ -23,9 +25,11 @@ const modalSlice = createSlice({
   initialState,
   reducers: {
     openModal: (state, action) => {
+      state.previousModal = state.currentModal;
       state.currentModal = action.payload;
     },
     closeModal: (state) => {
+      state.previousModal = state.currentModal;
       state.currentModal = null;
     },
   },

@@ -2,32 +2,31 @@ import { createSlice } from '@reduxjs/toolkit';
 import { Notification } from 'types/notification.type';
 
 export interface NotificationState {
-  notifications: Notification[];
+  newNotifications: Notification[];
 }
 
 const initialState: NotificationState = {
-  notifications: [],
+  newNotifications: [],
 };
 
 const notificationSlice = createSlice({
   name: 'notification',
   initialState,
   reducers: {
-    addNotification: (state, action) => {
-      state.notifications.unshift(action.payload);
+    addNewNotification: (state, action) => {
+      state.newNotifications.unshift(action.payload);
     },
-    setNotifications: (state, action) => {
-      state.notifications = action.payload;
-    },
-    markNotificationsAsRead: (state, action) => {
-      state.notifications = state.notifications.map((noti) =>
-        action.payload.includes(noti.id)
-          ? { ...noti, readStatus: noti.readStatus.map((status) => ({ ...status, isRead: true })) }
-          : noti,
+    markAsRead: (state, action) => {
+      // newNotifications에서 읽음 처리
+      state.newNotifications = state.newNotifications.map((noti) =>
+        noti.id === action.payload ? { ...noti, readStatus: [{ ...noti.readStatus[0], isRead: true }] } : noti,
       );
+    },
+    clearNewNotifications: (state) => {
+      state.newNotifications = [];
     },
   },
 });
 
-export const { addNotification, setNotifications, markNotificationsAsRead } = notificationSlice.actions;
+export const { addNewNotification, markAsRead, clearNewNotifications } = notificationSlice.actions;
 export default notificationSlice.reducer;
