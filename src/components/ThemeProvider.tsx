@@ -17,25 +17,22 @@ export const ThemeContext = createContext<ThemeContextType>({
 const muiLightTheme = createTheme({ palette: { mode: 'light' } });
 const muiDarkTheme = createTheme({ palette: { mode: 'dark' } });
 
+// 1. 초기값 가져오기
+// 2. 사용자가 변경할때
 export default function ThemeProvider({ children }: any) {
   const [isDarkMode, setIsDarkMode] = useState(() => {
-    if (typeof window !== 'undefined' && window.matchMedia) {
-      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('theme');
+      if (saved) return saved === 'dark';
+
+      return window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false;
     }
     return false;
   });
 
-  // dark mode 이벤트
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleChange = (e: MediaQueryListEvent) => {
-      setIsDarkMode(e.matches);
-    };
-
-    mediaQuery.addEventListener('change', handleChange);
-
-    return () => mediaQuery.removeEventListener('change', handleChange);
-  }, []);
+    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+  }, [isDarkMode]);
 
   return (
     <ThemeContext.Provider value={{ isDarkMode, setIsDarkMode }}>
