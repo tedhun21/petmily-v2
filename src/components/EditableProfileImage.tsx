@@ -4,13 +4,20 @@ import styled from 'styled-components';
 import { Column, ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
 
 interface IProps {
-  setImageFile: any;
-  defaultImage: string;
+  setImageFile: (file: File | null) => void;
   serverImageUrl?: string | null;
-  setServerImageUrl?: any;
+  setServerImageUrl?: (value: string | null) => void;
+  setDeletePhoto?: (value: string | null) => void;
+  defaultImage: string;
 }
 
-export default function UploadProfileImg({ setImageFile, defaultImage, serverImageUrl, setServerImageUrl }: IProps) {
+export default function EditableProfileImage({
+  setImageFile,
+  serverImageUrl,
+  setServerImageUrl,
+  setDeletePhoto,
+  defaultImage,
+}: IProps) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
@@ -18,22 +25,21 @@ export default function UploadProfileImg({ setImageFile, defaultImage, serverIma
     const file = event.target.files?.[0];
 
     if (file) {
-      setImageFile(file); // Store the file in the parent component
-      const objectUrl = URL.createObjectURL(file); // Create a preview URL
+      setImageFile(file);
+      const objectUrl = URL.createObjectURL(file);
       setPreviewUrl(objectUrl);
     }
   };
 
-  const handleOpen = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-  };
-
   const handlePhotoDelete = () => {
-    setServerImageUrl(null);
+    if (setServerImageUrl) {
+      setServerImageUrl(null);
+    }
     setImageFile(null);
-    setPreviewUrl(null); // Reset the preview URL
+    setPreviewUrl(null);
+    if (setDeletePhoto && serverImageUrl) {
+      setDeletePhoto(serverImageUrl);
+    }
   };
 
   return (
@@ -50,9 +56,7 @@ export default function UploadProfileImg({ setImageFile, defaultImage, serverIma
         )}
       </Relative>
 
-      <ImageLabel htmlFor="photoInput" onClick={handleOpen}>
-        프로필 사진 선택
-      </ImageLabel>
+      <ImageLabel htmlFor="photoInput">프로필 사진 선택</ImageLabel>
     </ImageContainer>
   );
 }

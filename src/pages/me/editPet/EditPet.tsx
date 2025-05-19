@@ -9,8 +9,6 @@ import useSWRMutation from 'swr/mutation';
 
 import { PiCatBold, PiDogBold } from 'react-icons/pi';
 
-import UploadProfileImg from '../../../components/UploadProfileImg';
-
 import {
   ButtonContainer,
   Form,
@@ -34,6 +32,7 @@ import { toast } from 'react-toastify';
 import { TbGenderFemale, TbGenderMale } from 'react-icons/tb';
 import BackHeader from '@components/headers/BackHeader';
 import { FaXmark } from 'react-icons/fa6';
+import EditableProfileImage from '@components/EditableProfileImage';
 
 const schema = yup.object().shape({
   species: yup.string().oneOf(['Dog', 'Cat'], '강아지인가요 고양이인가요?').required('이 항목은 필수입니다.'),
@@ -67,6 +66,7 @@ export default function EditPet() {
   const { petId } = useParams();
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [serverImageUrl, setServerImageUrl] = useState<string | null>(null);
+  const [deletePhoto, setDeletePhoto] = useState<string | null>(null);
 
   const {
     register,
@@ -107,10 +107,14 @@ export default function EditPet() {
 
   // 펫 수정
   const onSubmit = async (data: IEditPet) => {
-    console.log(data);
     const formData = new FormData();
 
-    formData.append('data', JSON.stringify(data));
+    const updatedData = {
+      ...data,
+      ...(deletePhoto ? { deletePhoto } : {}),
+    };
+
+    formData.append('data', JSON.stringify(updatedData));
 
     if (imageFile) {
       formData.append('file', imageFile);
@@ -139,7 +143,7 @@ export default function EditPet() {
       setValue('weight', pet.weight);
       setValue('gender', pet.gender);
       setValue('body', pet.body);
-      setServerImageUrl(pet.photo);
+      setServerImageUrl(pet?.photo);
     }
   }, [pet]);
 
@@ -153,11 +157,12 @@ export default function EditPet() {
               <FaXmark size="24px" />
             </button>
           </div>
-          <UploadProfileImg
+          <EditableProfileImage
             setImageFile={setImageFile}
-            defaultImage={watch('species') === 'Dog' ? '/imgs/DogProfile.png' : '/imgs/CatProfile.png'}
             serverImageUrl={serverImageUrl}
             setServerImageUrl={setServerImageUrl}
+            setDeletePhoto={setDeletePhoto}
+            defaultImage={watch('species') === 'Dog' ? '/imgs/DogProfile.png' : '/imgs/CatProfile.png'}
           />
 
           {/* 펫타입 */}
