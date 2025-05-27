@@ -2,8 +2,13 @@ import { Texts12h18 } from 'styles/commonStyle';
 import { useLocation, Link } from 'react-router-dom';
 
 import styled from 'styled-components';
+import { INavItem } from './NavBar';
 
-export default function NavBarLink({ item }: any) {
+interface NavBarLinkProps {
+  item: INavItem;
+}
+
+export default function NavBarLink({ item }: NavBarLinkProps) {
   const { pathname } = useLocation();
   const isActive = pathname === item.link;
 

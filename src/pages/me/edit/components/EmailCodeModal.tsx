@@ -1,11 +1,10 @@
 import { Modal } from '@mui/material';
-import { fetcherWithCookie, poster } from 'api';
+import { poster } from 'api';
+import { API_URL } from 'config';
 import { useEffect, useState } from 'react';
 import { FaXmark } from 'react-icons/fa6';
 import styled from 'styled-components';
 import useSWRMutation from 'swr/mutation';
-
-const API_URL = process.env.REACT_APP_API_URL;
 
 export default function EmailCodeModalButton({ email }: { email: string }) {
   const [open, setOpen] = useState(false);

@@ -7,8 +7,7 @@ import { FaXmark } from 'react-icons/fa6';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import useSWRMutation from 'swr/mutation';
-
-const API_URL = process.env.REACT_APP_API_URL;
+import { API_URL } from 'config';
 
 export default function Journal({ journal, reservationId }: any) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);

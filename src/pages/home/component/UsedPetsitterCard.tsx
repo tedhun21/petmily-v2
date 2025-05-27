@@ -1,36 +1,43 @@
 import styled from 'styled-components';
 import { PiStarFill } from 'react-icons/pi';
 
-import { formatKrDays, timeRange } from 'utils/date';
+import { timeRange, weekdays } from 'utils/date';
 import { Column, ImageCentered, RoundedImageWrapper, Row, Texts12h18, Texts18h27 } from 'styles/commonStyle';
+import { Petsitter } from 'types/user.type';
 
-export default function UsedPetsitterCard({ petsitter }: any) {
-  const { nickname, star, photo, possibleDays, possibleStartTime, possibleEndTime } = petsitter;
+interface UserPetsitterCardProps {
+  petsitter: Petsitter;
+}
 
-  const possibleTimeRange = timeRange(possibleStartTime, possibleEndTime);
+export default function UsedPetsitterCard({ petsitter }: UserPetsitterCardProps) {
+  const possibleTimeRange = timeRange(petsitter?.possibleStartTime ?? null, petsitter?.possibleEndTime ?? null);
 
   return (
     <OftenPetsitterbox>
       <ImageNameContainer>
         <ImageWrapper>
-          <ImageCentered src={photo ? `${photo?.url}` : '/imgs/DefaultUserProfile.jpg'} alt="petsitterPhoto" />
+          <ImageCentered
+            src={petsitter?.photo ? `${petsitter.photo}` : '/imgs/DefaultUserProfile.jpg'}
+            alt="petsitterPhoto"
+          />
         </ImageWrapper>
       </ImageNameContainer>
       <InfoContainer>
         <UpperContainer>
-          <Texts18h27>{nickname}</Texts18h27>
+          <Texts18h27>{petsitter?.nickname}</Texts18h27>
           <StarWrapper>
             <PiStarFill size="20px" color="#279EFF" />
-            <span>{star}</span>
+            <span>{petsitter?.star}</span>
           </StarWrapper>
         </UpperContainer>
         <LowerContainer>
           <PossibleWrapper>
             <Texts12h18>가능 요일</Texts12h18>
             <div>
-              {possibleDays?.map((day: string, index: number) => (
-                <Texts12h18 key={index}>{formatKrDays(day)}</Texts12h18>
-              ))}
+              {petsitter?.possibleDays?.map((day: string, index: number) => {
+                const matchedDay = weekdays.find((weekday) => weekday.value === day);
+                return <Texts12h18 key={index}>{matchedDay?.label}</Texts12h18>;
+              })}
             </div>
           </PossibleWrapper>
           <PossibleWrapper>

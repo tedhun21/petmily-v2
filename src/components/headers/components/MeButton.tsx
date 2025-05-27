@@ -11,8 +11,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
 import { closeModal, ModalType, openModal } from 'store/modalSlice';
 import useOutsideClickModal from 'hooks/useOutsideClickModal';
+import { User } from 'types/user.type';
 
-export default function MeButton({ me }: any) {
+interface MeButtonProps {
+  me?: User;
+}
+
+export default function MeButton({ me }: MeButtonProps) {
   const userContainer = document.getElementById('user-container');
   const dispatch = useDispatch();
 
@@ -44,7 +49,7 @@ export default function MeButton({ me }: any) {
     <UserContainer id="user-container">
       <UserButton type="button" onClick={toggleMenu}>
         <UserImage>
-          <ImageCentered src={me.photo ? `${me.photo}` : '/imgs/DefaultUserProfile.jpg'} alt="user_photo" />
+          <ImageCentered src={me?.photo ? `${me?.photo}` : '/imgs/DefaultUserProfile.jpg'} alt="user_photo" />
         </UserImage>
       </UserButton>
 

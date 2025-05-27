@@ -13,8 +13,14 @@ import {
 } from 'styles/commonStyle';
 import { formatStatus } from 'utils/misc';
 import { dayFormat, timeRange } from 'utils/date';
+import { Reservation } from 'types/reservation.type';
+import { Pet } from 'types/pet.type';
 
-export default function CareCard({ reservation }: any) {
+interface CareCardProps {
+  reservation: Reservation;
+}
+
+export default function CareCard({ reservation }: CareCardProps) {
   return (
     <Card to={`/cares/${reservation?.id}`}>
       <FirstContainer>
@@ -46,7 +52,7 @@ export default function CareCard({ reservation }: any) {
         <Wrapper>
           <Texts14h21>맡기실 펫:</Texts14h21>
           <PetWrapper>
-            {reservation?.pets.map((pet: any) => <Texts12h18 key={pet.id}>{pet.name}</Texts12h18>)}
+            {reservation?.pets.map((pet: Pet) => <Texts12h18 key={pet.id}>{pet.name}</Texts12h18>)}
           </PetWrapper>
         </Wrapper>
       </ReservationContainer>

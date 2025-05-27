@@ -3,10 +3,16 @@ import styled from 'styled-components';
 import { MdOutlineRateReview } from 'react-icons/md';
 import { PiStarFill } from 'react-icons/pi';
 
-import { formatKrDays } from 'utils/date';
+import { weekdays } from 'utils/date';
 import { Column, Divider, ImageCentered, RoundedImageWrapper, Row, Texts14h21, Texts18h27 } from 'styles/commonStyle';
+import { Petsitter } from 'types/user.type';
+import { DayOfWeekType } from 'types/common.type';
 
-export default function SelectedPetsitter({ petsitter }: any) {
+interface SelectedPetsitterProps {
+  petsitter: Petsitter;
+}
+
+export default function SelectedPetsitter({ petsitter }: SelectedPetsitterProps) {
   return (
     <PetsitterSection>
       <CardTitleContainer>
@@ -37,13 +43,16 @@ export default function SelectedPetsitter({ petsitter }: any) {
           <PossibleWrapper>
             <span>가능 장소</span>
             <CapsuleWrapper>
-              {petsitter?.possibleLocations?.map((location: any) => <Capsule key={location}>{location}</Capsule>)}
+              {petsitter?.possibleLocations?.map((location: string) => <Capsule key={location}>{location}</Capsule>)}
             </CapsuleWrapper>
           </PossibleWrapper>
           <PossibleWrapper>
             <span>가능 요일</span>
             <CapsuleWrapper>
-              {petsitter?.possibleDays?.map((day: any) => <Capsule key={day}>{formatKrDays(day)}</Capsule>)}
+              {petsitter?.possibleDays?.map((day: DayOfWeekType) => {
+                const matchedDay = weekdays.find((weekday) => weekday.value === day);
+                return <Capsule key={day}>{matchedDay?.label}</Capsule>;
+              })}
             </CapsuleWrapper>
           </PossibleWrapper>
         </PossibleContainer>

@@ -4,8 +4,8 @@ import { useSearchParams } from 'react-router-dom';
 import useSWR from 'swr';
 
 import MapsDrawer from './component/Drawer';
+import { API_URL } from 'config';
 
-const API_URL = process.env.REACT_APP_API_URL;
 const NAVER_MAPS_CLIENT_ID = process.env.REACT_APP_NAVER_MAPS_CLIENT_ID;
 
 export default function Maps() {

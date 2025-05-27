@@ -19,9 +19,11 @@ import { toast } from 'react-toastify';
 import { TbGenderFemale, TbGenderMale } from 'react-icons/tb';
 import BackHeader from '@components/headers/BackHeader';
 import EditableProfileImage from '@components/EditableProfileImage';
+import { PetGender, PetSpecies } from 'types/pet.type';
+import { API_URL } from 'config';
 
 const schema = yup.object().shape({
-  species: yup.string().oneOf(['Dog', 'Cat'], '강아지인가요 고양이인가요?').required('이 항목은 필수입니다.'),
+  species: yup.string().oneOf(['dog', 'cat'], '강아지인가요 고양이인가요?').required('이 항목은 필수입니다.'),
   name: yup.string().max(50, '이름은 최대 50자를 초과할 수 없습니다.').required('이 항목은 필수입니다.'),
   age: yup
     .number()
@@ -37,14 +39,12 @@ const schema = yup.object().shape({
     .min(1, '몸무게는 1kg 이상이어야 합니다.')
     .max(100, '몸무게는 100kg 이하이어야 합니다.')
     .required('이 항목은 필수입니다.'),
-  gender: yup.string().oneOf(['Male', 'Female'], '성별을 선택해주세요.').required('이 항목은 필수입니다.'),
+  gender: yup.string().oneOf(['male', 'female'], '성별을 선택해주세요.').required('이 항목은 필수입니다.'),
   neutering: yup.boolean().required('이 항목은 필수입니다.'),
   body: yup.string().max(1000, '소개는 최대 1000자를 초과할 수 없습니다.'),
 });
 
 type IRegisterPet = yup.InferType<typeof schema>;
-
-const API_URL = process.env.REACT_APP_API_URL;
 
 export default function CreatePet() {
   const navigate = useNavigate();
@@ -59,7 +59,7 @@ export default function CreatePet() {
   } = useForm<IRegisterPet>({
     resolver: yupResolver(schema),
     defaultValues: {
-      species: 'Dog',
+      species: PetSpecies.DOG, // 기본값을 강아지로 설정
     },
   });
 
@@ -74,7 +74,7 @@ export default function CreatePet() {
   });
 
   const handlePetSpecies = (e: MouseEvent<HTMLInputElement>) => {
-    const value = (e.target as HTMLInputElement).value as 'Dog' | 'Cat'; // 타입 캐스팅
+    const value = (e.target as HTMLInputElement).value as PetSpecies; // 타입 캐스팅
     setValue('species', value);
   };
 
@@ -98,17 +98,17 @@ export default function CreatePet() {
         <InputContainer>
           <EditableProfileImage
             setImageFile={setImageFile}
-            defaultImage={watch('species') === 'Dog' ? '/imgs/DogProfile.png' : '/imgs/CatProfile.png'}
+            defaultImage={watch('species') === PetSpecies.DOG ? '/imgs/DogProfile.png' : '/imgs/CatProfile.png'}
           />
           {/* 펫 타입 */}
           <InputWrapper>
             <PetSpeciesButtonContainer>
-              <TypeRadioLabel $isSelected={watch('species') === 'Dog'}>
-                <input hidden type="radio" value="Dog" {...register('species')} onClick={handlePetSpecies} />
+              <TypeRadioLabel $isSelected={watch('species') === PetSpecies.DOG}>
+                <input hidden type="radio" value={PetSpecies.DOG} {...register('species')} onClick={handlePetSpecies} />
                 <PiDogBold size="20px" color="white" />
               </TypeRadioLabel>
-              <TypeRadioLabel $isSelected={watch('species') === 'Cat'}>
-                <input hidden type="radio" value="Cat" {...register('species')} onClick={handlePetSpecies} />
+              <TypeRadioLabel $isSelected={watch('species') === PetSpecies.CAT}>
+                <input hidden type="radio" value={PetSpecies.CAT} {...register('species')} onClick={handlePetSpecies} />
                 <PiCatBold size="20px" color="white" />
               </TypeRadioLabel>
             </PetSpeciesButtonContainer>
@@ -125,11 +125,11 @@ export default function CreatePet() {
             <InputLabel htmlFor="gender">성별</InputLabel>
             <RadioContainer>
               <GenderWrapper>
-                <input type="radio" value="Male" {...register('gender')} />
+                <input type="radio" value={PetGender.MALE} {...register('gender')} />
                 <TbGenderMale size="32px" />
               </GenderWrapper>
               <GenderWrapper>
-                <input type="radio" value="Female" {...register('gender')} />
+                <input type="radio" value={PetGender.FEMALE} {...register('gender')} />
                 <TbGenderFemale size="32px" />
               </GenderWrapper>
             </RadioContainer>

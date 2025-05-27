@@ -5,10 +5,14 @@ import ReadOnlyRating from '@components/ReadOnlyRating';
 
 import useSWR from 'swr';
 import { dateAgo } from 'utils/date';
+import { Review } from 'types/review.type';
+import { API_URL } from 'config';
 
-const API_URL = process.env.REACT_APP_API_URL;
+interface ReviewsProps {
+  nickname?: string;
+}
 
-export default function Reviews({ nickname }: any) {
+export default function Reviews({ nickname }: ReviewsProps) {
   const { data } = useSWR(`${API_URL}/reviews/petsitter/${nickname}?page=1&pageSize=6`, fetcher);
 
   return (
@@ -19,7 +23,7 @@ export default function Reviews({ nickname }: any) {
       </ReviewTitle>
       <ReviewList>
         {data &&
-          data.results.map((review: any) => (
+          data.results.map((review: Review) => (
             <ReviewCard key={review.id}>
               <UserWrapper>
                 <UserImage>
@@ -36,7 +40,7 @@ export default function Reviews({ nickname }: any) {
                 <span>·</span>
                 <Texts12h18>{dateAgo(review.createdAt)}</Texts12h18>
               </StarWrapper>
-              <p>{review.body}</p>
+              <p>{review?.body}</p>
             </ReviewCard>
           ))}
       </ReviewList>

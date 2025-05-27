@@ -33,6 +33,9 @@ import { FaArrowUp, FaXmark } from 'react-icons/fa6';
 import CustomDaumPostcode from '@components/CustomDaumPostcode';
 import BackHeader from '@components/headers/BackHeader';
 import EditableProfileImage from '../../../components/EditableProfileImage';
+import { UserRole } from 'types/user.type';
+import { PetSpecies } from 'types/pet.type';
+import { API_URL } from 'config';
 
 const schema = yup.object().shape({
   nickname: yup
@@ -55,8 +58,6 @@ const schema = yup.object().shape({
 });
 
 type IEditUser = yup.InferType<typeof schema>;
-
-const API_URL = process.env.REACT_APP_API_URL;
 
 export default function EditMe() {
   const navigate = useNavigate();
@@ -98,6 +99,11 @@ export default function EditMe() {
     formState: { errors },
   } = useForm<IEditUser>({
     resolver: yupResolver(schema),
+    defaultValues: {
+      possiblePetSpecies: [],
+      possibleDays: [],
+      possibleLocations: [],
+    },
   });
 
   const onToggleModal = () => {
@@ -231,8 +237,6 @@ export default function EditMe() {
     }
   }, [isLoading, me]);
 
-  console.log('delete', deletePhoto);
-
   return (
     <Main>
       <BackHeader title="회원 정보 수정" />
@@ -301,26 +305,26 @@ export default function EditMe() {
           </InputWrapper>
 
           {/* 펫시터 정보 */}
-          {me?.role === 'Petsitter' && (
+          {me?.role === UserRole.PETSITTER && (
             <>
               <InputWrapper>
                 <InputLabel>케어가능동물</InputLabel>
                 <PetSpeciesButtonContainer>
-                  <TypeRadioLabel $isSelected={watch('possiblePetSpecies')?.includes('Dog')}>
+                  <TypeRadioLabel $isSelected={watch('possiblePetSpecies')?.includes(PetSpecies.DOG)}>
                     <input
                       hidden
                       type="checkbox"
-                      value="Dog"
+                      value={PetSpecies.DOG}
                       {...register('possiblePetSpecies')}
                       onClick={handlePetSpecies}
                     />
                     <PiDogBold size="20px" color="white" />
                   </TypeRadioLabel>
-                  <TypeRadioLabel $isSelected={watch('possiblePetSpecies')?.includes('Cat')}>
+                  <TypeRadioLabel $isSelected={watch('possiblePetSpecies')?.includes(PetSpecies.CAT)}>
                     <input
                       hidden
                       type="checkbox"
-                      value="Cat"
+                      value={PetSpecies.CAT}
                       {...register('possiblePetSpecies')}
                       onClick={handlePetSpecies}
                     />

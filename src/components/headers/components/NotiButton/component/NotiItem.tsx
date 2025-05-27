@@ -1,8 +1,14 @@
 import styled from 'styled-components';
 import { Row, Texts12h18, Texts14h21 } from 'styles/commonStyle';
+import { Notification } from 'types/notification.type';
 import { dateAgo, dateFormat } from 'utils/date';
 
-export default function NotiItem({ notification, onReadClick }: any) {
+interface NotiItemProps {
+  notification: Notification;
+  onReadClick: (id: number) => void;
+}
+
+export default function NotiItem({ notification, onReadClick }: NotiItemProps) {
   const isRead = notification.readStatus[0].isRead;
 
   const handleClick = () => {
@@ -20,7 +26,7 @@ export default function NotiItem({ notification, onReadClick }: any) {
         </DayDiv>
         {!isRead && <IsUnread />}
       </TopDiv>
-      <Message>{notification.message}</Message>
+      {/* <Message>{notification.message}</Message> */}
     </Item>
   );
 }

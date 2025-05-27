@@ -2,8 +2,13 @@ import { Column, ImageCentered, RoundedImageWrapper, Row, Texts12h18, Texts14h21
 import styled from 'styled-components';
 import { PiStarFill } from 'react-icons/pi';
 import { dateAgo } from 'utils/date';
+import { Review } from 'types/review.type';
 
-export default function ReviewCard({ review }: any) {
+interface ReviewCardProps {
+  review: Review;
+}
+
+export default function ReviewCard({ review }: ReviewCardProps) {
   const {
     reservation: { client },
     body,

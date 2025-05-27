@@ -1,7 +1,7 @@
 import { ChatRoomContext } from './ChatRoomProvider';
 import { useContext, useEffect, useMemo, useRef } from 'react';
 import styled from 'styled-components';
-import { Message } from 'types/message.type';
+import { Message } from 'types/chat.type';
 import ChatMessage from './ChatMessage';
 import { MessageContext } from './MessageProvider';
 import { SocketContext } from '@components/SocketProvider';

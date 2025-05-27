@@ -7,7 +7,11 @@ import { ko } from 'date-fns/locale';
 import { ModalLayOut } from '../SearchBox';
 import dayjs from 'dayjs';
 
-export default function DateModal({ handleSetValue }: any) {
+interface DateModalProps {
+  handleSetValue: (field: string, value: string) => void;
+}
+
+export default function DateModal({ handleSetValue }: DateModalProps) {
   const { watch, control } = useFormContext();
   const selectedDate = watch('date');
 

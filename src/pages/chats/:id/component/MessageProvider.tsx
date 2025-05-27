@@ -1,13 +1,12 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { Message } from 'types/message.type';
+import { Message } from 'types/chat.type';
 import { ChatRoomContext } from './ChatRoomProvider';
 import { SocketContext } from '@components/SocketProvider';
 import useSWRInfinite from 'swr/infinite';
 import { fetcherWithCookie } from 'api';
 import { useDispatch } from 'react-redux';
 import { removeMessages } from 'store/messageSlice';
-
-const API_URL = process.env.REACT_APP_API_URL;
+import { API_URL } from 'config';
 
 interface MessageContextType {
   messages: Message[];

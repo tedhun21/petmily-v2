@@ -9,13 +9,13 @@ import { HiOutlineLocationMarker } from 'react-icons/hi';
 import { TbCurrentLocation } from 'react-icons/tb';
 import { GrMapLocation } from 'react-icons/gr';
 
-interface IProps {
+interface MapsDrawerProps {
   address?: string;
   map: any;
   geocode?: any;
 }
 
-export default function MapsDrawer({ address, map, geocode }: IProps) {
+export default function MapsDrawer({ address, map, geocode }: MapsDrawerProps) {
   const [isOpen, setIsOpen] = useState(true);
   const [contentRef, contentBounds] = useMeasure();
   const headerHeight = 52;

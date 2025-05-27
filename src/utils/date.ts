@@ -4,7 +4,7 @@ import 'dayjs/locale/ko';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import updateLocale from 'dayjs/plugin/updateLocale';
 import isBetween from 'dayjs/plugin/isBetween';
-import { Message } from 'types/message.type';
+import { Message } from 'types/chat.type';
 
 dayjs.extend(relativeTime);
 dayjs.extend(updateLocale);
@@ -138,35 +138,14 @@ export const checkOutDisableTime = (
   return false;
 };
 
-export const formatKrDays = (day: string) => {
-  switch (day) {
-    case 'Mon':
-      return '월';
-    case 'Tue':
-      return '화';
-    case 'Wed':
-      return '수';
-    case 'Thu':
-      return '목';
-    case 'Fri':
-      return '금';
-    case 'Sat':
-      return '토';
-    case 'Sun':
-      return '일';
-    default:
-      return '';
-  }
-};
-
 export const weekdays = [
-  { id: 1, value: 'Mon', label: '월' },
-  { id: 2, value: 'Tue', label: '화' },
-  { id: 3, value: 'Wed', label: '수' },
-  { id: 4, value: 'Thu', label: '목' },
-  { id: 5, value: 'Fri', label: '금' },
-  { id: 6, value: 'Sat', label: '토' },
-  { id: 7, value: 'Sun', label: '일' },
+  { id: 1, value: 'mon', label: '월' },
+  { id: 2, value: 'tue', label: '화' },
+  { id: 3, value: 'wed', label: '수' },
+  { id: 4, value: 'thu', label: '목' },
+  { id: 5, value: 'fri', label: '금' },
+  { id: 6, value: 'sat', label: '토' },
+  { id: 7, value: 'sun', label: '일' },
 ];
 
 export function formatToLocaleAMPM(dateString: string) {

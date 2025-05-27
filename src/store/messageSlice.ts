@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { Message } from 'types/message.type';
+import { Message } from 'types/chat.type';
 
 export interface MessageState {
   newMessages: Message[];

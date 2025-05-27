@@ -10,10 +10,16 @@ import { reservationDisableDate, timeOptions } from 'utils/date';
 import { motion, AnimatePresence } from 'framer-motion';
 import { fetcher } from 'api';
 import useSWR from 'swr';
+import { Petsitter } from 'types/user.type';
+import { DayOfWeekType } from 'types/common.type';
+import { Reservation } from 'types/reservation.type';
+import { API_URL } from 'config';
 
-const API_URL = process.env.REACT_APP_API_URL;
+interface PossibleDateProps {
+  petsitter?: Petsitter;
+}
 
-export default function PossibleDate({ petsitter }: any) {
+export default function PossibleDate({ petsitter }: PossibleDateProps) {
   const { setValue, control, watch } = useFormContext();
 
   const possibleStartTimeDayjs = petsitter?.possibleStartTime ? dayjs(petsitter.possibleStartTime, 'HH:mm:ss') : null;
@@ -89,7 +95,7 @@ export default function PossibleDate({ petsitter }: any) {
     }
 
     // 예약된 시간 확인
-    const isReserved = data?.some((reservation: any) => {
+    const isReserved = data?.some((reservation: Reservation) => {
       const reservationStart = dayjs(reservation.startTime, 'HH:mm');
       const reservationEnd = dayjs(reservation.endTime, 'HH:mm');
 
@@ -132,8 +138,16 @@ export default function PossibleDate({ petsitter }: any) {
     const isOutOfRange = reservationDisableDate(day);
 
     // 두번째 조건: 요일 조건 확인
-    const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    const dayOfWeek = weekDays[day.day()]; // 날짜의 요일 ("Mon")
+    const dayIndexToEnum: DayOfWeekType[] = [
+      DayOfWeekType.SUN,
+      DayOfWeekType.MON,
+      DayOfWeekType.TUE,
+      DayOfWeekType.WED,
+      DayOfWeekType.THU,
+      DayOfWeekType.FRI,
+      DayOfWeekType.SAT,
+    ];
+    const dayOfWeek = dayIndexToEnum[day.day()]; // 날짜의 요일 ("Mon")
     const isNotAvailableDay = !(petsitter?.possibleDays?.includes(dayOfWeek) || false);
 
     return isOutOfRange || isNotAvailableDay;

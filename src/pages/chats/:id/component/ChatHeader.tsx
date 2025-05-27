@@ -7,7 +7,7 @@ import { FiMenu } from 'react-icons/fi';
 
 import { ChatRoomContext } from './ChatRoomProvider';
 import { Texts20h30 } from 'styles/commonStyle';
-import { ChatUser } from 'types/message.type';
+import { ChatUser } from 'types/chat.type';
 
 export default function ChatHeader() {
   const navigate = useNavigate();

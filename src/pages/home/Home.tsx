@@ -15,8 +15,7 @@ import RealTimeReviews from './component/RealTimeReviews';
 import UsedPetsitters from './component/UsedPetsitters';
 import { fetcherWithCookie } from 'api';
 import NavHeader from '@components/headers/NavHeader';
-
-const API_URL = process.env.REACT_APP_API_URL;
+import { API_URL } from 'config';
 
 export default function Home() {
   const { data: me } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);

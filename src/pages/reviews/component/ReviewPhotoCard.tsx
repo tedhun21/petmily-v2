@@ -10,8 +10,13 @@ import { PiStarFill } from 'react-icons/pi';
 
 import { dateAgo } from 'utils/date';
 import { Column, ImageCentered, RoundedImageWrapper, Row, Texts12h18, Texts16h24 } from 'styles/commonStyle';
+import { Review } from 'types/review.type';
 
-export default function ReviewPhotoCard({ review }: any) {
+interface ReviewPhotoCardProps {
+  review: Review;
+}
+
+export default function ReviewPhotoCard({ review }: ReviewPhotoCardProps) {
   const [isTextOverflow, setIsTextOverflow] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const textRef = useRef<HTMLDivElement>(null);
@@ -46,13 +51,14 @@ export default function ReviewPhotoCard({ review }: any) {
         modules={[Pagination]}
         style={{ width: '100%', borderRadius: '16px' }}
       >
-        {review?.photos.map((photo: any, index: number) => (
-          <SwiperSlide key={index}>
-            <ReviewImageContainer>
-              <ImageCentered src={`${photo}`} alt={`review_photo_${index}`} />
-            </ReviewImageContainer>
-          </SwiperSlide>
-        ))}
+        {review?.photos &&
+          review.photos.map((photo: string, index: number) => (
+            <SwiperSlide key={index}>
+              <ReviewImageContainer>
+                <ImageCentered src={`${photo}`} alt={`review_photo_${index}`} />
+              </ReviewImageContainer>
+            </SwiperSlide>
+          ))}
       </Swiper>
 
       <ReviewContainer>

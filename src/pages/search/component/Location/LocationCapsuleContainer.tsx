@@ -2,7 +2,12 @@ import { useRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Column, Texts12h18 } from 'styles/commonStyle';
 
-export default function LocationCapsuleContainer({ data, handleLocationClick }: any) {
+interface LocationCapsuleContainerProps {
+  data: string[];
+  handleLocationClick: (e: React.MouseEvent, searchName: string) => void;
+}
+
+export default function LocationCapsuleContainer({ data, handleLocationClick }: LocationCapsuleContainerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [columnCount, setColumnCount] = useState(3); // 기본값 3
 

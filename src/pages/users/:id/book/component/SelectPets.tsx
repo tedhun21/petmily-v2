@@ -5,8 +5,7 @@ import useSWRInfinite from 'swr/infinite';
 import PetItem from './PetItem';
 import { Pet } from 'types/pet.type';
 import { FiMoreHorizontal } from 'react-icons/fi';
-
-const API_URL = process.env.REACT_APP_API_URL;
+import { API_URL } from 'config';
 
 export default function SelectPets() {
   const pageSize = 6;

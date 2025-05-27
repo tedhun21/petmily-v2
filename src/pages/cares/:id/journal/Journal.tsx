@@ -12,10 +12,9 @@ import { FaXmark } from 'react-icons/fa6';
 import Loading from '@components/Loading';
 import { fetcherWithCookie, posterWithCookie, updaterWithCookie } from 'api';
 import { BlueButton, CenterContainer, Texts14h21, Texts16h24, Title } from 'styles/commonStyle';
+import { API_URL } from 'config';
 
-const API_URL = process.env.REACT_APP_API_URL;
-
-interface JournalFormData {
+interface JournalFormValue {
   body: string;
   files: File[];
   photos: string[];
@@ -27,7 +26,7 @@ export default function Journal() {
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const { register, setValue, watch, handleSubmit } = useForm<JournalFormData>({
+  const { register, setValue, watch, handleSubmit } = useForm<JournalFormValue>({
     defaultValues: { body: '', files: [], photos: [], deleteFiles: [] },
   });
 
@@ -104,7 +103,7 @@ export default function Journal() {
     setValue('deleteFiles', [...watch('deleteFiles'), removedImageUrl]);
   };
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: JournalFormValue) => {
     const { body, files, deleteFiles } = data;
 
     // 일지 등록
@@ -135,7 +134,7 @@ export default function Journal() {
 
       formData.append('data', JSON.stringify(createData));
 
-      if (files && files.legnth > 0) {
+      if (files && files.length > 0) {
         files.forEach((file: File) => {
           formData.append('files', file);
         });

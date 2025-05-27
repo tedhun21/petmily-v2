@@ -5,7 +5,12 @@ import { Modal } from '@mui/material';
 
 import { BlueButton, Column, SubTitle, Texts12h18, Texts16h24, Title } from 'styles/commonStyle';
 
-export default function Confirm({ isChecked, setIsChecked }: any) {
+interface ConfirmProps {
+  isChecked: boolean;
+  setIsChecked: (checked: boolean) => void;
+}
+
+export default function Confirm({ isChecked, setIsChecked }: ConfirmProps) {
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => setOpen(true);

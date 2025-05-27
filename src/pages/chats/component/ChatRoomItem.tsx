@@ -4,10 +4,14 @@ import { RootState } from 'store';
 
 import styled from 'styled-components';
 import { Column, ImageCentered, RoundedImageWrapper, Row, Texts12h18 } from 'styles/commonStyle';
-import { Message } from 'types/message.type';
+import { Message } from 'types/chat.type';
 import { updatedAtAgo } from 'utils/date';
 
-export default function ChatRoom({ chatRoom }: any) {
+// interface ChatRoomItemProps {
+//   chatRoom: ChatRoom;
+// }
+
+export default function ChatRoomItem({ chatRoom }: any) {
   const { newMessages } = useSelector((state: RootState) => state.message);
 
   const others = chatRoom.chatMembers.others;

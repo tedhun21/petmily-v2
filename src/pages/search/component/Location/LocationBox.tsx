@@ -10,7 +10,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { closeModal, ModalType, openModal } from 'store/modalSlice';
 import { RootState } from 'store';
 
-export default function LocationBox({ handleSetValue }: any) {
+interface LocationBoxProps {
+  handleSetValue: (field: string, value: string) => void;
+}
+
+export default function LocationBox({ handleSetValue }: LocationBoxProps) {
   const dispatch = useDispatch();
   const { currentModal } = useSelector((state: RootState) => state.modal);
   const container = document.getElementById('container');

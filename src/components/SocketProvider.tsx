@@ -7,6 +7,10 @@ import { getCookie } from 'utils/cookie';
 
 const SOCKET_URL = process.env.REACT_APP_WEBSOCKET_URL;
 
+interface SocketProviderProps {
+  children: React.ReactNode;
+}
+
 interface SocketContextProps {
   socket: Socket | null;
   setSocket: React.Dispatch<React.SetStateAction<Socket | null>>;
@@ -17,7 +21,7 @@ export const SocketContext = createContext<SocketContextProps>({
   setSocket: () => null,
 });
 
-export default function SocketProvider({ children }: any) {
+export default function SocketProvider({ children }: SocketProviderProps) {
   const dispatch = useDispatch();
   const [socket, setSocket] = useState<Socket | null>(null);
 

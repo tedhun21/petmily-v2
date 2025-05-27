@@ -1,10 +1,15 @@
-import { CenterContainer, Column, ImageCentered, RoundedImageWrapper, Row, Texts12h18 } from 'styles/commonStyle';
-import styled from 'styled-components';
-
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import { TbGenderFemale, TbGenderMale } from 'react-icons/tb';
 
-export default function PetmilyCard({ pet }: any) {
+import { Pet, PetGender, PetSpecies } from 'types/pet.type';
+import { CenterContainer, Column, ImageCentered, RoundedImageWrapper, Row, Texts12h18 } from 'styles/commonStyle';
+
+interface PetmilyCardProps {
+  pet: Pet;
+}
+
+export default function PetmilyCard({ pet }: PetmilyCardProps) {
   return (
     <PetCard to={`/me/${pet?.id}/edit`}>
       <UpperContainer>
@@ -14,9 +19,9 @@ export default function PetmilyCard({ pet }: any) {
               src={
                 pet?.photo
                   ? `${pet.photo}`
-                  : pet.species === 'Dog'
+                  : pet.species === PetSpecies.DOG
                     ? '/imgs/DogProfile.png'
-                    : pet.species === 'Cat'
+                    : pet.species === PetSpecies.CAT
                       ? '/imgs/CatProfile.png'
                       : undefined
               }
@@ -32,9 +37,9 @@ export default function PetmilyCard({ pet }: any) {
       <LowerContainer>
         <PetPropWrapper>
           <CenterContainer>
-            {pet?.gender === 'Male' ? (
+            {pet?.gender === PetGender.MALE ? (
               <TbGenderMale size="21px" color="white" />
-            ) : pet?.gender === 'Female' ? (
+            ) : pet?.gender === PetGender.FEMALE ? (
               <TbGenderFemale size="21px" color="white" />
             ) : null}
           </CenterContainer>

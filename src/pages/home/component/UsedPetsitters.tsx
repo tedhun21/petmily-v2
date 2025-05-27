@@ -12,8 +12,7 @@ import 'swiper/css/pagination';
 import UsedPetsitterCard from './UsedPetsitterCard';
 import Loading from '@components/Loading';
 import styled from 'styled-components';
-
-const API_URL = process.env.REACT_APP_API_URL;
+import { API_URL } from 'config';
 
 export default function UsedPetsitters() {
   const pageSize = 12;

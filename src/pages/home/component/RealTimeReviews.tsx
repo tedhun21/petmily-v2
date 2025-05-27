@@ -13,8 +13,8 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import Loading from '@components/Loading';
 import styled from 'styled-components';
+import { API_URL } from 'config';
 
-const API_URL = process.env.REACT_APP_API_URL;
 export default function RealTimeReviews() {
   const pageSize = 10;
 

@@ -1,14 +1,18 @@
 import styled from 'styled-components';
 
 import { PiStarFill } from 'react-icons/pi';
+import { MdOutlineRateReview } from 'react-icons/md';
 
 import { BlueLink, Column, ImageCentered, RoundedImageWrapper, Row, Texts18h27 } from 'styles/commonStyle';
 import { PetInfoCapsule, PetInfoContainer } from '@pages/cares/:id/Care';
-import { formatKrDays, timeRange } from 'utils/date';
+import { timeRange, weekdays } from 'utils/date';
+import { Petsitter } from 'types/user.type';
 
-import { MdOutlineRateReview } from 'react-icons/md';
+interface PetsitterCardProps {
+  petsitter: Petsitter;
+}
 
-export default function PetsitterCard({ petsitter }: any) {
+export default function PetsitterCard({ petsitter }: PetsitterCardProps) {
   const opponentIds = [petsitter?.id];
   const params = new URLSearchParams();
   params.append('opponentIds', opponentIds.join(',')); // opponentIds=1,2,3
@@ -24,7 +28,7 @@ export default function PetsitterCard({ petsitter }: any) {
         </PetsitterImage>
         <PetsitterName>{petsitter?.nickname} 님</PetsitterName>
         <LinkWrapper>
-          <StyledLink to={`/chats/${params.toString()}`}>채팅 하기</StyledLink>
+          <StyledLink to={`/chats/temp?${params.toString()}`}>채팅 하기</StyledLink>
           <StyledLink to={`/users/${petsitter?.nickname}`}>프로필 보기</StyledLink>
         </LinkWrapper>
       </ImageName>
@@ -41,13 +45,14 @@ export default function PetsitterCard({ petsitter }: any) {
         </StarReviewWrapper>
 
         <PetInfoContainer>
-          {petsitter?.possibleDays?.map((day: string, index: number) => (
-            <PetInfoCapsule key={index}>{formatKrDays(day)}</PetInfoCapsule>
-          ))}
+          {petsitter?.possibleDays?.map((day: string, index: number) => {
+            const matchedDay = weekdays.find((weekday) => weekday.value === day);
+            return <PetInfoCapsule key={index}>{matchedDay?.label}</PetInfoCapsule>;
+          })}
         </PetInfoContainer>
 
         <div>
-          <span>{timeRange(petsitter?.possibleStartTime, petsitter?.possibleEndTime)}</span>
+          <span>{timeRange(petsitter?.possibleStartTime ?? null, petsitter?.possibleEndTime ?? null)}</span>
         </div>
       </PetsitterInfo>
     </Card>

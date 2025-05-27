@@ -1,7 +1,10 @@
+import { DayOfWeekType } from './common.type';
+import { Pet, PetSpecies } from './pet.type';
+
 export enum UserRole {
-  USER = 'User',
-  CLIENT = 'Client',
-  PETSITTER = 'Petsitter',
+  USER = 'user',
+  CLIENT = 'client',
+  PETSITTER = 'petsitter',
 }
 
 export interface User {
@@ -13,6 +16,17 @@ export interface User {
   address: string;
   detailAddress: string;
   phone: string;
-  photo: string;
-  body: string;
+  photo?: string;
+  pets?: Pet[];
+  body?: string;
+}
+
+export interface Petsitter extends User {
+  possibleStartTime?: string;
+  possibleEndTime?: string;
+  possibleDays?: DayOfWeekType[];
+  possibleLocations?: string[];
+  possiblePetSpecies?: PetSpecies[];
+  star?: number;
+  reviewCount?: number;
 }

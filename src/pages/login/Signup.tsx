@@ -17,6 +17,7 @@ import { toast } from 'react-toastify';
 import Loading from '@components/Loading';
 import CustomDaumPostcode from '@components/CustomDaumPostcode';
 import BackHeader from '@components/headers/BackHeader';
+import { API_URL } from 'config';
 
 const schema = yup.object().shape({
   username: yup
@@ -49,8 +50,6 @@ const schema = yup.object().shape({
   isPetsitter: yup.boolean().default(false),
 });
 type IFormSignupInputs = yup.InferType<typeof schema>;
-
-const API_URL = process.env.REACT_APP_API_URL;
 
 export default function Signup() {
   const navigate = useNavigate();

@@ -4,6 +4,10 @@ import { createTheme, ThemeProvider as MuiThemeProvider } from '@mui/material/st
 import { darkTheme, lightTheme } from 'styles/theme';
 import { ToastContainer } from 'react-toastify';
 
+interface ThemePropviderProps {
+  children: React.ReactNode;
+}
+
 interface ThemeContextType {
   isDarkMode: boolean;
   setIsDarkMode: (value: boolean) => void;
@@ -19,7 +23,7 @@ const muiDarkTheme = createTheme({ palette: { mode: 'dark' } });
 
 // 1. 초기값 가져오기
 // 2. 사용자가 변경할때
-export default function ThemeProvider({ children }: any) {
+export default function ThemeProvider({ children }: ThemePropviderProps) {
   const [isDarkMode, setIsDarkMode] = useState(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('theme');

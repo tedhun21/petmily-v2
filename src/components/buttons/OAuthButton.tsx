@@ -1,9 +1,12 @@
 import { Button } from 'styles/commonStyle';
 import styled from 'styled-components';
+import { API_URL } from 'config';
 
-const API_URL = process.env.REACT_APP_API_URL;
+interface GoogleOAuthButtonProps {
+  children: React.ReactNode;
+}
 
-export default function GoogleOAuthButton({ children }: any) {
+export default function GoogleOAuthButton({ children }: GoogleOAuthButtonProps) {
   const handleGooleOAuth = () => {
     window.location.assign(`${API_URL}/connect/google`);
   };
