@@ -6,7 +6,7 @@ import Collapse from '@components/Collapse';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa6';
 import BackHeader from '@components/headers/BackHeader';
 
-export default function FaQ() {
+export default function FaQPage() {
   const [open, setOpen] = useState<{ [key: string]: boolean }>({});
 
   const handleClick = (list: string) => {

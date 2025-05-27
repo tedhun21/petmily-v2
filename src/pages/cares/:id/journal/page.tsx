@@ -21,7 +21,7 @@ interface JournalFormValue {
   deleteFiles: string[];
 }
 
-export default function Journal() {
+export default function JournalPage() {
   const { id: reservationId } = useParams();
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement | null>(null);

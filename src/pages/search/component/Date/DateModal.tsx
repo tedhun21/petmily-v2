@@ -4,11 +4,11 @@ import 'react-datepicker/dist/react-datepicker.css';
 import styled from 'styled-components';
 import { ko } from 'date-fns/locale';
 
-import { ModalLayOut } from '../SearchBox';
+import { FormValues, ModalLayOut } from '../SearchBox';
 import dayjs from 'dayjs';
 
 interface DateModalProps {
-  handleSetValue: (field: string, value: string) => void;
+  handleSetValue: (field: keyof FormValues, value: any) => void;
 }
 
 export default function DateModal({ handleSetValue }: DateModalProps) {

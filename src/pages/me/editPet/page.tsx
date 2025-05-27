@@ -24,7 +24,7 @@ import {
   RowWrapper,
   SubmitButton,
   TypeRadioLabel,
-} from '../register/CreatePet';
+} from '../register/page';
 
 import { deleterWithCookie, fetcher, updaterWithCookie } from 'api';
 import Loading from '@components/Loading';
@@ -60,7 +60,7 @@ const schema = yup.object().shape({
 
 type IEditPet = yup.InferType<typeof schema>;
 
-export default function EditPet() {
+export default function EditPetPage() {
   const navigate = useNavigate();
 
   const { petId } = useParams();

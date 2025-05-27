@@ -18,7 +18,7 @@ export default function SelectedPetsitter({ petsitter }: SelectedPetsitterProps)
       <CardTitleContainer>
         <NameWrapper>
           <PetsitterName>{petsitter?.nickname}</PetsitterName>
-          <Petsitter>펫시터</Petsitter>
+          <PetsitterTitle>펫시터</PetsitterTitle>
         </NameWrapper>
         <PetsitterImg>
           <ImageCentered
@@ -98,7 +98,7 @@ const PetsitterName = styled(Texts18h27)`
   font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;
 
-const Petsitter = styled(Texts14h21)`
+const PetsitterTitle = styled(Texts14h21)`
   font-weight: ${({ theme }) => theme.fontWeight.light};
 `;
 

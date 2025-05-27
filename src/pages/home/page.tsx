@@ -17,7 +17,7 @@ import { fetcherWithCookie } from 'api';
 import NavHeader from '@components/headers/NavHeader';
 import { API_URL } from 'config';
 
-export default function Home() {
+export default function HomePage() {
   const { data: me } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);
 
   return (

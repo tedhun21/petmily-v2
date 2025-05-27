@@ -28,7 +28,7 @@ interface IDateForm {
   endTime: string | null;
 }
 
-export default function Profile() {
+export default function ProfilePage() {
   const { nickname } = useParams();
   const methods = useForm<IDateForm>({
     defaultValues: {

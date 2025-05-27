@@ -6,7 +6,7 @@ import 'swiper/css/pagination';
 import { Mousewheel, Pagination } from 'swiper/modules';
 import styled from 'styled-components';
 import { Column, ImageCentered, RoundedImageWrapper, Row } from 'styles/commonStyle';
-import { PetInfoCapsule, PetInfoContainer } from '@pages/cares/:id/Care';
+import { PetInfoCapsule, PetInfoContainer } from '@pages/cares/:id/page';
 import { Pet, PetSpecies } from 'types/pet.type';
 
 interface PetContainerProps {

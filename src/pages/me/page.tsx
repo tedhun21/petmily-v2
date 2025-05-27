@@ -12,7 +12,7 @@ import BackHeader from '@components/headers/BackHeader';
 import { UserRole } from 'types/user.type';
 import { API_URL } from 'config';
 
-export default function Me() {
+export default function MyPage() {
   const { data: me } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);
 
   return (

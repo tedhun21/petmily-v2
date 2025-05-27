@@ -10,12 +10,12 @@ import SuggestLocations from './SuggestLocations';
 import LocationCapsuleContainer from './LocationCapsuleContainer';
 import { useEffect, useState } from 'react';
 import Loading from '@components/Loading';
-import { ModalLayOut, HalfModalLayOut } from '@pages/search/component/SearchBox';
+import { ModalLayOut, HalfModalLayOut, FormValues } from '@pages/search/component/SearchBox';
 import { getRecentSearches } from 'utils/localStorage';
 import { API_URL } from 'config';
 
 interface LocationModalProps {
-  handleSetValue: (field: string, value: string) => void;
+  handleSetValue: (field: keyof FormValues, value: any) => void;
 }
 
 export default function LocationModal({ handleSetValue }: LocationModalProps) {

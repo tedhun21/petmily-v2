@@ -25,7 +25,7 @@ const schema = yup.object().shape({
 });
 type IFormLoginInputs = yup.InferType<typeof schema>;
 
-export default function Login() {
+export default function LoginPage() {
   const navigate = useNavigate();
 
   const {

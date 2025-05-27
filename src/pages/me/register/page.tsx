@@ -46,7 +46,7 @@ const schema = yup.object().shape({
 
 type IRegisterPet = yup.InferType<typeof schema>;
 
-export default function CreatePet() {
+export default function CreatePetPage() {
   const navigate = useNavigate();
   const [imageFile, setImageFile] = useState<File | null>(null);
 

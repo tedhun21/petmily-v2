@@ -4,7 +4,7 @@ import { PiStarFill } from 'react-icons/pi';
 import { MdOutlineRateReview } from 'react-icons/md';
 
 import { BlueLink, Column, ImageCentered, RoundedImageWrapper, Row, Texts18h27 } from 'styles/commonStyle';
-import { PetInfoCapsule, PetInfoContainer } from '@pages/cares/:id/Care';
+import { PetInfoCapsule, PetInfoContainer } from '@pages/cares/:id/page';
 import { timeRange, weekdays } from 'utils/date';
 import { Petsitter } from 'types/user.type';
 

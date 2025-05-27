@@ -14,7 +14,7 @@ import { Modal } from '@mui/material';
 import { BlueButton, Column, ErrorMessage, Input, Row, Texts14h21 } from 'styles/commonStyle';
 
 import { deleteCookie } from 'utils/cookie';
-import { TypeRadioLabel } from '../register/CreatePet';
+import { TypeRadioLabel } from '../register/page';
 
 import { deleterWithCookie, fetcherWithCookie, updaterWithCookie } from 'api';
 import Loading from '@components/Loading';
@@ -59,7 +59,7 @@ const schema = yup.object().shape({
 
 type IEditUser = yup.InferType<typeof schema>;
 
-export default function EditMe() {
+export default function EditMePage() {
   const navigate = useNavigate();
 
   const [imageFile, setImageFile] = useState<File | null>(null);

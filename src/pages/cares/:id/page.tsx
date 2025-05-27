@@ -19,7 +19,7 @@ import { SocketContext } from '@components/SocketProvider';
 import { ReservationStatus } from 'types/reservation.type';
 import { API_URL } from 'config';
 
-export default function Care() {
+export default function CarePage() {
   const { id } = useParams();
 
   const { socket } = useContext(SocketContext);

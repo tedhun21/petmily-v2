@@ -33,7 +33,7 @@ const schema = yup.object().shape({
   body: yup.string().max(200, '200자 이내로 입력해주세요.'),
 });
 
-export default function Book() {
+export default function BookPage() {
   const navigate = useNavigate();
   const { nickname } = useParams();
   const [searchParams] = useSearchParams();

@@ -31,7 +31,7 @@ interface ReviewFormValues {
   deleteFiles: string[];
 }
 
-export default function Review() {
+export default function ReviewPage() {
   const { id: reservationId } = useParams();
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement | null>(null);

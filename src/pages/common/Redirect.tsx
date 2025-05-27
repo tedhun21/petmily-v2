@@ -12,7 +12,7 @@ import Loading from '@components/Loading';
 import { toast } from 'react-toastify';
 import { API_URL } from 'config';
 
-export default function Redirect() {
+export default function RedirectPage() {
   const navigate = useNavigate();
   const urlParams = new URLSearchParams(window.location.search);
 
