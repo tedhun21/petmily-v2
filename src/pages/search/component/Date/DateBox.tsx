@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 
-import { AddText, InputDiv, Label, Modal, Wrapper, XButton } from '../SearchBox';
+import { AddText, FormValues, InputDiv, Label, Modal, Wrapper, XButton } from '../SearchBox';
 import DateModal from './DateModal';
 import { useFormContext } from 'react-hook-form';
 import dayjs from 'dayjs';
@@ -10,7 +10,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
 import { closeModal, ModalType, openModal } from 'store/modalSlice';
 
-export default function DateBox({ handleSetValue }: any) {
+interface DateBoxProps {
+  handleSetValue: (field: keyof FormValues, value: any) => void;
+}
+
+export default function DateBox({ handleSetValue }: DateBoxProps) {
   const dispatch = useDispatch();
   const { currentModal } = useSelector((state: RootState) => state.modal);
   const container = document.getElementById('container');

@@ -14,8 +14,7 @@ import useSWRMutation from 'swr/mutation';
 import { Notification } from 'types/notification.type';
 import { clearNewNotifications } from 'store/notificationSlice';
 import { useSWRConfig } from 'swr';
-
-const API_URL = process.env.REACT_APP_API_URL;
+import { API_URL } from 'config';
 
 export default function NotiModal() {
   const pageSize = 10;
@@ -134,7 +133,7 @@ export default function NotiModal() {
   return (
     <Background>
       <List ref={listRef}>
-        {notifications.map((notification: any) => (
+        {notifications.map((notification: Notification) => (
           <NotiItem key={notification.id} notification={notification} onReadClick={onReadClick} />
         ))}
 

@@ -3,7 +3,12 @@ import { FaXmark } from 'react-icons/fa6';
 import { FiSearch } from 'react-icons/fi';
 import styled from 'styled-components';
 
-export default function SearchInput({ input, setInput }: any) {
+interface SearchInputProps {
+  input: string;
+  setInput: (value: string) => void;
+}
+
+export default function SearchInput({ input, setInput }: SearchInputProps) {
   const [isFocused, setIsFocused] = useState(false);
 
   const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {

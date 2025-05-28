@@ -3,8 +3,13 @@ import styled from 'styled-components';
 import { Texts18h27 } from 'styles/commonStyle';
 import MyPetsitterSettings from './MyPetistterSetting';
 import MySchedule from './MySchedule';
+import { User } from 'types/user.type';
 
-export default function MyPetsitterProfile({ me }: any) {
+interface MyPetsitterProfileProps {
+  me: User;
+}
+
+export default function MyPetsitterProfile({ me }: MyPetsitterProfileProps) {
   return (
     <PetsitterContainer>
       <article>

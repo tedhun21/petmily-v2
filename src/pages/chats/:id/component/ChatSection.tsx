@@ -13,21 +13,24 @@ import { ChatRoomContext } from './ChatRoomProvider';
 import ChatContainer from './ChatContainer';
 import { SocketContext } from '@components/SocketProvider';
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from 'config';
 
-const API_URL = process.env.REACT_APP_API_URL;
+interface MessageFormValues {
+  message: string;
+}
 
 export default function ChatSection() {
   const navigate = useNavigate();
   const { socket } = useContext(SocketContext);
   const { opponentIds, chatRoom, setChatRoom } = useContext(ChatRoomContext);
 
-  const { register, setValue, handleSubmit } = useForm();
+  const { register, setValue, handleSubmit } = useForm<MessageFormValues>();
 
   // 채팅방 만들기
   const { trigger } = useSWRMutation(opponentIds ? `${API_URL}/chats` : null, posterWithCookie);
 
   // 채팅방이 없을 때는 메세지를 입력하면 채팅방 만들기
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: MessageFormValues) => {
     const { message } = data;
 
     if (!socket) return;
@@ -51,7 +54,7 @@ export default function ChatSection() {
         socket.emit('sendMessage', { chatRoomId: chatRoom.id, message, opponentIds: otherIds });
       }
     }
-    setValue('message', null);
+    setValue('message', '');
   };
 
   return (

@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import useSWR from 'swr';
 
 import styled from 'styled-components';
-import { io } from 'socket.io-client';
 
 import { formatStatus } from 'utils/misc';
 import { fetcherWithCookie } from 'api';
@@ -14,58 +13,39 @@ import DetailReservation from './component/DetailReservation';
 import ProgressButton from './component/ProgressButton';
 import ClientCard from './component/ClientCard';
 import { UserRole } from 'types/user.type';
-import { getCookie } from 'utils/cookie';
 import { CenterContainer } from 'styles/commonStyle';
 import BackHeader from '@components/headers/BackHeader';
+import { SocketContext } from '@components/SocketProvider';
+import { ReservationStatus } from 'types/reservation.type';
+import { API_URL } from 'config';
 
-const API_URL = process.env.REACT_APP_API_URL;
-const SOCKET_URL = process.env.REACT_APP_WEBSOCKET_URL;
-
-export default function Care() {
+export default function CarePage() {
   const { id } = useParams();
 
-  const [socket, setSocket] = useState<any>(null);
+  const { socket } = useContext(SocketContext);
 
   const { data: me } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);
   const { data: reservation, mutate } = useSWR(`${API_URL}/reservations/${id}`, fetcherWithCookie);
 
   // 웹소켓: 예약 상태 변경
   useEffect(() => {
-    const token = getCookie('access_token');
+    if (!me || !socket || !reservation?.id) return;
 
-    if (!token) return;
+    const reservationId = reservation.id.toString();
 
-    if (reservation) {
-      // 웹소켓 연결 설정
-      const socket = io(`${SOCKET_URL}`, { auth: { token } });
+    socket.emit('joinReservation', reservationId);
 
-      // 웹소켓이 연결되면 실행
-      socket.on('connect', () => {
-        // 서버로 joinReservation 이벤트 전송
-        socket.emit('joinReservation', reservation.id?.toString());
-      });
+    const handleStatusUpdate = (updatedStatus: { newStatus: ReservationStatus }) => {
+      const { newStatus } = updatedStatus;
+      mutate((current: { status: ReservationStatus }) => ({ ...current, status: newStatus }), false);
+    };
 
-      // 서버로부터 listenStatus 이벤트 수신
-      socket.on('listenStatus', (updatedStatus) => {
-        const { newStatus } = updatedStatus;
+    socket.off('listenStatus').on('listenStatus', handleStatusUpdate);
 
-        // SWR 캐시 업데이트
-        mutate(async (currentData: typeof reservation) => {
-          // 성공적으로 상태를 업데이트하고 캐시만 업데이트
-          return { ...currentData, status: newStatus };
-        }, false);
-      });
-
-      // 소켓 상태 저장
-      setSocket(socket);
-
-      // 컴포넌트 언마운트 시 웹소켓 연결 해제
-      return () => {
-        socket.off('listenStatus');
-        socket.disconnect();
-      };
-    }
-  }, [reservation]);
+    return () => {
+      socket.off('listenStatus', handleStatusUpdate);
+    };
+  }, [reservation?.id]);
 
   return (
     <Main>
@@ -86,7 +66,7 @@ export default function Care() {
       </Section>
 
       <ButtonContainer>
-        <ProgressButton meRole={me?.role} reservation={reservation} socket={socket} />
+        <ProgressButton meRole={me?.role} reservation={reservation} />
       </ButtonContainer>
     </Main>
   );

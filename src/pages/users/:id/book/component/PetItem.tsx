@@ -2,16 +2,21 @@ import { useFormContext } from 'react-hook-form';
 import styled from 'styled-components';
 
 import { ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
+import { Pet, PetSpecies } from 'types/pet.type';
 
-export default function PetItem({ pet }: any) {
+interface PetItemProps {
+  pet: Pet;
+}
+
+export default function PetItem({ pet }: PetItemProps) {
   const { setValue, watch } = useFormContext();
   const checkedPets = watch('checkedPets') || [];
 
-  const isChecked = checkedPets.some((item: any) => item.id === pet.id);
+  const isChecked = checkedPets.some((item: Pet) => item.id === pet.id);
 
   const handleCheckChange = () => {
     if (isChecked) {
-      const updatedCheckedPets = checkedPets.filter((item: any) => item.id !== pet.id);
+      const updatedCheckedPets = checkedPets.filter((item: Pet) => item.id !== pet.id);
       setValue('checkedPets', updatedCheckedPets);
     } else {
       setValue('checkedPets', [...checkedPets, pet]);
@@ -25,9 +30,9 @@ export default function PetItem({ pet }: any) {
           src={
             pet.photo
               ? `${pet.photo}`
-              : pet.species === 'Dog'
+              : pet.species === PetSpecies.DOG
                 ? '/imgs/DogProfile.png'
-                : pet.species === 'Cat'
+                : pet.species === PetSpecies.CAT
                   ? '/imgs/CatProfile.png'
                   : undefined
           }

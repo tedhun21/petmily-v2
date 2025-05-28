@@ -15,8 +15,7 @@ import { Row } from 'styles/commonStyle';
 import MeButton from './components/MeButton';
 import NotiButton from './components/NotiButton/NotiButton';
 import { ThemeContext } from '@components/ThemeProvider';
-
-const API_URL = process.env.REACT_APP_API_URL;
+import { API_URL } from 'config';
 
 export default function TopHeader() {
   const { isDarkMode, setIsDarkMode } = useContext(ThemeContext);

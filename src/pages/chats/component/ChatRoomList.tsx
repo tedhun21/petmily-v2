@@ -1,13 +1,13 @@
 import { fetcherWithCookie } from 'api';
 import styled from 'styled-components';
 import useSWRInfinite from 'swr/infinite';
-import ChatRoom from './ChatRoom';
+import ChatRoomItem from './ChatRoomItem';
 import Loading from '@components/Loading';
 import { useInView } from 'framer-motion';
 import { useEffect, useRef } from 'react';
 import { CenterContainer } from 'styles/commonStyle';
-
-const API_URL = process.env.REACT_APP_API_URL;
+import { ChatRoom } from 'types/chat.type';
+import { API_URL } from 'config';
 
 export default function ChatRoomList() {
   const pageSize = 20;
@@ -52,7 +52,9 @@ export default function ChatRoomList() {
   return (
     <Main>
       <ul>
-        {data?.map((page) => page?.results?.map((chatRoom: any) => <ChatRoom key={chatRoom.id} chatRoom={chatRoom} />))}
+        {data?.map((page) =>
+          page?.results?.map((chatRoom: ChatRoom) => <ChatRoomItem key={chatRoom.id} chatRoom={chatRoom} />),
+        )}
       </ul>
       {!isEnd && (
         <CenterContainer ref={ref}>

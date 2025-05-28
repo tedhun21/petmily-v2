@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import styled, { css } from 'styled-components';
-import { Message } from 'types/message.type';
+import { Message } from 'types/chat.type';
 import { ImageCentered, RoundedImageWrapper, Texts12h18, Texts14h21, Texts16h24 } from 'styles/commonStyle';
 import {
   formatToLocaleAMPM,

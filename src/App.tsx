@@ -29,66 +29,65 @@ import { styled } from 'styled-components';
 // const QnA = lazy(() => import('@pages/main/QnA'));
 // const NotFound = lazy(() => import('@pages/common/404'));
 
-import Home from '@pages/home/Home';
-import Reviews from '@pages/reviews/Reviews';
+import HomePage from '@pages/home/page';
+import ReviewsPage from '@pages/reviews/page';
+import SearchPage from '@pages/search/page';
+import FaQPage from '@pages/faq/page';
 
-import Login from '@pages/login/Login';
-import Signup from '@pages/login/Signup';
+import LoginPage from '@pages/login/page';
+import SignupPage from '@pages/signup/page';
 
-import Me from '@pages/me/Me';
-import EditMe from '@pages/me/edit/EditMe';
-import CreatePet from '@pages/me/register/CreatePet';
-import EditPet from '@pages/me/editPet/EditPet';
+import MyPage from '@pages/me/page';
+import EditMePage from '@pages/me/edit/page';
+import CreatePetPage from '@pages/me/register/page';
+import EditPetPage from '@pages/me/editPet/page';
 
-import Cares from '@pages/cares/Cares';
-import Care from '@pages/cares/:id/Care';
+import CaresPage from '@pages/cares/page';
+import CarePage from '@pages/cares/:id/page';
+import Maps from '@pages/cares/:id/maps/Maps';
+import ReviewPage from '@pages/cares/:id/review/page';
+import JournalPage from '@pages/cares/:id/journal/page';
 
-import Search from '@pages/search/Search';
-import FaQ from '@pages/home/FaQ';
-import Profile from '@pages/users/:id/Profile';
+import ProfilePage from '@pages/users/:id/page';
+import BookPage from '@pages/users/:id/book/page';
 
-import Chats from '@pages/chats/Chats';
-import Chat from '@pages/chats/:id/Chat';
+import ChatsPage from '@pages/chats/page';
+import ChatPage from '@pages/chats/:id/page';
 
-import NotFound from '@pages/common/404';
+import NotFoundPage from '@pages/common/NotFound';
 
 import { SWRConfig } from 'swr';
 
-import Redirect from '@pages/login/Redirect';
-import Review from '@pages/cares/:id/review/Review';
-import Journal from '@pages/cares/:id/journal/Journal';
-import Book from '@pages/users/:id/book/Book';
+import RedirectPage from '@pages/common/Redirect';
 
-import GlobalStyle from 'styles/Globalstyle';
-
-import Maps from '@pages/cares/:id/maps/Maps';
 import SocketProvider from '@components/SocketProvider';
 import ThemeProvider from '@components/ThemeProvider';
+import GlobalStyle from 'styles/Globalstyle';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/">
-      <Route path="" element={<Home />} />
-      <Route path="reviews" element={<Reviews />} />
-      <Route path="search" element={<Search />} />
-      <Route path="cares" element={<Cares />} />
-      <Route path="login" element={<Login />} />
-      <Route path="signup" element={<Signup />} />
-      <Route path="auth/connect/google/callback" element={<Redirect />} />
-      <Route path="me" element={<Me />} />
-      <Route path="me/edit" element={<EditMe />} />
-      <Route path="me/register" element={<CreatePet />} />
-      <Route path="me/:petId/edit" element={<EditPet />} />
-      <Route path="faq" element={<FaQ />} />
-      <Route path="cares/:id" element={<Care />} />
-      <Route path="cares/:id/review" element={<Review />} />
-      <Route path="cares/:id/journal" element={<Journal />} />
+      <Route path="" element={<HomePage />} />
+      <Route path="reviews" element={<ReviewsPage />} />
+      <Route path="search" element={<SearchPage />} />
+      <Route path="cares" element={<CaresPage />} />
+      <Route path="login" element={<LoginPage />} />
+      <Route path="signup" element={<SignupPage />} />
+      <Route path="auth/connect/google/callback" element={<RedirectPage />} />
+      <Route path="me" element={<MyPage />} />
+      <Route path="me/edit" element={<EditMePage />} />
+      <Route path="me/register" element={<CreatePetPage />} />
+      <Route path="me/:petId/edit" element={<EditPetPage />} />
+      <Route path="faq" element={<FaQPage />} />
+      <Route path="cares/:id" element={<CarePage />} />
+      <Route path="cares/:id/review" element={<ReviewPage />} />
+      <Route path="cares/:id/journal" element={<JournalPage />} />
       <Route path="cares/:id/maps" element={<Maps />} />
-      <Route path="users/:nickname" element={<Profile />} />
-      <Route path="users/:nickname/book" element={<Book />} />
-      <Route path="chats" element={<Chats />} />
-      <Route path="chats/:id" element={<Chat />} />
-      <Route path="*" element={<NotFound />} />
+      <Route path="users/:nickname" element={<ProfilePage />} />
+      <Route path="users/:nickname/book" element={<BookPage />} />
+      <Route path="chats" element={<ChatsPage />} />
+      <Route path="chats/:id" element={<ChatPage />} />
+      <Route path="*" element={<NotFoundPage />} />
     </Route>,
   ),
 );

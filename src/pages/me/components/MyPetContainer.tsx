@@ -12,7 +12,7 @@ import PetmilyCard from './PetmilyCard';
 import { fetcherWithCookie } from 'api';
 
 import Loading from '@components/Loading';
-const API_URL = process.env.REACT_APP_API_URL;
+import { API_URL } from 'config';
 
 export default function MyPetContainer() {
   const ref = useRef(null);

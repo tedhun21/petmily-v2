@@ -1,12 +1,14 @@
 import { CoreType } from './common.type';
+import { Journal } from './journal.type';
 import { Pet } from './pet.type';
-import { User } from './user.type';
+import { Review } from './review.type';
+import { Petsitter, User } from './user.type';
 
-export enum Status {
-  PENDING = 'Pending',
-  CANCELED = 'Canceled',
-  ACCEPTED = 'Accepted',
-  COMPLETED = 'Completed',
+export enum ReservationStatus {
+  PENDING = 'pending',
+  CANCELED = 'canceled',
+  ACCEPTED = 'accepted',
+  COMPLETED = 'completed',
 }
 
 export interface Reservation extends CoreType {
@@ -16,9 +18,12 @@ export interface Reservation extends CoreType {
   address: string;
   detailAddress: string;
   zipcode: string;
-  status: Status;
+  status: ReservationStatus;
   client: User;
-  Petsitter: User;
+  petsitter: Petsitter;
   body: string;
   pets: Pet[];
+
+  review?: Review;
+  journal?: Journal;
 }

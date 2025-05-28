@@ -9,7 +9,7 @@ import useSWR from 'swr';
 import { fetcher, fetcherWithCookie, updaterWithCookie } from 'api';
 import { UserRole } from 'types/user.type';
 import { PiCatBold, PiDogBold } from 'react-icons/pi';
-import { formatKrDays, timeRange } from 'utils/date';
+import { timeRange, weekdays } from 'utils/date';
 import { MdOutlineRateReview } from 'react-icons/md';
 import { Column, Divider, ImageCentered, RoundedImageWrapper, Row, Texts18h27, Title } from 'styles/commonStyle';
 
@@ -20,8 +20,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import BackHeader from '@components/headers/BackHeader';
 import { FaHeart, FaRegHeart } from 'react-icons/fa6';
 import useSWRMutation from 'swr/mutation';
-
-const API_URL = process.env.REACT_APP_API_URL;
+import { API_URL } from 'config';
 
 interface IDateForm {
   date: string | null;
@@ -29,7 +28,7 @@ interface IDateForm {
   endTime: string | null;
 }
 
-export default function Profile() {
+export default function ProfilePage() {
   const { nickname } = useParams();
   const methods = useForm<IDateForm>({
     defaultValues: {
@@ -141,9 +140,10 @@ export default function Profile() {
                 <CardItem>
                   <span>가능 요일</span>
                   <DayList>
-                    {userData.possibleDays.map((day: any, index: number) => (
-                      <DayItem key={index}>{formatKrDays(day)}</DayItem>
-                    ))}
+                    {userData.possibleDays.map((day: any, index: number) => {
+                      const matchedDay = weekdays.find((weekday) => weekday.value === day);
+                      return <DayItem key={index}>{matchedDay?.label}</DayItem>;
+                    })}
                   </DayList>
                 </CardItem>
               )}

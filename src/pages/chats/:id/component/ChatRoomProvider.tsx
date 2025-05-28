@@ -1,13 +1,12 @@
 import { createContext, useEffect, useState } from 'react';
-import { ChatRoom } from 'types/message.type';
+import { ChatRoom } from 'types/chat.type';
 import { fetcherWithCookie, updaterWithCookie } from 'api';
 import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { removeMessages } from 'store/messageSlice';
-
-const API_URL = process.env.REACT_APP_API_URL;
+import { API_URL } from 'config';
 
 interface ContextProps {
   chatRoom: ChatRoom | null;

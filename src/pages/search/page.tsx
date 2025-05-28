@@ -2,7 +2,7 @@ import NavHeader from '@components/headers/NavHeader';
 import Results from './component/Results';
 import SearchBox from './component/SearchBox';
 
-export default function Search() {
+export default function SearchPage() {
   return (
     <>
       <NavHeader />

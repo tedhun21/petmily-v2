@@ -6,9 +6,14 @@ import 'swiper/css/pagination';
 import { Mousewheel, Pagination } from 'swiper/modules';
 import styled from 'styled-components';
 import { Column, ImageCentered, RoundedImageWrapper, Row } from 'styles/commonStyle';
-import { PetInfoCapsule, PetInfoContainer } from '@pages/cares/:id/Care';
+import { PetInfoCapsule, PetInfoContainer } from '@pages/cares/:id/page';
+import { Pet, PetSpecies } from 'types/pet.type';
 
-export default function PetContainer({ pets }: any) {
+interface PetContainerProps {
+  pets: Pet[];
+}
+
+export default function PetContainer({ pets }: PetContainerProps) {
   return (
     <CustomSwiper
       direction={'vertical'}
@@ -19,7 +24,7 @@ export default function PetContainer({ pets }: any) {
       }}
       modules={[Mousewheel, Pagination]}
     >
-      {pets?.map((pet: any) => (
+      {pets?.map((pet: Pet) => (
         <SwiperSlide key={pet.id}>
           <PetCard>
             <PetImageName>
@@ -28,9 +33,9 @@ export default function PetContainer({ pets }: any) {
                   src={
                     pet.photo
                       ? `${pet.photo}`
-                      : pet.species === 'Dog'
+                      : pet.species === PetSpecies.DOG
                         ? '/imgs/DogProfile.png'
-                        : pet.species === 'Cat'
+                        : pet.species === PetSpecies.CAT
                           ? '/imgs/CatProfile.png'
                           : undefined
                   }

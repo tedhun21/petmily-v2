@@ -1,20 +1,20 @@
 import { CoreType } from './common.type';
 
-export enum Gender {
-  MALE = 'Male',
-  FEMALE = 'Female',
+export enum PetGender {
+  MALE = 'male',
+  FEMALE = 'female',
 }
 
-export enum Species {
-  DOG = 'Dog',
-  CAT = 'Cat',
+export enum PetSpecies {
+  DOG = 'dog',
+  CAT = 'cat',
 }
 
 export interface Pet extends CoreType {
   id: number;
   name: string;
-  gender: Gender;
-  species: Species;
+  gender: PetGender;
+  species: PetSpecies;
   breed: string;
   age: number;
   weight: number;

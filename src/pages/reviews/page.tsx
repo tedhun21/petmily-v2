@@ -4,7 +4,7 @@ import { Title } from 'styles/commonStyle';
 import PhotoReviews from './component/PhotoReviews';
 import NavHeader from '@components/headers/NavHeader';
 
-export default function Reviews() {
+export default function ReviewsPage() {
   return (
     <>
       <NavHeader />

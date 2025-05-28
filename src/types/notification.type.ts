@@ -1,6 +1,7 @@
 import { CoreType } from './common.type';
+import { User } from './user.type';
 
-enum NotificationType {
+export enum NotificationType {
   RESERVATION_UPDATE = 'reservation_update',
 }
 
@@ -10,8 +11,8 @@ interface NotificationReads {
 }
 
 export interface Notification extends CoreType {
-  message: string;
+  sender: User;
   type: NotificationType;
-  senderId: number;
   readStatus: NotificationReads[];
+  metadata: Record<string, any>;
 }

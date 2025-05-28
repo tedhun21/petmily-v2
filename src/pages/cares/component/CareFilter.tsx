@@ -1,29 +1,28 @@
 import dayjs from 'dayjs';
 import styled from 'styled-components';
 import { Row } from 'styles/commonStyle';
-import { Status } from 'types/reservation.type';
+import { ReservationStatus } from 'types/reservation.type';
 import useSWR from 'swr';
 import { fetcherWithCookie } from 'api';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
 import { setFilter, setMonth } from 'store/contextSlice';
+import { API_URL } from 'config';
 
 export type FilterType = {
   id: number;
   label: '전체' | '대기' | '예정' | '완료' | '취소';
-  value: 'all' | Status;
+  value: 'all' | ReservationStatus;
 };
 
 const filters: FilterType[] = [
   { id: 1, label: '전체', value: 'all' },
-  { id: 2, label: '대기', value: Status.PENDING },
-  { id: 3, label: '예정', value: Status.ACCEPTED },
-  { id: 4, label: '완료', value: Status.COMPLETED },
-  { id: 5, label: '취소', value: Status.CANCELED },
+  { id: 2, label: '대기', value: ReservationStatus.PENDING },
+  { id: 3, label: '예정', value: ReservationStatus.ACCEPTED },
+  { id: 4, label: '완료', value: ReservationStatus.COMPLETED },
+  { id: 5, label: '취소', value: ReservationStatus.CANCELED },
 ];
-
-const API_URL = process.env.REACT_APP_API_URL;
 
 export default function CareFilter() {
   const dispatch = useDispatch();
@@ -33,11 +32,11 @@ export default function CareFilter() {
 
   const { data: monthData } = useSWR(`${API_URL}/reservations/month`, fetcherWithCookie);
 
-  const handleFilterClick = (e: any) => {
+  const handleFilterClick = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setFilter(e.target.value));
   };
 
-  const handleMonthChange = (e: any) => {
+  const handleMonthChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch(setMonth(e.target.value));
   };
 
@@ -47,7 +46,7 @@ export default function CareFilter() {
         <StatusFilters>
           {filters.map((el) => (
             <FilterRadio key={el.id}>
-              <input type="radio" id={`filter-${el.id}`} value={el.value} onClick={handleFilterClick} />
+              <input type="radio" id={`filter-${el.id}`} value={el.value} onChange={handleFilterClick} />
               <CustomLabel htmlFor={`filter-${el.id}`} $isSelected={filter === el.value}>
                 {el.label}
               </CustomLabel>
@@ -57,6 +56,7 @@ export default function CareFilter() {
 
         <SelectWrapper>
           <StyledSelect value={month} onChange={handleMonthChange}>
+            <option value="">월 선택</option>
             {monthData && monthData.length > 0 ? (
               monthData.map((month: string) => (
                 <option key={month} value={month}>

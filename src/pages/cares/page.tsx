@@ -3,7 +3,7 @@ import CareContainer from './component/CareContainer';
 import NavHeader from '@components/headers/NavHeader';
 import CareFilter from '@pages/cares/component/CareFilter';
 
-export default function Cares() {
+export default function CaresPage() {
   return (
     <>
       <NavHeader />

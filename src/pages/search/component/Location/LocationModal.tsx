@@ -10,12 +10,15 @@ import SuggestLocations from './SuggestLocations';
 import LocationCapsuleContainer from './LocationCapsuleContainer';
 import { useEffect, useState } from 'react';
 import Loading from '@components/Loading';
-import { ModalLayOut, HalfModalLayOut } from '@pages/search/component/SearchBox';
+import { ModalLayOut, HalfModalLayOut, FormValues } from '@pages/search/component/SearchBox';
 import { getRecentSearches } from 'utils/localStorage';
+import { API_URL } from 'config';
 
-const API_URL = process.env.REACT_APP_API_URL;
+interface LocationModalProps {
+  handleSetValue: (field: keyof FormValues, value: any) => void;
+}
 
-export default function LocationModal({ handleSetValue }: any) {
+export default function LocationModal({ handleSetValue }: LocationModalProps) {
   const { getValues, watch } = useFormContext();
   // 입력값을 가져오고 디바운스 처리 (빈 문자열이면 '')
   const inputValue = watch('location') || '';

@@ -6,8 +6,13 @@ import { FaChevronRight } from 'react-icons/fa6';
 
 import { dateAgo, dayFormat, timeRange } from 'utils/date';
 import { Texts12h18, Texts18h27 } from 'styles/commonStyle';
+import { Reservation } from 'types/reservation.type';
 
-export default function DetailReservation({ reservation }: any) {
+interface DetailReservationProps {
+  reservation: Reservation;
+}
+
+export default function DetailReservation({ reservation }: DetailReservationProps) {
   return (
     <DetailRservation>
       <Wrapper>

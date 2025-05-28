@@ -21,10 +21,9 @@ import {
 import { useNavigate, useParams } from 'react-router-dom';
 import useSWR from 'swr';
 import HoverRating from '@components/HoverRating';
+import { API_URL } from 'config';
 
-const API_URL = process.env.REACT_APP_API_URL;
-
-interface ReviewFormData {
+interface ReviewFormValues {
   star: number;
   body: string;
   files: File[];
@@ -32,12 +31,12 @@ interface ReviewFormData {
   deleteFiles: string[];
 }
 
-export default function Review() {
+export default function ReviewPage() {
   const { id: reservationId } = useParams();
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const { register, setValue, watch, handleSubmit } = useForm<ReviewFormData>({
+  const { register, setValue, watch, handleSubmit } = useForm<ReviewFormValues>({
     defaultValues: { star: 5, body: '', files: [], photos: [], deleteFiles: [] },
   });
   // 선택한 사진
@@ -119,7 +118,7 @@ export default function Review() {
     setValue('deleteFiles', [...watch('deleteFiles'), removedImageUrl]);
   };
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: ReviewFormValues) => {
     const { star, body, files, deleteFiles } = data;
 
     if (review) {

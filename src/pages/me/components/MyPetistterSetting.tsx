@@ -1,7 +1,7 @@
 import { Texts14h21 } from 'styles/commonStyle';
 import { PiCatBold, PiDogBold } from 'react-icons/pi';
 import styled from 'styled-components';
-import { Species } from 'types/pet.type';
+import { PetSpecies } from 'types/pet.type';
 import { timeRange, weekdays } from 'utils/date';
 
 export default function MyPetsitterSettings({ petsitter }: any) {
@@ -11,11 +11,11 @@ export default function MyPetsitterSettings({ petsitter }: any) {
         <InfoItem>
           <span>케어 가능 동물</span>
           <ItemWrapper>
-            {petsitter.possiblePetSpecies.map((species: Species) => (
+            {petsitter.possiblePetSpecies.map((species: PetSpecies) => (
               <ItemLabel key={species}>
-                {species === 'Dog' ? (
+                {species === PetSpecies.DOG ? (
                   <PiDogBold size="20px" color="white" />
-                ) : species === 'Cat' ? (
+                ) : species === PetSpecies.CAT ? (
                   <PiCatBold size="20px" color="white" />
                 ) : null}
               </ItemLabel>
@@ -39,7 +39,7 @@ export default function MyPetsitterSettings({ petsitter }: any) {
           <ItemWrapper>
             {petsitter.possibleDays.map((day: string) => {
               const matchedDay = weekdays.find((weekday) => weekday.value === day);
-              return <ItemLabel key={day}>{matchedDay ? matchedDay.label : day}</ItemLabel>;
+              return <ItemLabel key={day}>{matchedDay?.label}</ItemLabel>;
             })}
           </ItemWrapper>
         </InfoItem>

@@ -1,8 +1,13 @@
 import { ImageCentered, RoundedImageWrapper, Row, Texts18h27 } from 'styles/commonStyle';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { User } from 'types/user.type';
 
-export default function ClientCard({ client }: any) {
+interface ClientCardProps {
+  client: User;
+}
+
+export default function ClientCard({ client }: ClientCardProps) {
   const opponentIds = [client?.id];
   const params = new URLSearchParams();
   params.append('opponentIds', opponentIds.join(',')); // opponentIds=1,2,3

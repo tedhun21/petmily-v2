@@ -6,7 +6,7 @@ import ChatSection from './component/ChatSection';
 import { useParams, useSearchParams } from 'react-router-dom';
 import MessageProvider from './component/MessageProvider';
 
-export default function Chat() {
+export default function ChatPage() {
   const { id: chatRoomId } = useParams();
   const [searchParams] = useSearchParams();
 

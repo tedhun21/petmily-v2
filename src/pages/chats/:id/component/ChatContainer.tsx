@@ -9,6 +9,7 @@ import { ChatRoomContext } from './ChatRoomProvider';
 
 import ChatList from './ChatList';
 import { MessageContext } from './MessageProvider';
+import { Message } from 'types/chat.type';
 
 export default function ChatContainer() {
   const { chatRoom } = useContext(ChatRoomContext);
@@ -20,7 +21,7 @@ export default function ChatContainer() {
   const [isFirstRender, setIsFirstRender] = useState(true);
   const [showDownButton, setShowDownButton] = useState<boolean>(false);
   const [showNewestMessage, setShowNewestMessage] = useState<boolean>(false);
-  const [newestMessage, setNewestMessage] = useState<any>(null);
+  const [newestMessage, setNewestMessage] = useState<Message | null>(null);
 
   const me = chatRoom?.chatMembers?.me;
   const others = chatRoom?.chatMembers?.others;

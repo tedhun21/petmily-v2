@@ -1,22 +1,29 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import styled from 'styled-components';
 
 import Loading from '@components/Loading';
 import { BlueButton } from 'styles/commonStyle';
-import { Status } from 'types/reservation.type';
+import { Reservation, ReservationStatus } from 'types/reservation.type';
 import { UserRole } from 'types/user.type';
+import { SocketContext } from '@components/SocketProvider';
 
-export default function ProgressButton({ meRole, reservation, socket }: any) {
+interface ProgressButtonProps {
+  meRole: UserRole;
+  reservation: Reservation;
+}
+
+export default function ProgressButton({ meRole, reservation }: ProgressButtonProps) {
   const navigate = useNavigate();
+  const { socket } = useContext(SocketContext);
   const [isLoading, setIsLoading] = useState(false);
 
   // 예약 수락
   const handleAccept = () => {
     setIsLoading(true);
-    if (reservation) {
-      socket.emit('updateStatus', { reservationId: reservation.id, newStatus: Status.ACCEPTED });
+    if (reservation && socket) {
+      socket.emit('updateStatus', { reservationId: reservation.id, newStatus: ReservationStatus.ACCEPTED });
     }
     setIsLoading(false);
   };
@@ -24,8 +31,8 @@ export default function ProgressButton({ meRole, reservation, socket }: any) {
   // 예약 취소
   const handleCancel = () => {
     setIsLoading(true);
-    if (reservation) {
-      socket.emit('updateStatus', { reservationId: reservation.id, newStatus: Status.CANCELED });
+    if (reservation && socket) {
+      socket.emit('updateStatus', { reservationId: reservation.id, newStatus: ReservationStatus.CANCELED });
     }
 
     setIsLoading(false);
@@ -43,22 +50,22 @@ export default function ProgressButton({ meRole, reservation, socket }: any) {
     if (meRole === UserRole.PETSITTER) {
       // 펫시터
       switch (reservation?.status) {
-        case Status.PENDING:
+        case ReservationStatus.PENDING:
           return (
             <Button disabled={isLoading} onClick={handleAccept}>
               {isLoading ? <Loading /> : '수락'}
             </Button>
           );
-        case Status.ACCEPTED:
+        case ReservationStatus.ACCEPTED:
           // CONFIRMED => "FINISHED"
           return (
             <Button disabled={isLoading} onClick={handleCancel}>
               {isLoading ? <Loading /> : '취소'}
             </Button>
           );
-        case Status.CANCELED:
+        case ReservationStatus.CANCELED:
           return <Button disabled>취소됨</Button>;
-        case Status.COMPLETED:
+        case ReservationStatus.COMPLETED:
           return (
             <>
               <Button onClick={handleLinkJournal}>{reservation?.journal ? '케어일지 수정' : '케어일지 작성'}</Button>
@@ -71,22 +78,22 @@ export default function ProgressButton({ meRole, reservation, socket }: any) {
     } else if (meRole === UserRole.CLIENT) {
       // 고객
       switch (reservation?.status) {
-        case Status.PENDING:
+        case ReservationStatus.PENDING:
           // "PENDING" => "CANCELED"
           return (
             <Button disabled={isLoading} onClick={handleCancel}>
               {isLoading ? <Loading /> : '취소'}
             </Button>
           );
-        case Status.ACCEPTED:
+        case ReservationStatus.ACCEPTED:
           return (
             <Button disabled onClick={handleCancel}>
               {isLoading ? <Loading /> : '진행중'}
             </Button>
           );
-        case Status.CANCELED:
+        case ReservationStatus.CANCELED:
           return <Button disabled>취소됨</Button>;
-        case Status.COMPLETED:
+        case ReservationStatus.COMPLETED:
           return (
             <>
               <Button onClick={handleLinkReview}>{reservation?.review ? '후기 수정' : '후기 작성'}</Button>

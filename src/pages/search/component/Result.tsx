@@ -3,8 +3,14 @@ import { MdOutlineRateReview } from 'react-icons/md';
 import { PiCatBold, PiDogBold, PiStarFill } from 'react-icons/pi';
 import { Column, ImageCentered, RoundedImageWrapper, Row } from 'styles/commonStyle';
 import { Link } from 'react-router-dom';
+import { Petsitter } from 'types/user.type';
+import { PetSpecies } from 'types/pet.type';
 
-export default function Result({ petsitter }: any) {
+interface ResultProps {
+  petsitter: Petsitter;
+}
+
+export default function Result({ petsitter }: ResultProps) {
   return (
     <Card to={`/users/${petsitter.nickname}`}>
       <PetsitterImage>
@@ -28,9 +34,9 @@ export default function Result({ petsitter }: any) {
         </StarReviewWrapper>
 
         <PetList>
-          {petsitter.possiblePetSpecies.map((species: any) => (
+          {(petsitter?.possiblePetSpecies ?? []).map((species: PetSpecies) => (
             <PetCapsule key={species}>
-              {species === 'Dog' ? <PiDogBold /> : species === 'Cat' ? <PiCatBold /> : null}
+              {species === PetSpecies.DOG ? <PiDogBold /> : species === PetSpecies.CAT ? <PiCatBold /> : null}
             </PetCapsule>
           ))}
         </PetList>

@@ -12,8 +12,7 @@ import CareCard from './CareCard';
 import { getCookie } from 'utils/cookie';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store';
-
-const API_URL = process.env.REACT_APP_API_URL;
+import { API_URL } from 'config';
 
 export default function CareContainer() {
   const ref = useRef(null);

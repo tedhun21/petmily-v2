@@ -13,6 +13,7 @@ import GoogleOAuthButton from '@components/buttons/OAuthButton';
 import Loading from '@components/Loading';
 import { BlueButton, Column, ErrorMessage, Input } from 'styles/commonStyle';
 import { toast } from 'react-toastify';
+import { API_URL } from 'config';
 
 const schema = yup.object().shape({
   email: yup.string().email('이메일 형식을 지켜주세요.').required('ID는 필수입니다.'),
@@ -24,9 +25,7 @@ const schema = yup.object().shape({
 });
 type IFormLoginInputs = yup.InferType<typeof schema>;
 
-const API_URL = process.env.REACT_APP_API_URL;
-
-export default function Login() {
+export default function LoginPage() {
   const navigate = useNavigate();
 
   const {

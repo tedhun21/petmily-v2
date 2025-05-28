@@ -4,13 +4,17 @@ import { createPortal } from 'react-dom';
 
 import { FaXmark } from 'react-icons/fa6';
 
-import { BoxInput, InputDiv, Label, Modal, Wrapper, XButton } from '../SearchBox';
+import { BoxInput, FormValues, InputDiv, Label, Modal, Wrapper, XButton } from '../SearchBox';
 import LocationModal from './LocationModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { closeModal, ModalType, openModal } from 'store/modalSlice';
 import { RootState } from 'store';
 
-export default function LocationBox({ handleSetValue }: any) {
+interface LocationBoxProps {
+  handleSetValue: (field: keyof FormValues, value: any) => void;
+}
+
+export default function LocationBox({ handleSetValue }: LocationBoxProps) {
   const dispatch = useDispatch();
   const { currentModal } = useSelector((state: RootState) => state.modal);
   const container = document.getElementById('container');

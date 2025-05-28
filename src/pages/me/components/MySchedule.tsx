@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import useSWRInfinite from 'swr/infinite';
 import { CenterContainer } from 'styles/commonStyle';
 
-const API_URL = process.env.REACT_APP_API_URL;
 import { fetcherWithCookie } from 'api';
 import Loading from '@components/Loading';
 import { useEffect, useRef } from 'react';
 import { useInView } from 'framer-motion';
+import { API_URL } from 'config';
 
 export default function MySchedule() {
   const ref = useRef(null);

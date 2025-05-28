@@ -9,14 +9,15 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { Modal } from '@mui/material';
-
-import { SubmitButton } from './Login';
-import { poster } from 'api';
-import { Column, ErrorMessage, Input, Texts16h24, Texts20h30 } from 'styles/commonStyle';
 import { toast } from 'react-toastify';
+
+import { poster } from 'api';
+import { API_URL } from 'config';
 import Loading from '@components/Loading';
-import CustomDaumPostcode from '@components/CustomDaumPostcode';
+import { SubmitButton } from '@pages/login/page';
 import BackHeader from '@components/headers/BackHeader';
+import CustomDaumPostcode from '@components/CustomDaumPostcode';
+import { Column, ErrorMessage, Input, Texts16h24, Texts20h30 } from 'styles/commonStyle';
 
 const schema = yup.object().shape({
   username: yup
@@ -50,9 +51,7 @@ const schema = yup.object().shape({
 });
 type IFormSignupInputs = yup.InferType<typeof schema>;
 
-const API_URL = process.env.REACT_APP_API_URL;
-
-export default function Signup() {
+export default function SignupPage() {
   const navigate = useNavigate();
 
   const [isModalOpen, setIsModalOpen] = useState(false);

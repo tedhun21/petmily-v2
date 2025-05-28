@@ -1,10 +1,14 @@
 import { fetcher, imageFetcher } from 'api';
+import { API_URL } from 'config';
 import styled from 'styled-components';
 import useSWR from 'swr';
+import { Reservation } from 'types/reservation.type';
 
-const API_URL = process.env.REACT_APP_API_URL;
+interface MapsProps {
+  reservation: Reservation;
+}
 
-export default function Maps({ reservation }: any) {
+export default function Maps({ reservation }: MapsProps) {
   // 예약에서 latitude와 longitude가 없을 때만 geocode를 요청
 
   const { data: geocode, error: geocodeError } = useSWR(

@@ -6,8 +6,8 @@ import ReviewPhotoCard from './ReviewPhotoCard';
 import Loading from '@components/Loading';
 import { useEffect, useRef } from 'react';
 import { useInView } from 'framer-motion';
+import { API_URL } from 'config';
 
-const API_URL = process.env.REACT_APP_API_URL;
 export default function PhotoReviews() {
   const ref = useRef(null);
   const isInView = useInView(ref);

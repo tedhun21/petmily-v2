@@ -9,10 +9,10 @@ import { fetcherWithCookie } from 'api';
 import { ImageCentered, RoundedImageWrapper, Texts14h21 } from 'styles/commonStyle';
 import MyPetsitterProfile from './components/MyPetsitterProfile';
 import BackHeader from '@components/headers/BackHeader';
+import { UserRole } from 'types/user.type';
+import { API_URL } from 'config';
 
-const API_URL = process.env.REACT_APP_API_URL;
-
-export default function Me() {
+export default function MyPage() {
   const { data: me } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);
 
   return (
@@ -42,7 +42,11 @@ export default function Me() {
           </EditLink>
         </MyProfileContianer>
 
-        {me?.role === 'Client' ? <MyPetmily /> : <MyPetsitterProfile me={me} />}
+        {me?.role === UserRole.CLIENT ? (
+          <MyPetmily />
+        ) : me?.role === UserRole.PETSITTER ? (
+          <MyPetsitterProfile me={me} />
+        ) : null}
       </MypageContainer>
     </>
   );

@@ -10,10 +10,9 @@ import { setCookie } from 'utils/cookie';
 import useSWRMutation from 'swr/mutation';
 import Loading from '@components/Loading';
 import { toast } from 'react-toastify';
+import { API_URL } from 'config';
 
-const API_URL = process.env.REACT_APP_API_URL;
-
-export default function Redirect() {
+export default function RedirectPage() {
   const navigate = useNavigate();
   const urlParams = new URLSearchParams(window.location.search);
 

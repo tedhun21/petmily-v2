@@ -16,7 +16,7 @@ import { RootState } from 'store';
 import { closeModal, openModal } from 'store/modalSlice';
 import { isSearchModal } from 'utils/misc';
 
-type FormValues = {
+export type FormValues = {
   location: string | null;
   date: string | null;
   startTime: string | null;

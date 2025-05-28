@@ -10,3 +10,13 @@ export interface PaginationType {
   total: number;
   totalPages: number;
 }
+
+export enum DayOfWeekType {
+  MON = 'mon',
+  TUE = 'tue',
+  WED = 'wed',
+  THU = 'thu',
+  FRI = 'fri',
+  SAT = 'sat',
+  SUN = 'sun',
+}
