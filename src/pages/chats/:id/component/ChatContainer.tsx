@@ -25,11 +25,10 @@ export default function ChatContainer() {
 
   const me = chatRoom?.chatMembers?.me;
   const others = chatRoom?.chatMembers?.others;
-  const senderId = newestMessage?.sender?.id;
-  const myMessage = senderId === me?.id;
-  const newMessagesMaster = myMessage ? me : others?.find((user) => user.id === senderId);
+  const otherNewMessageUser = newestMessage && others?.find((other) => other.id === newestMessage.sender?.id)?.user;
 
   const showDefaultDownButton = !newestMessage && showDownButton;
+  // 바텀 새 매시지 팝업 (새로운 메시지 온 상태 && 스크롤 상태 && 바텀이 안 보이는 상태 && 내 매시지가 아님 )
   const showNewMessageDownButton = newestMessage && showNewestMessage && !isBottomInView;
 
   const scrollToBottom = () => {
@@ -57,7 +56,7 @@ export default function ChatContainer() {
   // 바닥에 포커스 안 되어있을 때, 내가 작성하면 바닥에 포커스
   useEffect(() => {
     if (newestMessage) {
-      if (isBottomInView || myMessage) {
+      if (isBottomInView || !otherNewMessageUser) {
         scrollToBottom();
         setShowNewestMessage(false); // 내 메시지거나 바닥이면 새 메시지 안 보여줌
       } else {
@@ -125,10 +124,10 @@ export default function ChatContainer() {
                 <NewMessageUser>
                   <NewMessageUserPhoto>
                     <ImageCentered
-                      src={newMessagesMaster?.photo ? newMessagesMaster.photo : '/imgs/DefaultUserProfile.jpg'}
+                      src={otherNewMessageUser?.photo ? otherNewMessageUser.photo : '/imgs/DefaultUserProfile.jpg'}
                     />
                   </NewMessageUserPhoto>
-                  <span>{newMessagesMaster?.nickname}</span>
+                  <span>{otherNewMessageUser?.nickname}</span>
                   <NewMessage>{newestMessage.content}</NewMessage>
                 </NewMessageUser>
                 <div style={{ padding: '8px' }}>

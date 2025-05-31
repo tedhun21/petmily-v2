@@ -21,6 +21,8 @@ export default function ChatList() {
     return [...messages].reverse();
   }, [messages]);
 
+  const membersCount = (chatRoom?.chatMembers.others?.length ?? 0) + 1;
+
   // 메세지 id 제일 큰거 설정
   useEffect(() => {
     if (messages.length > 0 && chatRoom?.chatMembers.me) {
@@ -67,7 +69,7 @@ export default function ChatList() {
             isMyMessage={isMyMessage}
             previousMessage={previousMessage}
             nextMessage={nextMessage}
-            membersCount={chatRoom?.chatMembers?.membersCount ?? 0}
+            membersCount={membersCount ?? 0}
           />
         );
       })}

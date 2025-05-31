@@ -4,14 +4,14 @@ import { RootState } from 'store';
 
 import styled from 'styled-components';
 import { Column, ImageCentered, RoundedImageWrapper, Row, Texts12h18 } from 'styles/commonStyle';
-import { Message } from 'types/chat.type';
+import { ChatMember, ChatRoom, Message } from 'types/chat.type';
 import { updatedAtAgo } from 'utils/date';
 
-// interface ChatRoomItemProps {
-//   chatRoom: ChatRoom;
-// }
+interface ChatRoomItemProps {
+  chatRoom: ChatRoom;
+}
 
-export default function ChatRoomItem({ chatRoom }: any) {
+export default function ChatRoomItem({ chatRoom }: ChatRoomItemProps) {
   const { newMessages } = useSelector((state: RootState) => state.message);
 
   const others = chatRoom.chatMembers.others;
@@ -28,24 +28,20 @@ export default function ChatRoomItem({ chatRoom }: any) {
   const lastMessage = newestMessage || chatRoom.lastMessage;
 
   // 읽지 않은 메세지 개수 (원래 unreadCount 값 + 새로 들어온 메세지 개수)
-  const unreadCount = (chatRoom.chatMembers.unreadCount || 0) + newChatRoomMessages?.length;
+  const unreadCount = (chatRoom.chatMembers.me?.unreadCount || 0) + newChatRoomMessages?.length;
 
   return (
     <ChatRoomLink to={`/chats/${chatRoom.id}`}>
       <PhotoName>
         <Photo>
-          {others.map((other: any) => (
+          {others?.map((other: ChatMember) => (
             <MemberPhoto key={other.id}>
-              <ImageCentered src={`${other.photo ?? '/imgs/DefaultUserProfile.jpg'}`} />
+              <ImageCentered src={`${other.user.photo ?? '/imgs/DefaultUserProfile.jpg'}`} />
             </MemberPhoto>
           ))}
         </Photo>
         <NameMessageWrapper>
-          <div>
-            {others.map((other: any) => (
-              <span key={other.id}>{other.nickname}</span>
-            ))}
-          </div>
+          <div>{others?.map((other: ChatMember) => <span key={other.id}>{other.user.nickname}</span>)}</div>
           <Texts12h18>{lastMessage.content}</Texts12h18>
         </NameMessageWrapper>
       </PhotoName>

@@ -7,20 +7,19 @@ import { FiMenu } from 'react-icons/fi';
 
 import { ChatRoomContext } from './ChatRoomProvider';
 import { Texts20h30 } from 'styles/commonStyle';
-import { ChatUser } from 'types/chat.type';
 
 export default function ChatHeader() {
   const navigate = useNavigate();
   const { chatRoom } = useContext(ChatRoomContext);
 
-  const othersName = chatRoom?.chatMembers?.others?.map((other: ChatUser) => other.nickname);
+  const others = chatRoom?.chatMembers.others;
 
   return (
     <Header>
       <StyledBackButton onClick={() => navigate(-1)}>
         <FaArrowLeft color="#279EFF" size="24px" />
       </StyledBackButton>
-      <Texts20h30>{othersName?.join(', ')}님</Texts20h30>
+      <Texts20h30>{others?.map((other: any) => other?.nickname)?.join(', ')}</Texts20h30>
       <button>
         <FiMenu size="24px" color="#279EFF" />
       </button>
