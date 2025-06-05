@@ -9,34 +9,28 @@ import {
   shouldShowSenderPhoto,
   shouldShowTime,
 } from 'utils/date';
-import { useEffect, useRef, useContext } from 'react';
+import { useEffect, useRef } from 'react';
 import { useInView } from 'framer-motion';
-import { MessageContext } from './MessageProvider';
 
 interface IProps {
-  index: number;
   message: Message;
   isMyMessage: boolean;
   previousMessage?: Message;
   nextMessage?: Message;
   membersCount: number;
+  onVisible: (message: Message) => void;
 }
 
-export default function ChatMessage({
-  index,
+export default function MessageItem({
   message,
   isMyMessage,
   previousMessage,
   nextMessage,
   membersCount,
+  onVisible,
 }: IProps) {
-  const { setSize } = useContext(MessageContext);
-
   const ref = useRef<HTMLLIElement>(null);
-  const viewRefIndex = 2;
   const isInView = useInView(ref, { once: true });
-
-  const isMoreInView = index === viewRefIndex && isInView;
 
   const showSenderPhoto = shouldShowSenderPhoto(message, previousMessage);
   const showTime = shouldShowTime(message, previousMessage, nextMessage);
@@ -45,12 +39,11 @@ export default function ChatMessage({
 
   const unreadCounts = membersCount > 0 && message.readBy.length > 0 ? membersCount - message.readBy.length : 0;
 
-  // viewRefIndex에 해당하는 메세지가 화면에 보이면 메세지 더 불러오기
   useEffect(() => {
-    if (isMoreInView) {
-      setSize((prev: number) => prev + 1);
+    if (isInView) {
+      onVisible(message);
     }
-  }, [isMoreInView]);
+  }, [isInView]);
 
   return (
     <li ref={ref}>

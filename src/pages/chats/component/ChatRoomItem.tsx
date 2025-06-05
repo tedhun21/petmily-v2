@@ -19,10 +19,8 @@ export default function ChatRoomItem({ chatRoom }: ChatRoomItemProps) {
   // 현재 채팅방의 새로운 메세지만 필터링
   const newChatRoomMessages = newMessages?.filter((msg: Message) => msg.chatRoom.id === chatRoom.id);
 
-  // 최신 메시지 추출 (createdAt이 가장 최신인 메시지)
-  const newestMessage = newChatRoomMessages?.reduce((latest: Message, current: Message) => {
-    return new Date(current.createdAt) > new Date(latest.createdAt) ? current : latest;
-  }, newChatRoomMessages[0]);
+  // 최신 메시지 추출
+  const newestMessage = newChatRoomMessages[0];
 
   // 최신 메세지 내용 (새로운 메세지가 없으면 기존 lastMessage 사용)
   const lastMessage = newestMessage || chatRoom.lastMessage;

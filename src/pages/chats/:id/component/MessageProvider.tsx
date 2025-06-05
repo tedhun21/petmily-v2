@@ -4,8 +4,6 @@ import { ChatRoomContext } from './ChatRoomProvider';
 import { SocketContext } from '@components/SocketProvider';
 import useSWRInfinite from 'swr/infinite';
 import { fetcherWithCookie } from 'api';
-import { useDispatch } from 'react-redux';
-import { removeMessages } from 'store/messageSlice';
 import { API_URL } from 'config';
 
 interface MessageContextType {
@@ -15,9 +13,9 @@ interface MessageContextType {
   setNewMessages: React.Dispatch<React.SetStateAction<Message[]>>;
   setSize: (size: number | ((_size: number) => number)) => Promise<any[] | undefined>;
   isLoading: boolean;
-  markAsRead: (messageId: number, userId: number) => void;
 }
 
+// 서버 메시지 (페이징 포함) 상태 관리만 담당
 export const MessageContext = createContext<MessageContextType>({
   messages: [],
   setMessages: () => null,
@@ -25,15 +23,12 @@ export const MessageContext = createContext<MessageContextType>({
   setNewMessages: () => null,
   setSize: async () => [],
   isLoading: false,
-  markAsRead: () => null,
 });
 
 export default function MessageProvider({ children }: any) {
-  const pageSize = 30;
+  const pageSize = 50;
   const { socket } = useContext(SocketContext);
   const { chatRoom } = useContext(ChatRoomContext);
-
-  const dispatch = useDispatch();
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessages, setNewMessages] = useState<Message[]>([]);
@@ -60,18 +55,22 @@ export default function MessageProvider({ children }: any) {
   // 채팅방 메세지 가져오기
   const { data, setSize, isLoading } = useSWRInfinite(getKey, fetcherWithCookie);
 
-  const markAsRead = (messageId: number, userId: number) => {
-    setMessages((prev) => {
-      return prev.map((message) => {
-        if (message.id <= messageId && !message.readBy.includes(userId)) {
-          return { ...message, readBy: [...message.readBy, userId] };
-        }
-        return message;
-      });
+  // 프론트 읽음 처리 함수
+  const markMessagesAsRead = (prevMessages: Message[], userId: number, untilTime: string | Date): Message[] => {
+    const lastSeenDate = new Date(untilTime);
+    return prevMessages.map((msg) => {
+      const msgDate = new Date(msg.createdAt);
+      if (msgDate <= lastSeenDate && !msg.readBy.includes(userId)) {
+        return {
+          ...msg,
+          readBy: [...msg.readBy, userId],
+        };
+      }
+      return msg;
     });
   };
 
-  // 메세지 state 업데이트
+  //  SWR 데이터를 메시지 state에 반영
   useEffect(() => {
     if (data) {
       const flat = data.flatMap((page) => page.results);
@@ -79,13 +78,22 @@ export default function MessageProvider({ children }: any) {
     }
   }, [data]);
 
-  //  socket 연결 및 메시지 수신 핸들링
+  // 소켓 메시지 수신 핸들링
   useEffect(() => {
     if (!socket || !chatRoom?.id) return;
 
     const chatRoomId = chatRoom.id.toString();
+    const meUser = chatRoom.chatMembers.me.user;
+
     const handleNewMessage = (newMessage: Message) => {
-      setMessages((prev) => [newMessage, ...prev]);
+      const isFromOtherUser = newMessage.sender?.id !== meUser.id;
+
+      // 읽음 처리 통합
+      const updatedMessages = isFromOtherUser
+        ? markMessagesAsRead([newMessage], meUser.id, newMessage.createdAt)
+        : [newMessage];
+
+      setMessages((prev) => [...updatedMessages, ...prev]);
       setNewMessages((prev) => [newMessage, ...prev]);
     };
 
@@ -95,43 +103,27 @@ export default function MessageProvider({ children }: any) {
     return () => {
       socket.off('chatRoomMessage', handleNewMessage);
     };
-  }, [chatRoom?.id, socket]);
+  }, [socket, chatRoom?.id]);
 
-  // socket 상대방이 읽음처리
+  //  상대방의 읽음 처리 수신
   useEffect(() => {
     if (!socket || !chatRoom?.id) return;
 
-    const meId = chatRoom.chatMembers.me?.id;
+    const handleReadMessage = (data: { lastSeenMessageCreatedAt: string; userId: number }) => {
+      const { lastSeenMessageCreatedAt, userId } = data;
+      if (!lastSeenMessageCreatedAt) return;
 
-    const handleReadMessage = (data: { messageId: number; userId: number }) => {
-      const { messageId, userId } = data;
-
-      if (meId !== userId) {
-        markAsRead(messageId, userId);
-      }
+      setMessages((prev) => markMessagesAsRead(prev, userId, lastSeenMessageCreatedAt));
     };
 
-    socket.on('readMessage', handleReadMessage);
-
+    socket.on('listenReadMessage', handleReadMessage);
     return () => {
-      socket.off('readMessage', handleReadMessage);
+      socket.off('listenReadMessage', handleReadMessage);
     };
-  }, [chatRoom?.id, socket]);
-
-  // 채팅방을 나갈 때 처리하는 useEffect
-  useEffect(() => {
-    if (!chatRoom) return;
-
-    // 채팅방을 나갈 때 상태 초기화 작업
-    return () => {
-      dispatch(removeMessages({ chatRoomId: chatRoom.id }));
-    };
-  }, [chatRoom, dispatch]);
+  }, [socket, chatRoom?.id]);
 
   return (
-    <MessageContext.Provider
-      value={{ messages, setMessages, newMessages, setNewMessages, isLoading, setSize, markAsRead }}
-    >
+    <MessageContext.Provider value={{ messages, setMessages, newMessages, setNewMessages, isLoading, setSize }}>
       {children}
     </MessageContext.Provider>
   );

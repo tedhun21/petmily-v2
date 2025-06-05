@@ -9,7 +9,6 @@ import { IoMdArrowRoundUp } from 'react-icons/io';
 import { BlueButton, Input } from 'styles/commonStyle';
 import { posterWithCookie } from 'api';
 import { ChatRoomContext } from './ChatRoomProvider';
-
 import ChatContainer from './ChatContainer';
 import { SocketContext } from '@components/SocketProvider';
 import { useNavigate } from 'react-router-dom';
@@ -33,23 +32,22 @@ export default function ChatSection() {
   const onSubmit = async (data: MessageFormValues) => {
     const { message } = data;
 
-    if (!socket) return;
+    if (!socket || message.length === 0) return;
 
     // 채팅방에서 첫 메세지 (챗룸이 없는 상태)
-    if ((!chatRoom || !chatRoom.id) && opponentIds.length > 0) {
+    if (!chatRoom?.id && opponentIds.length > 0) {
       const newChatRoom = await trigger({ formData: { opponentIds } });
       if (newChatRoom) {
         socket.emit('joinChatRoom', newChatRoom.id.toString());
-        // 채팅방에 들어가서 첫 메세지 전송
         socket.emit('sendMessage', { chatRoomId: newChatRoom.id, message, opponentIds });
 
         setChatRoom(newChatRoom);
 
         navigate(`/chats/${newChatRoom.id}`, { replace: true });
       }
-    } else if (chatRoom && chatRoom.id && chatRoom.chatMembers?.others && chatRoom.chatMembers.others.length > 0) {
+    } else if (chatRoom?.id && chatRoom.chatMembers?.others?.length > 0) {
       // 이미 chatRoom 있을 때
-      const otherIds = chatRoom.chatMembers?.others?.map((other) => other.id);
+      const otherIds = chatRoom.chatMembers?.others?.map((other) => other.user.id);
       if (otherIds && otherIds.length > 0) {
         socket.emit('sendMessage', { chatRoomId: chatRoom.id, message, opponentIds: otherIds });
       }
@@ -63,7 +61,7 @@ export default function ChatSection() {
       <footer>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Wrapper>
-            <ChatInput type="text" placeholder="메세지 보내기" {...register('message')} />
+            <ChatInput type="text" placeholder="메시지 보내기" {...register('message')} />
             <ChatSubmitButton type="submit">
               <IoMdArrowRoundUp size="28px" color="white" />
             </ChatSubmitButton>

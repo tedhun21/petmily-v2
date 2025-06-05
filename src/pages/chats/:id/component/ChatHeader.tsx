@@ -7,6 +7,7 @@ import { FiMenu } from 'react-icons/fi';
 
 import { ChatRoomContext } from './ChatRoomProvider';
 import { Texts20h30 } from 'styles/commonStyle';
+import { ChatMember } from 'types/chat.type';
 
 export default function ChatHeader() {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ export default function ChatHeader() {
       <StyledBackButton onClick={() => navigate(-1)}>
         <FaArrowLeft color="#279EFF" size="24px" />
       </StyledBackButton>
-      <Texts20h30>{others?.map((other: any) => other?.nickname)?.join(', ')}</Texts20h30>
+      <Texts20h30>{others?.map((other: ChatMember) => other?.user?.nickname)?.join(', ')}</Texts20h30>
       <button>
         <FiMenu size="24px" color="#279EFF" />
       </button>

@@ -1,8 +1,7 @@
 import { createContext, useEffect, useState } from 'react';
 import { ChatRoom } from 'types/chat.type';
-import { fetcherWithCookie, updaterWithCookie } from 'api';
+import { fetcherWithCookie } from 'api';
 import useSWR from 'swr';
-import useSWRMutation from 'swr/mutation';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { removeMessages } from 'store/messageSlice';
@@ -14,6 +13,7 @@ interface ContextProps {
   [key: string]: any;
 }
 
+// 현재 채팅방 정보 및 채팅방 관련 상태 관리
 export const ChatRoomContext = createContext<ContextProps>({
   chatRoom: null,
   setChatRoom: () => null,
@@ -39,21 +39,15 @@ export default function ChatRoomProvider({ children, value }: any) {
     fetcherWithCookie,
   );
 
-  // unreadCount reset
-  const { trigger } = useSWRMutation(`${API_URL}/chats/unread-counts?action=reset`, updaterWithCookie);
-
-  // 1.챗룸 업데이트
-  // 2. unreadCount 초기화 (서버 업데이트 + redux 업데이트)
+  // 챗룸 업데이트
   useEffect(() => {
     if (byId) {
       setChatRoom(byId);
-      trigger({ formData: { chatRoomId: byId.id } });
       dispatch(removeMessages({ chatRoomId: byId.id }));
     } else if (byUsers) {
       // 유저 아이디로 들어왔을 때
       setChatRoom(byUsers);
-      trigger({ formData: { chatRoomId: byUsers.id } });
-      dispatch(removeMessages({ chatRoomId: byUsers.id }));
+      dispatch(removeMessages({ chatRoomId: byUsers.id, action: 'reset' }));
       navigate(`/chats/${byUsers.id}`, { replace: true });
     }
   }, [byId, byUsers]);

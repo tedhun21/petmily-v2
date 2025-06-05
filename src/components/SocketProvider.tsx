@@ -29,7 +29,13 @@ export default function SocketProvider({ children }: SocketProviderProps) {
     const token = getCookie('access_token');
 
     if (!token) return;
-    const socket = io(`${SOCKET_URL}`, { auth: { token } });
+    const socket = io(`${SOCKET_URL}`, {
+      auth: { token },
+      autoConnect: true,
+      reconnection: true,
+      reconnectionAttempts: 10, // 10번까지만 시도
+      reconnectionDelay: 2000, // 2초 간격
+    });
 
     // message
     socket.on('connect', () => {

@@ -6,26 +6,27 @@ import { FaChevronDown } from 'react-icons/fa6';
 
 import { Button, ImageCentered, RoundedImageWrapper, Texts14h21 } from 'styles/commonStyle';
 import { ChatRoomContext } from './ChatRoomProvider';
-
-import ChatList from './ChatList';
+import MessageList from './MessageList';
 import { MessageContext } from './MessageProvider';
-import { Message } from 'types/chat.type';
 
 export default function ChatContainer() {
   const { chatRoom } = useContext(ChatRoomContext);
-  const { messages, newMessages, isLoading } = useContext(MessageContext);
+  const { messages, newMessages, isLoading, setSize } = useContext(MessageContext);
 
   const chatRef = useRef<HTMLDivElement>(null);
+  const topRef = useRef<HTMLDivElement>(null);
+  const isTopInView = useInView(topRef);
   const bottomRef = useRef<HTMLDivElement>(null);
   const isBottomInView = useInView(bottomRef);
   const [isFirstRender, setIsFirstRender] = useState(true);
   const [showDownButton, setShowDownButton] = useState<boolean>(false);
   const [showNewestMessage, setShowNewestMessage] = useState<boolean>(false);
-  const [newestMessage, setNewestMessage] = useState<Message | null>(null);
 
-  const me = chatRoom?.chatMembers?.me;
   const others = chatRoom?.chatMembers?.others;
-  const otherNewMessageUser = newestMessage && others?.find((other) => other.id === newestMessage.sender?.id)?.user;
+  const newestMessage = newMessages[0];
+
+  const otherNewMessageUser =
+    newestMessage && others?.find((other) => other.user.id === newestMessage.sender?.id)?.user;
 
   const showDefaultDownButton = !newestMessage && showDownButton;
   // 바텀 새 매시지 팝업 (새로운 메시지 온 상태 && 스크롤 상태 && 바텀이 안 보이는 상태 && 내 매시지가 아님 )
@@ -36,12 +37,6 @@ export default function ChatContainer() {
       bottomRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   };
-
-  useEffect(() => {
-    if (newMessages?.length > 0) {
-      setNewestMessage(newMessages[0]);
-    }
-  }, [newMessages]);
 
   // 처음 들어오면 채팅창 제일 밑
   useEffect(() => {
@@ -68,7 +63,6 @@ export default function ChatContainer() {
   useEffect(() => {
     if (isBottomInView) {
       setShowNewestMessage(false); // 바닥에 있으면 새 메시지 UI 숨김
-      setNewestMessage(null); // 바닥에 있으면 새 메시지 초기화
     }
   }, [isBottomInView]);
 
@@ -86,14 +80,16 @@ export default function ChatContainer() {
         // 스크롤 위치를 퍼센트로 계산
         const scrollPercentage = (scrollTop / (scrollHeight - clientHeight)) * 100;
 
-        // 소수점 오차니 렌더링 차이 때문에 ===100이 잘 안나올 수 있다
+        // 소수점 오차니 렌더링 차이 때문에 === 100이 잘 안나올 수 있다
         const isAtBottom = scrollTop + clientHeight >= scrollHeight - 5;
 
         if (isAtBottom) {
-          setShowDownButton(false);
+          // 이미 false라면 setState하지 않음
+          setShowDownButton((prev) => (prev === false ? prev : false));
         } else if (scrollPercentage < 80) {
-          // 스크롤이 80% 이상이면 버튼 숨기기, 아니면 표시
-          setShowDownButton(true);
+          // 스크롤 80%미만 이면 표시
+          const shouldShow = scrollPercentage < 80;
+          setShowDownButton((prev) => (prev === shouldShow ? prev : shouldShow));
         }
       }
     };
@@ -104,11 +100,18 @@ export default function ChatContainer() {
     };
   }, []);
 
+  useEffect(() => {
+    if (isTopInView) {
+      setSize((prev) => prev + 1);
+    }
+  }, [isTopInView]);
+
   return (
     <Div ref={chatRef}>
-      <ChatList />
+      <TopSentinel ref={topRef} />
+      <MessageList />
 
-      <Bottom ref={bottomRef} />
+      <BottomSentinel ref={bottomRef} />
       <Sticky>
         {showDefaultDownButton && (
           <AbsoluteBottomCenter>
@@ -142,19 +145,25 @@ export default function ChatContainer() {
   );
 }
 
+const Div = styled.div`
+  position: relative;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+`;
+
 const Sticky = styled.div`
   position: sticky;
   bottom: 0;
   right: 0;
 `;
 
-const Div = styled.div`
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
+const TopSentinel = styled.div`
+  position: absolute;
+  top: 300px;
 `;
 
-const Bottom = styled.div``;
+const BottomSentinel = styled.div``;
 
 const AbsoluteBottomCenter = styled.div`
   position: absolute;
