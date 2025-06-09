@@ -27,7 +27,8 @@ const messageSlice = createSlice({
 
       state.newMessages = state.newMessages.filter((message) => {
         // 다른 채팅방 메시지는 유지
-        const isSameRoom = message.chatRoom.id === lastSeenMessage.chatRoom.userId;
+        const isSameRoom = message.chatRoom.id === lastSeenMessage.chatRoom.id;
+
         const isBeforeOrEqual = new Date(message.createdAt) > new Date(lastSeenMessage.created);
 
         return !isSameRoom || isBeforeOrEqual;

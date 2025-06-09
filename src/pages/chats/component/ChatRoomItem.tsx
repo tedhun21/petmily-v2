@@ -13,6 +13,7 @@ interface ChatRoomItemProps {
 
 export default function ChatRoomItem({ chatRoom }: ChatRoomItemProps) {
   const { newMessages } = useSelector((state: RootState) => state.message);
+  console.log('newMessages', newMessages);
 
   const others = chatRoom.chatMembers.others;
 

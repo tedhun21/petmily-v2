@@ -37,7 +37,7 @@ export default function MessageList() {
     if (socket && chatRoom?.id && debouncedReadMessage) {
       socket.emit('chat:read:mark', {
         chatRoomId: chatRoom.id,
-        lastSeenMessage: debouncedReadMessage,
+        lastSeenMessage: { ...debouncedReadMessage, chatRoom: { id: chatRoom.id } },
       });
     }
   }, [debouncedReadMessage]);
