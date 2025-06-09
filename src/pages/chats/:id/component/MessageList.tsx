@@ -13,9 +13,9 @@ export default function MessageList() {
   const { chatRoom } = useContext(ChatRoomContext);
   const { messages } = useContext(MessageContext);
 
-  const [lastSeenMessageCreatedAt, setLastSeenMessageCreatedAt] = useState<string | null>(null);
+  const [lastSeenMessage, setLastSeenMessage] = useState<Message | null>(null);
 
-  const debouncedReadMessageAt = useDebounce(lastSeenMessageCreatedAt, 2000); // 2초 디바운스
+  const debouncedReadMessage = useDebounce(lastSeenMessage, 2000); // 2초 디바운스
 
   const reversedMessages = useMemo(() => {
     return [...messages].reverse();
@@ -25,22 +25,22 @@ export default function MessageList() {
 
   const handleVisible = useCallback(
     (message: Message) => {
-      if (!lastSeenMessageCreatedAt || dayjs(message.createdAt).isAfter(dayjs(lastSeenMessageCreatedAt))) {
-        setLastSeenMessageCreatedAt(message.createdAt);
+      if (!lastSeenMessage || dayjs(message.createdAt).isAfter(dayjs(lastSeenMessage.createdAt))) {
+        setLastSeenMessage(message);
       }
     },
-    [lastSeenMessageCreatedAt],
+    [lastSeenMessage],
   );
 
   // 서버 메시지 데이터 읽음처리
   useEffect(() => {
-    if (socket && chatRoom?.id && debouncedReadMessageAt) {
-      socket.emit('readMessage', {
+    if (socket && chatRoom?.id && debouncedReadMessage) {
+      socket.emit('chat:read:mark', {
         chatRoomId: chatRoom.id,
-        lastSeenMessageCreatedAt: debouncedReadMessageAt,
+        lastSeenMessage: debouncedReadMessage,
       });
     }
-  }, [debouncedReadMessageAt]);
+  }, [debouncedReadMessage]);
 
   return (
     <List>

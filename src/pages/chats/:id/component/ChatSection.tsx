@@ -38,8 +38,8 @@ export default function ChatSection() {
     if (!chatRoom?.id && opponentIds.length > 0) {
       const newChatRoom = await trigger({ formData: { opponentIds } });
       if (newChatRoom) {
-        socket.emit('joinChatRoom', newChatRoom.id.toString());
-        socket.emit('sendMessage', { chatRoomId: newChatRoom.id, message, opponentIds });
+        socket.emit('chat:room:join', newChatRoom.id.toString());
+        socket.emit('chat:message:new', { chatRoomId: newChatRoom.id, message, opponentIds });
 
         setChatRoom(newChatRoom);
 
@@ -49,7 +49,7 @@ export default function ChatSection() {
       // 이미 chatRoom 있을 때
       const otherIds = chatRoom.chatMembers?.others?.map((other) => other.user.id);
       if (otherIds && otherIds.length > 0) {
-        socket.emit('sendMessage', { chatRoomId: chatRoom.id, message, opponentIds: otherIds });
+        socket.emit('chat:message:new', { chatRoomId: chatRoom.id, message, opponentIds: otherIds });
       }
     }
     setValue('message', '');

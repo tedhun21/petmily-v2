@@ -56,16 +56,19 @@ export default function MessageProvider({ children }: any) {
   const { data, setSize, isLoading } = useSWRInfinite(getKey, fetcherWithCookie);
 
   // 프론트 읽음 처리 함수
-  const markMessagesAsRead = (prevMessages: Message[], userId: number, untilTime: string | Date): Message[] => {
-    const lastSeenDate = new Date(untilTime);
+  const markMessagesAsRead = (prevMessages: Message[], userId: number, untilMessage: Message): Message[] => {
     return prevMessages.map((msg) => {
-      const msgDate = new Date(msg.createdAt);
-      if (msgDate <= lastSeenDate && !msg.readBy.includes(userId)) {
+      const isBeforeOrEqual =
+        new Date(msg.createdAt) < new Date(untilMessage.createdAt) ||
+        (new Date(msg.createdAt).getTime() === new Date(untilMessage.createdAt).getTime() && msg.id <= untilMessage.id);
+
+      if (isBeforeOrEqual && !msg.readBy.includes(userId)) {
         return {
           ...msg,
           readBy: [...msg.readBy, userId],
         };
       }
+
       return msg;
     });
   };
@@ -89,19 +92,17 @@ export default function MessageProvider({ children }: any) {
       const isFromOtherUser = newMessage.sender?.id !== meUser.id;
 
       // 읽음 처리 통합
-      const updatedMessages = isFromOtherUser
-        ? markMessagesAsRead([newMessage], meUser.id, newMessage.createdAt)
-        : [newMessage];
+      const updatedMessages = isFromOtherUser ? markMessagesAsRead([newMessage], meUser.id, newMessage) : [newMessage];
 
       setMessages((prev) => [...updatedMessages, ...prev]);
       setNewMessages((prev) => [newMessage, ...prev]);
     };
 
-    socket.emit('joinChatRoom', chatRoomId);
-    socket.on('chatRoomMessage', handleNewMessage);
+    socket.emit('chat:room:join', chatRoomId);
+    socket.on('chat:room:message:new', handleNewMessage);
 
     return () => {
-      socket.off('chatRoomMessage', handleNewMessage);
+      socket.off('chat:room:message:new', handleNewMessage);
     };
   }, [socket, chatRoom?.id]);
 
@@ -109,16 +110,16 @@ export default function MessageProvider({ children }: any) {
   useEffect(() => {
     if (!socket || !chatRoom?.id) return;
 
-    const handleReadMessage = (data: { lastSeenMessageCreatedAt: string; userId: number }) => {
-      const { lastSeenMessageCreatedAt, userId } = data;
-      if (!lastSeenMessageCreatedAt) return;
+    const handleReadMessage = (data: { lastSeenMessage: Message; userId: number }) => {
+      const { lastSeenMessage, userId } = data;
+      if (!lastSeenMessage) return;
 
-      setMessages((prev) => markMessagesAsRead(prev, userId, lastSeenMessageCreatedAt));
+      setMessages((prev) => markMessagesAsRead(prev, userId, lastSeenMessage));
     };
 
-    socket.on('listenReadMessage', handleReadMessage);
+    socket.on('chat:room:read:update', handleReadMessage);
     return () => {
-      socket.off('listenReadMessage', handleReadMessage);
+      socket.off('chat:room:read:update', handleReadMessage);
     };
   }, [socket, chatRoom?.id]);
 

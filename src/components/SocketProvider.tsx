@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { io, Socket } from 'socket.io-client';
-import { addNewMessage } from 'store/messageSlice';
+import { addNewMessage, markAsRead } from 'store/messageSlice';
 import { addNewNotification } from 'store/notificationSlice';
 import { getCookie } from 'utils/cookie';
 
@@ -37,24 +37,29 @@ export default function SocketProvider({ children }: SocketProviderProps) {
       reconnectionDelay: 2000, // 2초 간격
     });
 
-    // message
     socket.on('connect', () => {
-      socket.emit('joinChatUser');
+      // join
+      socket.emit('chat:user:join');
       socket.emit('joinNotiUser');
+    });
+
+    socket.on('chat:user:message:new', (newMessage) => {
+      dispatch(addNewMessage(newMessage));
+    });
+
+    socket.on('chat:user:newMessage:clear', (data) => {
+      dispatch(markAsRead(data));
     });
 
     socket.on('notification', (newNotification) => {
       dispatch(addNewNotification(newNotification));
-    });
-    socket.on('directMessage', (newMessage) => {
-      dispatch(addNewMessage(newMessage));
     });
 
     setSocket(socket);
 
     return () => {
       socket.off('notification');
-      socket.off('directMessage');
+      socket.off('chat:user:message:new');
       socket.disconnect();
     };
   }, []);
