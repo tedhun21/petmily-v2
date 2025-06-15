@@ -11,13 +11,17 @@ import { MessageContext } from './MessageProvider';
 
 export default function ChatContainer() {
   const { chatRoom } = useContext(ChatRoomContext);
-  const { messages, newMessages, isLoading, setSize } = useContext(MessageContext);
+  const { fetchedMessages, newMessages, setSize, isLoading } = useContext(MessageContext);
 
   const chatRef = useRef<HTMLDivElement>(null);
-  const topRef = useRef<HTMLDivElement>(null);
-  const isTopInView = useInView(topRef);
+
+  const [isTopInView, setIsTopInView] = useState(false);
+
   const bottomRef = useRef<HTMLDivElement>(null);
-  const isBottomInView = useInView(bottomRef);
+  const isBottomInView = useInView(bottomRef, { root: chatRef });
+
+  const prevScrollHeightRef = useRef(0);
+
   const [isFirstRender, setIsFirstRender] = useState(true);
   const [showDownButton, setShowDownButton] = useState<boolean>(false);
   const [showNewestMessage, setShowNewestMessage] = useState<boolean>(false);
@@ -38,13 +42,35 @@ export default function ChatContainer() {
     }
   };
 
+  useEffect(() => {
+    if (chatRef.current) {
+      prevScrollHeightRef.current = chatRef.current.scrollHeight;
+    }
+  }, []);
+
+  useEffect(() => {
+    const chatEl = chatRef.current;
+    if (!chatEl) return;
+
+    // 새 메시지가 추가된 후 scrollHeight 변화량 계산
+    const diff = chatEl.scrollHeight - prevScrollHeightRef.current;
+
+    // 만약 스크롤이 거의 최상단(예: 30% 영역 안)이라면 기존 위치 유지 (즉, 스크롤 위치 보정)
+    if (diff > 0 && chatEl.scrollTop <= chatEl.clientHeight * 0.3) {
+      chatEl.scrollTop += diff;
+    }
+
+    // 변경 후 현재 scrollHeight 저장
+    prevScrollHeightRef.current = chatEl.scrollHeight;
+  }, [fetchedMessages]);
+
   // 처음 들어오면 채팅창 제일 밑
   useEffect(() => {
-    if (bottomRef.current && messages.length > 0 && !isLoading && isFirstRender) {
-      bottomRef.current?.scrollIntoView({});
+    if (bottomRef.current && fetchedMessages.length > 0 && !isLoading && isFirstRender) {
+      bottomRef.current?.scrollIntoView();
       setIsFirstRender(false);
     }
-  }, [messages, isLoading]);
+  }, [fetchedMessages, isLoading]);
 
   // 새 메세지가 왔을 때, 바닥 포커스
   // 바닥에 포커스 되어있을 때, 새 매세지가 올때
@@ -61,12 +87,18 @@ export default function ChatContainer() {
   }, [newestMessage]);
 
   useEffect(() => {
+    if (isTopInView) {
+      setSize((prev) => prev + 1);
+    }
+  }, [isTopInView]);
+
+  useEffect(() => {
     if (isBottomInView) {
       setShowNewestMessage(false); // 바닥에 있으면 새 메시지 UI 숨김
     }
   }, [isBottomInView]);
 
-  // down 버튼 로직이 생기는 로직
+  // Down 버튼 로직이 생기는 로직
   useEffect(() => {
     const handleScroll = () => {
       const chatElement = chatRef.current;
@@ -85,11 +117,12 @@ export default function ChatContainer() {
 
         if (isAtBottom) {
           // 이미 false라면 setState하지 않음
-          setShowDownButton((prev) => (prev === false ? prev : false));
+          setShowDownButton(false);
         } else if (scrollPercentage < 80) {
           // 스크롤 80%미만 이면 표시
-          const shouldShow = scrollPercentage < 80;
-          setShowDownButton((prev) => (prev === shouldShow ? prev : shouldShow));
+          setShowDownButton(true);
+        } else {
+          setShowDownButton(false);
         }
       }
     };
@@ -101,14 +134,27 @@ export default function ChatContainer() {
   }, []);
 
   useEffect(() => {
-    if (isTopInView) {
-      setSize((prev) => prev + 1);
-    }
-  }, [isTopInView]);
+    const chatEl = chatRef.current;
+    if (!chatEl) return;
+
+    const threshold = 500; // 500px 이내일 대 최상단에 있다고 판단
+
+    const onScroll = () => {
+      setIsTopInView(chatEl.scrollTop <= threshold);
+    };
+
+    chatEl.addEventListener('scroll', onScroll);
+
+    // 처음엔 상태 세팅 안 함
+
+    return () => {
+      chatEl.removeEventListener('scroll', onScroll);
+    };
+  }, []);
 
   return (
     <Div ref={chatRef}>
-      <TopSentinel ref={topRef} />
+      {/* {isEnd === false && !isLoading && <TopSentinel ref={topRef} />} */}
       <MessageList />
 
       <BottomSentinel ref={bottomRef} />
@@ -146,7 +192,7 @@ export default function ChatContainer() {
 }
 
 const Div = styled.div`
-  position: relative;
+  flex: 1 1 auto;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -159,11 +205,12 @@ const Sticky = styled.div`
 `;
 
 const TopSentinel = styled.div`
-  position: absolute;
-  top: 300px;
+  height: 1px;
 `;
 
-const BottomSentinel = styled.div``;
+const BottomSentinel = styled.div`
+  height: 1px;
+`;
 
 const AbsoluteBottomCenter = styled.div`
   position: absolute;

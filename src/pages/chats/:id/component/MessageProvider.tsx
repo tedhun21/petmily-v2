@@ -1,38 +1,53 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { Message } from 'types/chat.type';
 import { ChatRoomContext } from './ChatRoomProvider';
 import { SocketContext } from '@components/SocketProvider';
 import useSWRInfinite from 'swr/infinite';
 import { fetcherWithCookie } from 'api';
 import { API_URL } from 'config';
+import dayjs from 'dayjs';
+import { useDebounce } from 'hooks/useDebounce';
 
 interface MessageContextType {
-  messages: Message[];
-  setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
+  fetchedMessages: Message[];
   newMessages: Message[];
-  setNewMessages: React.Dispatch<React.SetStateAction<Message[]>>;
   setSize: (size: number | ((_size: number) => number)) => Promise<any[] | undefined>;
   isLoading: boolean;
+  isEnd: boolean | undefined;
+  onMessageVisible: (message: Message) => void;
 }
 
 // 서버 메시지 (페이징 포함) 상태 관리만 담당
 export const MessageContext = createContext<MessageContextType>({
-  messages: [],
-  setMessages: () => null,
+  fetchedMessages: [],
   newMessages: [],
-  setNewMessages: () => null,
   setSize: async () => [],
   isLoading: false,
+  isEnd: undefined,
+  onMessageVisible: () => null,
 });
 
+// 1. 과거 메시지 로딩 및 관리
+// 2. 프론트엔드 메시지 읽음 처리 유틸 함수 (markMessagesAsReadLocally)
+// 3. 읽음 처리 서버 전송 로직 (수동 디바운스 및 플러시 포함)
+// 4. 컴포넌트 언마운트시 읽음 처리 강제 전송
+// 5. 메시지 가시성 감지 및 읽음 처리 트리거
+// 6. 실시간 새 메시지 수신 관리
+// 7. 상대방의 읽음 처리 업데이트 수신 및 UI 반영
+// 8. 메시지 관련 데이터 및 콜백 제공
 export default function MessageProvider({ children }: any) {
   const pageSize = 50;
   const { socket } = useContext(SocketContext);
   const { chatRoom } = useContext(ChatRoomContext);
+  const meUser = chatRoom?.chatMembers.me.user;
 
-  const [messages, setMessages] = useState<Message[]>([]);
   const [newMessages, setNewMessages] = useState<Message[]>([]);
 
+  // 읽음 처리 상태 및 디바운스 로직을 위한 Ref들 (잦은 리랜더링에 의한 에러 방지 위해 ref)
+  // 또한, 디바운스 처리시, 불필요한 새로운 함수 인스터스 생성 방지
+  const latestSeenMessageInfoRef = useRef<{ id: number; createdAt: string } | null>(null);
+
+  // 1. 과거 메시지 데이터 로딩 및 관리
   // getKey는 setSize로 다시 불릴 때, pageIndex = 0 부터 캐시되어 있는 것을 다시 반복해서 부른다.
   // 하지만 pageIndex = 0인 부분은 "최신 데이터를 보장하는 위한 SWR의 기본 전략"이기 때문에 첫번째 페이지는 백엔드에 통신을 보낸다.
   // 그러나 캐시만 사용하고 싶은면   revalidateFirstPage: false => 첫 페이지 재검증 비활성화 옵션을 키는 것이 좋다
@@ -51,13 +66,14 @@ export default function MessageProvider({ children }: any) {
     }
     return null; // hasNextPage가 false이거나 previousPageData가 없는 경우 null 반환
   };
+  const { data, setSize, isLoading, mutate } = useSWRInfinite(getKey, fetcherWithCookie, { revalidateOnMount: true });
+  const fetchedMessages = data ? data.flatMap((page) => page.results) : [];
+  const isEnd = data && data[data.length - 1]?.results?.length < pageSize;
 
-  // 채팅방 메세지 가져오기
-  const { data, setSize, isLoading } = useSWRInfinite(getKey, fetcherWithCookie);
-
-  // 프론트 읽음 처리 함수
-  const markMessagesAsRead = (prevMessages: Message[], userId: number, untilMessage: Message): Message[] => {
-    return prevMessages.map((msg) => {
+  // 2. 프론트엔드 메시지 읽음 처리 유틸 함수
+  // 특정 메시지까지 지정된 사용자가 읽었음을 로컬에서 처리(UI 업데이트용)하는 순수 함수
+  const markMessagesAsReadLocally = (messagesToUpdate: Message[], userId: number, untilMessage: Message): Message[] => {
+    return messagesToUpdate.map((msg) => {
       const isBeforeOrEqual =
         new Date(msg.createdAt) < new Date(untilMessage.createdAt) ||
         (new Date(msg.createdAt).getTime() === new Date(untilMessage.createdAt).getTime() && msg.id <= untilMessage.id);
@@ -73,28 +89,67 @@ export default function MessageProvider({ children }: any) {
     });
   };
 
-  //  SWR 데이터를 메시지 state에 반영
-  useEffect(() => {
-    if (data) {
-      const flat = data.flatMap((page) => page.results);
-      setMessages(flat);
-    }
-  }, [data]);
+  // 3. 읽음 처리 서버 전송 로직 (useDebounce 훅 사용)
+  const sendReadReceiptToServer = useCallback(
+    (messageId: number, messageCreatedAt: string) => {
+      if (!socket || !chatRoom?.id || !meUser?.id || !messageId) return;
 
-  // 소켓 메시지 수신 핸들링
+      socket.emit('chat:read:mark', {
+        chatRoomId: chatRoom.id,
+        lastSeenMessage: { id: messageId, createdAt: messageCreatedAt },
+      });
+    },
+    [socket, chatRoom?.id, meUser?.id],
+  );
+
+  // useDebounce 훅을 사용하여 sendReadReceiptToServer를 디바운스
+  const { debouncedCallback: debouncedSendReadReceipt, flush } = useDebounce(sendReadReceiptToServer, 2000);
+
+  // 4. 컴포넌트 언마운트/채팅방 변경 시 읽음 처리 강제 전송
+  useEffect(() => {
+    return () => {
+      console.log('[Cleanup] flush 호출 (언마운트/채팅방 변경)');
+      flush(); // 대기 중인 디바운스 작업을 즉시 실행
+    };
+  }, [flush]);
+
+  // 5. 메시지 가시성 감지 및 읽음 처리 트리거
+  // `MessageItem`에서 특정 메시지가 화면에 보일 때 호출되는 콜백
+  // 현재 본 메시지 중 가장 최신 메시지를 `lastSeenMessage` 상태로 업데이트하고,
+  // 이 상태 변경이 `useEffect`를 통해 `customDebounce`를 트리거하여 서버에 읽음 요청을 보낸다.
+  const onMessageVisible = useCallback(
+    (message: Message) => {
+      if (!message.id || !message.createdAt) return;
+
+      const current = latestSeenMessageInfoRef.current;
+
+      const isNewer =
+        !current ||
+        dayjs(message.createdAt).isAfter(dayjs(current.createdAt)) ||
+        (dayjs(message.createdAt).isSame(dayjs(current.createdAt), 'second') && message.id > current.id);
+
+      if (isNewer) {
+        latestSeenMessageInfoRef.current = {
+          id: message.id,
+          createdAt: message.createdAt,
+        };
+
+        // 메시지가 실제로 최신일 경우에만 debounced 호출
+        debouncedSendReadReceipt(message.id, message.createdAt);
+      }
+    },
+    [debouncedSendReadReceipt],
+  );
+
+  // 6. 실시간 새 메시지 수신 및 관리
+  // 소켓을 통해 새로운 메시지를 수신하고 `newMessages` 상태에 추가하여 즉시 UI에 반영
+  // 채팅방 입장/퇴장 소켓 이벤트도 처리
   useEffect(() => {
     if (!socket || !chatRoom?.id) return;
 
     const chatRoomId = chatRoom.id.toString();
-    const meUser = chatRoom.chatMembers.me.user;
 
     const handleNewMessage = (newMessage: Message) => {
-      const isFromOtherUser = newMessage.sender?.id !== meUser.id;
-
-      // 읽음 처리 통합
-      const updatedMessages = isFromOtherUser ? markMessagesAsRead([newMessage], meUser.id, newMessage) : [newMessage];
-
-      setMessages((prev) => [...updatedMessages, ...prev]);
       setNewMessages((prev) => [newMessage, ...prev]);
     };
 
@@ -106,25 +161,46 @@ export default function MessageProvider({ children }: any) {
     };
   }, [socket, chatRoom?.id]);
 
-  //  상대방의 읽음 처리 수신
+  // 7. 상대방의 읽음 처리 업데이트 수신 및 UI 반영
+  // 서버로부터 다른 사용자의 읽음 처리 상태 업데이트를 수신하여,
+  // `newMessages`와 SWR 캐시(`fetchedMessages`)에 해당 변경 사항을 즉시 반영(UI 업데이트)
   useEffect(() => {
     if (!socket || !chatRoom?.id) return;
 
-    const handleReadMessage = (data: { lastSeenMessage: Message; userId: number }) => {
-      const { lastSeenMessage, userId } = data;
+    const handleReadUpdateFromServer = (receivedData: { lastSeenMessage: Message; userId: number }) => {
+      const { lastSeenMessage, userId } = receivedData;
       if (!lastSeenMessage) return;
 
-      setMessages((prev) => markMessagesAsRead(prev, userId, lastSeenMessage));
+      // SWR 캐시 읽음 업데이트
+      mutate(
+        (pages) => {
+          if (!pages) return pages;
+
+          const updatedPages = pages.map((page) => {
+            if (!page.results) return page; // results가 없는 페이지는 건너뛰기
+
+            const updatedResults = markMessagesAsReadLocally(page.results, userId, lastSeenMessage);
+            return { ...page, results: updatedResults };
+          });
+
+          return updatedPages;
+        },
+        { revalidate: false },
+      );
+
+      // newMessages 읽음 업데이트
+      setNewMessages((prev) => markMessagesAsReadLocally(prev, userId, lastSeenMessage));
     };
 
-    socket.on('chat:room:read:update', handleReadMessage);
+    socket.on('chat:room:read:update', handleReadUpdateFromServer);
     return () => {
-      socket.off('chat:room:read:update', handleReadMessage);
+      socket.off('chat:room:read:update', handleReadUpdateFromServer);
     };
   }, [socket, chatRoom?.id]);
 
+  // 8. 메시지 관련 데이터 및 콜백 제공
   return (
-    <MessageContext.Provider value={{ messages, setMessages, newMessages, setNewMessages, isLoading, setSize }}>
+    <MessageContext.Provider value={{ fetchedMessages, newMessages, setSize, isLoading, isEnd, onMessageVisible }}>
       {children}
     </MessageContext.Provider>
   );

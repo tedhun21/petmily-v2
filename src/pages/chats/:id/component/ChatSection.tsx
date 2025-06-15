@@ -58,7 +58,7 @@ export default function ChatSection() {
   return (
     <Section>
       <ChatContainer />
-      <footer>
+      <Footer>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Wrapper>
             <ChatInput type="text" placeholder="메시지 보내기" {...register('message')} />
@@ -67,7 +67,7 @@ export default function ChatSection() {
             </ChatSubmitButton>
           </Wrapper>
         </form>
-      </footer>
+      </Footer>
     </Section>
   );
 }
@@ -77,13 +77,13 @@ const Section = styled.section`
   flex-direction: column;
   overflow: hidden;
 
-  > div {
-    flex: 1 1 auto;
-  }
-
   > footer {
     flex: 0 0 auto;
   }
+`;
+
+const Footer = styled.footer`
+  flex: 0 0 auto;
 `;
 
 const Wrapper = styled.div`

@@ -9,8 +9,9 @@ import {
   shouldShowSenderPhoto,
   shouldShowTime,
 } from 'utils/date';
-import { useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { useInView } from 'framer-motion';
+import { MessageContext } from './MessageProvider';
 
 interface IProps {
   message: Message;
@@ -18,17 +19,10 @@ interface IProps {
   previousMessage?: Message;
   nextMessage?: Message;
   membersCount: number;
-  onVisible: (message: Message) => void;
 }
 
-export default function MessageItem({
-  message,
-  isMyMessage,
-  previousMessage,
-  nextMessage,
-  membersCount,
-  onVisible,
-}: IProps) {
+export default function MessageItem({ message, isMyMessage, previousMessage, nextMessage, membersCount }: IProps) {
+  const { onMessageVisible } = useContext(MessageContext);
   const ref = useRef<HTMLLIElement>(null);
   const isInView = useInView(ref, { once: true });
 
@@ -41,7 +35,7 @@ export default function MessageItem({
 
   useEffect(() => {
     if (isInView) {
-      onVisible(message);
+      onMessageVisible(message);
     }
   }, [isInView]);
 

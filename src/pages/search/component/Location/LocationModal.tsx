@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useFormContext } from 'react-hook-form';
 
 import { fetcher } from 'api';
-import useDebounce from 'hooks/useDebounce';
+import { useDebounceValue } from 'hooks/useDebounce';
 import { CenterContainer, Column, Divider, Row, Texts12h18 } from 'styles/commonStyle';
 import RecentSearches from './RecentSearches';
 import SuggestLocations from './SuggestLocations';
@@ -22,7 +22,7 @@ export default function LocationModal({ handleSetValue }: LocationModalProps) {
   const { getValues, watch } = useFormContext();
   // 입력값을 가져오고 디바운스 처리 (빈 문자열이면 '')
   const inputValue = watch('location') || '';
-  const debouncedInput = useDebounce(inputValue, 500);
+  const debouncedInput = useDebounceValue(inputValue, 500);
 
   // 이전에 선택했던 위치 (예: URL에서 가져온 값 혹은 이전 입력값)
   const [selectedLocation, setSelectedLocation] = useState(getValues('location') || '');
