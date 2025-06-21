@@ -11,7 +11,7 @@ export default function MessageList() {
 
   const allMessages = [...newMessages, ...fetchedMessages];
 
-  const membersCount = (chatRoom?.chatMembers.others?.length ?? 0) + 1;
+  const others = chatRoom?.chatMembers.others || [];
 
   return (
     <List>
@@ -20,6 +20,11 @@ export default function MessageList() {
         const previousMessage = index < allMessages.length - 1 ? allMessages[index + 1] : undefined;
         const nextMessage = index > 0 ? allMessages[index - 1] : undefined;
 
+        const unreadCount = others.filter((member) => {
+          if (!member?.lastReadMessage?.id) return true;
+          return member?.lastReadMessage.id < message.id;
+        }).length;
+
         return (
           <MessageItem
             key={message.id}
@@ -27,7 +32,7 @@ export default function MessageList() {
             isMyMessage={isMyMessage}
             previousMessage={previousMessage}
             nextMessage={nextMessage}
-            membersCount={membersCount ?? 0}
+            unreadCount={unreadCount}
           />
         );
       })}

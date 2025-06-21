@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { Message } from 'types/chat.type';
+import { ChatMember, ChatRoom, Message } from 'types/chat.type';
 import { ChatRoomContext } from './ChatRoomProvider';
 import { SocketContext } from '@components/SocketProvider';
 import useSWRInfinite from 'swr/infinite';
@@ -7,6 +7,9 @@ import { fetcherWithCookie } from 'api';
 import { API_URL } from 'config';
 import dayjs from 'dayjs';
 import { useDebounce } from 'hooks/useDebounce';
+import { useDispatch } from 'react-redux';
+import { removeMessagesByChatRoom } from 'store/messageSlice';
+import { mutate } from 'swr';
 
 interface MessageContextType {
   fetchedMessages: Message[];
@@ -38,7 +41,7 @@ export const MessageContext = createContext<MessageContextType>({
 export default function MessageProvider({ children }: any) {
   const pageSize = 50;
   const { socket } = useContext(SocketContext);
-  const { chatRoom } = useContext(ChatRoomContext);
+  const { chatRoom, setChatRoom } = useContext(ChatRoomContext);
   const meUser = chatRoom?.chatMembers.me.user;
 
   const [newMessages, setNewMessages] = useState<Message[]>([]);
@@ -66,27 +69,43 @@ export default function MessageProvider({ children }: any) {
     }
     return null; // hasNextPage가 false이거나 previousPageData가 없는 경우 null 반환
   };
-  const { data, setSize, isLoading, mutate } = useSWRInfinite(getKey, fetcherWithCookie, { revalidateOnMount: true });
+  const { data, setSize, isLoading } = useSWRInfinite(getKey, fetcherWithCookie, { revalidateOnMount: true });
   const fetchedMessages = data ? data.flatMap((page) => page.results) : [];
   const isEnd = data && data[data.length - 1]?.results?.length < pageSize;
 
   // 2. 프론트엔드 메시지 읽음 처리 유틸 함수
   // 특정 메시지까지 지정된 사용자가 읽었음을 로컬에서 처리(UI 업데이트용)하는 순수 함수
-  const markMessagesAsReadLocally = (messagesToUpdate: Message[], userId: number, untilMessage: Message): Message[] => {
-    return messagesToUpdate.map((msg) => {
-      const isBeforeOrEqual =
-        new Date(msg.createdAt) < new Date(untilMessage.createdAt) ||
-        (new Date(msg.createdAt).getTime() === new Date(untilMessage.createdAt).getTime() && msg.id <= untilMessage.id);
+  const updateChatMemberLastReadMessage = (chatRoom: ChatRoom, userId: number, lastReadMessage: Message) => {
+    if (!chatRoom) return chatRoom;
 
-      if (isBeforeOrEqual && !msg.readBy.includes(userId)) {
-        return {
-          ...msg,
-          readBy: [...msg.readBy, userId],
-        };
+    // chatMembers 객체 구조: { me: ChatMember, others: ChatMember[] }
+    const updatedOthers = chatRoom.chatMembers.others.map((member: ChatMember) => {
+      if (member.user.id === userId) {
+        const currentLastRead = member.lastReadMessage;
+
+        // 업데이트할 메시지가 현재보다 더 최신일 때만 변경
+        if (
+          !currentLastRead ||
+          dayjs(lastReadMessage.createdAt).isAfter(dayjs(currentLastRead.createdAt)) ||
+          (dayjs(lastReadMessage.createdAt).isSame(dayjs(currentLastRead.createdAt), 'second') &&
+            lastReadMessage.id > currentLastRead.id)
+        ) {
+          return {
+            ...member,
+            lastReadMessage,
+          };
+        }
       }
-
-      return msg;
+      return member;
     });
+
+    return {
+      ...chatRoom,
+      chatMembers: {
+        ...chatRoom.chatMembers,
+        others: updatedOthers,
+      },
+    };
   };
 
   // 3. 읽음 처리 서버 전송 로직 (useDebounce 훅 사용)
@@ -96,16 +115,17 @@ export default function MessageProvider({ children }: any) {
 
       socket.emit('chat:read:mark', {
         chatRoomId: chatRoom.id,
-        lastSeenMessage: { id: messageId, createdAt: messageCreatedAt },
+        lastReadMessageId: messageId,
+        lastReadMessageCreatedAt: messageCreatedAt,
       });
     },
     [socket, chatRoom?.id, meUser?.id],
   );
 
-  // useDebounce 훅을 사용하여 sendReadReceiptToServer를 디바운스
-  const { debouncedCallback: debouncedSendReadReceipt, flush } = useDebounce(sendReadReceiptToServer, 2000);
+  // useDebounce 훅을 사용하여 sendReadReceiptToServer를 디바운스 (1초)
+  const { debouncedCallback: debouncedSendReadReceipt, flush } = useDebounce(sendReadReceiptToServer, 1000);
 
-  // 4. 컴포넌트 언마운트/채팅방 변경 시 읽음 처리 강제 전송
+  // 4. 컴포넌트 언마운트/채팅방 변경 시 읽음 처리 강제 전송 (디바운스 대기중인 값 즉시 실행)
   useEffect(() => {
     return () => {
       console.log('[Cleanup] flush 호출 (언마운트/채팅방 변경)');
@@ -167,29 +187,13 @@ export default function MessageProvider({ children }: any) {
   useEffect(() => {
     if (!socket || !chatRoom?.id) return;
 
-    const handleReadUpdateFromServer = (receivedData: { lastSeenMessage: Message; userId: number }) => {
-      const { lastSeenMessage, userId } = receivedData;
-      if (!lastSeenMessage) return;
+    const handleReadUpdateFromServer = (receivedData: { lastReadMessage: Message; userId: number }) => {
+      const { lastReadMessage, userId } = receivedData;
+      if (!lastReadMessage) return;
 
-      // SWR 캐시 읽음 업데이트
-      mutate(
-        (pages) => {
-          if (!pages) return pages;
-
-          const updatedPages = pages.map((page) => {
-            if (!page.results) return page; // results가 없는 페이지는 건너뛰기
-
-            const updatedResults = markMessagesAsReadLocally(page.results, userId, lastSeenMessage);
-            return { ...page, results: updatedResults };
-          });
-
-          return updatedPages;
-        },
-        { revalidate: false },
+      setChatRoom((prevChatRoom: ChatRoom | null) =>
+        prevChatRoom ? updateChatMemberLastReadMessage(prevChatRoom, userId, lastReadMessage) : prevChatRoom,
       );
-
-      // newMessages 읽음 업데이트
-      setNewMessages((prev) => markMessagesAsReadLocally(prev, userId, lastSeenMessage));
     };
 
     socket.on('chat:room:read:update', handleReadUpdateFromServer);

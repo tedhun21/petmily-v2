@@ -23,19 +23,23 @@ const messageSlice = createSlice({
       });
     },
     markAsRead: (state, action) => {
-      const { lastSeenMessage } = action.payload;
+      const { lastReadMessage } = action.payload;
 
       state.newMessages = state.newMessages.filter((message) => {
         // 다른 채팅방 메시지는 유지
-        const isSameRoom = message.chatRoom.id === lastSeenMessage.chatRoom.id;
+        const isSameRoom = message.chatRoom.id === lastReadMessage.chatRoom.id;
 
-        const isBeforeOrEqual = new Date(message.createdAt) > new Date(lastSeenMessage.created);
+        const isBeforeOrEqual = new Date(message.createdAt) > new Date(lastReadMessage.createdAt);
 
         return !isSameRoom || isBeforeOrEqual;
       });
     },
+
+    removeMessagesByChatRoom: (state, action) => {
+      state.newMessages = state.newMessages.filter((msg) => msg.chatRoom.id !== action.payload);
+    },
   },
 });
 
-export const { addNewMessage, removeMessages, markAsRead } = messageSlice.actions;
+export const { addNewMessage, removeMessages, markAsRead, removeMessagesByChatRoom } = messageSlice.actions;
 export default messageSlice.reducer;

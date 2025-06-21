@@ -24,10 +24,12 @@ export default function TopHeader() {
 
   const { data: me } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);
 
-  const { data: unreadCount } = useSWR(`${API_URL}/notifications/unreadCount`, fetcherWithCookie);
+  // const { data: unreadCount } = useSWR(`${API_URL}/notifications/unreadCount`, fetcherWithCookie);
+  const { data: unreadServerChatCount } = useSWR(`${API_URL}/chats/unread-count`, fetcherWithCookie);
 
-  const unreadChatCount: number = me?.unreadChatCount + newMessages.length;
-  const unreadNotificationCount: number = unreadCount + newNotifications.length;
+  const unreadChatCount = unreadServerChatCount + newMessages.length;
+
+  // const unreadNotificationCount: number = unreadCount + newNotifications.length;
 
   const handleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
@@ -48,13 +50,13 @@ export default function TopHeader() {
           <>
             <ButtonContainer>
               <NotiButton />
-              {unreadNotificationCount > 0 && (
+              {/* {unreadNotificationCount > 0 && (
                 <UnreadCountContainer>
                   <UnreadCount>
                     <span>{unreadNotificationCount}</span>
                   </UnreadCount>
                 </UnreadCountContainer>
-              )}
+              )} */}
             </ButtonContainer>
 
             <ButtonContainer>

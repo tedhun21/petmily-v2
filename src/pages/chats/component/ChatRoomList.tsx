@@ -22,7 +22,7 @@ export default function ChatRoomList() {
     }
     if (previousPageData && previousPageData.pagination.hasNextPage) {
       const nextCursor = previousPageData.pagination.nextCursor;
-      return `${baseKey}?cursor=${nextCursor}&pageSize=${pageSize}`;
+      return `${baseKey}?cursorId=${nextCursor.cursorId}&cursorUpdatedAt=${nextCursor.cursorUpdatedAt}&pageSize=${pageSize}`;
     }
   };
 
@@ -38,7 +38,11 @@ export default function ChatRoomList() {
   }, [isInView]);
 
   if (isLoading) {
-    return <Loading color="279EFF" />;
+    return (
+      <CenterContainer>
+        <Loading color="279EFF" />
+      </CenterContainer>
+    );
   }
 
   if (isEmpty) {

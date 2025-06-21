@@ -18,10 +18,10 @@ interface IProps {
   isMyMessage: boolean;
   previousMessage?: Message;
   nextMessage?: Message;
-  membersCount: number;
+  unreadCount: number;
 }
 
-export default function MessageItem({ message, isMyMessage, previousMessage, nextMessage, membersCount }: IProps) {
+export default function MessageItem({ message, isMyMessage, previousMessage, nextMessage, unreadCount }: IProps) {
   const { onMessageVisible } = useContext(MessageContext);
   const ref = useRef<HTMLLIElement>(null);
   const isInView = useInView(ref, { once: true });
@@ -30,8 +30,6 @@ export default function MessageItem({ message, isMyMessage, previousMessage, nex
   const showTime = shouldShowTime(message, previousMessage, nextMessage);
   const showDateDivider = shouldShowDateDivider(message, previousMessage);
   const showNickname = shouldShowNickname(message, previousMessage, nextMessage);
-
-  const unreadCounts = membersCount > 0 && message.readBy.length > 0 ? membersCount - message.readBy.length : 0;
 
   useEffect(() => {
     if (isInView) {
@@ -59,7 +57,7 @@ export default function MessageItem({ message, isMyMessage, previousMessage, nex
           <MessageContent $isMyMessage={isMyMessage}>
             <Content $isMyMessage={isMyMessage}>{message.content}</Content>
             {showTime && <Texts12h18>{formatToLocaleAMPM(message.createdAt)}</Texts12h18>}
-            {unreadCounts > 0 && <ReadCount>{membersCount - message.readBy.length}</ReadCount>}
+            {unreadCount > 0 && <ReadCount>{unreadCount}</ReadCount>}
           </MessageContent>
         </div>
       </Item>
