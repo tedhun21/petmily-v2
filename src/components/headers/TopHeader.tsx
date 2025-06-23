@@ -19,7 +19,7 @@ import { API_URL } from 'config';
 
 export default function TopHeader() {
   const { isDarkMode, setIsDarkMode } = useContext(ThemeContext);
-  const { newMessages } = useSelector((state: RootState) => state.message);
+  const { newMessages } = useSelector((state: RootState) => state.newMessage);
   const { newNotifications } = useSelector((state: RootState) => state.notification);
 
   const { data: me } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);

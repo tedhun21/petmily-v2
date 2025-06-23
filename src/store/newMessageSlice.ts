@@ -1,16 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { Message } from 'types/chat.type';
 
-export interface MessageState {
+export interface NewMessageState {
   newMessages: Message[];
 }
 
-const initialState: MessageState = {
+const initialState: NewMessageState = {
   newMessages: [],
 };
 
-const messageSlice = createSlice({
-  name: 'message',
+const newMessageSlice = createSlice({
+  name: 'newMessage',
   initialState,
   reducers: {
     addNewMessage: (state, action) => {
@@ -41,5 +41,5 @@ const messageSlice = createSlice({
   },
 });
 
-export const { addNewMessage, removeMessages, markAsRead, removeMessagesByChatRoom } = messageSlice.actions;
-export default messageSlice.reducer;
+export const { addNewMessage, removeMessages, markAsRead, removeMessagesByChatRoom } = newMessageSlice.actions;
+export default newMessageSlice.reducer;

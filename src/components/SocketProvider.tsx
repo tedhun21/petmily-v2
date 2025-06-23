@@ -1,8 +1,11 @@
+import { fetcherWithCookie } from 'api';
+import { API_URL } from 'config';
 import { createContext, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { io, Socket } from 'socket.io-client';
-import { addNewMessage, markAsRead } from 'store/messageSlice';
+import { addNewMessage, markAsRead } from 'store/newMessageSlice';
 import { addNewNotification } from 'store/notificationSlice';
+import useSWR from 'swr';
 import { getCookie } from 'utils/cookie';
 
 const SOCKET_URL = process.env.REACT_APP_WEBSOCKET_URL;
@@ -25,10 +28,12 @@ export default function SocketProvider({ children }: SocketProviderProps) {
   const dispatch = useDispatch();
   const [socket, setSocket] = useState<Socket | null>(null);
 
+  const { data: me } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);
+
   useEffect(() => {
     const token = getCookie('access_token');
 
-    if (!token) return;
+    if (!me || !token) return;
     const socket = io(`${SOCKET_URL}`, {
       auth: { token },
       autoConnect: true,
@@ -62,6 +67,6 @@ export default function SocketProvider({ children }: SocketProviderProps) {
       socket.off('chat:user:message:new');
       socket.disconnect();
     };
-  }, []);
+  }, [me]);
   return <SocketContext.Provider value={{ socket, setSocket }}>{children}</SocketContext.Provider>;
 }

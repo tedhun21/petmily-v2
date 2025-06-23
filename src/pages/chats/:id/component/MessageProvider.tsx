@@ -7,9 +7,6 @@ import { fetcherWithCookie } from 'api';
 import { API_URL } from 'config';
 import dayjs from 'dayjs';
 import { useDebounce } from 'hooks/useDebounce';
-import { useDispatch } from 'react-redux';
-import { removeMessagesByChatRoom } from 'store/messageSlice';
-import { mutate } from 'swr';
 
 interface MessageContextType {
   fetchedMessages: Message[];
@@ -69,7 +66,7 @@ export default function MessageProvider({ children }: any) {
     }
     return null; // hasNextPage가 false이거나 previousPageData가 없는 경우 null 반환
   };
-  const { data, setSize, isLoading } = useSWRInfinite(getKey, fetcherWithCookie, { revalidateOnMount: true });
+  const { data, setSize, isLoading } = useSWRInfinite(getKey, fetcherWithCookie);
   const fetchedMessages = data ? data.flatMap((page) => page.results) : [];
   const isEnd = data && data[data.length - 1]?.results?.length < pageSize;
 
@@ -128,7 +125,6 @@ export default function MessageProvider({ children }: any) {
   // 4. 컴포넌트 언마운트/채팅방 변경 시 읽음 처리 강제 전송 (디바운스 대기중인 값 즉시 실행)
   useEffect(() => {
     return () => {
-      console.log('[Cleanup] flush 호출 (언마운트/채팅방 변경)');
       flush(); // 대기 중인 디바운스 작업을 즉시 실행
     };
   }, [flush]);

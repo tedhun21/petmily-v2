@@ -133,6 +133,7 @@ export default function ChatContainer() {
     };
   }, []);
 
+  // 500px 이내에 있으면 최상단에 있다고 판단
   useEffect(() => {
     const chatEl = chatRef.current;
     if (!chatEl) return;
@@ -202,10 +203,6 @@ const Sticky = styled.div`
   position: sticky;
   bottom: 0;
   right: 0;
-`;
-
-const TopSentinel = styled.div`
-  height: 1px;
 `;
 
 const BottomSentinel = styled.div`

@@ -4,7 +4,7 @@ import { fetcherWithCookie } from 'api';
 import useSWR from 'swr';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { removeMessages } from 'store/messageSlice';
+import { removeMessages } from 'store/newMessageSlice';
 import { API_URL } from 'config';
 
 interface ContextProps {

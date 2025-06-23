@@ -28,8 +28,10 @@ export default function ChatPage() {
 }
 
 const MainContainer = styled.main`
+  position: relative;
   display: flex;
   flex-direction: column;
+  width: 100%;
   height: 100vh;
 
   // 보통 크기를 고정하거나 콘텍츠에 딱 맞추기
