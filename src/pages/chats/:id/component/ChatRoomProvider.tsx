@@ -1,12 +1,13 @@
-import { createContext, useEffect, useState } from 'react';
-import { ChatRoom } from 'types/chat.type';
-import { fetcherWithCookie, updaterWithCookie } from 'api';
+import { createContext, useContext, useEffect, useState } from 'react';
+import { ChatMember, ChatRoom } from 'types/chat.type';
+import { fetcherWithCookie, posterWithCookie } from 'api';
 import useSWR from 'swr';
-import useSWRMutation from 'swr/mutation';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { removeMessages } from 'store/messageSlice';
+import { removeMessages } from 'store/newMessageSlice';
 import { API_URL } from 'config';
+import { SocketContext } from '@components/SocketProvider';
+import useSWRMutation from 'swr/mutation';
 
 interface ContextProps {
   chatRoom: ChatRoom | null;
@@ -14,6 +15,7 @@ interface ContextProps {
   [key: string]: any;
 }
 
+// 현재 채팅방 정보 및 채팅방 관련 상태 관리
 export const ChatRoomContext = createContext<ContextProps>({
   chatRoom: null,
   setChatRoom: () => null,
@@ -26,6 +28,7 @@ export const ChatRoomContext = createContext<ContextProps>({
 export default function ChatRoomProvider({ children, value }: any) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { socket } = useContext(SocketContext);
   const [chatRoom, setChatRoom] = useState<ChatRoom | null>(null);
 
   const { opponentIds, chatRoomId } = value;
@@ -39,24 +42,52 @@ export default function ChatRoomProvider({ children, value }: any) {
     fetcherWithCookie,
   );
 
-  // unreadCount reset
-  const { trigger } = useSWRMutation(`${API_URL}/chats/unread-counts?action=reset`, updaterWithCookie);
+  // 채팅방 만들기
+  const { trigger } = useSWRMutation(opponentIds ? `${API_URL}/chats` : null, posterWithCookie);
 
-  // 1.챗룸 업데이트
-  // 2. unreadCount 초기화 (서버 업데이트 + redux 업데이트)
+  const sendMessage = async (message: string) => {
+    if (!socket || message.length === 0) return;
+
+    // 채팅방이 없으면 만들어서 연결 후 보내기
+    if (!chatRoom?.id && opponentIds.length > 0) {
+      const newChatRoom = await trigger({ formData: { opponentIds } });
+
+      socket.emit('chat:room:join', newChatRoom.id);
+      socket.emit('chat:message:new', { chatRoomId: newChatRoom.id, opponentIds, message });
+
+      navigate(`/chats/${newChatRoom.id}`);
+    } else if (chatRoom?.id) {
+      // 채팅방이 있으면 바로 보내기
+
+      const otherIds = byId.chatMembers.others.map((member: ChatMember) => member.user.id);
+
+      socket.emit('chat:message:new', { chatRoomId: chatRoom.id, opponentIds: otherIds, message });
+    }
+  };
+
+  // 챗룸이 있으면 소켓 연결
+  useEffect(() => {
+    if (chatRoom?.id && socket) {
+      socket.emit('chat:room:join', chatRoom.id.toString());
+    }
+  }, [chatRoom, socket]);
+
+  // 챗룸 업데이트
   useEffect(() => {
     if (byId) {
       setChatRoom(byId);
-      trigger({ formData: { chatRoomId: byId.id } });
       dispatch(removeMessages({ chatRoomId: byId.id }));
     } else if (byUsers) {
       // 유저 아이디로 들어왔을 때
       setChatRoom(byUsers);
-      trigger({ formData: { chatRoomId: byUsers.id } });
-      dispatch(removeMessages({ chatRoomId: byUsers.id }));
+      dispatch(removeMessages({ chatRoomId: byUsers.id, action: 'reset' }));
       navigate(`/chats/${byUsers.id}`, { replace: true });
     }
   }, [byId, byUsers]);
 
-  return <ChatRoomContext.Provider value={{ ...value, chatRoom, setChatRoom }}>{children}</ChatRoomContext.Provider>;
+  return (
+    <ChatRoomContext.Provider value={{ ...value, chatRoom, setChatRoom, sendMessage }}>
+      {children}
+    </ChatRoomContext.Provider>
+  );
 }

@@ -4,48 +4,42 @@ import { RootState } from 'store';
 
 import styled from 'styled-components';
 import { Column, ImageCentered, RoundedImageWrapper, Row, Texts12h18 } from 'styles/commonStyle';
-import { Message } from 'types/chat.type';
+import { ChatMember, ChatRoom, Message } from 'types/chat.type';
 import { updatedAtAgo } from 'utils/date';
 
-// interface ChatRoomItemProps {
-//   chatRoom: ChatRoom;
-// }
+interface ChatRoomItemProps {
+  chatRoom: ChatRoom;
+}
 
-export default function ChatRoomItem({ chatRoom }: any) {
-  const { newMessages } = useSelector((state: RootState) => state.message);
+export default function ChatRoomItem({ chatRoom }: ChatRoomItemProps) {
+  const { newMessages } = useSelector((state: RootState) => state.newMessage);
 
   const others = chatRoom.chatMembers.others;
 
   // 현재 채팅방의 새로운 메세지만 필터링
   const newChatRoomMessages = newMessages?.filter((msg: Message) => msg.chatRoom.id === chatRoom.id);
 
-  // 최신 메시지 추출 (createdAt이 가장 최신인 메시지)
-  const newestMessage = newChatRoomMessages?.reduce((latest: Message, current: Message) => {
-    return new Date(current.createdAt) > new Date(latest.createdAt) ? current : latest;
-  }, newChatRoomMessages[0]);
+  // 최신 메시지 추출
+  const newestMessage = newChatRoomMessages[0];
 
   // 최신 메세지 내용 (새로운 메세지가 없으면 기존 lastMessage 사용)
   const lastMessage = newestMessage || chatRoom.lastMessage;
 
   // 읽지 않은 메세지 개수 (원래 unreadCount 값 + 새로 들어온 메세지 개수)
-  const unreadCount = (chatRoom.chatMembers.unreadCount || 0) + newChatRoomMessages?.length;
+  const unreadCount = (chatRoom.chatMembers.me?.unreadCount || 0) + newChatRoomMessages?.length;
 
   return (
     <ChatRoomLink to={`/chats/${chatRoom.id}`}>
       <PhotoName>
         <Photo>
-          {others.map((other: any) => (
+          {others?.map((other: ChatMember) => (
             <MemberPhoto key={other.id}>
-              <ImageCentered src={`${other.photo ?? '/imgs/DefaultUserProfile.jpg'}`} />
+              <ImageCentered src={`${other.user.photo ?? '/imgs/DefaultUserProfile.jpg'}`} />
             </MemberPhoto>
           ))}
         </Photo>
         <NameMessageWrapper>
-          <div>
-            {others.map((other: any) => (
-              <span key={other.id}>{other.nickname}</span>
-            ))}
-          </div>
+          <div>{others?.map((other: ChatMember) => <span key={other.id}>{other.user.nickname}</span>)}</div>
           <Texts12h18>{lastMessage.content}</Texts12h18>
         </NameMessageWrapper>
       </PhotoName>

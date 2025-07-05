@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
 import useSWR from 'swr';
@@ -19,15 +19,17 @@ import { API_URL } from 'config';
 
 export default function TopHeader() {
   const { isDarkMode, setIsDarkMode } = useContext(ThemeContext);
-  const { newMessages } = useSelector((state: RootState) => state.message);
+  const { newMessages } = useSelector((state: RootState) => state.newMessage);
   const { newNotifications } = useSelector((state: RootState) => state.notification);
 
   const { data: me } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);
 
-  const { data: unreadCount } = useSWR(`${API_URL}/notifications/unreadCount`, fetcherWithCookie);
+  // const { data: unreadCount } = useSWR(`${API_URL}/notifications/unreadCount`, fetcherWithCookie);
+  const { data: unreadServerChatCount } = useSWR(`${API_URL}/chats/unread-count`, fetcherWithCookie);
 
-  const unreadChatCount: number = me?.unreadChatCount + newMessages.length;
-  const unreadNotificationCount: number = unreadCount + newNotifications.length;
+  const unreadChatCount = unreadServerChatCount + newMessages.length;
+
+  // const unreadNotificationCount: number = unreadCount + newNotifications.length;
 
   const handleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
@@ -48,13 +50,13 @@ export default function TopHeader() {
           <>
             <ButtonContainer>
               <NotiButton />
-              {unreadNotificationCount > 0 && (
+              {/* {unreadNotificationCount > 0 && (
                 <UnreadCountContainer>
                   <UnreadCount>
                     <span>{unreadNotificationCount}</span>
                   </UnreadCount>
                 </UnreadCountContainer>
-              )}
+              )} */}
             </ButtonContainer>
 
             <ButtonContainer>

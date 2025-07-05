@@ -9,48 +9,33 @@ import {
   shouldShowSenderPhoto,
   shouldShowTime,
 } from 'utils/date';
-import { useEffect, useRef, useContext } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { useInView } from 'framer-motion';
 import { MessageContext } from './MessageProvider';
 
 interface IProps {
-  index: number;
   message: Message;
   isMyMessage: boolean;
   previousMessage?: Message;
   nextMessage?: Message;
-  membersCount: number;
+  unreadCount: number;
 }
 
-export default function ChatMessage({
-  index,
-  message,
-  isMyMessage,
-  previousMessage,
-  nextMessage,
-  membersCount,
-}: IProps) {
-  const { setSize } = useContext(MessageContext);
-
+export default function MessageItem({ message, isMyMessage, previousMessage, nextMessage, unreadCount }: IProps) {
+  const { onMessageVisible } = useContext(MessageContext);
   const ref = useRef<HTMLLIElement>(null);
-  const viewRefIndex = 2;
   const isInView = useInView(ref, { once: true });
-
-  const isMoreInView = index === viewRefIndex && isInView;
 
   const showSenderPhoto = shouldShowSenderPhoto(message, previousMessage);
   const showTime = shouldShowTime(message, previousMessage, nextMessage);
   const showDateDivider = shouldShowDateDivider(message, previousMessage);
   const showNickname = shouldShowNickname(message, previousMessage, nextMessage);
 
-  const unreadCounts = membersCount > 0 && message.readBy.length > 0 ? membersCount - message.readBy.length : 0;
-
-  // viewRefIndex에 해당하는 메세지가 화면에 보이면 메세지 더 불러오기
   useEffect(() => {
-    if (isMoreInView) {
-      setSize((prev: number) => prev + 1);
+    if (isInView) {
+      onMessageVisible(message);
     }
-  }, [isMoreInView]);
+  }, [isInView]);
 
   return (
     <li ref={ref}>
@@ -72,7 +57,7 @@ export default function ChatMessage({
           <MessageContent $isMyMessage={isMyMessage}>
             <Content $isMyMessage={isMyMessage}>{message.content}</Content>
             {showTime && <Texts12h18>{formatToLocaleAMPM(message.createdAt)}</Texts12h18>}
-            {unreadCounts > 0 && <ReadCount>{membersCount - message.readBy.length}</ReadCount>}
+            {unreadCount > 0 && <ReadCount>{unreadCount}</ReadCount>}
           </MessageContent>
         </div>
       </Item>

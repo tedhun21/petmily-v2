@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import styled from 'styled-components';
@@ -7,28 +7,37 @@ import { FiMenu } from 'react-icons/fi';
 
 import { ChatRoomContext } from './ChatRoomProvider';
 import { Texts20h30 } from 'styles/commonStyle';
-import { ChatUser } from 'types/chat.type';
+import { ChatMember } from 'types/chat.type';
+import ChatRoomDrawer from './ChatRoomDrawer';
 
 export default function ChatHeader() {
   const navigate = useNavigate();
   const { chatRoom } = useContext(ChatRoomContext);
 
-  const othersName = chatRoom?.chatMembers?.others?.map((other: ChatUser) => other.nickname);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  const others = chatRoom?.chatMembers.others;
+
+  const handleDrawerToggle = () => {
+    setIsDrawerOpen((prev) => !prev);
+  };
 
   return (
     <Header>
       <StyledBackButton onClick={() => navigate(-1)}>
         <FaArrowLeft color="#279EFF" size="24px" />
       </StyledBackButton>
-      <Texts20h30>{othersName?.join(', ')}님</Texts20h30>
-      <button>
+      <Texts20h30>{others?.map((other: ChatMember) => other?.user?.nickname)?.join(', ')}</Texts20h30>
+      <button onClick={handleDrawerToggle}>
         <FiMenu size="24px" color="#279EFF" />
       </button>
+      <ChatRoomDrawer isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} />
     </Header>
   );
 }
 
 const Header = styled.header`
+  flex: 0 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;

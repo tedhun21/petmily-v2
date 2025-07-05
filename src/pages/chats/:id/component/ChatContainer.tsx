@@ -1,119 +1,98 @@
-import { useContext, useEffect, useRef, useState } from 'react';
-
+import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { useInView } from 'framer-motion';
 import { FaChevronDown } from 'react-icons/fa6';
 
-import { Button, ImageCentered, RoundedImageWrapper, Texts14h21 } from 'styles/commonStyle';
+import { Button, CenterContainer, ImageCentered, RoundedImageWrapper, Texts14h21 } from 'styles/commonStyle';
 import { ChatRoomContext } from './ChatRoomProvider';
-
-import ChatList from './ChatList';
 import { MessageContext } from './MessageProvider';
-import { Message } from 'types/chat.type';
+import { useChatScroll } from 'hooks/useChatScroll';
+import MessageList from './MessageList';
+import Loading from '@components/Loading';
 
 export default function ChatContainer() {
+  // 1. Hooks & Contexts
   const { chatRoom } = useContext(ChatRoomContext);
-  const { messages, newMessages, isLoading } = useContext(MessageContext);
-
+  const { messages, newMessages, allMessages, setSize, isLoading, isValidating, isEnd } = useContext(MessageContext);
   const chatRef = useRef<HTMLDivElement>(null);
-  const bottomRef = useRef<HTMLDivElement>(null);
-  const isBottomInView = useInView(bottomRef);
-  const [isFirstRender, setIsFirstRender] = useState(true);
-  const [showDownButton, setShowDownButton] = useState<boolean>(false);
+  const { isTopInView, isBottomInView, showDownButton, scrollToBottom } = useChatScroll({ targetSection: chatRef });
+
+  // 2. Refs & State
+  const prevScrollHeightRef = useRef<number>(0);
+  const isInitialLoad = useRef(true);
   const [showNewestMessage, setShowNewestMessage] = useState<boolean>(false);
-  const [newestMessage, setNewestMessage] = useState<Message | null>(null);
 
-  const me = chatRoom?.chatMembers?.me;
-  const others = chatRoom?.chatMembers?.others;
-  const senderId = newestMessage?.sender?.id;
-  const myMessage = senderId === me?.id;
-  const newMessagesMaster = myMessage ? me : others?.find((user) => user.id === senderId);
+  // 3. Memoized Values
+  const newestMessage = useMemo(() => newMessages[0], [newMessages]);
+  const otherNewMessageUser = useMemo(
+    () =>
+      newestMessage && chatRoom?.chatMembers?.others?.find((other) => other.user.id === newestMessage.sender?.id)?.user,
+    [newestMessage, chatRoom?.chatMembers?.others],
+  );
 
+  // 4. Effects
+  // 스크롤 위치 관리 (초기 로딩 및 이전 메시지 로드 시)
+  useEffect(() => {
+    const chatEl = chatRef.current;
+    if (!chatEl) return;
+
+    if (isInitialLoad.current && !isLoading && messages.length > 0) {
+      scrollToBottom();
+      isInitialLoad.current = false;
+    }
+
+    const scrollHeightDiff = chatEl.scrollHeight - prevScrollHeightRef.current;
+    if (scrollHeightDiff > 0 && chatEl.scrollTop <= chatEl.clientHeight * 0.3) {
+      chatEl.scrollTop += scrollHeightDiff;
+    }
+
+    prevScrollHeightRef.current = chatEl.scrollHeight;
+  }, [messages, isLoading, scrollToBottom]);
+
+  // UI 상태 관리 (새 메시지 도착, 무한 스크롤 트리거 등)
+  useEffect(() => {
+    if (newestMessage) {
+      if (isBottomInView || !otherNewMessageUser) {
+        scrollToBottom({ behavior: 'smooth' });
+        setShowNewestMessage(false);
+      } else {
+        setShowNewestMessage(true);
+      }
+    }
+
+    if (isTopInView && !isValidating && !isEnd) {
+      setSize((prev) => prev + 1);
+    }
+
+    if (isBottomInView) {
+      setShowNewestMessage(false);
+    }
+  }, [newestMessage, isBottomInView, isTopInView, isValidating, isEnd, otherNewMessageUser, scrollToBottom, setSize]);
+
+  // 5. Render Logic
   const showDefaultDownButton = !newestMessage && showDownButton;
   const showNewMessageDownButton = newestMessage && showNewestMessage && !isBottomInView;
 
-  const scrollToBottom = () => {
-    if (bottomRef.current) {
-      bottomRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  useEffect(() => {
-    if (newMessages?.length > 0) {
-      setNewestMessage(newMessages[0]);
-    }
-  }, [newMessages]);
-
-  // 처음 들어오면 채팅창 제일 밑
-  useEffect(() => {
-    if (bottomRef.current && messages.length > 0 && !isLoading && isFirstRender) {
-      bottomRef.current?.scrollIntoView({});
-      setIsFirstRender(false);
-    }
-  }, [messages, isLoading]);
-
-  // 새 메세지가 왔을 때, 바닥 포커스
-  // 바닥에 포커스 되어있을 때, 새 매세지가 올때
-  // 바닥에 포커스 안 되어있을 때, 내가 작성하면 바닥에 포커스
-  useEffect(() => {
-    if (newestMessage) {
-      if (isBottomInView || myMessage) {
-        scrollToBottom();
-        setShowNewestMessage(false); // 내 메시지거나 바닥이면 새 메시지 안 보여줌
-      } else {
-        setShowNewestMessage(true); // 내가 보낸 게 아니고 바닥이 아닐 때만 표시
-      }
-    }
-  }, [newestMessage]);
-
-  useEffect(() => {
-    if (isBottomInView) {
-      setShowNewestMessage(false); // 바닥에 있으면 새 메시지 UI 숨김
-      setNewestMessage(null); // 바닥에 있으면 새 메시지 초기화
-    }
-  }, [isBottomInView]);
-
-  // down 버튼 로직이 생기는 로직
-  useEffect(() => {
-    const handleScroll = () => {
-      const chatElement = chatRef.current;
-
-      if (!chatRef.current) return;
-      if (chatElement) {
-        const scrollTop = chatElement.scrollTop; // 현재 스크롤 위치
-        const scrollHeight = chatElement.scrollHeight; // listRef의 높이
-        const clientHeight = chatElement.clientHeight; // 뷰포트 높이 (가시 영역의 높이)
-
-        // 스크롤 위치를 퍼센트로 계산
-        const scrollPercentage = (scrollTop / (scrollHeight - clientHeight)) * 100;
-
-        // 소수점 오차니 렌더링 차이 때문에 ===100이 잘 안나올 수 있다
-        const isAtBottom = scrollTop + clientHeight >= scrollHeight - 5;
-
-        if (isAtBottom) {
-          setShowDownButton(false);
-        } else if (scrollPercentage < 80) {
-          // 스크롤이 80% 이상이면 버튼 숨기기, 아니면 표시
-          setShowDownButton(true);
-        }
-      }
-    };
-    const chatElement = chatRef.current;
-    chatElement?.addEventListener('scroll', handleScroll);
-    return () => {
-      chatElement?.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
   return (
     <Div ref={chatRef}>
-      <ChatList />
+      {isLoading || !chatRoom ? (
+        <CenterContainer>
+          <Loading />
+        </CenterContainer>
+      ) : allMessages.length === 0 && !isValidating ? (
+        <CenterContainer>
+          <Empty>
+            <span>아직 메시지가 없습니다.</span>
+            <span>메시지로 인사를 건네보세요.</span>
+          </Empty>
+        </CenterContainer>
+      ) : (
+        <MessageList />
+      )}
 
-      <Bottom ref={bottomRef} />
       <Sticky>
         {showDefaultDownButton && (
           <AbsoluteBottomCenter>
-            <DownButton type="button" onClick={scrollToBottom}>
+            <DownButton type="button" onClick={() => scrollToBottom({ behavior: 'smooth' })}>
               <FaChevronDown size="16px" />
             </DownButton>
           </AbsoluteBottomCenter>
@@ -121,14 +100,12 @@ export default function ChatContainer() {
         {showNewMessageDownButton && (
           <AbsolutBottom>
             <BottomWrapper>
-              <NewMessageButton type="button" onClick={scrollToBottom}>
+              <NewMessageButton type="button" onClick={() => scrollToBottom({ behavior: 'smooth' })}>
                 <NewMessageUser>
                   <NewMessageUserPhoto>
-                    <ImageCentered
-                      src={newMessagesMaster?.photo ? newMessagesMaster.photo : '/imgs/DefaultUserProfile.jpg'}
-                    />
+                    <ImageCentered src={otherNewMessageUser?.photo || '/imgs/DefaultUserProfile.jpg'} />
                   </NewMessageUserPhoto>
-                  <span>{newMessagesMaster?.nickname}</span>
+                  <span>{otherNewMessageUser?.nickname}</span>
                   <NewMessage>{newestMessage.content}</NewMessage>
                 </NewMessageUser>
                 <div style={{ padding: '8px' }}>
@@ -143,19 +120,18 @@ export default function ChatContainer() {
   );
 }
 
+const Div = styled.div`
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  flex: 1;
+`;
+
 const Sticky = styled.div`
   position: sticky;
   bottom: 0;
   right: 0;
 `;
-
-const Div = styled.div`
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-`;
-
-const Bottom = styled.div``;
 
 const AbsoluteBottomCenter = styled.div`
   position: absolute;
@@ -207,4 +183,11 @@ const DownButton = styled(Button)`
   padding: 8px;
   border-radius: ${({ theme }) => theme.radius.circle};
   opacity: 0.9;
+`;
+
+const Empty = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
 `;

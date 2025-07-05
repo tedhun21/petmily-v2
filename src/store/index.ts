@@ -1,13 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import messageReducer from './messageSlice';
+import newMessageReducer from './newMessageSlice';
 import notificationReducer from './notificationSlice';
 import modalReducer from './modalSlice';
 import contextReducer from './contextSlice';
 
 const store = configureStore({
   reducer: {
-    message: messageReducer,
+    newMessage: newMessageReducer,
     notification: notificationReducer,
     modal: modalReducer,
     context: contextReducer,

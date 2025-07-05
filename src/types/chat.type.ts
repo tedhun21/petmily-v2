@@ -5,17 +5,21 @@ export type ChatUser = Pick<User, 'id' | 'nickname' | 'photo' | 'role'>;
 
 export interface ChatRoom extends Omit<CoreType, 'id'> {
   id: number | null;
+  lastMessage: Message | null;
   chatMembers: {
-    unreadCount: number;
-    membersCount: number;
-    me?: ChatUser;
-    others?: ChatUser[];
+    me: ChatMember;
+    others: ChatMember[];
   };
+}
+
+export interface ChatMember extends CoreType {
+  user: ChatUser;
+  unreadCount: number | null;
+  lastReadMessage: Message | null;
 }
 
 export interface Message extends CoreType {
   sender?: ChatUser;
   content: string;
   chatRoom: ChatRoom;
-  readBy: number[];
 }
