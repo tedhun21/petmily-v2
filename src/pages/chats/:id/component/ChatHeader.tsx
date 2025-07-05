@@ -37,6 +37,7 @@ export default function ChatHeader() {
 }
 
 const Header = styled.header`
+  flex: 0 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;

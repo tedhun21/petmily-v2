@@ -4,12 +4,11 @@ import styled from 'styled-components';
 import { Message } from 'types/chat.type';
 import MessageItem from './MessageItem';
 import { MessageContext } from './MessageProvider';
+import { isAfterMessage } from 'utils/misc';
 
 export default function MessageList() {
   const { chatRoom } = useContext(ChatRoomContext);
-  const { fetchedMessages, newMessages } = useContext(MessageContext);
-
-  const allMessages = [...newMessages, ...fetchedMessages];
+  const { allMessages } = useContext(MessageContext);
 
   const others = chatRoom?.chatMembers.others || [];
 
@@ -20,10 +19,7 @@ export default function MessageList() {
         const previousMessage = index < allMessages.length - 1 ? allMessages[index + 1] : undefined;
         const nextMessage = index > 0 ? allMessages[index - 1] : undefined;
 
-        const unreadCount = others.filter((member) => {
-          if (!member?.lastReadMessage?.id) return true;
-          return member?.lastReadMessage.id < message.id;
-        }).length;
+        const unreadCount = others.filter((member) => isAfterMessage(message, member?.lastReadMessage)).length;
 
         return (
           <MessageItem

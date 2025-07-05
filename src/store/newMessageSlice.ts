@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import dayjs from 'dayjs';
 import { Message } from 'types/chat.type';
 
 export interface NewMessageState {
@@ -26,12 +27,11 @@ const newMessageSlice = createSlice({
       const { lastReadMessage } = action.payload;
 
       state.newMessages = state.newMessages.filter((message) => {
-        // 다른 채팅방 메시지는 유지
         const isSameRoom = message.chatRoom.id === lastReadMessage.chatRoom.id;
 
-        const isBeforeOrEqual = new Date(message.createdAt) > new Date(lastReadMessage.createdAt);
+        const isUnread = dayjs(message.createdAt).isAfter(dayjs(lastReadMessage.createdAt));
 
-        return !isSameRoom || isBeforeOrEqual;
+        return !isSameRoom || isUnread;
       });
     },
 
