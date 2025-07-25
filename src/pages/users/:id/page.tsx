@@ -5,8 +5,8 @@ import { useParams, Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 
 import Reviews from './component/Reviews';
-import useSWR from 'swr';
-import { fetcher, fetcherWithCookie, updaterWithCookie } from 'api';
+import { useAuthSWR, useAuthSWRMutation } from 'hooks/authSWR';
+import { fetcher, updater } from 'api';
 import { UserRole } from 'types/user.type';
 import { PiCatBold, PiDogBold } from 'react-icons/pi';
 import { timeRange, weekdays } from 'utils/date';
@@ -19,8 +19,6 @@ import PossibleDate from './component/PossibleDate';
 import { FormProvider, useForm } from 'react-hook-form';
 import BackHeader from '@components/headers/BackHeader';
 import { FaHeart, FaRegHeart } from 'react-icons/fa6';
-import useSWRMutation from 'swr/mutation';
-import { API_URL } from 'config';
 
 interface IDateForm {
   date: string | null;
@@ -40,12 +38,12 @@ export default function ProfilePage() {
   const { date, startTime, endTime } = methods.watch();
 
   // 나의 찜
-  const { data: favorites, mutate } = useSWR(`${API_URL}/users/me/favorites`, fetcherWithCookie);
+  const { data: favorites, mutate } = useAuthSWR('/users/me/favorites', fetcher);
 
-  const { trigger } = useSWRMutation(`${API_URL}/users/me/favorites`, updaterWithCookie);
+  const { trigger } = useAuthSWRMutation('/users/me/favorites', updater);
 
   // 유저 정보 가져오기
-  const { data: userData } = useSWR(`${API_URL}/users?q=${nickname}`, fetcher, {});
+  const { data: userData } = useAuthSWR(`/users?q=${nickname}`, fetcher);
 
   // userData가 없을 경우 초기값을 false로 설정
   const isFavorite = userData && favorites ? favorites.some((favorite: any) => favorite.id === userData.id) : false;
@@ -62,7 +60,7 @@ export default function ProfilePage() {
 
     try {
       // 실제 API 요청 실행
-      await trigger({ formData }, { revalidate: false });
+      await trigger(formData, { revalidate: false });
 
       //  optimistic update 적용
       mutate(optimisticFavorite, { rollbackOnError: true, revalidate: false });

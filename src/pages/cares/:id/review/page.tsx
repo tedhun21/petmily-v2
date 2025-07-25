@@ -1,13 +1,14 @@
 import { ChangeEvent, useEffect, useRef } from 'react';
-import { useForm } from 'react-hook-form';
-import useSWRMutation from 'swr/mutation';
-import styled from 'styled-components';
 
-import { FaXmark } from 'react-icons/fa6';
+import styled from 'styled-components';
+import { useForm } from 'react-hook-form';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useAuthSWR, useAuthSWRMutation } from 'hooks/authSWR';
+
 import { toast } from 'react-toastify';
+import { FaXmark } from 'react-icons/fa6';
 
 import Loading from '@components/Loading';
-import { fetcherWithCookie, posterWithCookie, updaterWithCookie } from 'api';
 import {
   BlueButton,
   BottomFixed,
@@ -18,10 +19,8 @@ import {
   Texts16h24,
   Title,
 } from 'styles/commonStyle';
-import { useNavigate, useParams } from 'react-router-dom';
-import useSWR from 'swr';
+import { fetcher, poster, updater } from 'api';
 import HoverRating from '@components/HoverRating';
-import { API_URL } from 'config';
 
 interface ReviewFormValues {
   star: number;
@@ -40,31 +39,27 @@ export default function ReviewPage() {
     defaultValues: { star: 5, body: '', files: [], photos: [], deleteFiles: [] },
   });
   // 선택한 사진
-  const selectedFiles = watch('files');
+  const selectedFiles = watch('files') ?? [];
   // 서버에서 가져온 사진
-  const imageUrls = watch('photos');
+  const imageUrls = watch('photos') ?? [];
 
-  const { data: review } = useSWR(`${API_URL}/reservations/${reservationId}/review`, fetcherWithCookie);
+  const { data: review } = useAuthSWR(`/reservations/${reservationId}/review`, fetcher);
 
   // 후기 등록
-  const { trigger: createTrigger, isMutating: isCreateMutating } = useSWRMutation(
-    `${API_URL}/reviews`,
-    posterWithCookie,
-    {
-      onSuccess: () => {
-        toast.success('후기 작성하였습니다!');
-        navigate(`/cares/${reservationId}`);
-      },
-      onError: () => {
-        toast.error('후기 작성에 실패했습니다. 다시 시도해 주세요');
-      },
+  const { trigger: createTrigger, isMutating: isCreateMutating } = useAuthSWRMutation('/reviews', poster, {
+    onSuccess: () => {
+      toast.success('후기 작성하였습니다!');
+      navigate(`/cares/${reservationId}`);
     },
-  );
+    onError: () => {
+      toast.error('후기 작성에 실패했습니다. 다시 시도해 주세요');
+    },
+  });
 
   // 후기 수정
-  const { trigger: updateTrigger, isMutating: isUpdateMutating } = useSWRMutation(
-    `${API_URL}/reviews/${review?.id}`,
-    updaterWithCookie,
+  const { trigger: updateTrigger, isMutating: isUpdateMutating } = useAuthSWRMutation(
+    `/reviews/${review?.id}`,
+    updater,
     {
       onSuccess: () => {
         toast.success('후기 수정하였습니다!');
@@ -115,7 +110,7 @@ export default function ReviewPage() {
     );
 
     // 삭제할 이미지 url 업데이트
-    setValue('deleteFiles', [...watch('deleteFiles'), removedImageUrl]);
+    setValue('deleteFiles', [...(watch('deleteFiles') ?? []), removedImageUrl]);
   };
 
   const onSubmit = (data: ReviewFormValues) => {
@@ -123,23 +118,6 @@ export default function ReviewPage() {
 
     if (review) {
       const formData = new FormData();
-      const createData = {
-        reservationId,
-        star,
-        body,
-      };
-
-      formData.append('data', JSON.stringify(createData));
-
-      if (files && files.length > 0) {
-        files.forEach((file: File) => formData.append('files', file));
-      }
-
-      // 후기 수정
-      updateTrigger({ formData });
-    } else {
-      const formData = new FormData();
-
       const updateData = {
         reservationId,
         star,
@@ -152,8 +130,25 @@ export default function ReviewPage() {
       if (files && files.length > 0) {
         files.forEach((file: File) => formData.append('files', file));
       }
+
+      // 후기 수정
+      updateTrigger(formData);
+    } else {
+      const formData = new FormData();
+
+      const createData = {
+        reservationId,
+        star,
+        body,
+      };
+
+      formData.append('data', JSON.stringify(createData));
+
+      if (files && files.length > 0) {
+        files.forEach((file: File) => formData.append('files', file));
+      }
       // 후기 등록
-      createTrigger({ formData });
+      createTrigger(formData);
     }
   };
 

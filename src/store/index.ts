@@ -4,13 +4,15 @@ import newMessageReducer from './newMessageSlice';
 import notificationReducer from './notificationSlice';
 import modalReducer from './modalSlice';
 import contextReducer from './contextSlice';
+import authReducer from './authSlice';
 
-const store = configureStore({
+export const store = configureStore({
   reducer: {
     newMessage: newMessageReducer,
     notification: notificationReducer,
     modal: modalReducer,
     context: contextReducer,
+    auth: authReducer,
   },
 });
 

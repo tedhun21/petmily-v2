@@ -7,7 +7,6 @@ import Loading from '@components/Loading';
 import { useEffect, useRef } from 'react';
 import { useInView } from 'framer-motion';
 import { useSearchParams } from 'react-router-dom';
-import { API_URL } from 'config';
 
 export default function Results() {
   const [searchParams] = useSearchParams();
@@ -18,7 +17,7 @@ export default function Results() {
   const getKey = (pageIndex: number, previousPageData: any) => {
     if (!searchParams || Array.from(searchParams).length === 0) return null;
     if (previousPageData && !previousPageData.length) return null;
-    return `${API_URL}/users/petsitters/possible?${searchParams}&page=${pageIndex + 1}&pageSize=${pageSize}`;
+    return `/users/petsitters/possible?${searchParams}&page=${pageIndex + 1}&pageSize=${pageSize}`;
   };
 
   const { isLoading, data, size, setSize } = useSWRInfinite(getKey, fetcher);

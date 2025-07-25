@@ -1,13 +1,12 @@
-import styled from 'styled-components';
-
-import useSWRInfinite from 'swr/infinite';
-import { CenterContainer } from 'styles/commonStyle';
-
-import { fetcherWithCookie } from 'api';
-import Loading from '@components/Loading';
 import { useEffect, useRef } from 'react';
+
+import styled from 'styled-components';
 import { useInView } from 'framer-motion';
-import { API_URL } from 'config';
+import { useAuthSWRInfinite } from 'hooks/authSWR';
+
+import { CenterContainer } from 'styles/commonStyle';
+import { fetcher } from 'api';
+import Loading from '@components/Loading';
 
 export default function MySchedule() {
   const ref = useRef(null);
@@ -16,10 +15,10 @@ export default function MySchedule() {
 
   const getKey = (pageIndex: number, previousPageData: any) => {
     if (previousPageData && !previousPageData.length) return null;
-    return `${API_URL}/reservations?page=${pageIndex + 1}&pageSize=${pageSize}`;
+    return `/reservations?page=${pageIndex + 1}&pageSize=${pageSize}`;
   };
 
-  const { data, size, setSize, isLoading } = useSWRInfinite(getKey, fetcherWithCookie);
+  const { data, size, setSize, isLoading } = useAuthSWRInfinite(getKey, fetcher);
 
   const isEmpty = data?.[0]?.length === 0;
   const isEnd = data && data[data.length - 1]?.results.length < pageSize;

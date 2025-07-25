@@ -43,7 +43,9 @@ export default function SelectedPetsitter({ petsitter }: SelectedPetsitterProps)
           <PossibleWrapper>
             <span>가능 장소</span>
             <CapsuleWrapper>
-              {petsitter?.possibleLocations?.map((location: string) => <Capsule key={location}>{location}</Capsule>)}
+              {petsitter?.possibleLocations?.map((location: string) => (
+                <Capsule key={location}>{location}</Capsule>
+              ))}
             </CapsuleWrapper>
           </PossibleWrapper>
           <PossibleWrapper>

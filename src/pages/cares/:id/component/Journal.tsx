@@ -1,13 +1,14 @@
-import Loading from '@components/Loading';
-import { posterWithCookie, updaterWithCookie } from 'api';
-import { BlueButton, CenterContainer, Texts14h21, Texts16h24, Title } from 'styles/commonStyle';
 import { ChangeEvent, useEffect, useRef } from 'react';
+
 import { useForm } from 'react-hook-form';
+import styled from 'styled-components';
+import { useAuthSWRMutation } from 'hooks/authSWR';
 import { FaXmark } from 'react-icons/fa6';
 import { toast } from 'react-toastify';
-import styled from 'styled-components';
-import useSWRMutation from 'swr/mutation';
-import { API_URL } from 'config';
+
+import Loading from '@components/Loading';
+import { poster, updater } from 'api';
+import { BlueButton, CenterContainer, Texts14h21, Texts16h24, Title } from 'styles/commonStyle';
 
 export default function Journal({ journal, reservationId }: any) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -18,15 +19,12 @@ export default function Journal({ journal, reservationId }: any) {
   const imageUrls = watch('photos');
 
   // 케어일지 등록
-  const { trigger: createTrigger, isMutating: isCreateMutating } = useSWRMutation(
-    `${API_URL}/journals`,
-    posterWithCookie,
-  );
+  const { trigger: createTrigger, isMutating: isCreateMutating } = useAuthSWRMutation('/journals', poster);
 
   // 케어일지 수정
-  const { trigger: updateTrigger, isMutating: isUpdateMutating } = useSWRMutation(
-    `${API_URL}/journals/${journal?.id}`,
-    updaterWithCookie,
+  const { trigger: updateTrigger, isMutating: isUpdateMutating } = useAuthSWRMutation(
+    `/journals/${journal?.id}`,
+    updater,
   );
 
   const openFileInput = () => {
@@ -91,7 +89,7 @@ export default function Journal({ journal, reservationId }: any) {
         files.forEach((file: File) => formData.append('files', file));
       }
 
-      updateTrigger({ formData });
+      updateTrigger(formData);
     } else {
       // 일지 수정
       const formData = new FormData();
@@ -109,7 +107,7 @@ export default function Journal({ journal, reservationId }: any) {
         });
       }
       // 케어일지 등록
-      createTrigger({ formData });
+      createTrigger(formData);
     }
   };
 

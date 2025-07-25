@@ -1,18 +1,16 @@
 import { useEffect, useRef } from 'react';
 
+import { useSelector } from 'react-redux';
+import { useAuthSWRInfinite } from 'hooks/authSWR';
 import styled from 'styled-components';
-import useSWRInfinite from 'swr/infinite';
 import { useInView } from 'framer-motion';
 
 import { CenterContainer } from 'styles/commonStyle';
-import { fetcherWithCookie } from 'api';
+import { fetcher } from 'api';
 
 import Loading from '@components/Loading';
 import CareCard from './CareCard';
-import { getCookie } from 'utils/cookie';
-import { useSelector } from 'react-redux';
 import { RootState } from 'store';
-import { API_URL } from 'config';
 
 export default function CareContainer() {
   const ref = useRef(null);
@@ -24,15 +22,12 @@ export default function CareContainer() {
   } = useSelector((state: RootState) => state.context);
 
   const getKey = (pageIndex: number, previousPageData: any) => {
-    const access_token = getCookie('access_token');
-    if (!access_token) return null;
-
     if (previousPageData && !previousPageData.length) return null;
     return filter && month
-      ? `${API_URL}/reservations?page=${pageIndex + 1}&pageSize=${pageSize}&status=${filter}&date=${month}`
+      ? `/reservations?page=${pageIndex + 1}&pageSize=${pageSize}&status=${filter}&date=${month}`
       : null;
   };
-  const { data, size, setSize, isLoading } = useSWRInfinite(getKey, fetcherWithCookie);
+  const { data, size, setSize, isLoading } = useAuthSWRInfinite(getKey, fetcher);
 
   const isEmpty = data?.[0]?.results?.length === 0;
   const isEnd = data && data[data.length - 1]?.results?.length < pageSize;

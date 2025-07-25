@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom';
 import styled from 'styled-components';
 import { useNavigate, Link } from 'react-router-dom';
 
-import { deleteCookie } from 'utils/cookie';
+import { removeCookie } from 'utils/cookie';
 import { ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
@@ -39,7 +39,8 @@ export default function MeButton({ me }: MeButtonProps) {
 
   // 로그아웃 클
   const handleLogout = () => {
-    deleteCookie('access_token');
+    removeCookie('access_token');
+    removeCookie('refresh_token');
     toast.success('로그아웃 되었습니다.');
     navigate('/');
     navigate(0);

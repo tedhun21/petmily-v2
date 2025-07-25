@@ -4,7 +4,6 @@ import { useSearchParams } from 'react-router-dom';
 import useSWR from 'swr';
 
 import MapsDrawer from './component/Drawer';
-import { API_URL } from 'config';
 
 const NAVER_MAPS_CLIENT_ID = process.env.REACT_APP_NAVER_MAPS_CLIENT_ID;
 
@@ -16,7 +15,7 @@ export default function Maps() {
   const address = params.get('address');
 
   // 주소(address)로 위도(latitude) 경도(longitude) 불러오기
-  const { data: geocode, error } = useSWR(address ? `${API_URL}/maps/geocode?location=${address}` : null, fetcher);
+  const { data: geocode } = useSWR(address ? `/maps/geocode?location=${address}` : null, fetcher);
 
   useEffect(() => {
     if (geocode && geocode.status === 'OK' && geocode.addresses.length > 0) {

@@ -1,12 +1,13 @@
-import { fetcherWithCookie } from 'api';
-import { API_URL } from 'config';
 import { createContext, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { io, Socket } from 'socket.io-client';
-import { addNewMessage, markAsRead } from 'store/newMessageSlice';
+
+import { fetcher } from 'api';
 import { addNewNotification } from 'store/notificationSlice';
-import useSWR from 'swr';
-import { getCookie } from 'utils/cookie';
+import { addNewMessage, markAsRead } from 'store/newMessageSlice';
+
+import { useAuthSWR } from 'hooks/authSWR';
+import { RootState } from 'store';
 
 const SOCKET_URL = process.env.REACT_APP_WEBSOCKET_URL;
 
@@ -27,15 +28,14 @@ export const SocketContext = createContext<SocketContextProps>({
 export default function SocketProvider({ children }: SocketProviderProps) {
   const dispatch = useDispatch();
   const [socket, setSocket] = useState<Socket | null>(null);
+  const { accessToken } = useSelector((state: RootState) => state.auth);
 
-  const { data: me } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);
+  const { data: me } = useAuthSWR('/users/me', fetcher);
 
   useEffect(() => {
-    const token = getCookie('access_token');
-
-    if (!me || !token) return;
+    if (!me || !accessToken) return;
     const socket = io(`${SOCKET_URL}`, {
-      auth: { token },
+      auth: { access_token: accessToken },
       autoConnect: true,
       reconnection: true,
       reconnectionAttempts: 10, // 10번까지만 시도
@@ -45,7 +45,7 @@ export default function SocketProvider({ children }: SocketProviderProps) {
     socket.on('connect', () => {
       // join
       socket.emit('chat:user:join');
-      socket.emit('joinNotiUser');
+      socket.emit('noti:user:join');
     });
 
     socket.on('chat:user:message:new', (newMessage) => {
@@ -56,7 +56,7 @@ export default function SocketProvider({ children }: SocketProviderProps) {
       dispatch(markAsRead(data));
     });
 
-    socket.on('notification', (newNotification) => {
+    socket.on('noti:user:newNoti', (newNotification) => {
       dispatch(addNewNotification(newNotification));
     });
 

@@ -1,13 +1,14 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { ChatMember, ChatRoom } from 'types/chat.type';
-import { fetcherWithCookie, posterWithCookie } from 'api';
-import useSWR from 'swr';
+
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+
+import { useAuthSWR, useAuthSWRMutation } from 'hooks/authSWR';
+
+import { ChatMember, ChatRoom } from 'types/chat.type';
 import { removeMessages } from 'store/newMessageSlice';
-import { API_URL } from 'config';
-import { SocketContext } from '@components/SocketProvider';
-import useSWRMutation from 'swr/mutation';
+import { SocketContext } from '@components/provider/SocketProvider';
+import { fetcher, poster } from 'api';
 
 interface ContextProps {
   chatRoom: ChatRoom | null;
@@ -34,16 +35,16 @@ export default function ChatRoomProvider({ children, value }: any) {
   const { opponentIds, chatRoomId } = value;
 
   // chatRoomId로만 먼저 시도
-  const { data: byId } = useSWR(chatRoomId ? `${API_URL}/chats/${chatRoomId}` : null, fetcherWithCookie);
+  const { data: byId } = useAuthSWR(chatRoomId ? `/chats/${chatRoomId}` : null, fetcher);
 
   // chatRoomId가 없고 opponentIds가 있을때
-  const { data: byUsers } = useSWR(
-    !chatRoomId && opponentIds.length > 0 ? `${API_URL}/chats/by-users?opponentIds=${opponentIds}` : null,
-    fetcherWithCookie,
+  const { data: byUsers } = useAuthSWR(
+    !chatRoomId && opponentIds.length > 0 ? `/chats/by-users?opponentIds=${opponentIds}` : null,
+    fetcher,
   );
 
   // 채팅방 만들기
-  const { trigger } = useSWRMutation(opponentIds ? `${API_URL}/chats` : null, posterWithCookie);
+  const { trigger } = useAuthSWRMutation(opponentIds ? '/chats' : null, poster);
 
   const sendMessage = async (message: string) => {
     if (!socket || message.length === 0) return;

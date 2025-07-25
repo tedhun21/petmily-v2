@@ -1,29 +1,30 @@
 import { useState } from 'react';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+
+import dayjs from 'dayjs';
+import { toast } from 'react-toastify';
+
 import useSWR from 'swr';
+import { useAuthSWR, useAuthSWRMutation } from 'hooks/authSWR';
 
 import styled from 'styled-components';
+import { Modal, TextField } from '@mui/material';
 
 import { timeRange } from 'utils/date';
-import { fetcherWithCookie, posterWithCookie } from 'api';
+import { fetcher, poster } from 'api';
 import SelectPets from './component/SelectPets';
-import { Modal, TextField } from '@mui/material';
 import { BlueButton, Column, Divider, Row, SubTitle, Texts14h21, Texts16h24 } from 'styles/commonStyle';
 
 import Confirm from '@pages/users/:id/book/component/Confirm';
-import useSWRMutation from 'swr/mutation';
-import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
-import dayjs from 'dayjs';
-import { toast } from 'react-toastify';
+
 import Loading from '@components/Loading';
 import CustomDaumPostcode from '@components/CustomDaumPostcode';
-
 import SelectedPetsitter from './component/SelectedPetsitter';
 import BackHeader from '@components/headers/BackHeader';
-import { API_URL } from 'config';
 
 const schema = yup.object().shape({
   checkedPets: yup.array().min(1, '적도오 한 마리의 펫을 선택해야 합니다.'),
@@ -56,9 +57,9 @@ export default function BookPage() {
 
   const disabled = checkedPets?.length === 0 || address === '' || detailAddress === '' || !isChecked;
 
-  const { data: me } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);
-  const { data: petsitter } = useSWR(`${API_URL}/users?q=${nickname}`, fetcherWithCookie);
-  const { isMutating, trigger } = useSWRMutation(`${API_URL}/reservations`, posterWithCookie);
+  const { data: me } = useAuthSWR('/users/me', fetcher);
+  const { data: petsitter } = useSWR(`/users?q=${nickname}`, fetcher);
+  const { isMutating, trigger } = useAuthSWRMutation('/reservations', poster);
 
   const onToggleModal = () => {
     setIsModalOpen(true);
@@ -97,18 +98,15 @@ export default function BookPage() {
       status: 'Pending',
     };
 
-    trigger(
-      { formData: formattedData },
-      {
-        onSuccess: () => {
-          toast.success('예약 요청을 보냈습니다');
-          navigate('/cares');
-        },
-        onError: () => {
-          toast.error('예약 요청에 실패했습니다');
-        },
+    trigger(formattedData, {
+      onSuccess: () => {
+        toast.success('예약 요청을 보냈습니다');
+        navigate('/cares');
       },
-    );
+      onError: () => {
+        toast.error('예약 요청에 실패했습니다');
+      },
+    });
   };
 
   return (

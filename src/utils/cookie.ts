@@ -10,9 +10,9 @@ export function getCookie(cookieName: string) {
 }
 
 export function setCookie(name: string, cookie: string) {
-  const oneDayInSeconds = 24 * 60 * 60; // 하루를 초로 계산
+  const oneDayInSeconds = 60 * 60; // '1h'
   document.cookie = `${name}=${cookie}; Max-age=${oneDayInSeconds}; path=/;`;
 }
-export function deleteCookie(cookieName: string) {
+export function removeCookie(cookieName: string) {
   document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
 }

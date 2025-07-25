@@ -52,7 +52,9 @@ export default function CareCard({ reservation }: CareCardProps) {
         <Wrapper>
           <Texts14h21>맡기실 펫:</Texts14h21>
           <PetWrapper>
-            {reservation?.pets.map((pet: Pet) => <Texts12h18 key={pet.id}>{pet.name}</Texts12h18>)}
+            {reservation?.pets.map((pet: Pet) => (
+              <Texts12h18 key={pet.id}>{pet.name}</Texts12h18>
+            ))}
           </PetWrapper>
         </Wrapper>
       </ReservationContainer>

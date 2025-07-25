@@ -4,8 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import useSWR from 'swr';
-import useSWRMutation from 'swr/mutation';
+import { useAuthSWR, useAuthSWRMutation } from 'hooks/authSWR';
 
 import { PiCatBold, PiDogBold } from 'react-icons/pi';
 
@@ -26,7 +25,7 @@ import {
   TypeRadioLabel,
 } from '../register/page';
 
-import { deleterWithCookie, fetcher, updaterWithCookie } from 'api';
+import { fetcher, updater, deleter } from 'api';
 import Loading from '@components/Loading';
 import { toast } from 'react-toastify';
 import { TbGenderFemale, TbGenderMale } from 'react-icons/tb';
@@ -34,7 +33,6 @@ import BackHeader from '@components/headers/BackHeader';
 import { FaXmark } from 'react-icons/fa6';
 import EditableProfileImage from '@components/EditableProfileImage';
 import { PetGender, PetSpecies } from 'types/pet.type';
-import { API_URL } from 'config';
 
 const schema = yup.object().shape({
   species: yup.string().oneOf(['dog', 'cat'], '강아지인가요 고양이인가요?').required('이 항목은 필수입니다.'),
@@ -78,9 +76,9 @@ export default function EditPetPage() {
     resolver: yupResolver(schema),
   });
 
-  const { data: pet } = useSWR(`${API_URL}/pets/${petId}`, fetcher);
+  const { data: pet } = useAuthSWR(`/pets/${petId}`, fetcher);
 
-  const { trigger: updateTrigger, isMutating } = useSWRMutation(`${API_URL}/pets/${petId}`, updaterWithCookie, {
+  const { trigger: updateTrigger, isMutating } = useAuthSWRMutation(`/pets/${petId}`, updater, {
     onSuccess: () => {
       navigate('/me');
       toast.success('수정이 완료되었습니다!');
@@ -90,7 +88,7 @@ export default function EditPetPage() {
     },
   });
 
-  const { trigger: deleteTrigger } = useSWRMutation(`${API_URL}/pets/${petId}`, deleterWithCookie, {
+  const { trigger: deleteTrigger } = useAuthSWRMutation(`/pets/${petId}`, deleter, {
     onSuccess: () => {
       navigate('/me');
       toast.success('펫 정보가 삭제되었습니다!');

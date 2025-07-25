@@ -39,7 +39,11 @@ export default function ChatRoomItem({ chatRoom }: ChatRoomItemProps) {
           ))}
         </Photo>
         <NameMessageWrapper>
-          <div>{others?.map((other: ChatMember) => <span key={other.id}>{other.user.nickname}</span>)}</div>
+          <div>
+            {others?.map((other: ChatMember) => (
+              <span key={other.id}>{other.user.nickname}</span>
+            ))}
+          </div>
           <Texts12h18>{lastMessage.content}</Texts12h18>
         </NameMessageWrapper>
       </PhotoName>

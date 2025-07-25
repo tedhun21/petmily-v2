@@ -1,11 +1,10 @@
-import { createContext, useEffect, useMemo, useRef, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 
 import { useSelector } from 'react-redux';
-import useSWRInfinite from 'swr/infinite';
+import { useAuthSWRInfinite } from 'hooks/authSWR';
 
-import { API_URL } from 'config';
 import { RootState } from 'store';
-import { fetcherWithCookie } from 'api';
+import { fetcher } from 'api';
 import { ChatRoom } from 'types/chat.type';
 
 interface ContextProps {
@@ -30,12 +29,12 @@ export default function ChatRoomsProvider({ children }: { children: React.ReactN
 
   const getKey = (pageIndex: number, previousPageData: any) => {
     if (previousPageData && !previousPageData.pagination.hasNextPage) return null;
-    if (pageIndex === 0) return `${API_URL}/chats?pageSize=${pageSize}`;
+    if (pageIndex === 0) return `/chats?pageSize=${pageSize}`;
     const { nextCursor } = previousPageData.pagination;
-    return `${API_URL}/chats?cursorId=${nextCursor.id}&cursorDate=${nextCursor.createdAt}&pageSize=${pageSize}`;
+    return `/chats?cursorId=${nextCursor.id}&cursorDate=${nextCursor.createdAt}&pageSize=${pageSize}`;
   };
 
-  const { data, setSize, isLoading, mutate } = useSWRInfinite(getKey, fetcherWithCookie);
+  const { data, setSize, isLoading, mutate } = useAuthSWRInfinite(getKey, fetcher);
 
   const isEnd = data ? data[data.length - 1]?.results?.length < pageSize : false;
 

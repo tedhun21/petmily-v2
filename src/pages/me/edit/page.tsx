@@ -2,40 +2,40 @@ import { MouseEvent, useEffect, useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import useSWR from 'swr';
-import useSWRMutation from 'swr/mutation';
+import { useAuthSWR, useAuthSWRMutation } from 'hooks/authSWR';
 
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { Modal } from '@mui/material';
-
-import { BlueButton, Column, ErrorMessage, Input, Row, Texts14h21 } from 'styles/commonStyle';
-
-import { deleteCookie } from 'utils/cookie';
-import { TypeRadioLabel } from '../register/page';
-
-import { deleterWithCookie, fetcherWithCookie, updaterWithCookie } from 'api';
-import Loading from '@components/Loading';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { GoVerified } from 'react-icons/go';
-
-import EmailCodeModalButton from './components/EmailCodeModal';
-import { PiCatBold, PiDogBold } from 'react-icons/pi';
-import { weekdays } from 'utils/date';
 import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import dayjs from 'dayjs';
+
+import { toast } from 'react-toastify';
 import { FaArrowUp, FaXmark } from 'react-icons/fa6';
+import { GoVerified } from 'react-icons/go';
+import { PiCatBold, PiDogBold } from 'react-icons/pi';
+
+import { BlueButton, Column, ErrorMessage, Input, Row, Texts14h21 } from 'styles/commonStyle';
+
+import { removeCookie } from 'utils/cookie';
+import { TypeRadioLabel } from '../register/page';
+
+import Loading from '@components/Loading';
+import 'react-toastify/dist/ReactToastify.css';
+
+import { deleter, fetcher, updater } from 'api';
+import EmailCodeModalButton from './components/EmailCodeModal';
+import { weekdays } from 'utils/date';
+import dayjs from 'dayjs';
+
 import CustomDaumPostcode from '@components/CustomDaumPostcode';
 import BackHeader from '@components/headers/BackHeader';
 import EditableProfileImage from '../../../components/EditableProfileImage';
 import { UserRole } from 'types/user.type';
 import { PetSpecies } from 'types/pet.type';
-import { API_URL } from 'config';
 
 const schema = yup.object().shape({
   nickname: yup
@@ -68,9 +68,9 @@ export default function EditMePage() {
   const [newLocation, setNewLocation] = useState<string>('');
   const [deletePhoto, setDeletePhoto] = useState<string | null>(null);
 
-  const { data: me, isLoading } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);
+  const { data: me, isLoading } = useAuthSWR('/users/me', fetcher);
 
-  const { trigger: updateTrigger, isMutating } = useSWRMutation(`${API_URL}/users/${me?.id}`, updaterWithCookie, {
+  const { trigger: updateTrigger, isMutating } = useAuthSWRMutation(`/users/${me?.id}`, updater, {
     onSuccess: () => {
       toast.success('회원 정보가 성공적으로 수정되었습니다!');
       navigate('/me');
@@ -80,10 +80,11 @@ export default function EditMePage() {
     },
   });
 
-  const { trigger: deleteTrigger } = useSWRMutation(`${API_URL}/users/${me?.id}`, deleterWithCookie, {
+  const { trigger: deleteTrigger } = useAuthSWRMutation(`/users/${me?.id}`, deleter, {
     onSuccess: () => {
       toast.success('회원을 삭제하였습니다!');
-      deleteCookie('access_token');
+      removeCookie('access_token');
+      removeCookie('refresh_token');
       navigate('/');
     },
   });
@@ -197,11 +198,12 @@ export default function EditMePage() {
       formData.append('file', imageFile);
     }
 
-    await updateTrigger({ formData });
+    await updateTrigger(formData);
   };
 
   const handleLogout = () => {
-    deleteCookie('access_token');
+    removeCookie('access_token');
+    removeCookie('refresh_token');
     toast.success('로그아웃 되었습니다.');
     navigate('/');
   };

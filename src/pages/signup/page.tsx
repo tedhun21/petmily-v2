@@ -12,7 +12,6 @@ import { Modal } from '@mui/material';
 import { toast } from 'react-toastify';
 
 import { poster } from 'api';
-import { API_URL } from 'config';
 import Loading from '@components/Loading';
 import { SubmitButton } from '@pages/login/page';
 import BackHeader from '@components/headers/BackHeader';
@@ -66,7 +65,7 @@ export default function SignupPage() {
     formState: { errors },
   } = useForm<IFormSignupInputs>({ resolver: yupResolver(schema) });
 
-  const { trigger, isMutating } = useSWRMutation(`${API_URL}/users`, poster, {
+  const { trigger, isMutating } = useSWRMutation('/users', poster, {
     onSuccess: () => {
       navigate('/login');
       toast.success('회원 가입을 완료했습니다. 로그인 해주세요!');

@@ -1,12 +1,13 @@
+import { useEffect, useRef } from 'react';
+
+import useSWRInfinite from 'swr/infinite';
+import { useInView } from 'framer-motion';
+
 import { fetcher } from 'api';
 import { CenterContainer } from 'styles/commonStyle';
 import styled from 'styled-components';
-import useSWRInfinite from 'swr/infinite';
 import ReviewPhotoCard from './ReviewPhotoCard';
 import Loading from '@components/Loading';
-import { useEffect, useRef } from 'react';
-import { useInView } from 'framer-motion';
-import { API_URL } from 'config';
 
 export default function PhotoReviews() {
   const ref = useRef(null);
@@ -15,7 +16,7 @@ export default function PhotoReviews() {
 
   const getKey = (pageIndex: number, previousPageData: any) => {
     if (previousPageData && !previousPageData.length) return null;
-    return `${API_URL}/reviews?page=${pageIndex + 1}&pageSize=${pageSize}&photo=true`;
+    return `/reviews?page=${pageIndex + 1}&pageSize=${pageSize}&photo=true`;
   };
 
   const { data, size, setSize, isLoading } = useSWRInfinite(getKey, fetcher);

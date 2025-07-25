@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import useSWRMutation from 'swr/mutation';
 import styled from 'styled-components';
@@ -8,12 +8,10 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { poster } from 'api';
-import { setCookie } from 'utils/cookie';
 import GoogleOAuthButton from '@components/buttons/OAuthButton';
 import Loading from '@components/Loading';
 import { BlueButton, Column, ErrorMessage, Input } from 'styles/commonStyle';
 import { toast } from 'react-toastify';
-import { API_URL } from 'config';
 
 const schema = yup.object().shape({
   email: yup.string().email('이메일 형식을 지켜주세요.').required('ID는 필수입니다.'),
@@ -26,8 +24,6 @@ const schema = yup.object().shape({
 type IFormLoginInputs = yup.InferType<typeof schema>;
 
 export default function LoginPage() {
-  const navigate = useNavigate();
-
   const {
     register,
     handleSubmit,
@@ -37,10 +33,9 @@ export default function LoginPage() {
     resolver: yupResolver(schema),
   });
 
-  const { trigger, isMutating } = useSWRMutation(`${API_URL}/auth/login`, poster, {
-    onSuccess: (data) => {
-      setCookie('access_token', data.access_token);
-      navigate('/');
+  const { trigger, isMutating } = useSWRMutation('/auth/login', poster, {
+    onSuccess: () => {
+      window.location.replace('/');
       toast.success('환영합니다!');
     },
     onError: () => {
