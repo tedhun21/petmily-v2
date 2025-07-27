@@ -2,7 +2,7 @@ import axios, { AxiosError, isAxiosError, isCancel } from 'axios';
 import type { AxiosRequestConfig } from 'axios';
 import { API_URL } from 'config';
 import store from 'store';
-import { setAccessToken } from 'store/authSlice';
+import { clearAccessToken, setAccessToken } from 'store/authSlice';
 
 /* --- 통합 axios 인스턴스 --- */
 const api = axios.create({
@@ -48,6 +48,9 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
 
+    // 401에러
+    // 무한 재시도 방지(_retry 플래그 사용)
+    // refresh 엔드포인트 401에러 방지 (무한 루프 방지)
     if (error.response?.status === 401 && !originalRequest._retry && !originalRequest.url?.includes('/auth/refresh')) {
       originalRequest._retry = true;
 
@@ -72,6 +75,7 @@ api.interceptors.response.use(
         return api(originalRequest);
       } catch (refreshError) {
         processQueue(refreshError as AxiosError, null);
+        store.dispatch(clearAccessToken());
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;

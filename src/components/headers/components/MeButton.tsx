@@ -1,17 +1,20 @@
 import { useRef } from 'react';
-import { createPortal } from 'react-dom';
 
-import styled from 'styled-components';
+import { toast } from 'react-toastify';
+import { createPortal } from 'react-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
 
-import { removeCookie } from 'utils/cookie';
-import { ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
-import { toast } from 'react-toastify';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAuthSWRMutation } from 'hooks/authSWR';
+import styled from 'styled-components';
+
+import { poster } from 'api';
 import { RootState } from 'store';
-import { closeModal, ModalType, openModal } from 'store/modalSlice';
-import useOutsideClickModal from 'hooks/useOutsideClickModal';
 import { User } from 'types/user.type';
+import { clearAccessToken } from 'store/authSlice';
+import useOutsideClickModal from 'hooks/useOutsideClickModal';
+import { closeModal, ModalType, openModal } from 'store/modalSlice';
+import { ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
 
 interface MeButtonProps {
   me?: User;
@@ -20,12 +23,28 @@ interface MeButtonProps {
 export default function MeButton({ me }: MeButtonProps) {
   const userContainer = document.getElementById('user-container');
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
+
   const { currentModal } = useSelector((state: RootState) => state.modal);
 
   const modalRef = useRef<HTMLDivElement | null>(null);
   useOutsideClickModal(modalRef);
+
+  // 로그아웃
+  const { trigger } = useAuthSWRMutation('/auth/logout', poster, {
+    onSuccess: () => {
+      console.log('ok');
+      dispatch(clearAccessToken()); // Redux 스토어에서 액세스 토큰 제거
+      toast.success('로그아웃 되었습니다.');
+      navigate('/'); // 로그인 페이지 또는 홈으로 리다이렉션
+    },
+    onError: () => {
+      console.log('no ok');
+      toast.error('로그아웃에 실패했습니다. 다시 시도해주세요.');
+      dispatch(clearAccessToken());
+      navigate('/');
+    },
+  });
 
   const toggleMenu = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation(); // 이벤트 전파를 막음
@@ -37,13 +56,9 @@ export default function MeButton({ me }: MeButtonProps) {
     }
   };
 
-  // 로그아웃 클
-  const handleLogout = () => {
-    removeCookie('access_token');
-    removeCookie('refresh_token');
-    toast.success('로그아웃 되었습니다.');
-    navigate('/');
-    navigate(0);
+  // 로그아웃 처리
+  const handleLogout = async () => {
+    await trigger();
   };
 
   return (

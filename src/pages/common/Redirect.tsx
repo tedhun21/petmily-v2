@@ -39,7 +39,7 @@ export default function RedirectPage() {
 
   useEffect(() => {
     if (me && me.role !== UserRole.USER) {
-      window.location.replace('/');
+      navigate('/', { replace: true });
       toast.success('환영합니다!');
     }
   }, [me, navigate]);

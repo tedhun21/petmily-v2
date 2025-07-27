@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import useSWRMutation from 'swr/mutation';
 import styled from 'styled-components';
@@ -24,6 +24,8 @@ const schema = yup.object().shape({
 type IFormLoginInputs = yup.InferType<typeof schema>;
 
 export default function LoginPage() {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -35,7 +37,7 @@ export default function LoginPage() {
 
   const { trigger, isMutating } = useSWRMutation('/auth/login', poster, {
     onSuccess: () => {
-      window.location.replace('/');
+      navigate('/');
       toast.success('환영합니다!');
     },
     onError: () => {
@@ -88,8 +90,14 @@ export default function LoginPage() {
           <GoogleOAuthButton>Log in with Google</GoogleOAuthButton>
         </FormContainer>
         <div>
-          <span>처음이신가요? </span>
-          <CustomLink to="/signup">회원가입하기</CustomLink>
+          <div>
+            <span>처음이신가요? </span>
+            <CustomLink to="/signup">회원가입하기</CustomLink>
+          </div>
+          <div>
+            <span>아이디를 잊으셨나요?</span>
+            <CustomLink to="/login/find-id">아이디 찾기</CustomLink>
+          </div>
         </div>
       </LoginContainer>
     </Main>
