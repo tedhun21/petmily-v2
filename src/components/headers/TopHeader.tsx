@@ -1,7 +1,6 @@
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
-import useSWR from 'swr';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
@@ -9,23 +8,23 @@ import { FaRegPaperPlane } from 'react-icons/fa6';
 import { FiSun } from 'react-icons/fi';
 import { MdNightlightRound } from 'react-icons/md';
 
+import { useAuthSWR } from 'hooks/authSWR';
 import { RootState } from 'store';
-import { fetcherWithCookie } from 'api';
+import { fetcher } from 'api';
 import { Row } from 'styles/commonStyle';
 import MeButton from './components/MeButton';
 import NotiButton from './components/NotiButton/NotiButton';
-import { ThemeContext } from '@components/ThemeProvider';
-import { API_URL } from 'config';
+import { ThemeContext } from '@components/provider/ThemeProvider';
 
 export default function TopHeader() {
   const { isDarkMode, setIsDarkMode } = useContext(ThemeContext);
   const { newMessages } = useSelector((state: RootState) => state.newMessage);
   const { newNotifications } = useSelector((state: RootState) => state.notification);
 
-  const { data: me } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);
+  const { data: me } = useAuthSWR('/users/me', fetcher);
 
-  // const { data: unreadCount } = useSWR(`${API_URL}/notifications/unreadCount`, fetcherWithCookie);
-  const { data: unreadServerChatCount } = useSWR(`${API_URL}/chats/unread-count`, fetcherWithCookie);
+  // const { data: unreadCount } = useSWR('/notifications/unreadCount', fetcher);
+  const { data: unreadServerChatCount } = useAuthSWR('/chats/unread-count', fetcher);
 
   const unreadChatCount = unreadServerChatCount + newMessages.length;
 

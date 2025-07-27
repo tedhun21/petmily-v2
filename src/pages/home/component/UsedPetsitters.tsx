@@ -1,28 +1,25 @@
-import useSWRInfinite from 'swr/infinite';
-
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
-
-import { CenterContainer, Title } from 'styles/commonStyle';
-
-import { fetcherWithCookie } from 'api';
-
 import 'swiper/css';
 import 'swiper/css/pagination';
+
+import { useAuthSWRInfinite } from 'hooks/authSWR';
+
+import { CenterContainer, Title } from 'styles/commonStyle';
 import UsedPetsitterCard from './UsedPetsitterCard';
 import Loading from '@components/Loading';
 import styled from 'styled-components';
-import { API_URL } from 'config';
+import { fetcher } from 'api';
 
 export default function UsedPetsitters() {
   const pageSize = 12;
 
   const getKey = (pageIndex: number, previousPageData: any) => {
     if (previousPageData && !previousPageData.length) null;
-    return `${API_URL}/users/petsitters/used?page=${pageIndex + 1}&pageSize=${pageSize}`;
+    return `/users/petsitters/used?page=${pageIndex + 1}&pageSize=${pageSize}`;
   };
 
-  const { data, isLoading } = useSWRInfinite(getKey, fetcherWithCookie);
+  const { data, isLoading } = useAuthSWRInfinite(getKey, fetcher);
 
   const isEmpty = data?.[0]?.results?.length === 0;
   const isEnd = data && data[data.length - 1]?.results?.length < pageSize;

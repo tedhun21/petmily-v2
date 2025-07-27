@@ -13,14 +13,13 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import Loading from '@components/Loading';
 import styled from 'styled-components';
-import { API_URL } from 'config';
 
 export default function RealTimeReviews() {
   const pageSize = 10;
 
   const getKey = (pageIndex: number, previousPageData: any) => {
     if (previousPageData && !previousPageData.results.length) return null; // Stop when no more results
-    return `${API_URL}/reviews?page=${pageIndex + 1}&pageSize=${pageSize}`;
+    return `/reviews?page=${pageIndex + 1}&pageSize=${pageSize}`;
   };
 
   const { isLoading, data } = useSWRInfinite(getKey, fetcher);

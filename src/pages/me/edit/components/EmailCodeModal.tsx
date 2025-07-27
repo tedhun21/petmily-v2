@@ -1,15 +1,17 @@
-import { Modal } from '@mui/material';
-import { poster } from 'api';
-import { API_URL } from 'config';
 import { useEffect, useState } from 'react';
-import { FaXmark } from 'react-icons/fa6';
-import styled from 'styled-components';
+
 import useSWRMutation from 'swr/mutation';
+
+import styled from 'styled-components';
+import { Modal } from '@mui/material';
+import { FaXmark } from 'react-icons/fa6';
+
+import { poster } from 'api';
 
 export default function EmailCodeModalButton({ email }: { email: string }) {
   const [open, setOpen] = useState(false);
 
-  const { trigger } = useSWRMutation(`${API_URL}/mail/code`, poster);
+  const { trigger } = useSWRMutation('/mail/code', poster);
 
   const onToggleModal = () => {
     setOpen((prev) => !prev);

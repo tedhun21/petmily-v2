@@ -1,19 +1,17 @@
 import styled from 'styled-components';
 
 import { Link } from 'react-router-dom';
-import useSWR from 'swr';
+import { useAuthSWR } from 'hooks/authSWR';
 
+import { fetcher } from 'api';
 import MyPetmily from '@pages/me/components/MyPetmily';
-
-import { fetcherWithCookie } from 'api';
 import { ImageCentered, RoundedImageWrapper, Texts14h21 } from 'styles/commonStyle';
 import MyPetsitterProfile from './components/MyPetsitterProfile';
 import BackHeader from '@components/headers/BackHeader';
 import { UserRole } from 'types/user.type';
-import { API_URL } from 'config';
 
 export default function MyPage() {
-  const { data: me } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);
+  const { data: me } = useAuthSWR('/users/me', fetcher);
 
   return (
     <>

@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react';
 
-import useSWRInfinite from 'swr/infinite';
 import { Link } from 'react-router-dom';
 
 import styled from 'styled-components';
@@ -8,11 +7,11 @@ import { useInView } from 'framer-motion';
 
 import { CenterContainer } from 'styles/commonStyle';
 
+import { useAuthSWRInfinite } from 'hooks/authSWR';
 import PetmilyCard from './PetmilyCard';
-import { fetcherWithCookie } from 'api';
-
+import { fetcher } from 'api';
 import Loading from '@components/Loading';
-import { API_URL } from 'config';
+import { Pet } from 'types/pet.type';
 
 export default function MyPetContainer() {
   const ref = useRef(null);
@@ -21,10 +20,10 @@ export default function MyPetContainer() {
 
   const getKey = (pageIndex: number, previousPageData: any) => {
     if (previousPageData && !previousPageData.length) return null;
-    return `${API_URL}/pets?page=${pageIndex + 1}&pageSize=${pageSize}`;
+    return `/pets?page=${pageIndex + 1}&pageSize=${pageSize}`;
   };
 
-  const { data, size, setSize, isLoading } = useSWRInfinite(getKey, fetcherWithCookie);
+  const { data, size, setSize, isLoading } = useAuthSWRInfinite(getKey, fetcher);
 
   const isEmpty = data?.[0]?.results?.length === 0;
   const isEnd = data && data[data.length - 1]?.results?.length < pageSize;
@@ -57,7 +56,7 @@ export default function MyPetContainer() {
     <CardContainer>
       {data &&
         Array.isArray(data) &&
-        data?.map((page: any) => page?.results.map((pet: any) => <PetmilyCard key={pet.id} pet={pet} />))}
+        data?.map((page: any) => page?.results.map((pet: Pet) => <PetmilyCard key={pet.id} pet={pet} />))}
 
       {!isEnd && (
         <CenterContainer ref={ref}>

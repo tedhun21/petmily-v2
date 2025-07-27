@@ -6,14 +6,13 @@ import ReadOnlyRating from '@components/ReadOnlyRating';
 import useSWR from 'swr';
 import { dateAgo } from 'utils/date';
 import { Review } from 'types/review.type';
-import { API_URL } from 'config';
 
 interface ReviewsProps {
   nickname?: string;
 }
 
 export default function Reviews({ nickname }: ReviewsProps) {
-  const { data } = useSWR(`${API_URL}/reviews/petsitter/${nickname}?page=1&pageSize=6`, fetcher);
+  const { data } = useSWR(`/reviews/petsitter/${nickname}?page=1&pageSize=6`, fetcher);
 
   return (
     <Section>

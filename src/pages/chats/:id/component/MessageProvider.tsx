@@ -1,11 +1,12 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+
+import { useAuthSWRInfinite } from 'hooks/authSWR';
+import { useDebounce } from 'hooks/useDebounce';
+
 import { ChatMember, ChatRoom, Message } from 'types/chat.type';
 import { ChatRoomContext } from './ChatRoomProvider';
-import { SocketContext } from '@components/SocketProvider';
-import useSWRInfinite from 'swr/infinite';
-import { fetcherWithCookie } from 'api';
-import { API_URL } from 'config';
-import { useDebounce } from 'hooks/useDebounce';
+import { SocketContext } from '@components/provider/SocketProvider';
+import { fetcher } from 'api';
 import { isAfterMessage } from 'utils/misc';
 
 interface ContextProps {
@@ -57,7 +58,7 @@ export default function MessageProvider({ children }: any) {
   // 그러나 캐시만 사용하고 싶은면   revalidateFirstPage: false => 첫 페이지 재검증 비활성화 옵션을 키는 것이 좋다
   const getKey = (pageIndex: number, previousPageData: any) => {
     if (!chatRoom?.id) return null;
-    const baseKey = `${API_URL}/chats/${chatRoom.id}/messages`;
+    const baseKey = `/chats/${chatRoom.id}/messages`;
     // 끝났으면 요청하지 않음
     if (pageIndex === 0 && !previousPageData) {
       return `${baseKey}?pageSize=${PAGE_SIZE}`;
@@ -70,7 +71,7 @@ export default function MessageProvider({ children }: any) {
     return null; // hasNextPage가 false이거나 previousPageData가 없는 경우 null 반환
   };
 
-  const { data, setSize, isLoading, isValidating } = useSWRInfinite(getKey, fetcherWithCookie);
+  const { data, setSize, isLoading, isValidating } = useAuthSWRInfinite(getKey, fetcher);
   const messages = useMemo(() => (data ? data.flatMap((page) => page.results) : []), [data]);
   const allMessages = useMemo(() => [...newMessages, ...messages], [newMessages, messages]);
   const isEnd = data && data[data.length - 1]?.results?.length < PAGE_SIZE;

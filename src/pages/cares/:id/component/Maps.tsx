@@ -1,7 +1,7 @@
-import { fetcher, imageFetcher } from 'api';
-import { API_URL } from 'config';
-import styled from 'styled-components';
 import useSWR from 'swr';
+import styled from 'styled-components';
+
+import { fetcher, mapFetcher } from 'api';
 import { Reservation } from 'types/reservation.type';
 
 interface MapsProps {
@@ -12,15 +12,15 @@ export default function Maps({ reservation }: MapsProps) {
   // 예약에서 latitude와 longitude가 없을 때만 geocode를 요청
 
   const { data: geocode, error: geocodeError } = useSWR(
-    reservation?.address ? `${API_URL}/maps/geocode?location=${reservation?.address}` : null,
+    reservation?.address ? `/maps/geocode?location=${reservation?.address}` : null,
     fetcher,
   );
 
   const { data: staticMaps, error: staticMapsError } = useSWR(
     geocode && geocode.status === 'OK' && geocode.addresses.length > 0 // geocode 유효성 체크
-      ? `${API_URL}/maps/static?longitude=${geocode.addresses[0].x}&latitude=${geocode.addresses[0].y}`
+      ? `/maps/static?longitude=${geocode.addresses[0].x}&latitude=${geocode.addresses[0].y}`
       : null,
-    imageFetcher,
+    mapFetcher,
   );
 
   // 에러 핸들링

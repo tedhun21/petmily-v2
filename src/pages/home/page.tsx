@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 
-import useSWR from 'swr';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -13,12 +12,13 @@ import HomeAd from '@components/HomeAd';
 import { DefaultLink } from 'styles/commonStyle';
 import RealTimeReviews from './component/RealTimeReviews';
 import UsedPetsitters from './component/UsedPetsitters';
-import { fetcherWithCookie } from 'api';
 import NavHeader from '@components/headers/NavHeader';
-import { API_URL } from 'config';
+
+import { fetcher } from 'api';
+import { useAuthSWR } from 'hooks/authSWR';
 
 export default function HomePage() {
-  const { data: me } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);
+  const { data: me } = useAuthSWR('/users/me', fetcher);
 
   return (
     <>

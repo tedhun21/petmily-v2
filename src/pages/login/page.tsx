@@ -8,12 +8,10 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { poster } from 'api';
-import { setCookie } from 'utils/cookie';
 import GoogleOAuthButton from '@components/buttons/OAuthButton';
 import Loading from '@components/Loading';
 import { BlueButton, Column, ErrorMessage, Input } from 'styles/commonStyle';
 import { toast } from 'react-toastify';
-import { API_URL } from 'config';
 
 const schema = yup.object().shape({
   email: yup.string().email('이메일 형식을 지켜주세요.').required('ID는 필수입니다.'),
@@ -37,9 +35,8 @@ export default function LoginPage() {
     resolver: yupResolver(schema),
   });
 
-  const { trigger, isMutating } = useSWRMutation(`${API_URL}/auth/login`, poster, {
-    onSuccess: (data) => {
-      setCookie('access_token', data.access_token);
+  const { trigger, isMutating } = useSWRMutation('/auth/login', poster, {
+    onSuccess: () => {
       navigate('/');
       toast.success('환영합니다!');
     },
@@ -93,8 +90,14 @@ export default function LoginPage() {
           <GoogleOAuthButton>Log in with Google</GoogleOAuthButton>
         </FormContainer>
         <div>
-          <span>처음이신가요? </span>
-          <CustomLink to="/signup">회원가입하기</CustomLink>
+          <div>
+            <span>처음이신가요? </span>
+            <CustomLink to="/signup">회원가입하기</CustomLink>
+          </div>
+          <div>
+            <span>아이디를 잊으셨나요?</span>
+            <CustomLink to="/login/find-id">아이디 찾기</CustomLink>
+          </div>
         </div>
       </LoginContainer>
     </Main>

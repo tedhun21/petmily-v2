@@ -4,15 +4,12 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
-import useSWR from 'swr';
-import useSWRMutation from 'swr/mutation';
-
+import { useAuthSWR, useAuthSWRMutation } from 'hooks/authSWR';
 import { FaXmark } from 'react-icons/fa6';
 
 import Loading from '@components/Loading';
-import { fetcherWithCookie, posterWithCookie, updaterWithCookie } from 'api';
+import { fetcher, poster, updater } from 'api';
 import { BlueButton, CenterContainer, Texts14h21, Texts16h24, Title } from 'styles/commonStyle';
-import { API_URL } from 'config';
 
 interface JournalFormValue {
   body: string;
@@ -30,28 +27,24 @@ export default function JournalPage() {
     defaultValues: { body: '', files: [], photos: [], deleteFiles: [] },
   });
 
-  const selectedFiles = watch('files');
-  const imageUrls = watch('photos');
+  const selectedFiles = watch('files') ?? [];
+  const imageUrls = watch('photos') ?? [];
 
   // 케어일지 가져오기
-  const { data: journal } = useSWR(`${API_URL}/reservations/${reservationId}/journal`, fetcherWithCookie);
+  const { data: journal } = useAuthSWR(`/reservations/${reservationId}/journal`, fetcher);
 
   // 케어일지 등록
-  const { trigger: createTrigger, isMutating: isCreateMutating } = useSWRMutation(
-    `${API_URL}/journals`,
-    posterWithCookie,
-    {
-      onSuccess: () => {
-        toast.success('케어일지를 등록하였습니다!');
-        navigate(`/cares/${reservationId}`);
-      },
+  const { trigger: createTrigger, isMutating: isCreateMutating } = useAuthSWRMutation(`/journals`, poster, {
+    onSuccess: () => {
+      toast.success('케어일지를 등록하였습니다!');
+      navigate(`/cares/${reservationId}`);
     },
-  );
+  });
 
   // 케어일지 수정
-  const { trigger: updateTrigger, isMutating: isUpdateMutating } = useSWRMutation(
-    `${API_URL}/journals/${journal?.id}`,
-    updaterWithCookie,
+  const { trigger: updateTrigger, isMutating: isUpdateMutating } = useAuthSWRMutation(
+    `/journals/${journal?.id}`,
+    updater,
     {
       onSuccess: () => {
         toast.success('케어일지를 수정하였습니다!');
@@ -67,17 +60,13 @@ export default function JournalPage() {
   };
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
+    const newFiles = event.target.files ? Array.from(event.target.files) : [];
+    const totalFiles = selectedFiles.length + newFiles.length;
 
-    if (files && files.length > 0) {
-      const newFiles = Array.from(files);
-      const totalFiles = (selectedFiles?.length || 0) + files.length;
-
-      if (totalFiles <= 5) {
-        setValue('files', [...selectedFiles, ...newFiles]);
-      } else {
-        toast.warning('최대 5개의 이미지를 선택할 수 있습니다!');
-      }
+    if (totalFiles <= 5) {
+      setValue('files', [...selectedFiles, ...newFiles]);
+    } else {
+      toast.warning('최대 5개의 이미지를 선택할 수 있습니다!');
     }
   };
 
@@ -100,16 +89,14 @@ export default function JournalPage() {
     );
 
     // 삭제할 이미지 url 업데이트
-    setValue('deleteFiles', [...watch('deleteFiles'), removedImageUrl]);
+    setValue('deleteFiles', [...(watch('deleteFiles') ?? []), removedImageUrl]);
   };
 
   const onSubmit = (data: JournalFormValue) => {
     const { body, files, deleteFiles } = data;
 
-    // 일지 등록
     if (journal) {
       const formData = new FormData();
-
       const updateData = {
         reservationId,
         body,
@@ -122,11 +109,9 @@ export default function JournalPage() {
         files.forEach((file: File) => formData.append('files', file));
       }
 
-      updateTrigger({ formData });
+      updateTrigger(formData);
     } else {
-      // 일지 수정
       const formData = new FormData();
-
       const createData = {
         reservationId,
         body,
@@ -135,13 +120,18 @@ export default function JournalPage() {
       formData.append('data', JSON.stringify(createData));
 
       if (files && files.length > 0) {
-        files.forEach((file: File) => {
-          formData.append('files', file);
-        });
+        files.forEach((file: File) => formData.append('files', file));
       }
-      // 케어일지 등록
-      createTrigger({ formData });
+
+      createTrigger(formData);
     }
+
+    const formData = new FormData();
+    formData.append('data', JSON.stringify({ reservationId, body, ...(journal && { deleteFiles }) }));
+
+    files?.forEach((file) => formData.append('files', file));
+
+    journal ? updateTrigger(formData) : createTrigger(formData);
   };
 
   useEffect(() => {
@@ -183,7 +173,7 @@ export default function JournalPage() {
 
           <ImagePreview>
             {selectedFiles &&
-              Array.from(selectedFiles as File[]).map((file: File, index: number) => (
+              selectedFiles.map((file: File, index: number) => (
                 <ImagePreviewItem key={index}>
                   <Img src={URL.createObjectURL(file)} alt={`selected_${index}`} />
                   <RemoveButton type="button" onClick={() => handleRemoveInputImage(index)}>

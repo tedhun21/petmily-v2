@@ -1,14 +1,13 @@
+import { useDispatch, useSelector } from 'react-redux';
+import { useAuthSWR } from 'hooks/authSWR';
 import dayjs from 'dayjs';
 import styled from 'styled-components';
 import { Row } from 'styles/commonStyle';
-import { ReservationStatus } from 'types/reservation.type';
-import useSWR from 'swr';
-import { fetcherWithCookie } from 'api';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { fetcher } from 'api';
 import { RootState } from 'store';
 import { setFilter, setMonth } from 'store/contextSlice';
-import { API_URL } from 'config';
+import { ReservationStatus } from 'types/reservation.type';
 
 export type FilterType = {
   id: number;
@@ -30,7 +29,7 @@ export default function CareFilter() {
     reservation: { month, filter },
   } = useSelector((state: RootState) => state.context);
 
-  const { data: monthData } = useSWR(`${API_URL}/reservations/month`, fetcherWithCookie);
+  const { data: monthData } = useAuthSWR('/reservations/month', fetcher);
 
   const handleFilterClick = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setFilter(e.target.value));

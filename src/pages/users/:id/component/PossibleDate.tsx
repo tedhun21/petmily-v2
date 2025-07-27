@@ -13,7 +13,6 @@ import useSWR from 'swr';
 import { Petsitter } from 'types/user.type';
 import { DayOfWeekType } from 'types/common.type';
 import { Reservation } from 'types/reservation.type';
-import { API_URL } from 'config';
 
 interface PossibleDateProps {
   petsitter?: Petsitter;
@@ -30,7 +29,7 @@ export default function PossibleDate({ petsitter }: PossibleDateProps) {
   const endTime = watch('endTime');
 
   const { data } = useSWR(
-    date ? `${API_URL}/reservations/petsitter/${petsitter?.id}?date=${dayjs(date).format('YYYY-MM-DD')}` : null,
+    date ? `/reservations/petsitter/${petsitter?.id}?date=${dayjs(date).format('YYYY-MM-DD')}` : null,
     fetcher,
   );
 

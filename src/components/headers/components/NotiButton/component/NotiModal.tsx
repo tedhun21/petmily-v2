@@ -1,20 +1,20 @@
-import { fetcherWithCookie, updaterWithCookie } from 'api';
+import { useEffect, useRef, useState } from 'react';
+
+import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import { useInView } from 'framer-motion';
-import { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from 'store';
-import { ModalType } from 'store/modalSlice';
 import styled from 'styled-components';
-import { CenterContainer } from 'styles/commonStyle';
-import useSWRInfinite from 'swr/infinite';
+import { useSWRConfig } from 'swr';
+import { useAuthSWRInfinite, useAuthSWRMutation } from 'hooks/authSWR';
+
 import NotiItem from './NotiItem';
+import { RootState } from 'store';
+import { fetcher, updater } from 'api';
 import Loading from '@components/Loading';
-import useSWRMutation from 'swr/mutation';
+import { ModalType } from 'store/modalSlice';
+import { CenterContainer } from 'styles/commonStyle';
 import { Notification } from 'types/notification.type';
 import { clearNewNotifications } from 'store/notificationSlice';
-import { useSWRConfig } from 'swr';
-import { API_URL } from 'config';
 
 export default function NotiModal() {
   const pageSize = 10;
@@ -37,14 +37,14 @@ export default function NotiModal() {
 
   const getKey = (pageIndex: number, previousPageData: any) => {
     if (previousPageData && !previousPageData.results.length) return null;
-    return `${API_URL}/notifications?page=${pageIndex + 1}&pageSize=${pageSize}&date=${today}`;
+    return `/notifications?page=${pageIndex + 1}&pageSize=${pageSize}&date=${today}`;
   };
 
   // 유저의 알림 가져오기
-  const { isLoading, data, setSize } = useSWRInfinite(getKey, fetcherWithCookie);
+  const { isLoading, data, setSize } = useAuthSWRInfinite(getKey, fetcher);
 
   // 모달 닫힐때 알림 전체적으로 읽기
-  const { trigger: markRead } = useSWRMutation(`${API_URL}/notifications/read`, updaterWithCookie);
+  const { trigger: markRead } = useAuthSWRMutation('/notifications/read', updater);
 
   const isEmpty = data?.[0]?.results?.length === 0;
   const isEnd = data && data[data.length - 1]?.results?.length < pageSize;
@@ -106,7 +106,7 @@ export default function NotiModal() {
         });
       }
       dispatch(clearNewNotifications());
-      mutate(`${API_URL}/notifications/unreadCount`);
+      mutate('/notifications/unreadCount');
     };
   }, [readNotificationIds]);
 

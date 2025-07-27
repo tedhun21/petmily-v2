@@ -1,11 +1,11 @@
 import { useContext, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import useSWR from 'swr';
 
 import styled from 'styled-components';
+import { useAuthSWR } from 'hooks/authSWR';
 
 import { formatStatus } from 'utils/misc';
-import { fetcherWithCookie } from 'api';
+import { fetcher } from 'api';
 
 import PetsitterCard from './component/PetsitterCard';
 import PetContainer from './component/PetContainer';
@@ -13,19 +13,17 @@ import DetailReservation from './component/DetailReservation';
 import ProgressButton from './component/ProgressButton';
 import ClientCard from './component/ClientCard';
 import { UserRole } from 'types/user.type';
-import { CenterContainer } from 'styles/commonStyle';
 import BackHeader from '@components/headers/BackHeader';
-import { SocketContext } from '@components/SocketProvider';
+import { SocketContext } from '@components/provider/SocketProvider';
 import { ReservationStatus } from 'types/reservation.type';
-import { API_URL } from 'config';
 
 export default function CarePage() {
   const { id } = useParams();
 
   const { socket } = useContext(SocketContext);
 
-  const { data: me } = useSWR(`${API_URL}/users/me`, fetcherWithCookie);
-  const { data: reservation, mutate } = useSWR(`${API_URL}/reservations/${id}`, fetcherWithCookie);
+  const { data: me } = useAuthSWR('/users/me', fetcher);
+  const { data: reservation, mutate } = useAuthSWR(`/reservations/${id}`, fetcher);
 
   // 웹소켓: 예약 상태 변경
   useEffect(() => {
@@ -88,7 +86,10 @@ const Section = styled.section`
   gap: 20px;
 `;
 
-const TitleStatus = styled(CenterContainer)`
+const TitleStatus = styled.div`
+  display: flex;
+  justify-content: center;
+
   span:first-child {
     color: ${({ theme }) => theme.text.highlight};
     font-weight: ${({ theme }) => theme.fontWeight.extrabold};

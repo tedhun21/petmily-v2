@@ -1,22 +1,21 @@
-import { fetcherWithCookie } from 'api';
+import { fetcher } from 'api';
 import { CenterContainer, SubTitle } from 'styles/commonStyle';
 import styled from 'styled-components';
-import useSWRInfinite from 'swr/infinite';
+import { useAuthSWRInfinite } from 'hooks/authSWR';
 import PetItem from './PetItem';
 import { Pet } from 'types/pet.type';
 import { FiMoreHorizontal } from 'react-icons/fi';
-import { API_URL } from 'config';
 
 export default function SelectPets() {
   const pageSize = 6;
 
   const getKey = (pageIndex: number, previousPageData: any) => {
     if (previousPageData && previousPageData.results.length === 0) return null;
-    return `${API_URL}/pets?page=${pageIndex + 1}&pageSize=${pageSize}`;
+    return `/pets?page=${pageIndex + 1}&pageSize=${pageSize}`;
   };
 
   // 내가 가진 펫 가져오기
-  const { data, size, setSize, isLoading } = useSWRInfinite(getKey, fetcherWithCookie);
+  const { data, size, setSize, isLoading } = useAuthSWRInfinite(getKey, fetcher);
 
   const isEmpty = data?.[0]?.results?.length === 0;
   const isEnd = data && data[data.length - 1]?.results?.length < pageSize;

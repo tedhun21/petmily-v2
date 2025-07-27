@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+
 import useSWR from 'swr';
 import styled from 'styled-components';
 import { useFormContext } from 'react-hook-form';
@@ -8,11 +10,9 @@ import { CenterContainer, Column, Divider, Row, Texts12h18 } from 'styles/common
 import RecentSearches from './RecentSearches';
 import SuggestLocations from './SuggestLocations';
 import LocationCapsuleContainer from './LocationCapsuleContainer';
-import { useEffect, useState } from 'react';
 import Loading from '@components/Loading';
 import { ModalLayOut, HalfModalLayOut, FormValues } from '@pages/search/component/SearchBox';
 import { getRecentSearches } from 'utils/localStorage';
-import { API_URL } from 'config';
 
 interface LocationModalProps {
   handleSetValue: (field: keyof FormValues, value: any) => void;
@@ -34,11 +34,11 @@ export default function LocationModal({ handleSetValue }: LocationModalProps) {
 
   // debouncedInput을 바로 검색 쿼리로 사용 (빈 문자열이어도 API에서 처리할 수 있다면)
   const { data: suggestData, isLoading: isSuggestDataLoading } = useSWR(
-    shouldFetchSuggestions ? `${API_URL}/search?index=locations&query=district:${debouncedInput}&size=5` : null,
+    shouldFetchSuggestions ? `/search?index=locations&query=district:${debouncedInput}&size=5` : null,
     fetcher,
   );
 
-  const { data: countLocations } = useSWR(`${API_URL}/search/location-count?size=12`, fetcher);
+  const { data: countLocations } = useSWR('/search/location-count?size=12', fetcher);
 
   const handleLocationClick = (e: React.MouseEvent, searchName: string) => {
     e.stopPropagation();

@@ -60,8 +60,9 @@ import { SWRConfig } from 'swr';
 
 import RedirectPage from '@pages/common/Redirect';
 
-import SocketProvider from '@components/SocketProvider';
-import ThemeProvider from '@components/ThemeProvider';
+import AuthProvider from '@components/provider/AuthProvider';
+import SocketProvider from '@components/provider/SocketProvider';
+import ThemeProvider from '@components/provider/ThemeProvider';
 import GlobalStyle from 'styles/Globalstyle';
 
 const router = createBrowserRouter(
@@ -94,17 +95,24 @@ const router = createBrowserRouter(
 
 export default function App() {
   return (
-    <SWRConfig value={{ revalidateOnFocus: false, provider: () => new Map() }}>
-      <SocketProvider>
-        <ThemeProvider>
-          <GlobalStyle />
-          <Container>
-            <Wrapper>
-              <RouterProvider router={router} />
-            </Wrapper>
-          </Container>
-        </ThemeProvider>
-      </SocketProvider>
+    <SWRConfig
+      value={{
+        revalidateOnFocus: false,
+        provider: () => new Map(),
+      }}
+    >
+      <AuthProvider>
+        <SocketProvider>
+          <ThemeProvider>
+            <GlobalStyle />
+            <Container>
+              <Wrapper>
+                <RouterProvider router={router} />
+              </Wrapper>
+            </Container>
+          </ThemeProvider>
+        </SocketProvider>
+      </AuthProvider>
     </SWRConfig>
   );
 }

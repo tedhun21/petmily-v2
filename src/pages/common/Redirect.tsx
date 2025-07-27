@@ -1,46 +1,32 @@
 import { useEffect } from 'react';
 
 import styled from 'styled-components';
-import useSWR from 'swr';
-import { fetcherWithToken, updaterWithToken } from 'api';
-
-import { User, UserRole } from 'types/user.type';
 import { useNavigate } from 'react-router-dom';
-import { setCookie } from 'utils/cookie';
-import useSWRMutation from 'swr/mutation';
-import Loading from '@components/Loading';
-import { toast } from 'react-toastify';
-import { API_URL } from 'config';
+import { useAuthSWR, useAuthSWRMutation } from 'hooks/authSWR';
 
+import { toast } from 'react-toastify';
+
+import { fetcher, updater } from 'api';
+import { UserRole } from 'types/user.type';
+import Loading from '@components/Loading';
+
+// 1. URL에서 액세스 토큰 파싱
+// 2. 액세스 토큰을 이용해 내 정보 가져오기
+// 3. 내 정보에 대해 조건부 처리
 export default function RedirectPage() {
   const navigate = useNavigate();
-  const urlParams = new URLSearchParams(window.location.search);
 
-  const access_token = urlParams.get('access_token');
-
-  const { data: me } = useSWR<User>(access_token ? `${API_URL}/users/me` : null, (url: string) =>
-    fetcherWithToken(url, access_token),
-  );
+  const { data: me } = useAuthSWR('/users/me', fetcher);
 
   // 유저 role update
-  const { trigger } = useSWRMutation(
-    me ? `${API_URL}/users/${me.id}` : null,
-    (url: string, { arg }: { arg: any }) => updaterWithToken(url, access_token, { arg }),
-    {
-      onSuccess: (data) => {
-        setCookie('access_token', data.newToken);
-        navigate('/');
-        toast.success('환영합니다!');
-      },
-    },
-  );
+  const { trigger: updateUserRole } = useAuthSWRMutation(me ? `/users/${me.id}` : null, updater, {});
 
   const handleClientOAuth = async () => {
     const formData = new FormData();
 
     formData.append('data', JSON.stringify({ role: UserRole.CLIENT }));
 
-    await trigger({ formData });
+    await updateUserRole(formData);
   };
 
   const handlePetsitterOAuth = async () => {
@@ -48,17 +34,15 @@ export default function RedirectPage() {
 
     formData.append('data', JSON.stringify({ role: UserRole.PETSITTER }));
 
-    await trigger({ formData });
+    await updateUserRole(formData);
   };
 
-  //
   useEffect(() => {
-    if (me && access_token && (me.role === UserRole.CLIENT || me.role === UserRole.PETSITTER)) {
-      setCookie('access_token', access_token);
-      navigate('/');
+    if (me && me.role !== UserRole.USER) {
+      navigate('/', { replace: true });
       toast.success('환영합니다!');
     }
-  }, [me]);
+  }, [me, navigate]);
 
   return (
     <MainContainer>
