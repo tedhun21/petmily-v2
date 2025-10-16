@@ -7,7 +7,7 @@ import Loading from '@components/Loading';
 import { BlueButton } from 'styles/commonStyle';
 import { Reservation, ReservationStatus } from 'types/reservation.type';
 import { UserRole } from 'types/user.type';
-import { SocketContext } from '@components/provider/SocketProvider';
+import { SocketContext } from '@components/contexts/SocketProvider';
 
 interface ProgressButtonProps {
   meRole: UserRole;

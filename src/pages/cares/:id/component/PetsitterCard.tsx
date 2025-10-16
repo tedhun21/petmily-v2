@@ -15,7 +15,9 @@ interface PetsitterCardProps {
 export default function PetsitterCard({ petsitter }: PetsitterCardProps) {
   const opponentIds = [petsitter?.id];
   const params = new URLSearchParams();
-  params.append('opponentIds', opponentIds.join(',')); // opponentIds=1,2,3
+  if (petsitter?.id !== undefined) {
+    opponentIds.forEach((id) => params.append('opponentIds', id.toString())); // opponentIds=1&opponentIds=2
+  }
 
   return (
     <Card>

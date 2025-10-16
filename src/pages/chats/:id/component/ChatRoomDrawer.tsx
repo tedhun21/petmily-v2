@@ -1,10 +1,11 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import styled from 'styled-components';
-import { ChatRoomContext } from './ChatRoomProvider';
-import { useContext } from 'react';
+
 import { Button, ImageCentered, RoundedImageWrapper, Texts16h24, Title } from 'styles/commonStyle';
 import { Link } from 'react-router-dom';
 import { FaXmark } from 'react-icons/fa6';
+import { ChatMember } from 'types/chat.type';
+import { useChat } from '../contexts/ChatProvider';
 
 interface ChatRoomDrawerProps {
   isDrawerOpen: boolean;
@@ -12,10 +13,9 @@ interface ChatRoomDrawerProps {
 }
 
 export default function ChatRoomDrawer({ isDrawerOpen, setIsDrawerOpen }: ChatRoomDrawerProps) {
-  const { chatRoom } = useContext(ChatRoomContext);
-
-  const meMember = chatRoom?.chatMembers.me;
-  const othersMember = chatRoom?.chatMembers.others;
+  const {
+    chatRoomValues: { meMember, otherMembers },
+  } = useChat();
 
   return (
     <AnimatePresence>
@@ -39,7 +39,7 @@ export default function ChatRoomDrawer({ isDrawerOpen, setIsDrawerOpen }: ChatRo
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div style={{ display: 'flex', alignItems: 'center' }}>
                     <Title>채팅 참여자</Title>
-                    <MemberCount>{(othersMember?.length ?? 0) + 1}</MemberCount>
+                    <MemberCount>{(otherMembers?.length ?? 0) + 1}</MemberCount>
                   </div>
                   <XButton onClick={() => setIsDrawerOpen(false)}>
                     <FaXmark size="20px" />
@@ -57,7 +57,7 @@ export default function ChatRoomDrawer({ isDrawerOpen, setIsDrawerOpen }: ChatRo
                     </MemberItem>
                   </Link>
 
-                  {othersMember?.map((member) => (
+                  {otherMembers?.map((member: ChatMember) => (
                     <Link to={`/users/${member.user.nickname}`} key={member.user?.id}>
                       <MemberItem>
                         <MemberImage>

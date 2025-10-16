@@ -1,21 +1,22 @@
-import { useContext } from 'react';
 import styled from 'styled-components';
 
 import { useForm } from 'react-hook-form';
 
 import { IoMdArrowRoundUp } from 'react-icons/io';
 
-import { BlueButton, Input } from 'styles/commonStyle';
-import { ChatRoomContext } from './ChatRoomProvider';
-import ChatContainer from './ChatContainer';
 import ChatHeader from './ChatHeader';
+import ChatContainer from './ChatContainer';
+import { useChat } from '../contexts/ChatProvider';
+import { BlueButton, Input } from 'styles/commonStyle';
 
 interface MessageFormValues {
   message: string;
 }
 
 export default function ChatSection() {
-  const { sendMessage } = useContext(ChatRoomContext);
+  const {
+    socketValues: { sendMessage },
+  } = useChat();
 
   const { register, setValue, handleSubmit } = useForm<MessageFormValues>();
 

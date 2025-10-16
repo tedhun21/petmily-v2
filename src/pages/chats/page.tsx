@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import ChatRoomList from './component/ChatRoomList';
 import TopHeader from '@components/headers/TopHeader';
-import ChatRoomsProvider from './component/ChatRoomsProvider';
 
 export default function ChatsPage() {
   return (
@@ -9,9 +8,7 @@ export default function ChatsPage() {
       <Shadow>
         <TopHeader />
       </Shadow>
-      <ChatRoomsProvider>
-        <ChatRoomList />
-      </ChatRoomsProvider>
+      <ChatRoomList />
     </>
   );
 }

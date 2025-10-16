@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef } from 'react';
-import { ThemeContext } from './provider/ThemeProvider';
+import { ThemeContext } from './contexts/ThemeProvider';
 
 interface IProps {
   onComplete: (data: any) => void;

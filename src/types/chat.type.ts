@@ -1,16 +1,8 @@
+import { Message } from '@mui/icons-material';
 import { CoreType } from './common.type';
 import { User } from './user.type';
 
 export type ChatUser = Pick<User, 'id' | 'nickname' | 'photo' | 'role'>;
-
-export interface ChatRoom extends Omit<CoreType, 'id'> {
-  id: number | null;
-  lastMessage: Message | null;
-  chatMembers: {
-    me: ChatMember;
-    others: ChatMember[];
-  };
-}
 
 export interface ChatMember extends CoreType {
   user: ChatUser;
@@ -18,8 +10,24 @@ export interface ChatMember extends CoreType {
   lastReadMessage: Message | null;
 }
 
+export interface ChatRoom extends CoreType {
+  lastMessage: Message | null;
+  chatMembers: {
+    meMember: ChatMember;
+    otherMembers: ChatMember[];
+  };
+}
+
 export interface Message extends CoreType {
-  sender?: ChatUser;
   content: string;
   chatRoom: ChatRoom;
+  sender: ChatUser;
 }
+
+export interface PendingMessage extends Omit<Message, 'id'> {
+  id: string;
+  tempId: string;
+  status: 'pending' | 'sent' | 'error';
+}
+
+export type ChatMessage = Message | PendingMessage;

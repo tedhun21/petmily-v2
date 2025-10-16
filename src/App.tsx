@@ -60,9 +60,9 @@ import { SWRConfig } from 'swr';
 
 import RedirectPage from '@pages/common/Redirect';
 
-import AuthProvider from '@components/provider/AuthProvider';
-import SocketProvider from '@components/provider/SocketProvider';
-import ThemeProvider from '@components/provider/ThemeProvider';
+import AuthProvider from '@components/contexts/AuthProvider';
+import SocketProvider from '@components/contexts/SocketProvider';
+import ThemeProvider from '@components/contexts/ThemeProvider';
 import GlobalStyle from 'styles/Globalstyle';
 
 const router = createBrowserRouter(

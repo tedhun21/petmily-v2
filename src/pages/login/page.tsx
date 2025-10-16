@@ -12,6 +12,8 @@ import GoogleOAuthButton from '@components/buttons/OAuthButton';
 import Loading from '@components/Loading';
 import { BlueButton, Column, ErrorMessage, Input } from 'styles/commonStyle';
 import { toast } from 'react-toastify';
+import { AuthContext } from '@components/contexts/AuthProvider';
+import { useContext } from 'react';
 
 const schema = yup.object().shape({
   email: yup.string().email('이메일 형식을 지켜주세요.').required('ID는 필수입니다.'),
@@ -26,6 +28,8 @@ type IFormLoginInputs = yup.InferType<typeof schema>;
 export default function LoginPage() {
   const navigate = useNavigate();
 
+  const { refreshToken } = useContext(AuthContext);
+
   const {
     register,
     handleSubmit,
@@ -36,9 +40,12 @@ export default function LoginPage() {
   });
 
   const { trigger, isMutating } = useSWRMutation('/auth/login', poster, {
-    onSuccess: () => {
-      navigate('/');
-      toast.success('환영합니다!');
+    onSuccess: async () => {
+      const access_token = await refreshToken();
+      if (access_token) {
+        navigate('/');
+        toast.success('환영합니다!');
+      }
     },
     onError: () => {
       toast.error('로그인에 실패헸습니다. 다시 시도해 주세요');
@@ -50,7 +57,7 @@ export default function LoginPage() {
   const onSubmit = async (data: IFormLoginInputs) => {
     const { email, password } = data;
 
-    trigger(
+    await trigger(
       { email, password },
       {
         onError: (error: any) => {
