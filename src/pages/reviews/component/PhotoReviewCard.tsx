@@ -16,7 +16,7 @@ interface ReviewPhotoCardProps {
   review: Review;
 }
 
-export default function ReviewPhotoCard({ review }: ReviewPhotoCardProps) {
+export default function PhotoReviewCard({ review }: ReviewPhotoCardProps) {
   const [isTextOverflow, setIsTextOverflow] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const textRef = useRef<HTMLDivElement>(null);

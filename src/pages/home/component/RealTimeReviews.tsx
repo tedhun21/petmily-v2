@@ -1,5 +1,6 @@
 import useSWRInfinite from 'swr/infinite';
 
+import styled from 'styled-components';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 
@@ -11,14 +12,14 @@ import { fetcher } from 'api';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import Loading from '@components/Loading';
-import styled from 'styled-components';
+import { Review } from 'types/review.type';
+import RealTimeReviewsSkeleton from './RealTimeReviewsSkeleton';
 
 export default function RealTimeReviews() {
   const pageSize = 10;
 
   const getKey = (pageIndex: number, previousPageData: any) => {
-    if (previousPageData && !previousPageData.results.length) return null; // Stop when no more results
+    if (previousPageData && !previousPageData.results.length) return null;
     return `/reviews?page=${pageIndex + 1}&pageSize=${pageSize}`;
   };
 
@@ -26,14 +27,6 @@ export default function RealTimeReviews() {
 
   const isEmpty = data?.[0]?.results?.length === 0;
   const isEnd = data && data[data.length - 1]?.results?.length < pageSize;
-
-  if (isLoading) {
-    return (
-      <CenterContainer>
-        <Loading color="#279EFF" />
-      </CenterContainer>
-    );
-  }
 
   if (isEmpty) {
     return (
@@ -46,33 +39,38 @@ export default function RealTimeReviews() {
   return (
     <Section>
       <Title>실시간 후기</Title>
-      <Swiper
-        slidesPerView={2}
-        centeredSlides={true}
-        spaceBetween={20}
-        grabCursor={true}
-        loop={!isEnd}
-        pagination={{
-          dynamicBullets: true,
-          clickable: true,
-        }}
-        autoplay={{
-          delay: 2500,
-          disableOnInteraction: false,
-        }}
-        modules={[Autoplay, Pagination, Navigation]}
-        style={{ width: '100%' }}
-      >
-        {data &&
-          data[0]?.results.length > 0 &&
-          data?.map((page: any) =>
-            page?.results.map((review: any) => (
-              <SwiperSlide key={review.id}>
-                <ReviewCard review={review} />
-              </SwiperSlide>
-            )),
-          )}
-      </Swiper>
+
+      {isLoading ? (
+        <RealTimeReviewsSkeleton />
+      ) : (
+        <Swiper
+          slidesPerView="auto"
+          centeredSlides={true}
+          spaceBetween={16}
+          grabCursor={true}
+          loop={!isEnd}
+          pagination={{
+            dynamicBullets: true,
+            clickable: true,
+          }}
+          autoplay={{
+            delay: 5000,
+            disableOnInteraction: false,
+          }}
+          modules={[Autoplay, Pagination, Navigation]}
+          style={{ width: '100%' }}
+        >
+          {data &&
+            data[0]?.results.length > 0 &&
+            data?.map((page: any) =>
+              page?.results.map((review: Review) => (
+                <SwiperSlide key={review.id} style={{ width: '300px' }}>
+                  <ReviewCard review={review} />
+                </SwiperSlide>
+              )),
+            )}
+        </Swiper>
+      )}
     </Section>
   );
 }

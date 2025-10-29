@@ -6,8 +6,9 @@ import { useInView } from 'framer-motion';
 import { fetcher } from 'api';
 import { CenterContainer } from 'styles/commonStyle';
 import styled from 'styled-components';
-import ReviewPhotoCard from './ReviewPhotoCard';
 import Loading from '@components/Loading';
+import PhotoReviewCardSkeleton from './PhotoReviewCardSkeleton';
+import PhotoReviewCard from './PhotoReviewCard';
 
 export default function PhotoReviews() {
   const ref = useRef(null);
@@ -30,14 +31,6 @@ export default function PhotoReviews() {
     }
   }, [isInView]);
 
-  if (isLoading) {
-    return (
-      <CenterContainer>
-        <Loading color="#279EFF" />
-      </CenterContainer>
-    );
-  }
-
   if (isEmpty) {
     return (
       <CenterContainer>
@@ -48,9 +41,11 @@ export default function PhotoReviews() {
 
   return (
     <ReviewContainer>
+      {isLoading && Array.from({ length: 20 }).map((_, index) => <PhotoReviewCardSkeleton key={index} />)}
+
       {data &&
         data[0]?.results.length > 0 &&
-        data?.map((page) => page?.results.map((review: any) => <ReviewPhotoCard key={review.id} review={review} />))}
+        data?.map((page) => page?.results.map((review: any) => <PhotoReviewCard key={review.id} review={review} />))}
 
       {data && !isEnd && (
         <CenterContainer ref={ref}>
