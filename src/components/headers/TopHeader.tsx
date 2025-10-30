@@ -14,7 +14,7 @@ import { fetcher } from 'api';
 import { Row } from 'styles/commonStyle';
 import MeButton from './components/MeButton';
 import NotiButton from './components/NotiButton/NotiButton';
-import { ThemeContext } from '@components/provider/ThemeProvider';
+import { ThemeContext } from '@components/contexts/ThemeProvider';
 
 export default function TopHeader() {
   const { isDarkMode, setIsDarkMode } = useContext(ThemeContext);
@@ -24,9 +24,12 @@ export default function TopHeader() {
   const { data: me } = useAuthSWR('/users/me', fetcher);
 
   // const { data: unreadCount } = useSWR('/notifications/unreadCount', fetcher);
-  const { data: unreadServerChatCount } = useAuthSWR('/chats/unread-count', fetcher);
+  const { data: unreadMessageCount } = useAuthSWR('/chats/unread-count', fetcher);
 
-  const unreadChatCount = unreadServerChatCount + newMessages.length;
+  // console.log('newMessages', newMessages);
+  // console.log('unreadMessageCount', unreadMessageCount);
+
+  const unreadChatCount = unreadMessageCount + newMessages.length;
 
   // const unreadNotificationCount: number = unreadCount + newNotifications.length;
 

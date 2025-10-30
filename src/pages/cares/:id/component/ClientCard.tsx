@@ -10,7 +10,9 @@ interface ClientCardProps {
 export default function ClientCard({ client }: ClientCardProps) {
   const opponentIds = [client?.id];
   const params = new URLSearchParams();
-  params.append('opponentIds', opponentIds.join(',')); // opponentIds=1,2,3
+  if (client?.id !== undefined) {
+    opponentIds.forEach((id) => params.append('opponentIds', id.toString())); // opponentIds=1&opponentIds=2
+  }
 
   return (
     <Card>

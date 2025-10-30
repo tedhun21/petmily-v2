@@ -1,5 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
-import dayjs from 'dayjs';
+import { createSelector, createSlice } from '@reduxjs/toolkit';
+import { RootState } from 'store';
 import { Message } from 'types/chat.type';
 
 export interface NewMessageState {
@@ -17,29 +17,22 @@ const newMessageSlice = createSlice({
     addNewMessage: (state, action) => {
       state.newMessages.unshift(action.payload);
     },
-    removeMessages: (state, action) => {
-      const { chatRoomId } = action.payload;
-      state.newMessages = state.newMessages.filter((message) => {
-        message.chatRoom.id !== chatRoomId;
-      });
-    },
-    markAsRead: (state, action) => {
-      const { lastReadMessage } = action.payload;
-
-      state.newMessages = state.newMessages.filter((message) => {
-        const isSameRoom = message.chatRoom.id === lastReadMessage.chatRoom.id;
-
-        const isUnread = dayjs(message.createdAt).isAfter(dayjs(lastReadMessage.createdAt));
-
-        return !isSameRoom || isUnread;
-      });
-    },
-
     removeMessagesByChatRoom: (state, action) => {
       state.newMessages = state.newMessages.filter((msg) => msg.chatRoom.id !== action.payload);
     },
   },
 });
 
-export const { addNewMessage, removeMessages, markAsRead, removeMessagesByChatRoom } = newMessageSlice.actions;
+export const { addNewMessage, removeMessagesByChatRoom } = newMessageSlice.actions;
 export default newMessageSlice.reducer;
+
+// RootState에서 newMessage slice의 상태를 가져오는 기본 선택자
+const allNewMessages = (state: RootState) => state.newMessage.newMessages;
+
+// chatRoomId를 인자로 받아 해당 채팅방의 메시지만 필터링하는 선택자
+export const selectNewMessagesByChatRoom = createSelector(
+  [allNewMessages, (_, chatRoomId) => chatRoomId],
+  (newMessages, chatRoomId) => {
+    return newMessages.filter((message) => message.chatRoom.id === chatRoomId);
+  },
+);

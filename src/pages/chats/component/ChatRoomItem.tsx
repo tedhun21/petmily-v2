@@ -1,10 +1,11 @@
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { RootState } from 'store';
+import { selectNewMessagesByChatRoom } from 'store/newMessageSlice';
 
 import styled from 'styled-components';
 import { Column, ImageCentered, RoundedImageWrapper, Row, Texts12h18 } from 'styles/commonStyle';
-import { ChatMember, ChatRoom, Message } from 'types/chat.type';
+import { ChatMember, ChatRoom } from 'types/chat.type';
 import { updatedAtAgo } from 'utils/date';
 
 interface ChatRoomItemProps {
@@ -12,21 +13,18 @@ interface ChatRoomItemProps {
 }
 
 export default function ChatRoomItem({ chatRoom }: ChatRoomItemProps) {
-  const { newMessages } = useSelector((state: RootState) => state.newMessage);
+  const newMessages = useSelector((state: RootState) => selectNewMessagesByChatRoom(state, chatRoom.id));
 
-  const others = chatRoom.chatMembers.others;
-
-  // 현재 채팅방의 새로운 메세지만 필터링
-  const newChatRoomMessages = newMessages?.filter((msg: Message) => msg.chatRoom.id === chatRoom.id);
+  const others = chatRoom.chatMembers.otherMembers;
 
   // 최신 메시지 추출
-  const newestMessage = newChatRoomMessages[0];
+  const newestMessage = newMessages[0];
 
   // 최신 메세지 내용 (새로운 메세지가 없으면 기존 lastMessage 사용)
   const lastMessage = newestMessage || chatRoom.lastMessage;
 
   // 읽지 않은 메세지 개수 (원래 unreadCount 값 + 새로 들어온 메세지 개수)
-  const unreadCount = (chatRoom.chatMembers.me?.unreadCount || 0) + newChatRoomMessages?.length;
+  const unreadCount = (chatRoom.chatMembers.meMember?.unreadCount || 0) + newMessages?.length;
 
   return (
     <ChatRoomLink to={`/chats/${chatRoom.id}`}>
@@ -34,17 +32,17 @@ export default function ChatRoomItem({ chatRoom }: ChatRoomItemProps) {
         <Photo>
           {others?.map((other: ChatMember) => (
             <MemberPhoto key={other.id}>
-              <ImageCentered src={`${other.user.photo ?? '/imgs/DefaultUserProfile.jpg'}`} />
+              <ImageCentered src={`${other.user?.photo ?? '/imgs/DefaultUserProfile.jpg'}`} />
             </MemberPhoto>
           ))}
         </Photo>
         <NameMessageWrapper>
           <div>
             {others?.map((other: ChatMember) => (
-              <span key={other.id}>{other.user.nickname}</span>
+              <span key={other.id}>{other.user?.nickname ?? 'unknown'}</span>
             ))}
           </div>
-          <Texts12h18>{lastMessage.content}</Texts12h18>
+          <Texts12h18>{lastMessage?.content}</Texts12h18>
         </NameMessageWrapper>
       </PhotoName>
       <TimeUnreadCount>

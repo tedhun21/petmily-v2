@@ -1,15 +1,17 @@
+import { useEffect, useRef } from 'react';
+
 import styled from 'styled-components';
+import { useInView } from 'framer-motion';
+
+import useChatRooms from '@pages/chats/hooks/useChatRooms';
 import ChatRoomItem from './ChatRoomItem';
 import Loading from '@components/Loading';
-import { useInView } from 'framer-motion';
-import { useContext, useEffect, useRef } from 'react';
 import { CenterContainer } from 'styles/commonStyle';
-import { ChatRoomsContext } from './ChatRoomsProvider';
 
 export default function ChatRoomList() {
   const ref = useRef<HTMLDivElement | null>(null);
   const isInView = useInView(ref);
-  const { chatRooms, setSize, isLoading, isEnd } = useContext(ChatRoomsContext);
+  const { chatRooms, setSize, isLoading, isEnd } = useChatRooms();
 
   useEffect(() => {
     if (isInView && !isLoading) {

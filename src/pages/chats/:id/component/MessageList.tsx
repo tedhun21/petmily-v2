@@ -1,25 +1,29 @@
-import { ChatRoomContext } from './ChatRoomProvider';
-import { useContext } from 'react';
 import styled from 'styled-components';
-import { Message } from 'types/chat.type';
+
+import { ChatMember } from 'types/chat.type';
 import MessageItem from './MessageItem';
-import { MessageContext } from './MessageProvider';
-import { isAfterMessage } from 'utils/misc';
+import { isMessageUnread } from 'utils/misc';
+import { useChat } from '../contexts/ChatProvider';
+import { useMemo } from 'react';
 
 export default function MessageList() {
-  const { chatRoom } = useContext(ChatRoomContext);
-  const { allMessages } = useContext(MessageContext);
+  const {
+    chatRoomValues: { meMember, otherMembers },
+    messageValues: { messages, newMessages },
+  } = useChat();
 
-  const others = chatRoom?.chatMembers.others || [];
+  const allMessages = useMemo(() => [...newMessages, ...messages], [newMessages, messages]);
 
   return (
     <List>
-      {allMessages.map((message: Message, index: number) => {
-        const isMyMessage = message.sender?.id === chatRoom?.chatMembers.me?.user.id;
+      {allMessages.map((message, index) => {
+        const isMyMessage = message.sender?.id === meMember?.user.id;
         const previousMessage = index < allMessages.length - 1 ? allMessages[index + 1] : undefined;
         const nextMessage = index > 0 ? allMessages[index - 1] : undefined;
 
-        const unreadCount = others.filter((member) => isAfterMessage(message, member?.lastReadMessage)).length;
+        const unreadCount = otherMembers
+          ? otherMembers.filter((member: ChatMember) => isMessageUnread(message, member?.lastReadMessage)).length
+          : 0;
 
         return (
           <MessageItem

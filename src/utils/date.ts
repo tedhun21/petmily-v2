@@ -4,21 +4,20 @@ import 'dayjs/locale/ko';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import updateLocale from 'dayjs/plugin/updateLocale';
 import isBetween from 'dayjs/plugin/isBetween';
-import { Message } from 'types/chat.type';
+import { ChatMessage } from 'types/chat.type';
 
+// Day.js 플러그인 확장 미 ㅊ로케일 설정
 dayjs.extend(relativeTime);
 dayjs.extend(updateLocale);
 dayjs.extend(isBetween);
 dayjs.locale('ko');
 
-// 오전/오후 표기 한글로 설정
+// 오전/오후 한글 표기
 dayjs.updateLocale('ko', {
   meridiem: (hour: number) => (hour < 12 ? '오전' : '오후'),
 });
 
-// date format
-
-/// { year, month, day }
+/**  날짜를 { year, month, day } 객체로 반환 */
 export const dateFormat = (date: string) => {
   const year = dayjs(date).format('YYYY');
   const month = dayjs(date).format('MM');
@@ -26,118 +25,80 @@ export const dateFormat = (date: string) => {
   return { year, month, day };
 };
 
-/// 요일 표시
+/** 요일(월, 화, ...) 반환 */
 export const dayFormat = (date: string) => {
   return dayjs(date).locale('ko').format('ddd');
 };
 
-/// 시간 범위 표시
-/// 예) 10:00 ~ 17:00
+/** 시간 범위 문자열 반환 (예 "10:00 ~ 17:00") */
 export const timeRange = (start: string | null, end: string | null) => {
   if (!start || !end) {
     return null;
   }
 
-  // 입력 형식을 동적으로 처리
-  const startFormat = start.includes(':') && start.split(':').length === 3 ? 'HH:mm:ss' : 'HH:mm';
-  const endFormat = end.includes(':') && end.split(':').length === 3 ? 'HH:mm:ss' : 'HH:mm';
+  const parseFormat = (time: string) => (time.includes(':') && time.split(':').length === 3 ? 'HH:mm:ss' : 'HH:mm');
 
-  // 형식에 따라 시간 변환
-  const formattedStart = dayjs(start, startFormat).format('HH:mm');
-  const formattedEnd = dayjs(end, endFormat).format('HH:mm');
+  const formattedStart = dayjs(start, parseFormat(start)).format('HH:mm');
+  const formattedEnd = dayjs(end, parseFormat(end)).format('HH:mm');
 
   return `${formattedStart} ~ ${formattedEnd}`;
 };
 
-/// 지난 시간 표시
-/// 며칠 전, 몇 년전
+/** "몇 년 전", "며칠 전" e등의 상대 시간 반환 */
 export const dateAgo = (date: string) => {
-  const theDay = dayjs(date);
-  const now = dayjs();
-
-  if (!theDay.isValid()) {
-    return 'Invalid date';
-  }
-
-  return theDay.from(now);
+  const target = dayjs(date);
+  return target.isValid() ? target.from(dayjs()) : 'Invalid date';
 };
 
-// 채팅 리스트 업데이트 시간
+/** 채팅 리스트에서 업데이트 시간 표기 */
 export const updatedAtAgo = (date: string) => {
   if (!date) return null;
 
-  const targetDate = dayjs(date);
+  const target = dayjs(date);
   const now = dayjs();
 
-  if (targetDate.isSame(now, 'day')) {
-    return targetDate.format('A h:mm');
-  } else if (targetDate.isSame(now.subtract(1, 'day'), 'day')) {
-    return '어제';
-  } else if (targetDate.isSame(now, 'year')) {
-    return targetDate.format('M월 DD일');
-  } else {
-    return targetDate.format('YYYY년 MM월 DD일');
-  }
+  if (target.isSame(now, 'day')) return target.format('A h:mm');
+  if (target.isSame(now.subtract(1, 'day'), 'day')) return '어제';
+  if (target.isSame(now, 'year')) return target.format('M월 DD일');
+  return target.format('YYYY년 MM월 DD일');
 };
 
+/** 예약 불가 날짜 계산 */
 export const reservationDisableDate = (day: Dayjs) => {
-  // 날짜에 할당된 숫자 구하기 (0이면 일요일, 1이면 월요일)
-  const dayOfWeek = dayjs(day).day();
-  // 일요일,월요일면 주말
-  // const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
-
   const now = dayjs();
-  // now로부터 1개월 이후에만 date 선택가능 범위
-  const nowAddThreeMonth = dayjs(now).add(2, 'M').format('YYYY-MM-DD');
+  const limit = now.add(2, 'M').format('YYYY-MM-DD');
 
-  // 3개월 이내와 주말 이외에만 예약 가능 (true면 비활성화, false는 활성화)
-  return !dayjs(dayjs(day).format('YYYY-MM-DD')).isBetween(now, nowAddThreeMonth, 'day', '[)');
+  // 오늘 ~ 2개월 이내 날짜만 선택 가능
+  return !dayjs(dayjs(day).format('YYYY-MM-DD')).isBetween(now, limit, 'day', '[)');
 };
 
+//** 체크인 불가 시간 계산 */
 export const checkInDisableTime = (value: Dayjs, view: 'hours' | 'minutes' | 'seconds', date: string | null) => {
-  const currentTime = dayjs();
-
-  if (date && dayjs.isDayjs(dayjs(date))) {
-    if (!currentTime.isSame(dayjs(date), 'date')) {
-      return false;
-    }
-
-    if (view === 'hours' && value.hour() < currentTime.hour() + 2) {
-      return true;
-    }
+  const now = dayjs();
+  if (date && dayjs(date).isValid()) {
+    if (!now.isSame(dayjs(date), 'date')) return false;
+    if (view === 'hours' && value.hour() < now.hour() + 2) return true;
   }
 
-  // 30분만 활성화
-  // if (view === 'minutes') {
-  //   if (value.minute() % 30 !== 0) {
-  //     return false;
-  //   }
-  // }
-
-  // return 값이 true면 비활성화 false면 활성화
   return false;
 };
 
+/** 체크아웃 불가 시간 계산 */
 export const checkOutDisableTime = (
   value: Dayjs,
   view: 'hours' | 'minutes' | 'seconds',
   reservationTimeStart: Dayjs | null,
 ) => {
-  if (reservationTimeStart && dayjs.isDayjs(reservationTimeStart)) {
-    if (view === 'hours' && value.hour() < reservationTimeStart.add(1, 'hour').hour()) {
+  if (reservationTimeStart?.isValid()) {
+    if (view === 'hours' && value.hour() < reservationTimeStart?.add(1, 'hour').hour()) {
       return true;
     }
-    // 30분 간격만 선택되게
-    // if (view === 'minutes') {
-    //   if (value.minute() % 30 !== 0) {
-    //     return false;
-    //   }
-    // }
   }
 
   return false;
 };
 
+/** 요일 배열 */
 export const weekdays = [
   { id: 1, value: 'mon', label: '월' },
   { id: 2, value: 'tue', label: '화' },
@@ -148,91 +109,68 @@ export const weekdays = [
   { id: 7, value: 'sun', label: '일' },
 ];
 
+/** 로컬 AM/PM 표기 (예: 오전 10:30) */
 export function formatToLocaleAMPM(dateString: string) {
   return dayjs(dateString).locale('ko').format('A h:mm');
 }
 
-// 같은 시간 && 같은 발신자 => 사진표시
-export const shouldShowSenderPhoto = (currentMessage: Message, previousMessage?: Message) => {
-  // 이전 메시지가 없으면 항상 표시
-  if (!previousMessage) return true;
+/** 발신자 프로필 사진 표시 여부 */
+export const shouldShowSenderPhoto = (current: ChatMessage, previous?: ChatMessage) => {
+  if (!previous) return true;
 
-  // 현재 메시지와 이전 메시지가 같은 분인지 확인
-  const isSameMinute = dayjs(currentMessage.createdAt).isSame(previousMessage.createdAt, 'minute');
-  const isSameSender = currentMessage.sender?.id === previousMessage.sender?.id;
+  // 1. 이전 메시지와 같은 '분'이 아닐 때 O
+  const isSameMinute = dayjs(current.createdAt).isSame(previous.createdAt, 'minute');
+  // 2. 이전 메시지와 같은 유저가 아닐 때 O
+  const isSameSender = current.sender?.id === previous.sender?.id;
 
-  // 1. 이전과 같은 시간 && 이전과 같은 sender ===> 현재 메시지 사진 false
-  if (isSameMinute && isSameSender) {
-    return false; // 사진을 표시하지 않음
-  }
-
-  // 2. 이전과 같은 시간 && 이전과 다른 sender ===> 현재 메시지 사진 true
-  // 3. 이전과 다른 시간 && 이전과 같은 sender ===> 현재 메시지 사진 true
-  // 4. 이전과 다른 시간 && 이전과 다른 sender ===> 현재 메시지 사진 true
-  return true; // 조건 2, 3, 4의 경우 모두 사진을 표시
+  return !(isSameMinute && isSameSender);
 };
 
-// 닉네임 표시
-// 1. 이전 메세지가 없을 경우
-// 2. 이전 메세지랑 현 메세지 작성자가 다른 사람일 때
-// 3. 요일에 첫번째 일때
-// 4. 이전 메세지와 분단위로 다를때
-export const shouldShowNickname = (currentMessage: Message, previousMessage?: Message, nextMessage?: Message) => {
+/** 닉네임 표시 여부 */
+export const shouldShowNickname = (current: ChatMessage, previous?: ChatMessage, next?: ChatMessage) => {
   // 이전 메세지가 없을 경우
-  if (!previousMessage) return true;
+  if (!previous) return true;
 
-  // 이전 메세지랑 현 메세지 작성자가가 다른 사람일 때
-  const isDifferentSender = previousMessage.sender?.id !== currentMessage.sender?.id;
+  // 1. 이전 메시지와 다른 유저일 때 O
+  const isDifferentSender = current.sender?.id !== previous.sender?.id;
 
-  // 요일에 첫번째일 때
-  const isFirstMessageOfDay = !dayjs(currentMessage.createdAt).isSame(previousMessage.createdAt, 'day');
+  // 2. 요일에 첫번째 일 때 O
+  const isFirstOfDay = !dayjs(current.createdAt).isSame(previous.createdAt, 'day');
 
-  // 이전 메세지와 분단위로 다를때
-  const isDifferentMinute = !dayjs(currentMessage.createdAt).isSame(previousMessage.createdAt, 'minute');
+  // 3. 이전 메시지와 '분'이 다를 때 O
+  const isDifferentMinute = !dayjs(current.createdAt).isSame(previous.createdAt, 'minute');
 
-  if (isDifferentSender || isFirstMessageOfDay || isDifferentMinute) {
-    return true;
-  }
-
-  return false;
+  return isDifferentSender || isFirstOfDay || isDifferentMinute;
 };
 
-// 같은 시간의 메세지면 마지막 메세지에만 시간 보여주기
-// 1. 다음 메시지가 현재랑 같고 && 같은 시간이면 현재 메세지에서는 false
-// 2. 같은 시간이어도 이전 메시지가 상대방이면 현재 메세지에서는 true
-export const shouldShowTime = (currentMessage: Message, previousMessage?: Message, nextMessage?: Message) => {
-  const isSameMinuteWithPrevious = previousMessage
-    ? dayjs(currentMessage.createdAt).isSame(previousMessage.createdAt, 'minute')
-    : false;
+/** 시간 표시 여부 */
+export const shouldShowTime = (current: ChatMessage, previous?: ChatMessage, next?: ChatMessage) => {
+  // 이전 '분' 같으면 O
+  const isSameMinutePrev = previous && dayjs(current.createdAt).isSame(previous.createdAt, 'minute');
+  // 이전 '유저' 같으면 X
+  const isSameSenderPrev = previous && current.sender?.id === previous.sender?.id;
 
-  const isSameSenderWithPrevious = previousMessage ? currentMessage.sender?.id === previousMessage.sender?.id : false;
+  // 다음 '분'과 같으면 X
+  const isSameMinuteNext = next && dayjs(current.createdAt).isSame(previous?.createdAt, 'minute');
+  // 다음 유저와 같으면 X
+  const isSameSenderNext = next && current.sender?.id === next.sender?.id;
 
-  const isSameMinuteWithNext = nextMessage
-    ? dayjs(currentMessage.createdAt).isSame(nextMessage.createdAt, 'minute')
-    : false;
+  // 이전 메시지와 분은 같지만, 발신자가 다르면 => 시간 표시
+  if (isSameMinutePrev && !isSameSenderPrev) return true;
 
-  const isSameSenderWithNext = nextMessage ? currentMessage.sender?.id === nextMessage.sender?.id : false;
+  // 다음 메시지와 분·발신자가 모두 같으면 => 시간 표시 안 함
+  if (isSameMinuteNext && isSameSenderNext) return false;
 
-  // ✅ 다음 메시지와 같으면 false (시간 안 보여줌)
-  if (isSameMinuteWithNext && isSameSenderWithNext) {
-    return false;
-  }
-
-  // ✅ 이전 메시지가 다른 사람이면 true (시간 보여줌)
-  if (isSameMinuteWithPrevious && !isSameSenderWithPrevious) {
-    return true;
-  }
-
-  // ✅ 기본: 마지막 메시지거나 단독 메시지
+  // 그 외에는 시간 표시
   return true;
 };
 
-export const shouldShowDateDivider = (currentMessage: Message, previousMessage?: Message) => {
-  if (!previousMessage) return true;
-  return !dayjs(currentMessage.createdAt).isSame(previousMessage.createdAt, 'day');
+/** 날짜 구분선 표시 여부 */
+export const shouldShowDateDivider = (current: ChatMessage, previous?: ChatMessage) => {
+  return !previous || !dayjs(current.createdAt).isSame(previous?.createdAt, 'day');
 };
 
-// 시간 리스트 생성
+/** 시간 옵션 리스트 생성 (08:00 ~ 21:30, 30분 간격) */
 export const timeOptions = (): string[] => {
   const times: string[] = [];
   for (let i = 8; i < 22; i++) {

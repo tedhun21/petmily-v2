@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
+import { BlueButton } from 'styles/commonStyle';
 
 export default function NotFoundPage() {
   return (
@@ -12,18 +12,7 @@ export default function NotFoundPage() {
         <Image src="/imgs/404.svg" alt="Page not found" />
         <Info>요청하신 페이지를 찾을 수 없습니다.</Info>
         <Link to="/">
-          <Button
-            sx={{
-              mt: '20px',
-              color: '#dcdcdc',
-              fontSize: '18px',
-              fontWeight: 600,
-              backgroundColor: '#279eff',
-              '&:hover': { color: '#ffffff', backgroundColor: '#279eff' },
-            }}
-          >
-            홈으로 이동
-          </Button>
+          <BlueButton>홈으로 이동</BlueButton>
         </Link>
         <Link to="/">
           <Logo src="/imgs/Petmily.svg" alt="Logo" />

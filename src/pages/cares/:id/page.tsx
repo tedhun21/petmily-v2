@@ -14,7 +14,7 @@ import ProgressButton from './component/ProgressButton';
 import ClientCard from './component/ClientCard';
 import { UserRole } from 'types/user.type';
 import BackHeader from '@components/headers/BackHeader';
-import { SocketContext } from '@components/provider/SocketProvider';
+import { SocketContext } from '@components/contexts/SocketProvider';
 import { ReservationStatus } from 'types/reservation.type';
 
 export default function CarePage() {

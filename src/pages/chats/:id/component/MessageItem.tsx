@@ -1,6 +1,10 @@
+import React, { useEffect, useRef } from 'react';
+
 import dayjs from 'dayjs';
+import { useInView } from 'framer-motion';
 import styled, { css } from 'styled-components';
-import { Message } from 'types/chat.type';
+import { FaXmark } from 'react-icons/fa6';
+
 import { ImageCentered, RoundedImageWrapper, Texts12h18, Texts14h21, Texts16h24 } from 'styles/commonStyle';
 import {
   formatToLocaleAMPM,
@@ -9,20 +13,30 @@ import {
   shouldShowSenderPhoto,
   shouldShowTime,
 } from 'utils/date';
-import { useContext, useEffect, useRef } from 'react';
-import { useInView } from 'framer-motion';
-import { MessageContext } from './MessageProvider';
+import { ChatMessage, Message, PendingMessage } from 'types/chat.type';
+import { IoMdRefresh } from 'react-icons/io';
+import { useChat } from '../contexts/ChatProvider';
 
 interface IProps {
-  message: Message;
+  message: ChatMessage;
   isMyMessage: boolean;
-  previousMessage?: Message;
-  nextMessage?: Message;
+  previousMessage?: ChatMessage;
+  nextMessage?: ChatMessage;
   unreadCount: number;
 }
 
-export default function MessageItem({ message, isMyMessage, previousMessage, nextMessage, unreadCount }: IProps) {
-  const { onMessageVisible } = useContext(MessageContext);
+export default React.memo(function MessageItem({
+  message,
+  isMyMessage,
+  previousMessage,
+  nextMessage,
+  unreadCount,
+}: IProps) {
+  const {
+    messageValues: { setNewMessages },
+    socketValues: { sendMessage },
+    readStatus: { onMessageVisible },
+  } = useChat();
   const ref = useRef<HTMLLIElement>(null);
   const isInView = useInView(ref, { once: true });
 
@@ -31,9 +45,18 @@ export default function MessageItem({ message, isMyMessage, previousMessage, nex
   const showDateDivider = shouldShowDateDivider(message, previousMessage);
   const showNickname = shouldShowNickname(message, previousMessage, nextMessage);
 
+  // type narrowing (리턴값이 true일 때 msg는 PendingMessage 타입
+  const isPendingMessage = (msg: ChatMessage): msg is PendingMessage => {
+    return 'status' in msg;
+  };
+
+  const deleteNewMessage = () => {
+    setNewMessages((prev) => prev.filter((msg) => msg.id !== message.id));
+  };
+
   useEffect(() => {
-    if (isInView) {
-      onMessageVisible(message);
+    if (isInView && !('status' in message)) {
+      onMessageVisible(message as Message);
     }
   }, [isInView]);
 
@@ -57,13 +80,24 @@ export default function MessageItem({ message, isMyMessage, previousMessage, nex
           <MessageContent $isMyMessage={isMyMessage}>
             <Content $isMyMessage={isMyMessage}>{message.content}</Content>
             {showTime && <Texts12h18>{formatToLocaleAMPM(message.createdAt)}</Texts12h18>}
-            {unreadCount > 0 && <ReadCount>{unreadCount}</ReadCount>}
+            {isPendingMessage(message)
+              ? message.status === 'error' && (
+                  <ErrorStatus>
+                    <Button onClick={() => sendMessage(message.content, message?.tempId)}>
+                      <ReSendMark />
+                    </Button>
+                    <Button onClick={deleteNewMessage}>
+                      <XMark />
+                    </Button>
+                  </ErrorStatus>
+                )
+              : unreadCount > 0 && <ReadCount>{unreadCount}</ReadCount>}
           </MessageContent>
         </div>
       </Item>
     </li>
   );
-}
+});
 
 const DateDivider = styled.div`
   display: flex;
@@ -122,6 +156,31 @@ const Content = styled(Texts16h24)<{ $isMyMessage: boolean }>`
     $isMyMessage ? theme.background.box.blue.primary : theme.background.box.blue.hover};
   max-width: 70%; // 최대 너비를 설정하여 상대방 영역 침범 방지
   word-wrap: break-word; // 긴 단어가 있을 경우 줄 바꿈 처리
+`;
+
+const ErrorStatus = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: ${({ theme }) => theme.radius.normal};
+  padding: 4px;
+  background-color: ${({ theme }) => theme.background.box.default.primary};
+`;
+
+const Button = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ReSendMark = styled(IoMdRefresh)`
+  color: ${({ theme }) => theme.text.highlight};
+  ${({ theme }) => theme.fontSize.s18h27};
+`;
+
+const XMark = styled(FaXmark)`
+  color: ${({ theme }) => theme.text.error};
+  ${({ theme }) => theme.fontSize.s18h27};
 `;
 
 const ReadCount = styled(Texts12h18)`

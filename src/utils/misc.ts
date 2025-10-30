@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
+
 import { ModalType } from 'store/modalSlice';
-import { Message } from 'types/chat.type';
+import { ChatMessage } from 'types/chat.type';
 
 export const formatStatus = (status: string) => {
   switch (status) {
@@ -19,10 +20,12 @@ export const isSearchModal = (modalType: ModalType | null): boolean => {
   return modalType !== null && modalType.startsWith('search_');
 };
 
-export const isAfterMessage = (target: Message, reference?: Message | Pick<Message, 'id' | 'createdAt'> | null) => {
-  if (!reference) return true; // 기준 메시지가 없으면 모두 안 읽은 것으로 처리
-  return (
-    dayjs(target.createdAt).isAfter(reference.createdAt) ||
-    (dayjs(target.createdAt).isSame(reference.createdAt) && target.id > reference.id)
-  );
+/**
+ * 마지막으로 읽은 메시지와 지금 메시지의 비교
+ */
+export const isMessageUnread = (target: ChatMessage, reference?: ChatMessage | null) =>
+  reference ? dayjs(target.createdAt).isAfter(reference.createdAt) : true;
+
+export const makeOpponentQuery = (opponentIds: string[]) => {
+  return opponentIds.map((id) => `opponentIds=${id}`).join('&');
 };

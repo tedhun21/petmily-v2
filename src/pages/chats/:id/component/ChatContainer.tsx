@@ -1,128 +1,81 @@
-import { useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { useRef } from 'react';
 import styled from 'styled-components';
 import { FaChevronDown } from 'react-icons/fa6';
 
 import { Button, CenterContainer, ImageCentered, RoundedImageWrapper, Texts14h21 } from 'styles/commonStyle';
-import { ChatRoomContext } from './ChatRoomProvider';
-import { MessageContext } from './MessageProvider';
-import { useChatScroll } from 'hooks/useChatScroll';
+
 import MessageList from './MessageList';
 import Loading from '@components/Loading';
+import { useChat } from '../contexts/ChatProvider';
+import { useChatUIEffects } from '../hooks/useChatUIEffects';
 
 export default function ChatContainer() {
-  // 1. Hooks & Contexts
-  const { chatRoom } = useContext(ChatRoomContext);
-  const { messages, newMessages, allMessages, setSize, isLoading, isValidating, isEnd } = useContext(MessageContext);
+  const {
+    chatRoomValues: { meMember },
+    messageValues: { messages, isLoading, isValidating, isEnd, setSize, newMessages },
+  } = useChat();
   const chatRef = useRef<HTMLDivElement>(null);
-  const { isTopInView, isBottomInView, showDownButton, scrollToBottom } = useChatScroll({ targetSection: chatRef });
 
-  // 2. Refs & State
-  const prevScrollHeightRef = useRef<number>(0);
-  const isInitialLoad = useRef(true);
-  const [showNewestMessage, setShowNewestMessage] = useState<boolean>(false);
-
-  // 3. Memoized Values
-  const newestMessage = useMemo(() => newMessages[0], [newMessages]);
-  const otherNewMessageUser = useMemo(
-    () =>
-      newestMessage && chatRoom?.chatMembers?.others?.find((other) => other.user.id === newestMessage.sender?.id)?.user,
-    [newestMessage, chatRoom?.chatMembers?.others],
-  );
-
-  // 4. Effects
-  // 스크롤 위치 관리 (초기 로딩 및 이전 메시지 로드 시)
-  useEffect(() => {
-    const chatEl = chatRef.current;
-    if (!chatEl) return;
-
-    if (isInitialLoad.current && !isLoading && messages.length > 0) {
-      scrollToBottom();
-      isInitialLoad.current = false;
-    }
-
-    const scrollHeightDiff = chatEl.scrollHeight - prevScrollHeightRef.current;
-    if (scrollHeightDiff > 0 && chatEl.scrollTop <= chatEl.clientHeight * 0.3) {
-      chatEl.scrollTop += scrollHeightDiff;
-    }
-
-    prevScrollHeightRef.current = chatEl.scrollHeight;
-  }, [messages, isLoading, scrollToBottom]);
-
-  // UI 상태 관리 (새 메시지 도착, 무한 스크롤 트리거 등)
-  useEffect(() => {
-    if (newestMessage) {
-      if (isBottomInView || !otherNewMessageUser) {
-        scrollToBottom({ behavior: 'smooth' });
-        setShowNewestMessage(false);
-      } else {
-        setShowNewestMessage(true);
-      }
-    }
-
-    if (isTopInView && !isValidating && !isEnd) {
-      setSize((prev) => prev + 1);
-    }
-
-    if (isBottomInView) {
-      setShowNewestMessage(false);
-    }
-  }, [newestMessage, isBottomInView, isTopInView, isValidating, isEnd, otherNewMessageUser, scrollToBottom, setSize]);
-
-  // 5. Render Logic
-  const showDefaultDownButton = !newestMessage && showDownButton;
-  const showNewMessageDownButton = newestMessage && showNewestMessage && !isBottomInView;
+  const { downButtonState, scrollToBottom } = useChatUIEffects({
+    scrollRef: chatRef,
+    chatRoomOptions: {
+      meMember,
+    },
+    messageOptions: {
+      messages,
+      isLoading,
+      isValidating,
+      isEnd,
+      setSize,
+      newMessages,
+    },
+  });
 
   return (
-    <Div ref={chatRef}>
-      {isLoading || !chatRoom ? (
+    <Container ref={chatRef}>
+      {isLoading && messages.length === 0 ? (
         <CenterContainer>
           <Loading />
         </CenterContainer>
-      ) : allMessages.length === 0 && !isValidating ? (
-        <CenterContainer>
-          <Empty>
-            <span>아직 메시지가 없습니다.</span>
-            <span>메시지로 인사를 건네보세요.</span>
-          </Empty>
-        </CenterContainer>
-      ) : (
-        <MessageList />
-      )}
-
-      <Sticky>
-        {showDefaultDownButton && (
-          <AbsoluteBottomCenter>
-            <DownButton type="button" onClick={() => scrollToBottom({ behavior: 'smooth' })}>
-              <FaChevronDown size="16px" />
-            </DownButton>
-          </AbsoluteBottomCenter>
-        )}
-        {showNewMessageDownButton && (
-          <AbsolutBottom>
-            <BottomWrapper>
-              <NewMessageButton type="button" onClick={() => scrollToBottom({ behavior: 'smooth' })}>
-                <NewMessageUser>
-                  <NewMessageUserPhoto>
-                    <ImageCentered src={otherNewMessageUser?.photo || '/imgs/DefaultUserProfile.jpg'} />
-                  </NewMessageUserPhoto>
-                  <span>{otherNewMessageUser?.nickname}</span>
-                  <NewMessage>{newestMessage.content}</NewMessage>
-                </NewMessageUser>
-                <div style={{ padding: '8px' }}>
+      ) : !isLoading && messages.length > 0 ? (
+        <>
+          <MessageList />
+          <Sticky>
+            {downButtonState.state === 'default' && (
+              <AbsoluteBottomCenter>
+                <DownButton type="button" onClick={() => scrollToBottom({ behavior: 'smooth' })}>
                   <FaChevronDown size="16px" />
-                </div>
-              </NewMessageButton>
-            </BottomWrapper>
-          </AbsolutBottom>
-        )}
-      </Sticky>
-    </Div>
+                </DownButton>
+              </AbsoluteBottomCenter>
+            )}
+            {downButtonState.state === 'newMessage' && (
+              <AbsolutBottom>
+                <BottomWrapper>
+                  <NewMessageButton type="button" onClick={() => scrollToBottom({ behavior: 'smooth' })}>
+                    <NewMessageUser>
+                      <NewMessageUserPhoto>
+                        <ImageCentered
+                          src={downButtonState.lastestNewMessages?.sender?.photo || '/imgs/DefaultUserProfile.jpg'}
+                        />
+                      </NewMessageUserPhoto>
+                      <span>{downButtonState.lastestNewMessages?.sender.nickname}</span>
+                      <NewMessage>{downButtonState.lastestNewMessages?.content}</NewMessage>
+                    </NewMessageUser>
+                    <div style={{ padding: '8px' }}>
+                      <FaChevronDown size="16px" />
+                    </div>
+                  </NewMessageButton>
+                </BottomWrapper>
+              </AbsolutBottom>
+            )}
+          </Sticky>
+        </>
+      ) : null}
+    </Container>
   );
 }
 
-const Div = styled.div`
-  display: flex;
-  flex-direction: column;
+const Container = styled.div`
   overflow-y: auto;
   flex: 1;
 `;
