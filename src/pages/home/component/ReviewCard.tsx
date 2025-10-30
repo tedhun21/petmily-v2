@@ -42,7 +42,7 @@ export default function ReviewCard({ review }: ReviewCardProps) {
 const Card = styled(Column)`
   padding: 16px;
   gap: 12px;
-  border-radius: 16px;
+  border-radius: ${({ theme }) => theme.radius.large};
   background-color: ${({ theme }) => theme.background.box.default.primary};
 `;
 

@@ -17,7 +17,6 @@ export interface User {
   detailAddress: string;
   phone: string;
   photo?: string;
-  pets?: Pet[];
   body?: string;
 }
 
@@ -29,4 +28,8 @@ export interface Petsitter extends User {
   possiblePetSpecies?: PetSpecies[];
   star?: number;
   reviewCount?: number;
+}
+
+export interface Client extends User {
+  pets?: Pet[];
 }
