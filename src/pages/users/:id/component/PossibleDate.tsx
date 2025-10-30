@@ -1,25 +1,38 @@
 import dayjs, { Dayjs } from 'dayjs';
-import { Controller, useFormContext } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
+import useSWR from 'swr';
 
 import styled from 'styled-components';
+import { motion, AnimatePresence } from 'framer-motion';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 
 import { Row, Title } from 'styles/commonStyle';
 import { reservationDisableDate, timeOptions } from 'utils/date';
-import { motion, AnimatePresence } from 'framer-motion';
 import { fetcher } from 'api';
-import useSWR from 'swr';
 import { Petsitter } from 'types/user.type';
 import { DayOfWeekType } from 'types/common.type';
 import { Reservation } from 'types/reservation.type';
+import { Link } from 'react-router-dom';
 
 interface PossibleDateProps {
   petsitter?: Petsitter;
 }
 
+interface IDateForm {
+  date: string | null;
+  startTime: string | null;
+  endTime: string | null;
+}
+
 export default function PossibleDate({ petsitter }: PossibleDateProps) {
-  const { setValue, control, watch } = useFormContext();
+  const { watch, setValue, control } = useForm<IDateForm>({
+    defaultValues: {
+      date: null,
+      startTime: null,
+      endTime: null,
+    },
+  });
 
   const possibleStartTimeDayjs = petsitter?.possibleStartTime ? dayjs(petsitter.possibleStartTime, 'HH:mm:ss') : null;
   const possibleEndTimeDayjs = petsitter?.possibleEndTime ? dayjs(petsitter.possibleEndTime, 'HH:mm:ss') : null;
@@ -158,6 +171,7 @@ export default function PossibleDate({ petsitter }: PossibleDateProps) {
         <Title>예약 가능 날짜</Title>
         {date && <button onClick={deleteDate}>날짜 지우기</button>}
       </TitleContainer>
+
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <Controller
           name="date"
@@ -208,6 +222,15 @@ export default function PossibleDate({ petsitter }: PossibleDateProps) {
           </div>
         )}
       </AnimatePresence>
+
+      {/* <ButtonContainer>
+        <StyledLink
+          to={`book?date=${dayjs(date).format('YYYY-MM-DD')}&checkIn=${startTime}&checkOut=${endTime}`}
+          disabled={!date || !startTime || !endTime}
+        >
+          <span>예약하기</span>
+        </StyledLink>
+      </ButtonContainer> */}
     </Section>
   );
 }
@@ -280,4 +303,39 @@ const TimeText = styled.span<{ disabled: boolean; $isBetween: boolean; $isSelect
     $isSelected || $isBetween ? theme.text.white : disabled ? theme.text.inactive : theme.text.active};
   text-decoration: ${({ disabled }) => (disabled ? 'line-through' : 'none')};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
+`;
+
+// const ButtonContainer = styled.div`
+//   flex: 1;
+//   display: flex;
+//   justify-content: center;
+//   padding: 20px;
+//   background-color: ${({ theme }) => theme.background.primary};
+// `;
+
+const StyledLink = styled(Link)<{ disabled: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  border-radius: ${({ theme }) => theme.radius.normal};
+  width: 100%;
+  color: ${({ theme }) => theme.text.white};
+
+  // hover와 active 스타일을 disabled일 때 비활성화
+  pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
+
+  background-color: ${({ theme, disabled }) =>
+    disabled ? theme.background.box.blue.disabled : theme.background.box.blue.primary};
+
+  &:hover {
+    background-color: ${({ theme }) => theme.background.box.blue.hover};
+  }
+
+  &:active {
+    background-color: ${({ theme }) => theme.background.box.blue.active};
+    box-shadow: ${({ theme }) => theme.shadow.inset};
+  }
+
+  ${({ theme }) => theme.fontSize.s16h24};
 `;
