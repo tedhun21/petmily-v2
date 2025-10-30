@@ -24,8 +24,8 @@ export default function NotFoundPage() {
 
 const Page = styled.div`
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   width: 100%;
   height: 100%;
 `;
@@ -33,8 +33,8 @@ const Page = styled.div`
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
 `;
 
 const IconContainer = styled.div`

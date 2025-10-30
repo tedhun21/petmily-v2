@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { TbGenderFemale, TbGenderMale } from 'react-icons/tb';
 
 import { Pet, PetGender, PetSpecies } from 'types/pet.type';
-import { CenterContainer, Column, ImageCentered, RoundedImageWrapper, Row, Texts12h18 } from 'styles/commonStyle';
+import { CenterContainer, Column, ImageCentered, RoundedImageWrapper, Row, Texts12h16 } from 'styles/commonStyle';
 
 interface PetmilyCardProps {
   pet: Pet;
@@ -62,7 +62,7 @@ const PetCard = styled(Link)`
   justify-content: space-between;
   width: 100%;
   padding: 8px;
-  border: 2px solid ${({ theme }) => theme.line.box.highlight};
+  border: 2px solid ${({ theme }) => theme.colors.line.box.highlight};
   border-radius: 16px;
   color: inherit;
   gap: 8px;
@@ -96,8 +96,8 @@ const PetNameSpecies = styled(Column)`
   gap: 4px;
 `;
 
-const Species = styled(Texts12h18)`
-  color: ${({ theme }) => theme.text.inactive};
+const Species = styled(Texts12h16)`
+  color: ${({ theme }) => theme.colors.text.inactive};
 `;
 
 const PetImage = styled(RoundedImageWrapper)`
@@ -114,14 +114,14 @@ const LowerContainer = styled.ul`
 
 const PetPropWrapper = styled.li`
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   padding: 4px 8px;
+  background-color: ${({ theme }) => theme.colors.background.highlight};
   border-radius: 16px;
-  background-color: ${({ theme }) => theme.background.highlight};
 
   > span {
     color: white;
-    ${({ theme }) => theme.fontSize.s14h21};
+    ${({ theme }) => theme.typeScale.sm};
   }
 `;

@@ -72,9 +72,9 @@ export default function CareContainer() {
 }
 
 const CareCardContainer = styled.div`
-  flex: auto;
-  height: 100%;
   display: flex;
+  flex: auto;
   flex-direction: column;
+  height: 100%;
   gap: 16px;
 `;

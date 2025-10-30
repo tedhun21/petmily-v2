@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Row, Texts12h18, Texts14h21 } from 'styles/commonStyle';
+import { Row, Texts12h16, Texts14h20 } from 'styles/commonStyle';
 import { Notification } from 'types/notification.type';
 import { dateAgo, dateFormat } from 'utils/date';
 
@@ -50,17 +50,17 @@ const DayDiv = styled(Row)`
 
 const IsUnread = styled.div`
   padding: 4px;
-  background-color: ${({ theme }) => theme.background.red};
+  background-color: ${({ theme }) => theme.colors.background.error};
   border-radius: ${({ theme }) => theme.radius.circle};
 `;
 
-const Day = styled(Texts14h21)`
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
+const Day = styled(Texts14h20)`
+  font-weight: ${({ theme }) => theme.fontWeight.semibold};
 `;
 
-const Ago = styled(Texts12h18)``;
+const Ago = styled(Texts12h16)``;
 
-const Message = styled(Texts14h21)`
+const Message = styled(Texts14h20)`
   width: 100%;
   white-space: nowrap;
 `;

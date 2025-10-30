@@ -87,14 +87,14 @@ export default function MeButton({ me }: MeButtonProps) {
 }
 
 const UserContainer = styled.div`
+  position: relative;
   display: flex;
   gap: 12px;
-  position: relative;
 `;
 
 const UserButton = styled.button`
   position: relative;
-  border: 2px solid ${({ theme }) => theme.background.box.blue.primary};
+  border: 2px solid ${({ theme }) => theme.colors.background.box.blue.primary};
   border-radius: 50%;
   cursor: pointer;
 `;
@@ -105,12 +105,12 @@ const UserImage = styled(RoundedImageWrapper)`
 `;
 
 const LoginNavModal = styled.div`
-  align-items: center;
-  justify-content: center;
   position: absolute;
   top: 24px;
   right: 24px;
   z-index: 20;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Nav = styled.nav`
@@ -118,8 +118,8 @@ const Nav = styled.nav`
   flex-direction: column;
   width: 120px;
   padding: 8px;
+  background-color: ${({ theme }) => theme.colors.background.box.default.primary};
   border-radius: 12px;
-  background-color: ${({ theme }) => theme.background.box.default.primary};
   box-shadow: ${({ theme }) => theme.shadow.dp03};
 `;
 
@@ -129,10 +129,10 @@ const StyledNavLink = styled(Link)`
   align-items: center;
   padding: 8px 4px;
   border-radius: 12px;
-  ${({ theme }) => theme.fontSize.s14h21};
+  ${({ theme }) => theme.typeScale.sm};
 
   &:hover {
-    background-color: ${({ theme }) => theme.background.box.default.hover};
+    background-color: ${({ theme }) => theme.colors.background.box.default.hover};
   }
 `;
 
@@ -141,11 +141,11 @@ const StyledNavButton = styled.button`
   justify-content: center;
   align-items: center;
   padding: 8px 4px;
-  border-radius: ${({ theme }) => theme.radius.normal};
+  border-radius: ${({ theme }) => theme.radius.base};
 
-  ${({ theme }) => theme.fontSize.s14h21};
+  ${({ theme }) => theme.typeScale.sm};
 
   &:hover {
-    background-color: ${({ theme }) => theme.background.box.default.hover};
+    background-color: ${({ theme }) => theme.colors.background.box.default.hover};
   }
 `;

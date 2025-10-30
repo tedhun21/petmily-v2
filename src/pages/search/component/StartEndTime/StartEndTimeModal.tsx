@@ -104,24 +104,24 @@ const List = styled.ul`
 `;
 
 const CapsuleWrapper = styled.div<{ $isBetween: boolean; $isStartTime: boolean; $isEndTime: boolean }>`
+  background-color: ${({ $isBetween, theme }) => ($isBetween ? theme.colors.background.box.default.hover : null)};
   border-radius: ${({ $isStartTime, $isEndTime }) =>
     $isStartTime ? '20px 0 0 20px' : $isEndTime ? '0 20px 20px 0' : null};
-  background-color: ${({ $isBetween, theme }) => ($isBetween ? theme.background.box.default.hover : null)};
 `;
 
 const TimeCapsule = styled.li<{ $isSelected: boolean }>`
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   padding: 12px 16px;
+  background-color: ${({ theme, $isSelected }) => $isSelected && theme.colors.background.box.default.opposite};
   border: 1px solid transparent;
   border-radius: 20px;
-  color: ${({ $isSelected, theme }) => $isSelected && theme.text.opposite};
+  color: ${({ $isSelected, theme }) => $isSelected && theme.colors.text.opposite};
   font-weight: ${({ theme }) => theme.fontWeight.light};
-  background-color: ${({ theme, $isSelected }) => $isSelected && theme.background.box.default.opposite};
   cursor: pointer;
 
   &:hover {
-    border: 1px solid ${({ theme }) => theme.line.box.highlight};
+    border: 1px solid ${({ theme }) => theme.colors.line.box.highlight};
   }
 `;

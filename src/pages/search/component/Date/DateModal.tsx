@@ -48,9 +48,9 @@ const DatepickerWrapper = styled.div`
   .react-datepicker {
     width: 100%;
     height: 100%;
-    background-color: transparent; // 변경된 부분
-    color: inherit;
+    background-color: transparent;
     border: none;
+    color: inherit;
 
     .react-datepicker__month-container {
       width: 100%;
@@ -58,12 +58,12 @@ const DatepickerWrapper = styled.div`
 
       .react-datepicker__header {
         height: 15%;
-        background-color: transparent; // 변경된 부분
+        background-color: transparent;
         border: none;
 
         .react-datepicker__current-month {
           color: inherit;
-          ${({ theme }) => theme.fontSize.s16h24};
+          ${({ theme }) => theme.typeScale.base};
         }
 
         .react-datepicker__day-names {
@@ -78,11 +78,10 @@ const DatepickerWrapper = styled.div`
       }
 
       .react-datepicker__month {
-        height: 85%;
-
         display: flex;
         flex-direction: column;
         justify-content: space-around;
+        height: 85%;
 
         .react-datepicker__week {
           display: flex;
@@ -94,38 +93,37 @@ const DatepickerWrapper = styled.div`
 
           .react-datepicker__day--selected,
           .react-datepicker__day--in-range {
-            //선택된 날짜
-            background-color: ${({ theme }) => theme.background.highlight} !important;
-            color: ${({ theme }) => theme.text.white};
+            /* 선택된 날짜 */
+            background-color: ${({ theme }) => theme.colors.background.highlight} !important;
             border-radius: 50%;
+            color: ${({ theme }) => theme.colors.text.white};
           }
 
           .react-datepicker__day--today {
-            // 오늘 날짜
+            /* 오늘 날짜 */
             background-color: transparent;
           }
 
           .react-datepicker__day--disabled {
-            // 비활성화된 날짜
-            color: ${({ theme }) => theme.text.inactive};
-            cursor: default;
+            /* 비활성화된 날짜 */
+            color: ${({ theme }) => theme.colors.text.inactive};
             text-decoration: line-through;
+            cursor: default;
           }
 
           .react-datepicker__day {
             display: flex;
             justify-content: center;
             align-items: center;
-
             width: 46px;
             height: 46px;
             font-weight: ${({ theme }) => theme.fontWeight.normal};
-            ${({ theme }) => theme.fontSize.s14h21};
+            ${({ theme }) => theme.typeScale.sm};
 
-            &:not(.react-datepicker__day--selected):not([aria-disabled='true']):hover {
+            &:not(.react-datepicker__day--selected, [aria-disabled='true']):hover {
+              background-color: transparent;
+              border: 1px solid ${({ theme }) => theme.colors.line.box.primary};
               border-radius: 50%;
-              border: 1px solid ${({ theme }) => theme.line.box.primary};
-              background-color: transparent; // 변경된 부분
             }
           }
         }

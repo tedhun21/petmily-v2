@@ -75,13 +75,13 @@ export default function CareFilter() {
 const Sticky = styled.div`
   position: sticky;
   top: 100px;
-  padding: 8px;
   z-index: 10;
+  padding: 8px;
 `;
 
 const FilterContainer = styled(Row)`
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
 `;
 
 const StatusFilters = styled(Row)`
@@ -100,17 +100,17 @@ const FilterRadio = styled.div`
 
 const CustomLabel = styled.label<{ $isSelected: boolean }>`
   padding: 4px 8px;
-  border: ${({ theme, $isSelected }) => ($isSelected ? 'none' : `1px solid ${theme.line.box.primary}`)};
-  border-radius: ${({ theme }) => theme.radius.normal};
-  color: ${({ $isSelected, theme }) => ($isSelected ? 'white' : theme.text.inactive)};
+  border: ${({ theme, $isSelected }) => ($isSelected ? 'none' : `1px solid ${theme.colors.line.box.primary}`)};
+  border-radius: ${({ theme }) => theme.radius.base};
   background-color: ${({ theme, $isSelected }) =>
-    $isSelected ? theme.background.box.blue.primary : theme.background.box.default.primary};
-  cursor: pointer;
+    $isSelected ? theme.colors.background.box.blue.primary : theme.colors.background.box.default.primary};
+  color: ${({ $isSelected, theme }) => ($isSelected ? 'white' : theme.colors.text.inactive)};
   transition:
     background-color 0.2s,
     color 0.2s;
+  cursor: pointer;
 
-  ${({ theme }) => theme.fontSize.s14h21};
+  ${({ theme }) => theme.typeScale.sm};
 `;
 
 const SelectWrapper = styled(Row)`
@@ -119,14 +119,14 @@ const SelectWrapper = styled(Row)`
 
 const StyledSelect = styled.select`
   padding: 6px 8px;
-  border: 1px solid ${({ theme }) => theme.line.input.primary};
-  border-radius: ${({ theme }) => theme.radius.normal};
-  background-color: ${({ theme }) => theme.background.box.default.primary};
+  border: 1px solid ${({ theme }) => theme.colors.line.input.primary};
+  border-radius: ${({ theme }) => theme.radius.base};
+  background-color: ${({ theme }) => theme.colors.background.box.default.primary};
   color: inherit;
-  ${({ theme }) => theme.fontSize.s14h21};
+  ${({ theme }) => theme.typeScale.sm};
 
   &:focus {
     outline: none;
-    border: 1px solid ${({ theme }) => theme.line.input.highlight};
+    border: 1px solid ${({ theme }) => theme.colors.line.input.highlight};
   }
 `;

@@ -34,11 +34,11 @@ const Item = styled.li`
   justify-content: space-between;
   align-items: center;
   padding: 4px 8px;
-  border-radius: ${({ theme }) => theme.radius.normal};
-  ${({ theme }) => theme.fontSize.s14h21};
+  border-radius: ${({ theme }) => theme.radius.base};
+  ${({ theme }) => theme.typeScale.sm};
 
   &:hover {
-    color: ${({ theme }) => theme.text.white};
-    background-color: ${({ theme }) => theme.background.highlight};
+    background-color: ${({ theme }) => theme.colors.background.highlight};
+    color: ${({ theme }) => theme.colors.text.white};
   }
 `;

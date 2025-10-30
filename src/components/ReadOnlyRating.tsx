@@ -13,23 +13,22 @@ export default function ReadOnlyRating({ value, size }: { value: number; size: s
           <PiStarFill size={size} style={{ position: 'absolute', clipPath: 'inset(0 0 0 0)' }} />
         </div>
       }
-      emptyIcon={<StyledPiStar size={size} />}
+      emptyIcon={<EmptyStarIcon size={size} />}
     />
   );
 }
 
 const StyledRating = styled(Rating)`
   & .MuiRating-iconFilled {
-    color: ${({ theme }) => theme.text.highlight};
+    color: ${({ theme }) => theme.colors.text.highlight};
   }
-
 
   & .MuiRating-decimal {
     position: relative;
     overflow: hidden;
-  },
+  }
 `;
 
-const StyledPiStar = styled(PiStar)`
-  color: ${({ theme }) => theme.text.inactive};
+const EmptyStarIcon = styled(PiStar)`
+  color: ${({ theme }) => theme.colors.text.inactive};
 `;

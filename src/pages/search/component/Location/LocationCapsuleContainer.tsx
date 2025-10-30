@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Column, Texts12h18 } from 'styles/commonStyle';
+import { Column, Texts12h16 } from 'styles/commonStyle';
 
 interface LocationCapsuleContainerProps {
   data: string[];
@@ -34,7 +34,7 @@ export default function LocationCapsuleContainer({ data, handleLocationClick }: 
 
   return (
     <Container ref={containerRef}>
-      <Texts12h18>서울</Texts12h18>
+      <Texts12h16>서울</Texts12h16>
       <List $columnCount={columnCount}>
         {data.map((location: string) => (
           <Item key={location} onClick={(e) => handleLocationClick(e, location)}>
@@ -62,18 +62,18 @@ const Item = styled.li`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 2px solid ${({ theme }) => theme.line.box.primary};
-  border-radius: ${({ theme }) => theme.radius.large};
+  border: 2px solid ${({ theme }) => theme.colors.line.box.primary};
+  border-radius: ${({ theme }) => theme.radius.lg};
   padding: 8px;
   cursor: pointer;
   font-weight: ${({ theme }) => theme.fontWeight.light};
-  ${({ theme }) => theme.fontSize.s14h21};
+  ${({ theme }) => theme.typeScale.sm};
 
   &:hover {
-    border: 2px solid ${({ theme }) => theme.line.box.highlight};
+    border: 2px solid ${({ theme }) => theme.colors.line.box.highlight};
   }
 
-  $:active {
+  :active {
     transform: scale(0.95);
     transition: transform 0.1s ease-out;
   }

@@ -77,12 +77,12 @@ const Main = styled.main`
 `;
 
 const Section = styled.section`
-  flex: auto;
-  overflow-y: auto;
   display: flex;
+  flex: auto;
   flex-direction: column;
-  padding: 20px;
+  overflow-y: auto;
   height: 100%;
+  padding: 20px;
   gap: 20px;
 `;
 
@@ -91,9 +91,9 @@ const TitleStatus = styled.div`
   justify-content: center;
 
   span:first-child {
-    color: ${({ theme }) => theme.text.highlight};
-    font-weight: ${({ theme }) => theme.fontWeight.extrabold};
-    ${({ theme }) => theme.fontSize.s20h30}
+    color: ${({ theme }) => theme.colors.text.highlight};
+    font-weight: ${({ theme }) => theme.fontWeight.semibold};
+    ${({ theme }) => theme.typeScale.xl}
   }
 `;
 
@@ -105,10 +105,10 @@ export const PetInfoContainer = styled.ul`
 
 export const PetInfoCapsule = styled.li`
   padding: 4px 8px;
-  border-radius: 16px;
-  color: white;
-  background-color: ${({ theme }) => theme.background.box.blue.primary};
-  ${({ theme }) => theme.fontSize.s14h21};
+  background-color: ${({ theme }) => theme.colors.background.box.blue.primary};
+  border-radius: ${({ theme }) => theme.radius.lg};
+  color: ${({ theme }) => theme.colors.text.white};
+  ${({ theme }) => theme.typeScale.sm};
 `;
 
 const ButtonContainer = styled.div`

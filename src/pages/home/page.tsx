@@ -54,12 +54,12 @@ const PetsitterLink = styled(DefaultLink)`
   display: flex;
   justify-content: center;
   padding: 24px;
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
   border-radius: 16px;
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
 
-  ${({ theme }) => theme.fontSize.s16h24};
+  ${({ theme }) => theme.typeScale.base};
 
-  // &:visited {
-  //   text-decoration: none;
-  // }
+  /* &:visited {
+    text-decoration: none;
+  } */
 `;

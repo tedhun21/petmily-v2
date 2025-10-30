@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Row, Texts18h27 } from 'styles/commonStyle';
+import { Row, Texts18h28 } from 'styles/commonStyle';
 import PawButton from './PawButton';
 import { FaRegPaperPlane } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
@@ -13,7 +13,7 @@ export default function PawAndMessage({ userId }: IProps) {
     <Wrapper>
       <PawButton userId={userId} />
       <CustomLink to={`/chats/temp?opponentIds=${userId}`}>
-        <Texts18h27>message</Texts18h27>
+        <Texts18h28>message</Texts18h28>
         <FaRegPaperPlane size="20px" />
       </CustomLink>
     </Wrapper>
@@ -28,20 +28,18 @@ const CustomLink = styled(Link)`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 8px;
   width: 100%;
   padding: 8px;
-
-  border-radius: ${({ theme }) => theme.radius.normal};
-
-  background-color: ${({ theme }) => theme.background.box.default.primary};
+  background-color: ${({ theme }) => theme.colors.background.box.default.primary};
+  border-radius: ${({ theme }) => theme.radius.base};
+  gap: 8px;
 
   &:hover {
-    background-color: ${({ theme }) => theme.background.box.default.hover};
+    background-color: ${({ theme }) => theme.colors.background.box.default.hover};
   }
 
   &:active {
-    background-color: ${({ theme }) => theme.background.box.default.active};
+    background-color: ${({ theme }) => theme.colors.background.box.default.active};
     box-shadow: ${({ theme }) => theme.shadow.inset};
   }
 `;

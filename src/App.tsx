@@ -122,15 +122,15 @@ const Container = styled.div`
   justify-content: center;
   width: 100%;
   min-height: 100vh;
-  background-color: ${({ theme }) => theme.background.secondary};
+  background-color: ${({ theme }) => theme.colors.background.secondary};
 `;
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100%;
   max-width: 600px;
-  color: ${({ theme }) => theme.text.active};
-  background-color: ${({ theme }) => theme.background.primary};
+  height: 100%;
+  background-color: ${({ theme }) => theme.colors.background.primary};
+  color: ${({ theme }) => theme.colors.text.active};
 `;

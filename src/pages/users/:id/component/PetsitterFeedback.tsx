@@ -25,8 +25,8 @@ export function PetsitterFeedback({ star, reviewCount }: IProps) {
 }
 
 const Wrapper = styled(Row)`
-  width: 100%;
   align-items: center;
+  width: 100%;
   gap: 40px;
 `;
 

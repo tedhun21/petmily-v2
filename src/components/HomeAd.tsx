@@ -10,7 +10,7 @@ export default function HomeAd() {
           <InfoText>딩동~</InfoText>
           <AdText>펫시터 방문 케어 서비스</AdText>
         </TextWrapper>
-        <AdText color="#279eff">We&apos;re Petmily!</AdText>
+        <AdText>We&apos;re Petmily!</AdText>
       </TextContainer>
     </AdContainer>
   );
@@ -35,20 +35,20 @@ const TextWrapper = styled.div`
 const TextContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   gap: 24px;
 `;
 
 const AdText = styled.div`
-  color: ${({ theme }) => theme.text.active};
-  font-weight: ${({ theme }) => theme.fontWeight.extrabold};
+  color: ${({ theme }) => theme.colors.text.highlight};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
   font-size: 18px;
 `;
 
 const InfoText = styled.div`
-  color: #a9a9a9;
-  font-weight: ${({ theme }) => theme.fontWeight.extrabold};
+  color: ${({ theme }) => theme.colors.text.secondary};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
   font-size: 14px;
 `;
 const GifContainer = styled.img`

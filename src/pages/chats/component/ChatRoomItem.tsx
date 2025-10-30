@@ -4,7 +4,7 @@ import { RootState } from 'store';
 import { selectNewMessagesByChatRoom } from 'store/newMessageSlice';
 
 import styled from 'styled-components';
-import { Column, ImageCentered, RoundedImageWrapper, Row, Texts12h18 } from 'styles/commonStyle';
+import { Column, ImageCentered, RoundedImageWrapper, Row, Texts12h16 } from 'styles/commonStyle';
 import { ChatMember, ChatRoom } from 'types/chat.type';
 import { updatedAtAgo } from 'utils/date';
 
@@ -42,14 +42,14 @@ export default function ChatRoomItem({ chatRoom }: ChatRoomItemProps) {
               <span key={other.id}>{other.user?.nickname ?? 'unknown'}</span>
             ))}
           </div>
-          <Texts12h18>{lastMessage?.content}</Texts12h18>
+          <Texts12h16>{lastMessage?.content}</Texts12h16>
         </NameMessageWrapper>
       </PhotoName>
       <TimeUnreadCount>
-        <Texts12h18>{updatedAtAgo(lastMessage?.createdAt)}</Texts12h18>
+        <Texts12h16>{updatedAtAgo(lastMessage?.createdAt)}</Texts12h16>
         {unreadCount > 0 && (
           <NewMessage>
-            <Texts12h18>{unreadCount}</Texts12h18>
+            <Texts12h16>{unreadCount}</Texts12h16>
           </NewMessage>
         )}
       </TimeUnreadCount>
@@ -94,7 +94,7 @@ const NewMessage = styled.div`
   min-width: 20px;
   height: 20px;
   padding: 4px;
-  color: ${({ theme }) => theme.text.white};
-  border-radius: ${({ theme }) => theme.radius.normal};
-  background-color: ${({ theme }) => theme.background.red};
+  background-color: ${({ theme }) => theme.colors.background.error};
+  border-radius: ${({ theme }) => theme.radius.base};
+  color: ${({ theme }) => theme.colors.text.white};
 `;

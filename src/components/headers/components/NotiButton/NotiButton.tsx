@@ -51,10 +51,10 @@ const Button = styled.button`
   justify-content: center;
   align-items: center;
   padding: 4px;
+  border-radius: ${({ theme }) => theme.radius.base};
 
-  border-radius: ${({ theme }) => theme.radius.normal};
   &:hover {
-    background-color: ${({ theme }) => theme.background.box.default.hover};
+    background-color: ${({ theme }) => theme.colors.background.box.default.hover};
   }
 `;
 

@@ -17,7 +17,7 @@ import { Modal, TextField } from '@mui/material';
 import { timeRange } from 'utils/date';
 import { fetcher, poster } from 'api';
 import SelectPets from './component/SelectPets';
-import { BlueButton, Column, Divider, Row, SubTitle, Texts14h21, Texts16h24 } from 'styles/commonStyle';
+import { BlueButton, Column, Divider, Row, SubTitle, Texts14h20, Texts16h24 } from 'styles/commonStyle';
 
 import Confirm from '@pages/users/:id/book/component/Confirm';
 
@@ -123,11 +123,11 @@ export default function BookPage() {
               <Column>
                 <ReservationWrapper>
                   <ReservationLabel>예약 날짜</ReservationLabel>
-                  <Texts14h21>{date}</Texts14h21>
+                  <Texts14h20>{date}</Texts14h20>
                 </ReservationWrapper>
                 <ReservationWrapper>
                   <ReservationLabel>예약 시간</ReservationLabel>
-                  <Texts14h21>{timeRange(startTime, endTime)}</Texts14h21>
+                  <Texts14h20>{timeRange(startTime, endTime)}</Texts14h20>
                 </ReservationWrapper>
               </Column>
 
@@ -214,25 +214,25 @@ const Main = styled.main`
 
 const Container = styled(Column)`
   flex: auto;
+  overflow-y: auto;
   height: 100%;
   padding: 20px;
   gap: 20px;
-  overflow-y: auto;
 `;
 
 const Reservation = styled.section`
   display: flex;
   flex-direction: column;
   padding: 24px;
+  background-color: ${({ theme }) => theme.colors.background.box.default.primary};
   border-radius: 12px;
-  gap: 16px;
-  background-color: ${({ theme }) => theme.background.box.default.primary};
   box-shadow: ${({ theme }) => theme.shadow.dp01};
+  gap: 16px;
 `;
 
 const ReservationWrapper = styled(Row)`
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
 `;
 
 const ReservationLabel = styled(Texts16h24)`
@@ -246,31 +246,31 @@ const AddressSection = styled.section`
 `;
 
 const StyledTextField = styled(TextField)`
-  // 라벨
+  /* 라벨 */
   .MuiInputLabel-root {
-    color: ${({ theme }) => theme.text.active};
-    ${({ theme }) => theme.fontSize.s14h21};
+    color: ${({ theme }) => theme.colors.text.active};
+    ${({ theme }) => theme.typeScale.sm};
   }
 
-  // input 배경
+  /* input 배경 */
   .MuiOutlinedInput-root {
+    background-color: ${({ theme }) => theme.colors.background.input.primary};
     border-radius: 12px;
-    background-color: ${({ theme }) => theme.background.input.primary};
 
     &:hover {
-      background-color: ${({ theme }) => theme.background.input.hover};
+      background-color: ${({ theme }) => theme.colors.background.input.hover};
     }
   }
 
-  // value
+  /* value */
   .MuiOutlinedInput-input {
-    color: ${({ theme }) => theme.text.active};
-    ${({ theme }) => theme.fontSize.s14h21};
+    color: ${({ theme }) => theme.colors.text.active};
+    ${({ theme }) => theme.typeScale.sm};
   }
 
-  // 포커스 상태 스타일
+  /* 포커스 상태 스타일 */
   .Mui-focused .MuiOutlinedInput-input {
-    color: ${({ theme }) => theme.text.active};
+    color: ${({ theme }) => theme.colors.text.active};
   }
 `;
 
@@ -281,25 +281,24 @@ const RequestSection = styled.section`
 `;
 
 const ButtonContainer = styled.div`
-  flex: 1;
   display: flex;
+  flex: 1;
   flex-direction: column;
   justify-content: center;
-  gap: 8px;
   padding: 20px;
-  background-color: ${({ theme }) => theme.background.primary};
+  background-color: ${({ theme }) => theme.colors.background.primary};
+  gap: 8px;
 `;
 
 const StyledButton = styled(BlueButton)<{ disabled: boolean }>`
-  border-radius: ${({ theme }) => theme.radius.normal};
+  border-radius: ${({ theme }) => theme.radius.base};
   width: 100%;
   padding: 12px;
 
-  // hover와 active 스타일을 disabled일 때 비활성화
+  /* hover와 active 스타일을 disabled일 때 비활성화 */
   pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
-
   background-color: ${({ theme, disabled }) =>
-    disabled ? theme.background.box.blue.disabled : theme.background.box.blue.primary};
+    disabled ? theme.colors.background.box.blue.disabled : theme.colors.background.box.blue.primary};
 
-  ${({ theme }) => theme.fontSize.s16h24}
+  ${({ theme }) => theme.typeScale.base};
 `;

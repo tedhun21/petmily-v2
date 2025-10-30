@@ -34,16 +34,16 @@ const pulse = keyframes`
 `;
 
 const SkeletonElement = styled.div`
-  background-color: ${({ theme }) => theme.background.box.default.hover};
+  background-color: ${({ theme }) => theme.colors.background.box.default.hover};
+  border-radius: 16px;
   animation: ${pulse} 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; /* pulse 애니메이션 
        적용 */
-  border-radius: 16px;
 `;
 
 const SkeletonImage = styled(SkeletonElement)`
   width: 100%;
   aspect-ratio: 1/1;
-  border-radius: ${({ theme }) => theme.radius.large};
+  border-radius: ${({ theme }) => theme.radius.lg};
 `;
 
 const ReviewContainer = styled(Column)`

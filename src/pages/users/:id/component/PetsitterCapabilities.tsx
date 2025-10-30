@@ -81,10 +81,10 @@ const Card = styled.li`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 8px;
   padding: 12px;
-  border-radius: ${({ theme }) => theme.radius.large};
-  border: 2px solid ${({ theme }) => theme.line.box.highlight};
+  border: 2px solid ${({ theme }) => theme.colors.line.box.highlight};
+  border-radius: ${({ theme }) => theme.radius.lg};
+  gap: 8px;
 `;
 
 const Title = styled(Texts16h24)``;
@@ -98,9 +98,9 @@ const PetItem = styled.li`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${({ theme }) => theme.background.highlight};
-  border-radius: ${({ theme }) => theme.radius.normal};
   padding: 8px;
+  background-color: ${({ theme }) => theme.colors.background.highlight};
+  border-radius: ${({ theme }) => theme.radius.base};
 `;
 
 const DayList = styled.ul`
@@ -112,16 +112,16 @@ const DayItem = styled.li`
   display: flex;
   justify-content: center;
   align-items: cetner;
-  color: white;
-  background-color: ${({ theme }) => theme.background.highlight};
-  border-radius: ${({ theme }) => theme.radius.normal};
   padding: 8px;
+  background-color: ${({ theme }) => theme.colors.background.highlight};
+  border-radius: ${({ theme }) => theme.radius.base};
+  color: white;
 `;
 
 const LocationList = styled.ul``;
 
 const LocationItem = styled.li`
-  background-color: ${({ theme }) => theme.background.highlight};
-  border-radius: ${({ theme }) => theme.radius.normal};
   padding: 8px;
+  background-color: ${({ theme }) => theme.colors.background.highlight};
+  border-radius: ${({ theme }) => theme.radius.base};
 `;

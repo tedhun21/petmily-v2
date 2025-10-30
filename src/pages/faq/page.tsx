@@ -715,18 +715,18 @@ const Main = styled.main`
 `;
 
 const Section = styled.section`
-  flex: auto;
-  height: 100%;
   display: flex;
+  flex: auto;
   flex-direction: column;
-  padding: 20px;
   overflow-y: auto;
+  height: 100%;
+  padding: 20px;
 `;
 
 const Question = styled.h1`
-  color: ${({ theme }) => theme.text.highlight};
   padding: 8px;
-  ${({ theme }) => theme.fontSize.s18h27};
+  color: ${({ theme }) => theme.colors.text.highlight};
+  ${({ theme }) => theme.typeScale.lg};
 `;
 
 const List = styled.ul`
@@ -738,28 +738,24 @@ const List = styled.ul`
 const Item = styled.li``;
 
 const ListItemButton = styled.button`
-  width: 100%;
   display: flex;
-
-  padding: 8px;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
+  padding: 8px;
 
   hover: {
-    background-color: ${({ theme }) => theme.background.box.default.hover};
+    background-color: ${({ theme }) => theme.colors.background.box.default.hover};
   }
 `;
 
 const ListTitle = styled.div`
   display: flex;
   gap: 8px;
-  ${({ theme }) => theme.fontSize.s16h24};
+  ${({ theme }) => theme.typeScale.base};
 
   span:first-child {
-    color: ${({ theme }) => theme.text.highlight};
-  }
-
-  span:second-child {
+    color: ${({ theme }) => theme.colors.text.highlight};
   }
 `;
 
@@ -775,8 +771,8 @@ const Answer = styled(Row)`
 
 const ParagraphWrapper = styled(Column)`
   gap: 8px;
-  color: ${({ theme }) => theme.text.secondary};
-  ${({ theme }) => theme.fontSize.s14h21};
+  color: ${({ theme }) => theme.colors.text.secondary};
+  ${({ theme }) => theme.typeScale.sm};
 
   p {
     text-indent: 4px;

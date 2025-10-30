@@ -41,19 +41,19 @@ export default function SearchInput({ input, setInput }: SearchInputProps) {
 const InputSection = styled.section<{ $isFocused: boolean }>`
   display: flex;
   align-items: center;
-  gap: 8px;
   padding: 8px;
-  border: 2px solid ${({ theme }) => theme.line.box.highlight};
+  background-color: ${({ theme }) => theme.colors.background.box.default.primary};
+  border: 2px solid ${({ theme }) => theme.colors.line.box.highlight};
   border-radius: 20px;
-  background-color: ${({ theme }) => theme.background.box.default.primary};
+  gap: 8px;
 
   &:hover {
-    border-color: ${({ theme }) => theme.line.box.highlight};
-    background-color: ${({ theme }) => theme.background.box.default.hover};
+    background-color: ${({ theme }) => theme.colors.background.box.default.hover};
+    border-color: ${({ theme }) => theme.colors.line.box.highlight};
   }
 
   &:focus-within {
-    border-color: ${({ theme }) => theme.line.box.highlight};
+    border-color: ${({ theme }) => theme.colors.line.box.highlight};
   }
 `;
 
@@ -68,5 +68,5 @@ const Input = styled.input`
     outline: none;
   }
 
-  ${({ theme }) => theme.fontSize.s18h27};
+  ${({ theme }) => theme.typeScale.lg};
 `;

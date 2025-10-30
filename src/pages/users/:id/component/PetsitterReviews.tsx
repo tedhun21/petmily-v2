@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { fetcher } from 'api';
-import { ImageCentered, RoundedImageWrapper, Row, Texts12h18, Title } from 'styles/commonStyle';
+import { ImageCentered, RoundedImageWrapper, Row, Texts12h16, Title } from 'styles/commonStyle';
 import ReadOnlyRating from '@components/ReadOnlyRating';
 
 import useSWR from 'swr';
@@ -43,7 +43,7 @@ export default function PetsitterReviews({ nickname }: ReviewsProps) {
                   <StarWrapper>
                     <ReadOnlyRating size="12px" value={review.star} />
                     <span>·</span>
-                    <Texts12h18>{dateAgo(review.createdAt)}</Texts12h18>
+                    <Texts12h16>{dateAgo(review.createdAt)}</Texts12h16>
                   </StarWrapper>
                   <p>{review.body}</p>
                 </div>
@@ -80,9 +80,8 @@ const ReviewCard = styled.li`
   flex-direction: row;
   justify-content: space-between;
   padding: 16px;
-
-  border-radius: ${({ theme }) => theme.radius.normal};
-  background-color: ${({ theme }) => theme.background.secondary};
+  background-color: ${({ theme }) => theme.colors.background.secondary};
+  border-radius: ${({ theme }) => theme.radius.base};
 `;
 
 const UserWrapper = styled(Row)`

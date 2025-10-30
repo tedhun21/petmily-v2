@@ -88,19 +88,19 @@ const NoPetsContainer = styled.div`
 
 const StyledLink = styled(Link)`
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   padding: 8px;
-  border-radius: ${({ theme }) => theme.radius.normal};
+  background-color: ${({ theme }) => theme.colors.background.box.blue.primary};
+  border-radius: ${({ theme }) => theme.radius.base};
   color: white;
-  background-color: ${({ theme }) => theme.background.box.blue.primary};
 
   &:hover {
-    background-color: ${({ theme }) => theme.background.box.blue.hover};
+    background-color: ${({ theme }) => theme.colors.background.box.blue.hover};
   }
 
   &:active {
-    background-color: ${({ theme }) => theme.background.box.blue.active};
+    background-color: ${({ theme }) => theme.colors.background.box.blue.active};
     box-shadow: ${({ theme }) => theme.shadow.inset};
   }
 

@@ -7,9 +7,9 @@ const pulse = keyframes`
 `;
 
 const SkeletonElement = styled.div`
-  background-color: ${({ theme }) => theme.background.box.default.hover};
-  animation: ${pulse} 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  background-color: ${({ theme }) => theme.colors.background.box.default.hover};
   border-radius: 16px;
+  animation: ${pulse} 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 `;
 
 function SkeletonCard() {
@@ -43,11 +43,12 @@ export default function RealTimeReviewsSkeleton() {
 
 const Container = styled.div`
   display: flex;
-  gap: 16px;
-  width: 100%;
-  overflow-x: auto;
   justify-content: center;
-  // 스크롤바 숨기기
+  overflow-x: auto;
+  width: 100%;
+  gap: 16px;
+
+  /* 스크롤바 숨기기 */
   &::-webkit-scrollbar {
     display: none; /* Chrome, Safari, and Opera */
   }
@@ -55,20 +56,20 @@ const Container = styled.div`
 
 const Card = styled.div`
   display: flex;
-  flex-direction: column;
   flex-shrink: 0;
+  flex-direction: column;
   width: 300px;
   height: 156px;
   padding: 16px;
+  background-color: ${({ theme }) => theme.colors.background.box.default.primary};
+  border-radius: ${({ theme }) => theme.radius.lg};
   gap: 12px;
-  border-radius: ${({ theme }) => theme.radius.large};
-  background-color: ${({ theme }) => theme.background.box.default.primary};
 `;
 
 const ClientContainer = styled.div`
   display: flex;
-  align-items: flex-start;
   justify-content: space-between;
+  align-items: flex-start;
   width: 100%;
 `;
 

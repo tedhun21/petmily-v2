@@ -5,7 +5,7 @@ import { useAuthSWR } from 'hooks/authSWR';
 
 import { fetcher } from 'api';
 import MyPetmily from '@pages/me/components/MyPetmily';
-import { ImageCentered, RoundedImageWrapper, Texts14h21 } from 'styles/commonStyle';
+import { ImageCentered, RoundedImageWrapper, Texts14h20 } from 'styles/commonStyle';
 import MyPetsitterProfile from './components/MyPetsitterProfile';
 import BackHeader from '@components/headers/BackHeader';
 import { UserRole } from 'types/user.type';
@@ -31,7 +31,7 @@ export default function MyPage() {
               {me?.nickname ? (
                 <NameText>{`${me?.nickname} 님`}</NameText>
               ) : (
-                <Texts14h21>닉네임을 설정해주세요</Texts14h21>
+                <Texts14h20>닉네임을 설정해주세요</Texts14h20>
               )}
             </TextWrapper>
           </MyProfile>
@@ -63,8 +63,8 @@ const MypageContainer = styled.main`
 // 유저 컨테이너
 const MyProfileContianer = styled.div`
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
   height: auto;
 `;
@@ -77,7 +77,7 @@ const MyProfile = styled.div`
 const MyImage = styled(RoundedImageWrapper)`
   width: 60px;
   height: 60px;
-  border: 2px solid ${({ theme }) => theme.line.box.highlight};
+  border: 2px solid ${({ theme }) => theme.colors.line.box.highlight};
 `;
 
 const TextWrapper = styled.div`
@@ -88,31 +88,31 @@ const TextWrapper = styled.div`
 
 const NameText = styled.div`
   font-weight: ${({ theme }) => theme.fontWeight.bold};
-  ${({ theme }) => theme.fontSize.s18h27};
+  ${({ theme }) => theme.typeScale.lg};
 `;
 
 const HelloText = styled.div`
   display: flex;
   justify-content: space-between;
   font-weight: ${({ theme }) => theme.fontWeight.bold};
-  ${({ theme }) => theme.fontSize.s16h24};
+  ${({ theme }) => theme.typeScale.base};
 `;
 
 const EditLink = styled(Link)`
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   padding: 8px;
-  border-radius: ${({ theme }) => theme.radius.normal};
+  background-color: ${({ theme }) => theme.colors.background.box.blue.primary};
+  border-radius: ${({ theme }) => theme.radius.base};
   color: white;
-  background-color: ${({ theme }) => theme.background.box.blue.primary};
 
   &:hover {
-    background-color: ${({ theme }) => theme.background.box.blue.hover};
+    background-color: ${({ theme }) => theme.colors.background.box.blue.hover};
   }
 
   &:active {
-    background-color: ${({ theme }) => theme.background.box.blue.active};
+    background-color: ${({ theme }) => theme.colors.background.box.blue.active};
     box-shadow: ${({ theme }) => theme.shadow.inset};
   }
 

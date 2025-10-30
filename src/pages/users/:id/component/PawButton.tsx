@@ -1,4 +1,4 @@
-import { Button, Row, Texts18h27 } from 'styles/commonStyle';
+import { Button, Row, Texts18h28 } from 'styles/commonStyle';
 import { PiPawPrint, PiPawPrintFill } from 'react-icons/pi';
 import { useAuthSWR, useAuthSWRMutation } from 'hooks/authSWR';
 import { fetcher, updater } from 'api';
@@ -53,12 +53,12 @@ export default function PawButton({ userId }: IProps) {
         <Loading />
       ) : isPawed ? (
         <Div>
-          <Texts18h27>unpaw</Texts18h27>
+          <Texts18h28>unpaw</Texts18h28>
           <PiPawPrint size="24px" />
         </Div>
       ) : (
         <Div>
-          <Texts18h27>paw</Texts18h27>
+          <Texts18h28>paw</Texts18h28>
           <PiPawPrintFill size="24px" />
         </Div>
       )}
@@ -67,8 +67,8 @@ export default function PawButton({ userId }: IProps) {
 }
 
 const CustomButton = styled(Button)`
-  padding: 8px;
   width: 100%;
+  padding: 8px;
 `;
 
 const Div = styled(Row)`

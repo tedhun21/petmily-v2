@@ -18,7 +18,7 @@ import { FaArrowUp, FaXmark } from 'react-icons/fa6';
 import { GoVerified } from 'react-icons/go';
 import { PiCatBold, PiDogBold } from 'react-icons/pi';
 
-import { BlueButton, Column, ErrorMessage, Input, Row, Texts14h21 } from 'styles/commonStyle';
+import { BlueButton, Column, ErrorMessage, Input, Row, Texts14h20 } from 'styles/commonStyle';
 
 import { removeCookie } from 'utils/cookie';
 import { TypeRadioLabel } from '../register/page';
@@ -340,7 +340,7 @@ export default function EditMePage() {
                   <LocationList>
                     {watch('possibleLocations')?.map((location: any) => (
                       <LocationItem key={location}>
-                        <Texts14h21>{location}</Texts14h21>
+                        <Texts14h20>{location}</Texts14h20>
                         <button
                           type="button"
                           onClick={() => handleDeleteLocation(location)}
@@ -459,26 +459,26 @@ const Main = styled.main`
 `;
 
 const Form = styled.form`
-  flex: auto;
-  height: 100%;
   display: flex;
+  flex: auto;
   flex-direction: column;
   overflow: hidden;
+  height: 100%;
 `;
 
 const InputContainer = styled(Column)`
   flex: auto;
   overflow-y: auto;
+  height: 100%;
   padding: 20px;
   gap: 20px;
-  height: 100%;
 `;
 
 const EmailWrapper = styled.div`
-  width: 80%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 80%;
 `;
 
 export const InputWrapper = styled(Row)`
@@ -496,9 +496,9 @@ const InputError = styled(Column)`
 
 const MeInput = styled(Input)`
   width: 100%;
-  border-radius: ${({ theme }) => theme.radius.normal};
+  border-radius: ${({ theme }) => theme.radius.base};
   padding: 8px;
-  ${({ theme }) => theme.fontSize.s16h24}
+  ${({ theme }) => theme.typeScale.base}
 `;
 
 const LocationInputWrapper = styled(Column)`
@@ -514,11 +514,11 @@ const LocationList = styled.ul`
 const LocationItem = styled.li`
   display: flex;
   align-items: center;
-  border-radius: ${({ theme }) => theme.radius.normal};
-  gap: 4px;
   padding: 4px;
+  background-color: ${({ theme }) => theme.colors.background.highlight};
+  border-radius: ${({ theme }) => theme.radius.base};
   color: white;
-  background-color: ${({ theme }) => theme.background.highlight};
+  gap: 4px;
 `;
 
 const LocationInputContainer = styled(Row)`
@@ -529,74 +529,73 @@ const LocationInputContainer = styled(Row)`
 
 const LocationInput = styled(Input)`
   width: 100%;
-
-  border-radius: ${({ theme }) => theme.radius.normal};
+  border-radius: ${({ theme }) => theme.radius.base};
   padding: 8px;
-  ${({ theme }) => theme.fontSize.s16h24};
-  background-color: ${({ theme }) => theme.background.input.primary};
+  ${({ theme }) => theme.typeScale.base};
+  background-color: ${({ theme }) => theme.colors.background.input.primary};
 
   &:hover {
-    background-color: ${({ theme }) => theme.background.input.hover};
+    background-color: ${({ theme }) => theme.colors.background.input.hover};
   }
 
   &:focus {
-    border: 1px solid ${({ theme }) => theme.line.input.highlight};
+    border: 1px solid ${({ theme }) => theme.colors.line.input.highlight};
   }
 `;
 
 const AddLocationButton = styled.button`
   position: absolute;
-  right: 12px;
   top: 14px;
+  right: 12px;
 `;
 
 const TextArea = styled.textarea`
   width: 80%;
-
-  border-radius: ${({ theme }) => theme.radius.normal};
+  border-radius: ${({ theme }) => theme.radius.base};
   padding: 8px;
-  color: ${({ theme }) => theme.text.active};
-  border: 1px solid ${({ theme }) => theme.line.input.primary};
-  background-color: ${({ theme }) => theme.background.input.primary};
-  ${({ theme }) => theme.fontSize.s16h24};
+  color: ${({ theme }) => theme.colors.text.active};
+  border: 1px solid ${({ theme }) => theme.colors.line.input.primary};
+  background-color: ${({ theme }) => theme.colors.background.input.primary};
+  ${({ theme }) => theme.typeScale.base};
 
   &:hover {
-    background-color: ${({ theme }) => theme.background.input.hover};
+    background-color: ${({ theme }) => theme.colors.background.input.hover};
   }
+
   &:focus {
     outline: none;
-    border: 1px solid ${({ theme }) => theme.line.input.highlight};
+    border: 1px solid ${({ theme }) => theme.colors.line.input.highlight};
   }
 `;
 
 const PetSpeciesButtonContainer = styled.div`
   display: flex;
-  width: 80%;
-  border-radius: ${({ theme }) => theme.radius.normal};
   overflow: hidden;
+  width: 80%;
+  border-radius: ${({ theme }) => theme.radius.base};
 `;
 
 const WeekdaysWrapper = styled.div`
-  width: 80%;
   display: flex;
   justify-content: space-between;
+  width: 80%;
 `;
 
 const DayLabel = styled.label<{ $isSelected?: boolean }>`
   padding: 8px;
-  color: white;
   background-color: ${({ theme, $isSelected }) =>
-    $isSelected ? theme.background.box.blue.primary : theme.background.box.blue.disabled};
-  cursor: pointer;
-  border-radius: ${({ theme }) => theme.radius.normal};
+    $isSelected ? theme.colors.background.box.blue.primary : theme.colors.background.box.blue.disabled};
+  border-radius: ${({ theme }) => theme.radius.base};
+  color: white;
 
   /* Adding transition for smooth effect */
   transition:
     background-color 0.3s ease-in-out,
     transform 0.3s ease-in-out;
+  cursor: pointer;
 
   &:hover {
-    background-color: ${({ theme }) => theme.background.box.blue.hover};
+    background-color: ${({ theme }) => theme.colors.background.box.blue.hover};
   }
 `;
 
@@ -607,15 +606,17 @@ const TimePickerContainer = styled(Row)`
 
 const StyledTimePicker = styled(TimePicker)`
   .MuiInputBase-root {
-    border-radius: ${({ theme }) => theme.radius.normal};
-    background-color: ${({ theme }) => theme.background.input.primary};
+    background-color: ${({ theme }) => theme.colors.background.input.primary};
+    border-radius: ${({ theme }) => theme.radius.base};
+
     &:hover {
-      background-color: ${({ theme }) => theme.background.input.hover};
+      background-color: ${({ theme }) => theme.colors.background.input.hover};
     }
   }
 
   .MuiOutlinedInput-notchedOutline {
-    border-color: ${({ theme }) => theme.line.input.primary};
+    border-color: ${({ theme }) => theme.colors.line.input.primary};
+
     &:hover {
       border-color: red;
     }
@@ -633,10 +634,9 @@ const SubmitButton = styled(BlueButton)`
   display: flex;
   justify-content: center;
   align-items: center;
-
-  border-radius: ${({ theme }) => theme.radius.normal};
+  border-radius: ${({ theme }) => theme.radius.base};
   padding: 8px;
-  ${({ theme }) => theme.fontSize.s18h27};
+  ${({ theme }) => theme.typeScale.lg};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;
 
@@ -648,9 +648,9 @@ const LinkContainer = styled(Row)`
 const StyledButton = styled.button`
   background: none;
 
-  ${({ theme }) => theme.fontSize.s14h21};
+  ${({ theme }) => theme.typeScale.sm};
 
   &:hover {
-    color: ${({ theme }) => theme.text.highlight};
+    color: ${({ theme }) => theme.colors.text.highlight};
   }
 `;

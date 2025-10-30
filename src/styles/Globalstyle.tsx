@@ -15,21 +15,21 @@ const GlobalStyle = createGlobalStyle`
     }
 
     body {
+        background-color: ${({ theme }) => theme.colors.background.secondary};
         font-family: 'Noto Sans KR', Roboto, sans-serif;
-        background-color: ${({ theme }) => theme.background.secondary};
     }
 
     a {
-        text-decoration: none;
         color: inherit;
+        text-decoration: none;
     }
 
     button {
+        background-color: transparent;
         border: none;
         color:inherit;
-        background-color: transparent;
-        cursor: pointer;
         font-family: inherit;
+        cursor: pointer;
     }
 
     input {

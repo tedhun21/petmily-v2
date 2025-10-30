@@ -190,19 +190,19 @@ export const Main = styled.main`
 `;
 
 export const Form = styled.form`
-  flex: auto;
-  height: 100%;
   display: flex;
+  flex: auto;
   flex-direction: column;
   overflow: hidden;
+  height: 100%;
 `;
 
 export const InputContainer = styled(Column)`
   flex: auto;
   overflow-y: auto;
+  height: 100%;
   padding: 20px;
   gap: 20px;
-  height: 100%;
 `;
 
 export const InputWrapper = styled(Row)`
@@ -212,27 +212,28 @@ export const InputWrapper = styled(Row)`
 
 export const PetSpeciesButtonContainer = styled.div`
   display: flex;
-  width: 100%;
-  border-radius: ${({ theme }) => theme.radius.normal};
   overflow: hidden;
+  width: 100%;
+  border-radius: ${({ theme }) => theme.radius.base};
 `;
 
 export const TypeRadioLabel = styled.label<{ $isSelected?: boolean }>`
   display: flex;
-  align-items: center;
-  justify-content: center;
   flex: 1;
+  justify-content: center;
+  align-items: center;
   padding: 8px;
-  cursor: pointer;
-  background-color: ${({ theme, $isSelected }) => ($isSelected ? theme.background.highlight : theme.text.inactive)};
+  background-color: ${({ theme, $isSelected }) =>
+    $isSelected ? theme.colors.background.highlight : theme.colors.text.inactive};
 
   /* Adding transition for smooth effect */
   transition:
     background-color 0.3s ease-in-out,
     transform 0.3s ease-in-out;
+  cursor: pointer;
 
   &:hover {
-    background-color: ${({ theme, $isSelected }) => ($isSelected ? '' : theme.background.box.blue.hover)};
+    background-color: ${({ theme, $isSelected }) => ($isSelected ? '' : theme.colors.background.box.blue.hover)};
   }
 `;
 
@@ -247,18 +248,18 @@ const InputError = styled(Column)`
 export const PetInput = styled(Input)`
   width: 100%;
   padding: 8px;
-  ${({ theme }) => theme.fontSize.s16h24};
-  border-radius: ${({ theme }) => theme.radius.normal};
+  ${({ theme }) => theme.typeScale.base};
+  border-radius: ${({ theme }) => theme.radius.base};
 `;
 
 export const RadioContainer = styled(Row)`
-  justify-content: space-around;
   flex: auto;
+  justify-content: space-around;
   gap: 4px;
 `;
 
 export const GenderRadioLabel = styled.label`
-  ${({ theme }) => theme.fontSize.s14h21}
+  ${({ theme }) => theme.typeScale.sm}
 `;
 
 export const GenderWrapper = styled.div`
@@ -271,15 +272,15 @@ export const PetTextarea = styled.textarea`
   flex: auto;
   width: 100%;
   padding: 8px;
-  border: 1px solid ${({ theme }) => theme.line.input.primary};
-  border-radius: ${({ theme }) => theme.radius.normal};
+  background-color: ${({ theme }) => theme.colors.background.input.primary};
+  border: 1px solid ${({ theme }) => theme.colors.line.input.primary};
+  border-radius: ${({ theme }) => theme.radius.base};
   color: inherit;
-  background-color: ${({ theme }) => theme.background.input.primary};
 `;
 
 export const RowWrapper = styled(Row)`
-  width: 100%;
   align-items: center;
+  width: 100%;
   gap: 8px;
 `;
 
@@ -294,6 +295,6 @@ export const SubmitButton = styled(BlueButton)`
   align-items: center;
   width: 100%;
   padding: 8px;
-  border-radius: ${({ theme }) => theme.radius.normal};
-  ${({ theme }) => theme.fontSize.s18h27};
+  border-radius: ${({ theme }) => theme.radius.base};
+  ${({ theme }) => theme.typeScale.lg};
 `;

@@ -1,4 +1,4 @@
-import { Column, ImageCentered, RoundedImageWrapper, Row, Texts12h18, Texts14h21 } from 'styles/commonStyle';
+import { Column, ImageCentered, RoundedImageWrapper, Row, Texts12h16, Texts14h20 } from 'styles/commonStyle';
 import styled from 'styled-components';
 import { PiStarFill } from 'react-icons/pi';
 import { dateAgo } from 'utils/date';
@@ -22,7 +22,7 @@ export default function ReviewCard({ review }: ReviewCardProps) {
           <ClientImage>
             <ImageCentered src={client?.photo ? `${client?.photo}` : '/imgs/DefaultUserProfile.jpg'} alt="user_photo" />
           </ClientImage>
-          <Texts14h21>{client?.nickname.slice(0, 2) + '*****'}</Texts14h21>
+          <Texts14h20>{client?.nickname.slice(0, 2) + '*****'}</Texts14h20>
         </ClientImageName>
         <StarWrapper>
           <PiStarFill size="20px" color="#279EFF" />
@@ -32,7 +32,7 @@ export default function ReviewCard({ review }: ReviewCardProps) {
       <ContentContainer>
         <ReviewText>{body}</ReviewText>
         <UserTimeAgo>
-          <Texts12h18>{dateAgo(review.createdAt)}</Texts12h18>
+          <Texts12h16>{dateAgo(review.createdAt)}</Texts12h16>
         </UserTimeAgo>
       </ContentContainer>
     </Card>
@@ -41,14 +41,14 @@ export default function ReviewCard({ review }: ReviewCardProps) {
 
 const Card = styled(Column)`
   padding: 16px;
+  background-color: ${({ theme }) => theme.colors.background.box.default.primary};
+  border-radius: ${({ theme }) => theme.radius.lg};
   gap: 12px;
-  border-radius: ${({ theme }) => theme.radius.large};
-  background-color: ${({ theme }) => theme.background.box.default.primary};
 `;
 
 const ClientContainer = styled(Row)`
-  align-items: start;
   justify-content: space-between;
+  align-items: start;
   width: 100%;
 `;
 
@@ -60,7 +60,7 @@ const ClientImageName = styled(Row)`
 const ClientImage = styled(RoundedImageWrapper)`
   width: 46px;
   height: 46px;
-  border: 2px solid ${({ theme }) => theme.line.box.highlight};
+  border: 2px solid ${({ theme }) => theme.colors.line.box.highlight};
 `;
 
 const ContentContainer = styled(Column)`

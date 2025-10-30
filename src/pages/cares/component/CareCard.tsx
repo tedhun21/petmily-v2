@@ -6,10 +6,10 @@ import {
   ImageCentered,
   RoundedImageWrapper,
   Row,
-  Texts12h18,
-  Texts14h21,
+  Texts12h16,
+  Texts14h20,
   Texts16h24,
-  Texts18h27,
+  Texts18h28,
 } from 'styles/commonStyle';
 import { formatStatus } from 'utils/misc';
 import { dayFormat, timeRange } from 'utils/date';
@@ -32,7 +32,7 @@ export default function CareCard({ reservation }: CareCardProps) {
           </PetsitterImage>
           <PetsitterName>
             <Texts16h24>{reservation?.petsitter?.nickname}</Texts16h24>
-            <Texts14h21>펫시터님</Texts14h21>
+            <Texts14h20>펫시터님</Texts14h20>
           </PetsitterName>
         </PetsitterContainer>
         <PropgressSpan>{formatStatus(reservation?.status)}</PropgressSpan>
@@ -40,20 +40,20 @@ export default function CareCard({ reservation }: CareCardProps) {
 
       <ReservationContainer>
         <Wrapper>
-          <Texts14h21>일시:</Texts14h21>
-          <Texts12h18>
+          <Texts14h20>일시:</Texts14h20>
+          <Texts12h16>
             {reservation?.date} ({dayFormat(reservation?.date)})
-          </Texts12h18>
+          </Texts12h16>
         </Wrapper>
         <Wrapper>
-          <Texts14h21>시간:</Texts14h21>
-          <Texts12h18>{timeRange(reservation?.startTime, reservation?.endTime)}</Texts12h18>
+          <Texts14h20>시간:</Texts14h20>
+          <Texts12h16>{timeRange(reservation?.startTime, reservation?.endTime)}</Texts12h16>
         </Wrapper>
         <Wrapper>
-          <Texts14h21>맡기실 펫:</Texts14h21>
+          <Texts14h20>맡기실 펫:</Texts14h20>
           <PetWrapper>
             {reservation?.pets.map((pet: Pet) => (
-              <Texts12h18 key={pet.id}>{pet.name}</Texts12h18>
+              <Texts12h16 key={pet.id}>{pet.name}</Texts12h16>
             ))}
           </PetWrapper>
         </Wrapper>
@@ -67,8 +67,7 @@ const Card = styled(DefaultLink)`
   flex-direction: column;
   gap: 8px;
   padding: 20px;
-
-  border-radius: ${({ theme }) => theme.radius.large};
+  border-radius: ${({ theme }) => theme.radius.lg};
 
   &:hover {
     box-shadow: ${({ theme }) => theme.shadow.dp02};
@@ -76,8 +75,8 @@ const Card = styled(DefaultLink)`
 `;
 
 const FirstContainer = styled(Row)`
-  width: 100%;
   justify-content: space-between;
+  width: 100%;
 `;
 
 const PetsitterContainer = styled(Row)`
@@ -93,11 +92,11 @@ const PetsitterName = styled(Row)`
 const PetsitterImage = styled(RoundedImageWrapper)`
   width: 60px;
   height: 60px;
-  border: 2px solid ${({ theme }) => theme.line.box.highlight};
+  border: 2px solid ${({ theme }) => theme.colors.line.box.highlight};
 `;
 
 const ReservationContainer = styled(Column)`
-  // gap: 4px;
+  /* gap: 4px; */
 `;
 
 const Wrapper = styled(Row)`
@@ -111,11 +110,11 @@ const PetWrapper = styled(Row)`
 
   > span {
     font-weight: ${({ theme }) => theme.fontWeight.bold};
-    ${({ theme }) => theme.fontSize.s12h18};
+    ${({ theme }) => theme.typeScale.xs};
   }
 `;
 
-const PropgressSpan = styled(Texts18h27)`
-  color: ${({ theme }) => theme.text.highlight};
-  font-weight: ${({ theme }) => theme.fontWeight.extrabold};
+const PropgressSpan = styled(Texts18h28)`
+  color: ${({ theme }) => theme.colors.text.highlight};
+  font-weight: ${({ theme }) => theme.fontWeight.semibold};
 `;

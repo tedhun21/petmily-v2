@@ -148,13 +148,13 @@ export default function NotiModal() {
 }
 
 const Background = styled.div`
+  overflow-y: auto;
   min-width: 120px;
   max-height: 300px;
   padding: 8px 16px;
-  background-color: ${({ theme }) => theme.background.box.default.primary};
+  background-color: ${({ theme }) => theme.colors.background.box.default.primary};
+  border-radius: ${({ theme }) => theme.radius.base};
   box-shadow: ${({ theme }) => theme.shadow.dp01};
-  border-radius: ${({ theme }) => theme.radius.normal};
-  overflow-y: auto;
 `;
 
 const List = styled.ul`

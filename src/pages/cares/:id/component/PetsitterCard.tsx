@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { PiStarFill } from 'react-icons/pi';
 import { MdOutlineRateReview } from 'react-icons/md';
 
-import { BlueLink, Column, ImageCentered, RoundedImageWrapper, Row, Texts18h27 } from 'styles/commonStyle';
+import { BlueLink, Column, ImageCentered, RoundedImageWrapper, Row, Texts18h28 } from 'styles/commonStyle';
 import { PetInfoCapsule, PetInfoContainer } from '@pages/cares/:id/page';
 import { timeRange, weekdays } from 'utils/date';
 import { Petsitter } from 'types/user.type';
@@ -38,11 +38,11 @@ export default function PetsitterCard({ petsitter }: PetsitterCardProps) {
         <StarReviewWrapper>
           <IconAndSpan>
             <PiStarFill size="28px" color="#279EFF" />
-            <Texts18h27>{petsitter?.star}</Texts18h27>
+            <Texts18h28>{petsitter?.star}</Texts18h28>
           </IconAndSpan>
           <IconAndSpan>
             <MdOutlineRateReview size="28px">review</MdOutlineRateReview>
-            <Texts18h27>{petsitter?.reviewCount}</Texts18h27>
+            <Texts18h28>{petsitter?.reviewCount}</Texts18h28>
           </IconAndSpan>
         </StarReviewWrapper>
 
@@ -80,7 +80,7 @@ const ImageName = styled(Column)`
 const PetsitterImage = styled(RoundedImageWrapper)`
   width: 100px;
   height: 100px;
-  border: 2px solid ${({ theme }) => theme.line.box.highlight};
+  border: 2px solid ${({ theme }) => theme.colors.line.box.highlight};
 `;
 
 const PetsitterInfo = styled(Column)`
@@ -88,14 +88,14 @@ const PetsitterInfo = styled(Column)`
 
   > div {
     display: flex;
-    align-items: center;
-    justify-content: center;
     flex: 1;
+    justify-content: center;
+    align-items: center;
   }
 `;
 
-const PetsitterName = styled(Texts18h27)`
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
+const PetsitterName = styled(Texts18h28)`
+  font-weight: ${({ theme }) => theme.fontWeight.semibold};
 `;
 
 const LinkWrapper = styled(Row)`
@@ -103,11 +103,8 @@ const LinkWrapper = styled(Row)`
 `;
 
 const StyledLink = styled(BlueLink)`
-  // display: flex;
-  // align-items: center;
-  // justify-content: center;
   padding: 8px;
-  border-radius: ${({ theme }) => theme.radius.normal};
+  border-radius: ${({ theme }) => theme.radius.base};
 `;
 
 const StarReviewWrapper = styled(Row)`

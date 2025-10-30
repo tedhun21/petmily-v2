@@ -4,7 +4,7 @@ import { MdOutlineRateReview } from 'react-icons/md';
 import { PiStarFill } from 'react-icons/pi';
 
 import { weekdays } from 'utils/date';
-import { Column, Divider, ImageCentered, RoundedImageWrapper, Row, Texts14h21, Texts18h27 } from 'styles/commonStyle';
+import { Column, Divider, ImageCentered, RoundedImageWrapper, Row, Texts14h20, Texts18h28 } from 'styles/commonStyle';
 import { Petsitter } from 'types/user.type';
 import { DayOfWeekType } from 'types/common.type';
 
@@ -68,19 +68,19 @@ export default function SelectedPetsitter({ petsitter }: SelectedPetsitterProps)
 }
 
 const PetsitterSection = styled.section`
-  flex-shrink: 0;
   position: relative;
+  flex-shrink: 0;
   overflow: hidden;
-  border-radius: ${({ theme }) => theme.radius.large};
+  border-radius: ${({ theme }) => theme.radius.lg};
   box-shadow: ${({ theme }) => theme.shadow.dp01};
 `;
 
 const CardTitleContainer = styled.div`
-  display: flex;
   position: relative;
+  display: flex;
   padding: 12px 36px;
-  color: ${({ theme }) => theme.text.white};
-  background-color: ${({ theme }) => theme.background.highlight};
+  background-color: ${({ theme }) => theme.colors.background.highlight};
+  color: ${({ theme }) => theme.colors.text.white};
 `;
 
 const NameWrapper = styled(Row)`
@@ -96,18 +96,18 @@ const PetsitterImg = styled(RoundedImageWrapper)`
   height: 64px;
 `;
 
-const PetsitterName = styled(Texts18h27)`
+const PetsitterName = styled(Texts18h28)`
   font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;
 
-const PetsitterTitle = styled(Texts14h21)`
+const PetsitterTitle = styled(Texts14h20)`
   font-weight: ${({ theme }) => theme.fontWeight.light};
 `;
 
 const CardBodyContainer = styled(Column)`
   padding: 24px;
   gap: 8px;
-  background-color: ${({ theme }) => theme.background.box.default.primary};
+  background-color: ${({ theme }) => theme.colors.background.box.default.primary};
 `;
 
 const StarReview = styled(Row)`
@@ -120,8 +120,8 @@ const Wrapper = styled(Row)`
   gap: 8px;
 `;
 
-const Count = styled(Texts18h27)`
-  font-weight: ${({ theme }) => theme.fontWeight.extrabold};
+const Count = styled(Texts18h28)`
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;
 
 const PossibleContainer = styled(Column)`
@@ -138,9 +138,9 @@ const CapsuleWrapper = styled.div`
   gap: 4px;
 `;
 
-const Capsule = styled(Texts14h21)`
+const Capsule = styled(Texts14h20)`
   padding: 4px 8px;
+  background-color: ${({ theme }) => theme.colors.background.highlight};
   border-radius: 12px;
-  color: ${({ theme }) => theme.text.white};
-  background-color: ${({ theme }) => theme.background.highlight};
+  color: ${({ theme }) => theme.colors.text.white};
 `;

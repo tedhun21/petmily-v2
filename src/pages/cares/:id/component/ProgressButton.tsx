@@ -131,15 +131,13 @@ const Button = styled(BlueButton)<{ disabled?: boolean }>`
   justify-content: center;
   align-items: center;
   width: 100%;
-
-  border-radius: ${({ theme }) => theme.radius.normal};
+  border-radius: ${({ theme }) => theme.radius.base};
   padding: 8px;
 
-  // hover와 active 스타일을 disabled일 때 비활성화
+  /* hover와 active 스타일을 disabled일 때 비활성화 */
   pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
-
   background-color: ${({ theme, disabled }) =>
-    disabled ? theme.background.box.blue.disabled : theme.background.box.blue.primary};
+    disabled ? theme.colors.background.box.blue.disabled : theme.colors.background.box.blue.primary};
 
-  ${({ theme }) => theme.fontSize.s20h30};
+  ${({ theme }) => theme.typeScale.xl};
 `;

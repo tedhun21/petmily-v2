@@ -66,8 +66,8 @@ export default function RedirectPage() {
 
 const MainContainer = styled.main`
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   width: 100%;
   height: 100%;
   padding: 40px;
@@ -82,35 +82,35 @@ const ImgContainer = styled.div`
 
 const ImageButton = styled.button`
   position: relative;
-  border: none;
-  transition: all 0.2s linear;
-  border-radius: ${({ theme }) => theme.radius.normal};
   background-color: transparent;
+  border: none;
+  border-radius: ${({ theme }) => theme.radius.base};
+  transition: all 0.2s linear;
 
   &:hover {
     transform: scale(1.01);
 
     & > div {
-      color: ${({ theme }) => theme.text.highlight};
-      transition: all 0.2s linear;
+      color: ${({ theme }) => theme.colors.text.highlight};
       font-family: inherit;
-      ${({ theme }) => theme.fontSize.s20h30}
+      transition: all 0.2s linear;
+      ${({ theme }) => theme.typeScale.xl};
     }
   }
 `;
 
 const ClientSign = styled.div`
-  width: 100%;
-  text-align: center;
   position: absolute;
   top: 50%;
   left: 50%;
+  width: 100%;
   transform: translate(-50%, -50%);
   color: black;
   font-weight: ${({ theme }) => theme.fontWeight.bold};
+  text-align: center;
   pointer-events: none;
 
-  ${({ theme }) => theme.fontSize.s18h27}
+  ${({ theme }) => theme.typeScale.lg};
 `;
 
 const PetsitterSign = styled.div`
@@ -121,7 +121,7 @@ const PetsitterSign = styled.div`
   font-weight: ${({ theme }) => theme.fontWeight.bold};
   pointer-events: none;
 
-  ${({ theme }) => theme.fontSize.s18h27};
+  ${({ theme }) => theme.typeScale.lg};
 `;
 
 const Image = styled.img`

@@ -59,10 +59,10 @@ export default function PetContainer({ pets }: PetContainerProps) {
 }
 
 const CustomSwiper = styled(Swiper)`
+  flex-shrink: 0; /* 부모 크기 줄어듦에 따라 높이 축소 방지 */
   width: 100%;
   height: 140px;
-  flex-shrink: 0; /* 부모 크기 줄어듦에 따라 높이 축소 방지 */
-  border-radius: ${({ theme }) => theme.radius.large};
+  border-radius: ${({ theme }) => theme.radius.lg};
   box-shadow: ${({ theme }) => theme.shadow.dp03};
 `;
 
@@ -80,5 +80,5 @@ const PetImageName = styled(Row)`
 const PetImage = styled(RoundedImageWrapper)`
   width: 60px;
   height: 60px;
-  border: 2px solid ${({ theme }) => theme.line.box.highlight};
+  border: 2px solid ${({ theme }) => theme.colors.line.box.highlight};
 `;

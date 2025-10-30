@@ -46,12 +46,12 @@ export default function PetItem({ pet }: PetItemProps) {
 }
 
 const Item = styled.li`
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;
-  gap: 8px;
   cursor: pointer;
+  gap: 8px;
 `;
 
 const PetImage = styled(RoundedImageWrapper)<{ $isChecked: boolean }>`
@@ -62,16 +62,16 @@ const PetImage = styled(RoundedImageWrapper)<{ $isChecked: boolean }>`
 `;
 
 const Check = styled.div<{ $isChecked: boolean }>`
-  display: flex;
-  align-items: center;
-  justify-content: center;
   position: absolute;
   top: 0;
   right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 24px;
   height: 24px;
+  background-color: ${({ theme }) => theme.colors.background.highlight};
   border-radius: 50%;
-  background-color: ${({ theme }) => theme.background.highlight};
   opacity: ${({ $isChecked }) => ($isChecked ? 1 : 0)};
   transform: ${({ $isChecked }) => ($isChecked ? 'scale(1)' : 'scale(0.5)')};
 `;

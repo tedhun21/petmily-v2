@@ -76,12 +76,12 @@ const Wrapper = styled.div`
 
 const ChatInput = styled(Input)`
   flex: auto;
-  border-radius: ${({ theme }) => theme.radius.large};
+  border-radius: ${({ theme }) => theme.radius.lg};
   padding: 8px 12px;
-  ${({ theme }) => theme.fontSize.s18h27};
+  ${({ theme }) => theme.typeScale.lg};
 `;
 
 const ChatSubmitButton = styled(BlueButton)`
-  border-radius: ${({ theme }) => theme.radius.circle};
   padding: 6px;
+  border-radius: ${({ theme }) => theme.radius.circle};
 `;

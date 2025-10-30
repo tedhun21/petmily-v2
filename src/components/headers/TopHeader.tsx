@@ -109,10 +109,10 @@ const Button = styled.button`
   justify-content: center;
   align-items: center;
   padding: 4px;
-  border-radius: ${({ theme }) => theme.radius.normal};
+  border-radius: ${({ theme }) => theme.radius.base};
 
   &:hover {
-    background-color: ${({ theme }) => theme.background.box.default.hover};
+    background-color: ${({ theme }) => theme.colors.background.box.default.hover};
   }
 `;
 
@@ -121,34 +121,34 @@ const StyledLink = styled(Link)`
   justify-content: center;
   align-items: center;
   padding: 4px;
-  border-radius: ${({ theme }) => theme.radius.normal};
+  border-radius: ${({ theme }) => theme.radius.base};
 
   &:hover {
-    background-color: ${({ theme }) => theme.background.box.default.hover};
+    background-color: ${({ theme }) => theme.colors.background.box.default.hover};
   }
 `;
 
 const LoginNavLink = styled(Link)`
-  color: ${({ theme }) => theme.text.white};
-  background-color: ${({ theme }) => theme.background.box.blue.primary};
   padding: 4px 8px;
-  border-radius: ${({ theme }) => theme.radius.normal};
-  ${({ theme }) => theme.fontSize.s14h21}
+  background-color: ${({ theme }) => theme.colors.background.box.blue.primary};
+  border-radius: ${({ theme }) => theme.radius.base};
+  color: ${({ theme }) => theme.colors.text.white};
+  ${({ theme }) => theme.typeScale.sm};
 
   &:hover {
-    background-color: ${({ theme }) => theme.background.box.blue.hover};
+    background-color: ${({ theme }) => theme.colors.background.box.blue.hover};
   }
 
   &:active {
-    background-color: ${({ theme }) => theme.background.box.blue.active};
+    background-color: ${({ theme }) => theme.colors.background.box.blue.active};
     box-shadow: ${({ theme }) => theme.shadow.inset};
   }
 `;
 
 const UnreadCountContainer = styled.div`
   position: absolute;
-  right: 0;
   top: 0;
+  right: 0;
 `;
 
 const UnreadCount = styled.div`
@@ -157,12 +157,11 @@ const UnreadCount = styled.div`
   align-items: center;
   min-width: 16px;
   height: 16px;
-
-  background-color: ${({ theme }) => theme.background.red};
+  background-color: ${({ theme }) => theme.colors.background.error};
   border-radius: ${({ theme }) => theme.radius.circle};
 
   > span {
-    color: ${({ theme }) => theme.text.white};
-    ${({ theme }) => theme.fontSize.s12h18};
+    color: ${({ theme }) => theme.colors.text.white};
+    ${({ theme }) => theme.typeScale.xs};
   }
 `;

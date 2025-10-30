@@ -55,14 +55,14 @@ export default function HoverRating({ value, setValue }: any) {
 
 const StyledRating = styled(Rating)`
   & .MuiRating-iconFilled {
-    color: ${({ theme }) => theme.background.highlight};
+    color: ${({ theme }) => theme.colors.background.highlight};
   }
 
   & .MuiRating-iconHover {
-    color: ${({ theme }) => theme.background.deepHighlight};
+    color: ${({ theme }) => theme.colors.background.deepHighlight};
   }
 `;
 
 const StyledPiStar = styled(PiStar)`
-  color: ${({ theme }) => theme.text.inactive};
+  color: ${({ theme }) => theme.colors.text.inactive};
 `;

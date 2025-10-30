@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 
 import Loading from '@components/Loading';
 import { poster, updater } from 'api';
-import { BlueButton, CenterContainer, Texts14h21, Texts16h24, Title } from 'styles/commonStyle';
+import { BlueButton, CenterContainer, Texts14h20, Texts16h24, Title } from 'styles/commonStyle';
 
 export default function Journal({ journal, reservationId }: any) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -121,11 +121,9 @@ export default function Journal({ journal, reservationId }: any) {
 
   return (
     <Section>
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <Title>케어일지 작성</Title>
-      </div>
+      <Title>케어일지 작성</Title>
 
-      <ImageTitle>사진 첨부</ImageTitle>
+      <span>사진 첨부</span>
       <input
         type="file"
         accept="image/png, image/jpg, image/jpeg"
@@ -136,7 +134,7 @@ export default function Journal({ journal, reservationId }: any) {
       />
       <ImageSelectWrapper>
         <ImageSelectButton onClick={openFileInput}>파일 선택</ImageSelectButton>
-        <Texts14h21>최대 5개의 이미지를 선택할 수 있습니다.</Texts14h21>
+        <Texts14h20>최대 5개의 이미지를 선택할 수 있습니다.</Texts14h20>
       </ImageSelectWrapper>
 
       <ImagePreview>
@@ -191,28 +189,26 @@ const Section = styled.section`
   border-radius: 16px;
 `;
 
-const ImageTitle = styled(Texts16h24)``;
-
 const ImageSelectWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 4px;
 
   > div {
-    ${({ theme }) => theme.fontSize.s12h18}
+    ${({ theme }) => theme.typeScale.xs};
   }
 `;
 
 const ImageSelectButton = styled(BlueButton)`
-  ${({ theme }) => theme.fontSize.s14h21}
-  padding:4px 8px;
-  border-radius: ${({ theme }) => theme.radius.normal};
+  padding: 4px 8px;
+  border-radius: ${({ theme }) => theme.radius.base};
+  ${({ theme }) => theme.typeScale.sm};
 `;
 
 const ImagePreview = styled.div`
   display: flex;
-  width: 100%;
   flex-wrap: wrap;
+  width: 100%;
 `;
 
 const ImagePreviewItem = styled.div`
@@ -223,20 +219,20 @@ const ImagePreviewItem = styled.div`
 
 const Img = styled.img`
   width: 100px;
-  border-radius: ${({ theme }) => theme.radius.normal};
+  border-radius: ${({ theme }) => theme.radius.base};
 `;
 
 const RemoveButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
   position: absolute;
   top: 0;
   right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 24px;
   height: 24px;
+  background-color: ${({ theme }) => theme.colors.background.highlight};
   border-radius: 50%;
-  background-color: ${({ theme }) => theme.background.highlight};
 `;
 
 const TextContainer = styled.div`
@@ -251,15 +247,15 @@ const TextArea = styled.textarea`
   width: 100%;
   height: 100px;
   padding: 8px;
-  border-radius: ${({ theme }) => theme.radius.normal};
+  border-radius: ${({ theme }) => theme.radius.base};
 
-  ${({ theme }) => theme.fontSize.s14h21}
+  ${({ theme }) => theme.typeScale.sm}
 `;
 
 const SubmitButton = styled(BlueButton)`
   padding: 8px;
   width: 100%;
-  border-radius: ${({ theme }) => theme.radius.normal};
+  border-radius: ${({ theme }) => theme.radius.base};
 
-  ${({ theme }) => theme.fontSize.s16h24}
+  ${({ theme }) => theme.typeScale.base}
 `;

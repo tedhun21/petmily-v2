@@ -10,42 +10,46 @@ export const Row = styled.div`
   flex-direction: row;
 `;
 
-export const Texts12h18 = styled.span`
-  ${({ theme }) => theme.fontSize.s12h18};
+export const Texts12h16 = styled.span`
+  ${({ theme }) => theme.typeScale.xs};
 `;
 
-export const Texts14h21 = styled.span`
-  ${({ theme }) => theme.fontSize.s14h21};
+export const Texts14h20 = styled.span`
+  ${({ theme }) => theme.typeScale.sm};
 `;
 
 export const Texts16h24 = styled.span`
-  ${({ theme }) => theme.fontSize.s16h24};
+  ${({ theme }) => theme.typeScale.base};
 `;
 
-export const Texts18h27 = styled.span`
-  ${({ theme }) => theme.fontSize.s18h27};
+export const Texts18h28 = styled.span`
+  ${({ theme }) => theme.typeScale.lg};
 `;
 
-export const Texts20h30 = styled.span`
-  ${({ theme }) => theme.fontSize.s20h30};
+export const Texts20h28 = styled.span`
+  ${({ theme }) => theme.typeScale.xl};
+`;
+
+export const Texts24h32 = styled.span`
+  ${({ theme }) => theme.typeScale['2xl']};
 `;
 
 export const Title = styled.h1`
-  color: ${({ theme }) => theme.text.active};
-  font-weight: ${({ theme }) => theme.fontWeight.extrabold};
-  ${({ theme }) => theme.fontSize.s20h30};
+  color: ${({ theme }) => theme.colors.text.active};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
+  ${({ theme }) => theme.typeScale.xl};
 `;
 
 export const SubTitle = styled.h2`
-  color: ${({ theme }) => theme.text.active};
+  color: ${({ theme }) => theme.colors.text.active};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
-  ${({ theme }) => theme.fontSize.s18h27};
+  ${({ theme }) => theme.typeScale.lg};
 `;
 
 export const RoundedImageWrapper = styled.div`
   position: relative;
   overflow: hidden;
-  border-radius: 50%;
+  border-radius: ${({ theme }) => theme.radius.circle};
 `;
 
 export const ImageCentered = styled.img`
@@ -66,20 +70,21 @@ export const CenterContainer = styled.div`
   height: 100%;
 `;
 
-export const ErrorMessage = styled(Texts12h18)`
-  color: ${({ theme }) => theme.text.error};
+export const ErrorMessage = styled(Texts12h16)`
+  color: ${({ theme }) => theme.colors.text.error};
 `;
 
 export const Input = styled.input`
-  border-radius: ${({ theme }) => theme.radius.normal};
-  background-color: ${({ theme }) => theme.background.input.primary};
-  border: 1px solid ${({ theme }) => theme.line.input.primary};
+  background-color: ${({ theme }) => theme.colors.background.input.primary};
+  border: 1px solid ${({ theme }) => theme.colors.line.input.primary};
+  border-radius: ${({ theme }) => theme.radius.base};
 
   &:hover {
-    border: 1px solid ${({ theme }) => theme.line.input.hover};
+    border: 1px solid ${({ theme }) => theme.colors.line.input.hover};
   }
+
   &:focus {
-    border: 1px solid ${({ theme }) => theme.line.input.highlight};
+    border: 1px solid ${({ theme }) => theme.colors.line.input.highlight};
   }
 `;
 
@@ -87,41 +92,40 @@ export const Button = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: ${({ theme }) => theme.radius.normal};
-
-  background-color: ${({ theme }) => theme.background.box.default.primary};
+  background-color: ${({ theme }) => theme.colors.background.box.default.primary};
+  border-radius: ${({ theme }) => theme.radius.base};
 
   &:hover {
-    background-color: ${({ theme }) => theme.background.box.default.hover};
+    background-color: ${({ theme }) => theme.colors.background.box.default.hover};
   }
 
   &:active {
-    background-color: ${({ theme }) => theme.background.box.default.active};
+    background-color: ${({ theme }) => theme.colors.background.box.default.active};
     box-shadow: ${({ theme }) => theme.shadow.inset};
   }
 `;
 
 export const BlueButton = styled(Button)`
-  color: ${({ theme }) => theme.text.white};
-  background-color: ${({ theme }) => theme.background.box.blue.primary};
+  background-color: ${({ theme }) => theme.colors.background.box.blue.primary};
+  color: ${({ theme }) => theme.colors.text.white};
 
   &:hover {
-    background-color: ${({ theme }) => theme.background.box.blue.hover};
+    background-color: ${({ theme }) => theme.colors.background.box.blue.hover};
   }
 
   &:active {
-    background-color: ${({ theme }) => theme.background.box.blue.active};
+    background-color: ${({ theme }) => theme.colors.background.box.blue.active};
     box-shadow: ${({ theme }) => theme.shadow.inset};
   }
 `;
 
 export const DefaultLink = styled(Link)`
+  background-color: ${({ theme }) => theme.colors.background.box.default.primary};
+  border-radius: ${({ theme }) => theme.radius.base};
   color: inherit;
-  border-radius: ${({ theme }) => theme.radius.normal};
-  background-color: ${({ theme }) => theme.background.box.default.primary};
 
   &:hover {
-    background-color: ${({ theme }) => theme.background.box.default.hover};
+    background-color: ${({ theme }) => theme.colors.background.box.default.hover};
   }
 
   &:active {
@@ -130,15 +134,15 @@ export const DefaultLink = styled(Link)`
 `;
 
 export const BlueLink = styled(DefaultLink)`
-  background-color: ${({ theme }) => theme.background.box.blue.primary};
-  color: ${({ theme }) => theme.text.white};
+  background-color: ${({ theme }) => theme.colors.background.box.blue.primary};
+  color: ${({ theme }) => theme.colors.text.white};
 
   &:hover {
-    background-color: ${({ theme }) => theme.background.box.blue.hover};
+    background-color: ${({ theme }) => theme.colors.background.box.blue.hover};
   }
 
   &:active {
-    background-color: ${({ theme }) => theme.background.box.blue.active};
+    background-color: ${({ theme }) => theme.colors.background.box.blue.active};
     box-shadow: ${({ theme }) => theme.shadow.inset};
   }
 `;
@@ -148,8 +152,8 @@ export const Divider = styled.div<{
   $thickness?: string;
   $length?: string;
 }>`
-  background-color: ${({ theme }) => theme.line.divider.primary};
   flex-shrink: 0;
+  background-color: ${({ theme }) => theme.colors.line.divider.primary};
 
   ${({ $orientation, $thickness, $length }) =>
     $orientation === 'vertical'
@@ -165,9 +169,9 @@ export const Divider = styled.div<{
 
 export const Fixed = styled.div`
   position: fixed;
+  z-index: 10;
   width: 100%;
   max-width: 600px;
-  z-index: 10;
 `;
 
 export const BottomFixed = styled(Fixed)`

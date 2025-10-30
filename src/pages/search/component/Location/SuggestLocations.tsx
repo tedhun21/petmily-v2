@@ -1,6 +1,6 @@
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 import styled from 'styled-components';
-import { Texts14h21 } from 'styles/commonStyle';
+import { Texts14h20 } from 'styles/commonStyle';
 
 export default function SuggestLocations({ data, handleLocationClick }: any) {
   return (
@@ -10,7 +10,7 @@ export default function SuggestLocations({ data, handleLocationClick }: any) {
           <IconBox>
             <HiOutlineLocationMarker size="20px" />
           </IconBox>
-          <Texts14h21>{location}</Texts14h21>
+          <Texts14h20>{location}</Texts14h20>
         </Item>
       ))}
     </List>
@@ -29,13 +29,13 @@ const Item = styled.li`
   gap: 8px;
   width: 100%;
   padding: 8px;
-  border-radius: ${({ theme }) => theme.radius.normal};
+  border-radius: ${({ theme }) => theme.radius.base};
   cursor: pointer;
 
   &:hover {
-    background-color: ${({ theme }) => theme.background.highlight};
+    background-color: ${({ theme }) => theme.colors.background.highlight};
 
-    ${Texts14h21} {
+    ${Texts14h20} {
       color: white;
     }
   }
@@ -45,7 +45,7 @@ const IconBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${({ theme }) => theme.background.box.default.primary};
   padding: 8px;
-  border-radius: ${({ theme }) => theme.radius.normal};
+  background-color: ${({ theme }) => theme.colors.background.box.default.primary};
+  border-radius: ${({ theme }) => theme.radius.base};
 `;

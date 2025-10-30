@@ -26,8 +26,8 @@ const SkeletonList = styled.ul`
 `;
 
 const SkeletonItem = styled.li`
-  width: 220px;
   display: flex;
+  width: 220px;
   gap: 8px;
 `;
 
@@ -38,18 +38,18 @@ const pulse = keyframes`
 `;
 
 const SkeletonElement = styled.div`
-  background-color: ${({ theme }) => theme.background.box.default.hover};
+  background-color: ${({ theme }) => theme.colors.background.box.default.hover};
+  border-radius: 16px;
   animation: ${pulse} 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; /* pulse 애니메이션 
        적용 */
-  border-radius: 16px;
 `;
 
 const SkeletonImage = styled(SkeletonElement)`
   flex-shrink: 0;
   width: 60px;
   height: 60px;
+  background-color: ${({ theme }) => theme.colors.background.box.default.hover};
   border-radius: 50%;
-  background-color: ${({ theme }) => theme.background.box.default.hover};
 `;
 
 const Div = styled(Column)`

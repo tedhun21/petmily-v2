@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { PiStarFill } from 'react-icons/pi';
 
 import { timeRange, weekdays } from 'utils/date';
-import { Column, ImageCentered, RoundedImageWrapper, Row, Texts12h18 } from 'styles/commonStyle';
+import { Column, ImageCentered, RoundedImageWrapper, Row, Texts12h16 } from 'styles/commonStyle';
 import { Petsitter } from 'types/user.type';
 import { Link } from 'react-router-dom';
 
@@ -58,7 +58,7 @@ const ImageWrapper = styled(RoundedImageWrapper)`
   flex-shrink: 0;
   width: 60px;
   height: 60px;
-  border: 2px solid ${({ theme }) => theme.line.box.highlight};
+  border: 2px solid ${({ theme }) => theme.colors.line.box.highlight};
 `;
 
 const InfoContainer = styled(Column)`
@@ -76,6 +76,6 @@ const PossibleWrapper = styled(Row)`
   gap: 4px;
 `;
 
-const SubTitle = styled(Texts12h18)`
-  color: ${({ theme }) => theme.text.secondary};
+const SubTitle = styled(Texts12h16)`
+  color: ${({ theme }) => theme.colors.text.secondary};
 `;

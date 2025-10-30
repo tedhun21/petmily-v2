@@ -45,8 +45,8 @@ const UserImage = styled(RoundedImageWrapper)`
 `;
 
 const Div = styled.div`
-  flex: 1;
   display: flex;
+  flex: 1;
   flex-direction: column;
   gap: 16px;
 `;
@@ -56,5 +56,5 @@ const UserInfo = styled(Row)`
 `;
 
 const Body = styled.p`
-  ${({ theme }) => theme.fontSize.s14h21};
+  ${({ theme }) => theme.typeScale.sm};
 `;

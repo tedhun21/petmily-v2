@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { FaRegCircleCheck, FaCircleCheck } from 'react-icons/fa6';
 import { Modal } from '@mui/material';
 
-import { BlueButton, Column, SubTitle, Texts12h18, Texts16h24, Title } from 'styles/commonStyle';
+import { BlueButton, Column, SubTitle, Texts12h16, Texts16h24, Title } from 'styles/commonStyle';
 
 interface ConfirmProps {
   isChecked: boolean;
@@ -100,27 +100,27 @@ export default function Confirm({ isChecked, setIsChecked }: ConfirmProps) {
 }
 
 const ConfirmContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 8px;
+  border-top: 1px solid ${({ theme }) => theme.colors.text.inactive};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.text.inactive};
   gap: 8px;
-  border-top: 1px solid ${({ theme }) => theme.text.inactive};
-  border-bottom: 1px solid ${({ theme }) => theme.text.inactive};
 `;
 
 const TermsContainer = styled(Column)`
-  overflow: auto;
   position: absolute;
   top: 50%;
   left: 50%;
+  overflow: auto;
   width: 400px;
   height: 600px;
   padding: 24px;
+  background-color: ${({ theme }) => theme.colors.background.box.default.primary};
   border-radius: 12px;
-  color: ${({ theme }) => theme.text.active};
-  background-color: ${({ theme }) => theme.background.box.default.primary};
+  color: ${({ theme }) => theme.colors.text.active};
   transform: translate(-50%, -50%);
   gap: 12px;
 `;
@@ -134,7 +134,7 @@ const Container = styled(Column)`
 `;
 
 const RedSubTitle = styled(SubTitle)`
-  color: ${({ theme }) => theme.text.error};
+  color: ${({ theme }) => theme.colors.text.error};
 `;
 
 const List = styled.ul`
@@ -146,20 +146,20 @@ const List = styled.ul`
 
 const Item = styled.li`
   list-style-position: inside;
-  ${({ theme }) => theme.fontSize.s14h21}
+  ${({ theme }) => theme.typeScale.sm}
 `;
 
-const SubItem = styled(Texts12h18)`
+const SubItem = styled(Texts12h16)`
   padding-left: 20px;
-  color: ${({ theme }) => theme.text.inactive};
+  color: ${({ theme }) => theme.colors.text.inactive};
 `;
 
 const CheckButton = styled(BlueButton)`
   width: 100%;
   padding: 12px;
-  border-radius: ${({ theme }) => theme.radius.normal};
+  border-radius: ${({ theme }) => theme.radius.base};
 
-  ${({ theme }) => theme.fontSize.s16h24}
+  ${({ theme }) => theme.typeScale.base}
 `;
 
 const Check = styled.div`
@@ -169,11 +169,11 @@ const Check = styled.div`
 `;
 
 const ConfirmText = styled(Texts16h24)<{ $isChecked: boolean }>`
-  color: ${({ $isChecked, theme }) => ($isChecked ? theme.text.highlight : theme.text.inactive)};
+  color: ${({ $isChecked, theme }) => ($isChecked ? theme.colors.text.highlight : theme.colors.text.inactive)};
 `;
 
 const TermsButton = styled.button`
   text-decoration: underline;
-  color: ${({ theme }) => theme.text.secondary};
-  ${({ theme }) => theme.fontSize.s14h21}
+  color: ${({ theme }) => theme.colors.text.secondary};
+  ${({ theme }) => theme.typeScale.sm}
 `;

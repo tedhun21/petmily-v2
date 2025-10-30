@@ -6,7 +6,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { fetcher } from 'api';
 import { useDebounceValue } from 'hooks/useDebounce';
-import { CenterContainer, Column, Divider, Row, Texts12h18 } from 'styles/commonStyle';
+import { CenterContainer, Column, Divider, Row, Texts12h16 } from 'styles/commonStyle';
 import RecentSearches from './RecentSearches';
 import SuggestLocations from './SuggestLocations';
 import LocationCapsuleContainer from './LocationCapsuleContainer';
@@ -96,8 +96,8 @@ const Content = styled(Row)`
 `;
 
 const RecentContainer = styled(Row)`
-  flex: 0 0 auto;
   display: flex;
+  flex: 0 0 auto;
   gap: 4px;
 `;
 
@@ -106,4 +106,4 @@ const RecentWrapper = styled(Column)`
   gap: 20px;
 `;
 
-const RecentTitle = styled(Texts12h18)``;
+const RecentTitle = styled(Texts12h16)``;

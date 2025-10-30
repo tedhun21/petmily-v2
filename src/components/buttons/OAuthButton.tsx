@@ -22,12 +22,12 @@ const GoogleOAuthButtonStyle = styled(Button)`
   position: relative;
   width: 100%;
   padding: 8px;
+  border: 1px solid ${({ theme }) => theme.colors.line.box.primary};
   border-radius: 12px;
-  border: 1px solid ${({ theme }) => theme.line.box.primary};
 
   div {
-    color: ${({ theme }) => theme.text.active};
-    ${({ theme }) => theme.fontSize.s16h24};
+    color: ${({ theme }) => theme.colors.text.active};
+    ${({ theme }) => theme.typeScale.base};
   }
 `;
 

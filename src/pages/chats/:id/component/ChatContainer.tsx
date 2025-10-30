@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import styled from 'styled-components';
 import { FaChevronDown } from 'react-icons/fa6';
 
-import { Button, CenterContainer, ImageCentered, RoundedImageWrapper, Texts14h21 } from 'styles/commonStyle';
+import { Button, CenterContainer, ImageCentered, RoundedImageWrapper, Texts14h20 } from 'styles/commonStyle';
 
 import MessageList from './MessageList';
 import Loading from '@components/Loading';
@@ -76,14 +76,14 @@ export default function ChatContainer() {
 }
 
 const Container = styled.div`
-  overflow-y: auto;
   flex: 1;
+  overflow-y: auto;
 `;
 
 const Sticky = styled.div`
   position: sticky;
-  bottom: 0;
   right: 0;
+  bottom: 0;
 `;
 
 const AbsoluteBottomCenter = styled.div`
@@ -107,19 +107,19 @@ const BottomWrapper = styled.div`
 const NewMessageButton = styled.button`
   display: flex;
   align-items: center;
-  padding: 4px;
   width: 100%;
-  border-radius: ${({ theme }) => theme.radius.large};
-  background-color: ${({ theme }) => theme.background.box.default.primary};
+  padding: 4px;
+  background-color: ${({ theme }) => theme.colors.background.box.default.primary};
+  border-radius: ${({ theme }) => theme.radius.lg};
   opacity: 0.9;
 `;
 
 const NewMessageUser = styled.div`
-  flex: auto;
   display: flex;
+  flex: auto;
   align-items: center;
-  gap: 4px;
   padding: 4px;
+  gap: 4px;
 `;
 
 const NewMessageUserPhoto = styled(RoundedImageWrapper)`
@@ -127,9 +127,9 @@ const NewMessageUserPhoto = styled(RoundedImageWrapper)`
   height: 32px;
 `;
 
-const NewMessage = styled(Texts14h21)`
+const NewMessage = styled(Texts14h20)`
+  font-weight: ${({ theme }) => theme.fontWeight.semibold};
   text-align: start;
-  font-weight: ${({ theme }) => theme.fontWeight.extrabold};
 `;
 
 const DownButton = styled(Button)`

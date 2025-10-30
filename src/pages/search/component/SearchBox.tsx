@@ -8,7 +8,7 @@ import DateBox from './Date/DateBox';
 import LocationBox from './Location/LocationBox';
 import { saveToRecentSearch } from 'utils/localStorage';
 import StartEndTimeBox from './StartEndTime/StartEndTimeBox';
-import { BlueButton, Column, Divider, Row, Texts14h21 } from 'styles/commonStyle';
+import { BlueButton, Column, Divider, Row, Texts14h20 } from 'styles/commonStyle';
 
 import { useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -115,16 +115,16 @@ const Sticky = styled.div`
   position: sticky;
   top: 100px;
   z-index: 10;
-  padding: 8px 0px;
+  padding: 8px 0;
   background-color: inherit;
 `;
 
 const Container = styled(Row)<{ $isSelected: boolean }>`
-  align-items: center;
   position: relative;
-  border: 1px solid ${({ theme }) => theme.line.input.primary};
+  align-items: center;
+  background-color: ${({ theme, $isSelected }) => $isSelected && theme.colors.background.box.default.active};
+  border: 1px solid ${({ theme }) => theme.colors.line.input.primary};
   border-radius: 28px;
-  background-color: ${({ theme, $isSelected }) => $isSelected && theme.background.box.default.active};
   box-shadow: ${({ theme }) => theme.shadow.dp02};
 `;
 
@@ -135,17 +135,17 @@ const BoxWrapper = styled(Row)`
 
 export const InputDiv = styled.div<{ $isSelected: boolean }>`
   display: flex;
-  align-items: center;
-  justify-content: space-between;
   flex: 1;
+  justify-content: space-between;
+  align-items: center;
   padding: 8px 12px;
+  background-color: ${({ $isSelected, theme }) => $isSelected && theme.colors.background.primary};
   border-radius: 28px;
-  background-color: ${({ $isSelected, theme }) => $isSelected && theme.background.primary};
-  cursor: pointer;
   box-shadow: ${({ $isSelected, theme }) => $isSelected && theme.shadow.dp02};
+  cursor: pointer;
 
   &:hover {
-    background-color: ${({ $isSelected, theme }) => !$isSelected && theme.background.box.default.hover};
+    background-color: ${({ $isSelected, theme }) => !$isSelected && theme.colors.background.box.default.hover};
   }
 `;
 
@@ -155,33 +155,33 @@ export const Wrapper = styled(Column)`
 `;
 
 export const Label = styled.label`
-  ${({ theme }) => theme.fontSize.s12h18};
+  ${({ theme }) => theme.typeScale.xs};
 `;
 
 export const BoxInput = styled.input`
   width: 100%;
   border: none;
   background-color: transparent;
-  ${({ theme }) => theme.fontSize.s14h21};
+  ${({ theme }) => theme.typeScale.sm};
 
-  &::placehoder {
-    color: ${({ theme }) => theme.text.inactive};
+  &::placeholder {
+    color: ${({ theme }) => theme.colors.text.inactive};
   }
 `;
 
-export const AddText = styled(Texts14h21)<{ $isClicked?: boolean }>`
-  color: ${({ theme, $isClicked }) => ($isClicked ? theme.text.active : theme.text.inactive)};
+export const AddText = styled(Texts14h20)<{ $isClicked?: boolean }>`
+  color: ${({ theme, $isClicked }) => ($isClicked ? theme.colors.text.active : theme.colors.text.inactive)};
 `;
 
 export const XButton = styled.button`
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   padding: 4px;
   border-radius: 50%;
 
   &:hover {
-    background-color: ${({ theme }) => theme.background.box.default.active};
+    background-color: ${({ theme }) => theme.colors.background.box.default.active};
   }
 `;
 
@@ -198,8 +198,8 @@ export const ModalLayOut = styled.div`
   display: flex;
   width: 100%;
   padding: 20px;
+  background-color: ${({ theme }) => theme.colors.background.primary};
   border-radius: 32px;
-  background-color: ${({ theme }) => theme.background.primary};
   box-shadow: ${({ theme }) => theme.shadow.dp02};
 `;
 
@@ -213,8 +213,8 @@ const ButtonDiv = styled.div`
 
 const SearchButton = styled(BlueButton)`
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   padding: 8px;
   border-radius: 50%;
 `;

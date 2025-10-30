@@ -16,7 +16,7 @@ import Loading from '@components/Loading';
 import { SubmitButton } from '@pages/login/page';
 import BackHeader from '@components/headers/BackHeader';
 import CustomDaumPostcode from '@components/CustomDaumPostcode';
-import { Column, ErrorMessage, Input, Texts16h24, Texts20h30 } from 'styles/commonStyle';
+import { Column, ErrorMessage, Input, Texts16h24, Texts20h28 } from 'styles/commonStyle';
 
 const schema = yup.object().shape({
   username: yup
@@ -137,7 +137,7 @@ export default function SignupPage() {
       <Main>
         <SignupContainer>
           <TitleContainer>
-            <Texts20h30>We&apos;re Petmily!</Texts20h30>
+            <Texts20h28>We&apos;re Petmily!</Texts20h28>
             <Texts16h24>회원가입</Texts16h24>
           </TitleContainer>
           <InputFormContainer onSubmit={handleSubmit(onSubmit)}>
@@ -241,8 +241,8 @@ export default function SignupPage() {
 
 const Main = styled.main`
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   width: 100%;
 `;
 
@@ -271,13 +271,13 @@ const InputFormWrapper = styled.div``;
 
 const SignupInputStyle = styled(Input)<{ error?: boolean }>`
   width: 100%;
-  border-radius: ${({ theme }) => theme.radius.normal};
   padding: 8px;
-  border: 1px solid ${({ theme, error }) => (error ? theme.line.input.error : theme.line.input.primary)};
-  ${({ theme }) => theme.fontSize.s14h21}
+  border: 1px solid ${({ theme, error }) => (error ? theme.colors.line.input.error : theme.colors.line.input.primary)};
+  border-radius: ${({ theme }) => theme.radius.base};
+  ${({ theme }) => theme.typeScale.sm};
 
   &:focus {
-    border: 1px solid ${({ theme }) => theme.line.input.highlight};
+    border: 1px solid ${({ theme }) => theme.colors.line.input.highlight};
   }
 `;
 
@@ -291,6 +291,6 @@ const CheckBoxWrapper = styled.div`
 `;
 
 const CheckBoxLabel = styled.label`
-  ${({ theme }) => theme.fontSize.s14h21}
-  color:${({ theme }) => theme.text.secondary}
+  ${({ theme }) => theme.typeScale.sm}
+  color:${({ theme }) => theme.colors.text.secondary}
 `;

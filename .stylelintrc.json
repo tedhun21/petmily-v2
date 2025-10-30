@@ -3,42 +3,52 @@
     "stylelint-order",
     "stylelint-prettier",
     "stylelint-config-standard",
-    "stylelint-config-styled-components",
-    "stylelint-processor-styled-components"
+    "stylelint-config-styled-components"
   ],
-  "processors": ["stylelint-processor-styled-components"],
   "plugins": ["stylelint-order"],
-  "overrides": [
-    {
-      "files": ["**/*.tsx"],
-      "customSyntax": "postcss-styled-syntax"
-    }
-  ],
+  "overrides": [{ "files": ["**/*.{ts,tsx}"], "customSyntax": "postcss-styled-syntax" }],
   "rules": {
+    "selector-class-pattern": null,
     "order/order": ["custom-properties", "declarations"],
     "order/properties-order": [
       {
-        "groupName": "Box",
+        "//": "Positioning: position, top, left, z-index 등 요소의 위치를 지정하는 속성",
+        "groupName": "Positioning",
+        "emptyLineBefore": "always",
+        "noEmptyLineBetween": true,
+        "properties": ["position", "top", "right", "bottom", "left", "z-index"]
+      },
+      {
+        "//": "Layout & Box Model: display, flex, width, height, margin, padding 등 레이아웃과 박스 모델 관련 속성",
+        "groupName": "Layout & Box Model",
         "emptyLineBefore": "always",
         "noEmptyLineBetween": true,
         "properties": [
           "display",
-          "flex-direction",
-          "align-items",
-          "justify-content",
           "flex",
-          "visibility",
-          "overflow",
+          "flex-grow",
+          "flex-shrink",
+          "flex-basis",
+          "flex-flow",
+          "flex-direction",
+          "flex-wrap",
+          "justify-content",
+          "align-items",
+          "align-content",
+          "align-self",
+          "order",
           "float",
           "clear",
-          "position",
-          "top",
-          "right",
-          "bottom",
-          "left",
-          "z-index",
+          "visibility",
+          "overflow",
+          "overflow-x",
+          "overflow-y",
           "width",
+          "min-width",
+          "max-width",
           "height",
+          "min-height",
+          "max-height",
           "margin",
           "margin-top",
           "margin-right",
@@ -48,34 +58,100 @@
           "padding-top",
           "padding-right",
           "padding-bottom",
-          "padding-left",
+          "padding-left"
+        ]
+      },
+      {
+        "//": "Visual: background, border, color, box-shadow 등 시각적 효과 관련 속성",
+        "groupName": "Visual",
+        "emptyLineBefore": "always",
+        "noEmptyLineBetween": true,
+        "properties": [
           "background",
           "background-color",
+          "background-image",
+          "background-repeat",
+          "background-position",
+          "background-size",
           "border",
+          "border-spacing",
+          "border-collapse",
+          "border-width",
+          "border-style",
+          "border-color",
+          "border-top",
+          "border-top-width",
+          "border-top-style",
+          "border-top-color",
+          "border-right",
+          "border-right-width",
+          "border-right-style",
+          "border-right-color",
+          "border-bottom",
+          "border-bottom-width",
+          "border-bottom-style",
+          "border-bottom-color",
+          "border-left",
+          "border-left-width",
+          "border-left-style",
+          "border-left-color",
           "border-radius",
           "color",
+          "opacity",
+          "filter",
+          "box-shadow"
+        ]
+      },
+      {
+        "//": "Typography: font-size, line-height, text-align 등 텍스트 관련 속성",
+        "groupName": "Typography",
+        "emptyLineBefore": "always",
+        "noEmptyLineBetween": true,
+        "properties": [
+          "font-family",
           "font-style",
           "font-weight",
           "font-size",
           "line-height",
           "letter-spacing",
           "text-align",
+          "text-decoration",
           "text-indent",
+          "text-transform",
           "vertical-align",
-          "white-space"
+          "white-space",
+          "word-wrap",
+          "word-break"
         ]
       },
       {
-        "groupName": "Background",
-        "emptyLineBefore": "always",
-        "noEmptyLineBetween": true,
-        "properties": ["background-color"]
-      },
-      {
+        "//": "Animation: animation, transition 등 애니메이션 관련 속성",
         "groupName": "Animation",
         "emptyLineBefore": "always",
         "noEmptyLineBetween": true,
-        "properties": ["animation"]
+        "properties": [
+          "animation",
+          "animation-name",
+          "animation-duration",
+          "animation-timing-function",
+          "animation-delay",
+          "animation-iteration-count",
+          "animation-direction",
+          "animation-fill-mode",
+          "animation-play-state",
+          "transition",
+          "transition-property",
+          "transition-duration",
+          "transition-timing-function",
+          "transition-delay"
+        ]
+      },
+      {
+        "//": "Misc: cursor, user-select 등 기타 속성",
+        "groupName": "Misc",
+        "emptyLineBefore": "always",
+        "noEmptyLineBetween": true,
+        "properties": ["cursor", "user-select", "appearance"]
       }
     ]
   }

@@ -86,25 +86,24 @@ const StyledOutMotionDiv = styled(motion.div)`
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.2);
-  blur-filter: blur(2px);
   z-index: 10;
   overflow: hidden;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(0 0 0 / 20%);
+  filter: blur(2px);
 `;
 
 const StyledInMotionDiv = styled(motion.div)`
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-
-  background-color: ${({ theme }) => theme.background.primary};
-  border-bottom-left-radius: ${({ theme }) => theme.radius.large};
-  border-bottom-right-radius: ${({ theme }) => theme.radius.large};
-  box-shadow:${({ theme }) => theme.shadow.onlyBottom}
   z-index: 11;
+  width: 100%;
+  background-color: ${({ theme }) => theme.colors.background.primary};
+  box-shadow: ${({ theme }) => theme.shadow.onlyBottom};
+  border-bottom-left-radius: ${({ theme }) => theme.radius.lg};
+  border-bottom-right-radius: ${({ theme }) => theme.radius.lg};
 `;
 
 const ContentWrapper = styled.div`
@@ -112,7 +111,7 @@ const ContentWrapper = styled.div`
 `;
 
 const MemberCount = styled(Texts16h24)`
-  color: ${({ theme }) => theme.text.highlight};
+  color: ${({ theme }) => theme.colors.text.highlight};
 `;
 
 const XButton = styled(Button)`
@@ -137,8 +136,8 @@ const MemberItem = styled.li`
   padding: 4px;
 
   &:hover {
-    background-color: ${({ theme }) => theme.background.box.default.primary};
-    border-radius: ${({ theme }) => theme.radius.large};
+    background-color: ${({ theme }) => theme.colors.background.box.default.primary};
+    border-radius: ${({ theme }) => theme.radius.lg};
   }
 `;
 

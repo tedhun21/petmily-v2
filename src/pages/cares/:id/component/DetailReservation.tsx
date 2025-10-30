@@ -5,8 +5,8 @@ import { HiOutlineLocationMarker } from 'react-icons/hi';
 import { FaChevronRight } from 'react-icons/fa6';
 
 import { dateAgo, dayFormat, timeRange } from 'utils/date';
-import { Texts12h18, Texts18h27 } from 'styles/commonStyle';
 import { Reservation } from 'types/reservation.type';
+import { Texts12h16, Texts18h28 } from 'styles/commonStyle';
 
 interface DetailReservationProps {
   reservation: Reservation;
@@ -39,7 +39,7 @@ export default function DetailReservation({ reservation }: DetailReservationProp
         <RequestParagraph>{reservation?.body}</RequestParagraph>
       </div>
 
-      <Texts12h18>{dateAgo(reservation?.createdAt)}</Texts12h18>
+      <Texts12h16>{dateAgo(reservation?.createdAt)}</Texts12h16>
     </DetailRservation>
   );
 }
@@ -58,8 +58,8 @@ const Wrapper = styled.div`
   justify-content: space-between;
 `;
 
-const Label = styled(Texts18h27)`
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
+const Label = styled(Texts18h28)`
+  font-weight: ${({ theme }) => theme.fontWeight.semibold};
 `;
 
 const LocationLink = styled(Link)`
@@ -69,14 +69,14 @@ const LocationLink = styled(Link)`
 `;
 
 const CustomLocationMarker = styled(HiOutlineLocationMarker)`
-  color: ${({ theme }) => theme.text.highlight};
+  color: ${({ theme }) => theme.colors.text.highlight};
 `;
 
 const CustomChevronRight = styled(FaChevronRight)`
-  color: ${({ theme }) => theme.text.highlight};
+  color: ${({ theme }) => theme.colors.text.highlight};
 `;
 
 const RequestParagraph = styled.p`
-  ${({ theme }) => theme.fontSize.s14h21};
+  ${({ theme }) => theme.typeScale.sm};
   padding-left: 8px;
 `;

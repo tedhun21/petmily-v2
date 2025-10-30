@@ -114,8 +114,8 @@ export default function LoginPage() {
 const Main = styled.main`
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   width: 100%;
   height: 80%;
   gap: 60px;
@@ -141,20 +141,19 @@ const LoginInput = styled(Input)`
   width: 100%;
   padding: 8px;
 
-  ${({ theme }) => theme.fontSize.s14h21};
+  ${({ theme }) => theme.typeScale.sm};
 `;
 
 export const SubmitButton = styled(BlueButton)`
   width: 100%;
   padding: 8px;
-
-  ${({ theme }) => theme.fontSize.s16h24};
+  ${({ theme }) => theme.typeScale.base};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;
 
 const CustomLink = styled(Link)`
-  color: ${({ theme }) => theme.text.highlight};
-  font-size: ${({ theme }) => theme.fontSize.s14h21};
+  color: ${({ theme }) => theme.colors.text.highlight};
+  font-size: ${({ theme }) => theme.typeScale.sm};
   text-decoration-line: none;
 `;
 

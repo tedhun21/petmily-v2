@@ -79,16 +79,15 @@ const CustomLink = styled(BlueLink)`
   align-items: center;
   width: 100%;
   padding: 20px;
-
-  color: ${({ theme }) => theme.text.white};
-  background-color: ${({ theme }) => theme.background.box.blue.primary};
+  background-color: ${({ theme }) => theme.colors.background.box.blue.primary};
+  color: ${({ theme }) => theme.colors.text.white};
 
   &:hover {
-    background-color: ${({ theme }) => theme.background.box.blue.hover};
+    background-color: ${({ theme }) => theme.colors.background.box.blue.hover};
   }
 
   &:active {
-    background-color: ${({ theme }) => theme.background.box.blue.active};
+    background-color: ${({ theme }) => theme.colors.background.box.blue.active};
     box-shadow: ${({ theme }) => theme.shadow.inset};
   }
 `;

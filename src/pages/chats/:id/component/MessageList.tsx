@@ -43,6 +43,6 @@ export default function MessageList() {
 const List = styled.ul`
   display: flex;
   flex-direction: column-reverse;
-  padding: 0px 16px;
+  padding: 0 16px;
   gap: 8px;
 `;

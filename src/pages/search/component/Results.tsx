@@ -71,8 +71,8 @@ export default function Results() {
 }
 
 const Main = styled.main`
-  padding: 12px;
   height: 100%;
+  padding: 12px;
 `;
 
 const AlternativeContainer = styled(CenterContainer)`

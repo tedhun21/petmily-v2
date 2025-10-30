@@ -1,8 +1,8 @@
-import { Texts12h18 } from 'styles/commonStyle';
 import { useLocation, Link } from 'react-router-dom';
 
 import styled from 'styled-components';
 import { INavItem } from './NavBar';
+import { Texts12h16 } from 'styles/commonStyle';
 
 interface NavBarLinkProps {
   item: INavItem;
@@ -23,26 +23,26 @@ export default function NavBarLink({ item }: NavBarLinkProps) {
 
 const NavLi = styled.li<{ $isActive: boolean }>`
   display: flex;
-  align-items: center;
-  justify-content: center;
   flex: 1;
-  border-bottom: ${({ $isActive, theme }) => ($isActive ? `2px solid ${theme.line.box.highlight}` : '')};
+  justify-content: center;
+  align-items: center;
+  border-bottom: ${({ $isActive, theme }) => ($isActive ? `2px solid ${theme.colors.line.box.highlight}` : '')};
 `;
 
 const CustomLink = styled(Link)<{ $isActive: boolean }>`
-  font-weight: ${({ $isActive, theme }) => ($isActive ? theme.fontWeight.extrabold : theme.fontWeight.bold)};
+  font-weight: ${({ $isActive, theme }) => ($isActive ? theme.typeScale['2xl'] : theme.typeScale.xl)};
 
   &:visited {
     text-decoration: none;
   }
 `;
 
-const LinkLabel = styled(Texts12h18)<{ $isActive: boolean }>`
+const LinkLabel = styled(Texts12h16)<{ $isActive: boolean }>`
   padding: 6px 8px;
-  border-radius: ${({ theme }) => theme.radius.normal};
-  color: ${({ $isActive, theme }) => ($isActive ? theme.text.active : theme.text.inactive)};
+  border-radius: ${({ theme }) => theme.radius.base};
+  color: ${({ $isActive, theme }) => ($isActive ? theme.colors.text.active : theme.colors.text.inactive)};
 
   &:hover {
-    background-color: ${({ theme, $isActive }) => !$isActive && theme.background.box.default.hover};
+    background-color: ${({ theme, $isActive }) => !$isActive && theme.colors.background.box.default.hover};
   }
 `;

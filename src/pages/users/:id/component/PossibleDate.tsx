@@ -257,9 +257,9 @@ const StyledDatePicker = styled(DatePicker)`
 `;
 
 const DropdownMenu = styled(motion.div)`
+  overflow: hidden;
   width: 100%;
   border-radius: 5px;
-  overflow: hidden;
 `;
 
 const ButtonContainer = styled.div`
@@ -271,11 +271,11 @@ const ButtonContainer = styled.div`
 const ButtonWrapper = styled.div<{ disabled: boolean }>`
   position: relative;
   display: flex;
-  border-radius: 12px;
   border: 1px solid transparent;
+  border-radius: 12px;
 
   &:hover {
-    border: 1px solid ${({ theme, disabled }) => (disabled ? 'none' : theme.line.box.highlight)};
+    border: 1px solid ${({ theme, disabled }) => (disabled ? 'none' : theme.colors.line.box.highlight)};
   }
 
   &:hover div {
@@ -284,25 +284,32 @@ const ButtonWrapper = styled.div<{ disabled: boolean }>`
 `;
 
 const TimeButton = styled.button<{ disabled: boolean; $isSelected: boolean; $isBetween: boolean }>`
-  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
   padding: 20px;
+  background-color: ${({ $isSelected, $isBetween, theme }) =>
+    $isSelected
+      ? theme.colors.background.box.blue.active
+      : $isBetween
+        ? theme.colors.background.box.blue.primary
+        : 'transparent'};
   border-radius: 12px;
 
-  // hover와 active 스타일을 disabled일 때 비활성화
+  /* hover와 active 스타일을 disabled일 때 비활성화 */
   pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
-
-  background-color: ${({ $isSelected, $isBetween, theme }) =>
-    $isSelected ? theme.background.box.blue.active : $isBetween ? theme.background.box.blue.primary : 'transparent'};
 `;
 
 const TimeText = styled.span<{ disabled: boolean; $isBetween: boolean; $isSelected: boolean }>`
   color: ${({ disabled, $isSelected, $isBetween, theme }) =>
-    $isSelected || $isBetween ? theme.text.white : disabled ? theme.text.inactive : theme.text.active};
-  text-decoration: ${({ disabled }) => (disabled ? 'line-through' : 'none')};
+    $isSelected || $isBetween
+      ? theme.colors.text.white
+      : disabled
+        ? theme.colors.text.inactive
+        : theme.colors.text.active};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
+  text-decoration: ${({ disabled }) => (disabled ? 'line-through' : 'none')};
 `;
 
 // const ButtonContainer = styled.div`
@@ -310,7 +317,7 @@ const TimeText = styled.span<{ disabled: boolean; $isBetween: boolean; $isSelect
 //   display: flex;
 //   justify-content: center;
 //   padding: 20px;
-//   background-color: ${({ theme }) => theme.background.primary};
+//   background-color: ${({ theme }) => theme.colors.background.primary};
 // `;
 
 const StyledLink = styled(Link)<{ disabled: boolean }>`
@@ -318,24 +325,23 @@ const StyledLink = styled(Link)<{ disabled: boolean }>`
   align-items: center;
   justify-content: center;
   padding: 12px;
-  border-radius: ${({ theme }) => theme.radius.normal};
+  border-radius: ${({ theme }) => theme.radius.base};
   width: 100%;
-  color: ${({ theme }) => theme.text.white};
+  color: ${({ theme }) => theme.colors.text.white};
 
-  // hover와 active 스타일을 disabled일 때 비활성화
+  /* hover와 active 스타일을 disabled일 때 비활성화 */
   pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
-
   background-color: ${({ theme, disabled }) =>
-    disabled ? theme.background.box.blue.disabled : theme.background.box.blue.primary};
+    disabled ? theme.colors.background.box.blue.disabled : theme.colors.background.box.blue.primary};
 
   &:hover {
-    background-color: ${({ theme }) => theme.background.box.blue.hover};
+    background-color: ${({ theme }) => theme.colors.background.box.blue.hover};
   }
 
   &:active {
-    background-color: ${({ theme }) => theme.background.box.blue.active};
+    background-color: ${({ theme }) => theme.colors.background.box.blue.active};
     box-shadow: ${({ theme }) => theme.shadow.inset};
   }
 
-  ${({ theme }) => theme.fontSize.s16h24};
+  ${({ theme }) => theme.typeScale.base};
 `;

@@ -1,4 +1,4 @@
-import { ImageCentered, RoundedImageWrapper, Row, Texts18h27 } from 'styles/commonStyle';
+import { ImageCentered, RoundedImageWrapper, Row, Texts18h28 } from 'styles/commonStyle';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { User } from 'types/user.type';
@@ -44,28 +44,28 @@ const ImageName = styled(Row)`
 const ClientImage = styled(RoundedImageWrapper)`
   width: 80px;
   height: 80px;
-  border: 2px solid ${({ theme }) => theme.line.box.highlight};
+  border: 2px solid ${({ theme }) => theme.colors.line.box.highlight};
 `;
 
-const ClientName = styled(Texts18h27)`
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
+const ClientName = styled(Texts18h28)`
+  font-weight: ${({ theme }) => theme.fontWeight.semibold};
 `;
 
 const StyledLink = styled(Link)`
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   padding: 8px;
-  border-radius: ${({ theme }) => theme.radius.normal};
+  background-color: ${({ theme }) => theme.colors.background.box.blue.primary};
+  border-radius: ${({ theme }) => theme.radius.base};
   color: white;
-  background-color: ${({ theme }) => theme.background.box.blue.primary};
 
   &:hover {
-    background-color: ${({ theme }) => theme.background.box.blue.hover};
+    background-color: ${({ theme }) => theme.colors.background.box.blue.hover};
   }
 
   &:active {
-    background-color: ${({ theme }) => theme.background.box.blue.active};
+    background-color: ${({ theme }) => theme.colors.background.box.blue.active};
     box-shadow: ${({ theme }) => theme.shadow.inset};
   }
 

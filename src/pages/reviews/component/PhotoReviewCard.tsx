@@ -9,7 +9,7 @@ import { Pagination } from 'swiper/modules';
 import { PiStarFill } from 'react-icons/pi';
 
 import { dateAgo } from 'utils/date';
-import { Column, ImageCentered, RoundedImageWrapper, Row, Texts12h18, Texts16h24 } from 'styles/commonStyle';
+import { Column, ImageCentered, RoundedImageWrapper, Row, Texts12h16, Texts16h24 } from 'styles/commonStyle';
 import { Review } from 'types/review.type';
 
 interface ReviewPhotoCardProps {
@@ -80,7 +80,7 @@ export default function PhotoReviewCard({ review }: ReviewPhotoCardProps) {
             </RestButton>
           )}
         </div>
-        <Texts12h18>{dateAgo(review.createdAt)}</Texts12h18>
+        <Texts12h16>{dateAgo(review.createdAt)}</Texts12h16>
       </ReviewContainer>
 
       {/* 펫시터 카드 */}
@@ -123,8 +123,8 @@ const StarWrapper = styled(Row)`
 `;
 
 const ReviewImageContainer = styled.div`
-  overflow: hidden;
   position: relative;
+  overflow: hidden;
   width: 100%;
   aspect-ratio: 1/1;
   object-fit: cover;
@@ -141,14 +141,14 @@ const ReviewText = styled.p<{ $isExpanded: boolean }>`
 `;
 
 const RestButton = styled.button`
-  ${({ theme }) => theme.fontSize.s12h18};
+  ${({ theme }) => theme.typeScale.xs};
 `;
 
 const PetsitterContainer = styled(Row)`
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   padding: 12px;
-  border: 2px solid ${({ theme }) => theme.line.box.highlight};
+  border: 2px solid ${({ theme }) => theme.colors.line.box.highlight};
   border-radius: 16px;
   gap: 8px;
 `;
@@ -161,25 +161,25 @@ const PetsitterInfo = styled(Row)`
 const PetsitterImage = styled(RoundedImageWrapper)`
   width: 40px;
   height: 40px;
-  border: 2px solid ${({ theme }) => theme.line.box.highlight};
+  border: 2px solid ${({ theme }) => theme.colors.line.box.highlight};
 `;
 
 const PetsitterDetailLink = styled(Link)`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${({ theme }) => theme.background.box.blue.primary};
-  ${({ theme }) => theme.fontSize.s14h21}
+  background-color: ${({ theme }) => theme.colors.background.box.blue.primary};
+  ${({ theme }) => theme.typeScale.sm}
   padding: 4px 8px;
-  border-radius: ${({ theme }) => theme.radius.normal};
+  border-radius: ${({ theme }) => theme.radius.base};
   color: white;
 
   &:hover {
-    background-color: ${({ theme }) => theme.background.box.blue.hover};
+    background-color: ${({ theme }) => theme.colors.background.box.blue.hover};
   }
 
   &:active {
-    background-color: ${({ theme }) => theme.background.box.blue.active};
+    background-color: ${({ theme }) => theme.colors.background.box.blue.active};
     box-shadow: ${({ theme }) => theme.shadow.inset};
   }
 `;

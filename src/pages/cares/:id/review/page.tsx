@@ -15,7 +15,7 @@ import {
   CenterContainer,
   Column,
   Float,
-  Texts14h21,
+  Texts14h20,
   Texts16h24,
   Title,
 } from 'styles/commonStyle';
@@ -192,7 +192,7 @@ export default function ReviewPage() {
               <ImageSelectButton type="button" onClick={openFileInput}>
                 파일 선택
               </ImageSelectButton>
-              <Texts14h21>최대 5개의 이미지를 선택할 수 있습니다.</Texts14h21>
+              <Texts14h20>최대 5개의 이미지를 선택할 수 있습니다.</Texts14h20>
             </ImageSelectWrapper>
 
             <ImagePreview>
@@ -262,13 +262,13 @@ const TextArea = styled.textarea`
   width: 100%;
   height: 100px;
   padding: 8px;
-  border-radius: ${({ theme }) => theme.radius.normal};
-  color: ${({ theme }) => theme.text.active};
-  background-color: ${({ theme }) => theme.background.input.primary};
-  ${({ theme }) => theme.fontSize.s14h21};
+  border-radius: ${({ theme }) => theme.radius.base};
+  color: ${({ theme }) => theme.colors.text.active};
+  background-color: ${({ theme }) => theme.colors.background.input.primary};
+  ${({ theme }) => theme.typeScale.sm};
 
   &:hover {
-    background-color: ${({ theme }) => theme.background.input.hover};
+    background-color: ${({ theme }) => theme.colors.background.input.hover};
   }
 `;
 
@@ -284,20 +284,20 @@ const ImageSelectWrapper = styled.div`
   gap: 4px;
 
   > div {
-    ${({ theme }) => theme.fontSize.s12h18}
+    ${({ theme }) => theme.typeScale.xs}
   }
 `;
 
 const ImageSelectButton = styled(BlueButton)`
   padding: 4px 8px;
-  border-radius: ${({ theme }) => theme.radius.normal};
-  ${({ theme }) => theme.fontSize.s14h21};
+  border-radius: ${({ theme }) => theme.radius.base};
+  ${({ theme }) => theme.typeScale.sm};
 `;
 
 const ImagePreview = styled.div`
   display: flex;
-  width: 100%;
   flex-wrap: wrap;
+  width: 100%;
 `;
 
 const ImagePreviewItem = styled.div`
@@ -308,21 +308,21 @@ const ImagePreviewItem = styled.div`
 
 const Img = styled.img`
   width: 100px;
-  border-radius: ${({ theme }) => theme.radius.normal};
+  border-radius: ${({ theme }) => theme.radius.base};
 `;
 
 const RemoveButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
   position: absolute;
   top: 0;
   right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 24px;
   height: 24px;
-  border: 1px solid ${({ theme }) => theme.line.box.primary};
+  background-color: ${({ theme }) => theme.colors.background.highlight};
+  border: 1px solid ${({ theme }) => theme.colors.line.box.primary};
   border-radius: 50%;
-  background-color: ${({ theme }) => theme.background.highlight};
 `;
 
 const FloatButtonContainer = styled(Float)`
@@ -330,13 +330,13 @@ const FloatButtonContainer = styled(Float)`
   left: 0;
   width: 100%;
   padding: 20px;
-  background-color: ${({ theme }) => theme.background.primary};
+  background-color: ${({ theme }) => theme.colors.background.primary};
 `;
 
 const SubmitButton = styled(BlueButton)`
   padding: 8px;
   width: 100%;
-  border-radius: ${({ theme }) => theme.radius.normal};
+  border-radius: ${({ theme }) => theme.radius.base};
 
-  ${({ theme }) => theme.fontSize.s16h24};
+  ${({ theme }) => theme.typeScale.base};
 `;

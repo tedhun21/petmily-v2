@@ -62,8 +62,8 @@ export default function EditableProfileImage({
 }
 
 const ImageContainer = styled(Column)`
-  padding: 40px;
   align-items: center;
+  padding: 40px;
   gap: 16px;
 `;
 
@@ -71,7 +71,7 @@ const ImageLabel = styled.label`
   cursor: pointer;
 
   &:hover {
-    color: ${({ theme }) => theme.text.highlight};
+    color: ${({ theme }) => theme.colors.text.highlight};
   }
 `;
 
@@ -86,12 +86,12 @@ const UserImageWrapper = styled(RoundedImageWrapper)`
 
 const XButton = styled.button`
   position: absolute;
-  right: 0;
   top: 0;
+  right: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 4px;
-  background-color: ${({ theme }) => theme.background.red};
+  background-color: ${({ theme }) => theme.colors.background.error};
   border-radius: ${({ theme }) => theme.radius.circle};
 `;
