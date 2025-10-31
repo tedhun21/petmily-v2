@@ -92,18 +92,18 @@ const AlternativeContainer = styled(CenterContainer)`
 
 const Content = styled(Row)`
   width: 100%;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const RecentContainer = styled(Row)`
   display: flex;
   flex: 0 0 auto;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 const RecentWrapper = styled(Column)`
   flex: 1;
-  gap: 20px;
+  gap: ${({ theme }) => theme.spacing.xl};
 `;
 
 const RecentTitle = styled(Texts12h16)``;

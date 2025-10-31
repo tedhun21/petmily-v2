@@ -24,7 +24,7 @@ const ReviewCard = styled.article`
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: 16px;
+  gap: ${({ theme }) => theme.spacing.lg};
 `;
 
 const pulse = keyframes`
@@ -35,7 +35,7 @@ const pulse = keyframes`
 
 const SkeletonElement = styled.div`
   background-color: ${({ theme }) => theme.colors.background.box.default.hover};
-  border-radius: 16px;
+  border-radius: ${({ theme }) => theme.radius.md};
   animation: ${pulse} 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; /* pulse 애니메이션 
        적용 */
 `;
@@ -47,24 +47,24 @@ const SkeletonImage = styled(SkeletonElement)`
 `;
 
 const ReviewContainer = styled(Column)`
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 const TitleContainer = styled(SkeletonElement)`
   width: 20%;
-  height: 24px;
-  padding: 8px;
+  height: ${({ theme }) => theme.spacing._2xl};
+  padding: ${({ theme }) => theme.spacing.sm};
 `;
 
 const ReviewWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 const ReviewText = styled(SkeletonElement)`
   width: 50%;
-  height: 20px;
+  height: ${({ theme }) => theme.spacing.xl};
 `;
 
 const PetsitterContainer = styled(SkeletonElement)`

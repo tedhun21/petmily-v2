@@ -87,12 +87,12 @@ export default function TopHeader() {
 const Container = styled(Row)`
   flex: 1;
   justify-content: space-between;
-  padding: 12px;
+  padding: ${({ theme }) => theme.spacing.md};
 `;
 
 const Wrapper = styled(Row)`
   align-items: center;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 const ButtonContainer = styled.div`
@@ -108,7 +108,7 @@ const Button = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 4px;
+  padding: ${({ theme }) => theme.spacing.xs};
   border-radius: ${({ theme }) => theme.radius.base};
 
   &:hover {
@@ -120,7 +120,7 @@ const StyledLink = styled(Link)`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 4px;
+  padding: ${({ theme }) => theme.spacing.xs};
   border-radius: ${({ theme }) => theme.radius.base};
 
   &:hover {
@@ -155,8 +155,8 @@ const UnreadCount = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  min-width: 16px;
-  height: 16px;
+  min-width: ${({ theme }) => theme.spacing.lg};
+  height: ${({ theme }) => theme.spacing.lg};
   background-color: ${({ theme }) => theme.colors.background.error};
   border-radius: ${({ theme }) => theme.radius.circle};
 

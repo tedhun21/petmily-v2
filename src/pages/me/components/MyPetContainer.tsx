@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useInView } from 'framer-motion';
 
-import { CenterContainer } from 'styles/commonStyle';
+import { CenterContainer, Column } from 'styles/commonStyle';
 
 import { useAuthSWRInfinite } from 'hooks/authSWR';
 import PetmilyCard from './PetmilyCard';
@@ -70,14 +70,12 @@ export default function MyPetContainer() {
 const CardContainer = styled.ul`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-gap: 12px;
+  grid-gap: ${({ theme }) => theme.spacing.md};
   width: 100%;
 `;
 
 // 반려동물이 없을 때
-const NoPetsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+const NoPetsContainer = styled(Column)`
   align-items: center;
   text-align: center;
 
@@ -90,10 +88,10 @@ const StyledLink = styled(Link)`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 8px;
+  padding: ${({ theme }) => theme.spacing.sm};
   background-color: ${({ theme }) => theme.colors.background.box.blue.primary};
-  border-radius: ${({ theme }) => theme.radius.base};
-  color: white;
+  border-radius: ${({ theme }) => theme.radius.md};
+  color: ${({ theme }) => theme.colors.text.white};
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.background.box.blue.hover};

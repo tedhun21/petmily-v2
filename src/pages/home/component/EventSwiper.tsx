@@ -19,11 +19,11 @@ export default function EventSwiper() {
 
 const CustomSwiper = styled(Swiper)`
   width: 100%;
-  border-radius: 16px;
+  border-radius: ${({ theme }) => theme.spacing.lg};
   box-shadow: ${({ theme }) => theme.shadow.dp01};
 `;
 
 const EventCard = styled.div`
   height: 100px;
-  padding: 24px;
+  padding: ${({ theme }) => theme.spacing._2xl};
 `;

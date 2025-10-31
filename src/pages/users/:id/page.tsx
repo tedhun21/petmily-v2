@@ -69,8 +69,8 @@ export default function ProfilePage() {
 const Main = styled.main`
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  padding: 20px;
+  gap: ${({ theme }) => theme.spacing.xl};
+  padding: ${({ theme }) => theme.spacing.xl};
 `;
 
 const CustomLink = styled(BlueLink)`
@@ -78,7 +78,7 @@ const CustomLink = styled(BlueLink)`
   justify-content: center;
   align-items: center;
   width: 100%;
-  padding: 20px;
+  padding: ${({ theme }) => theme.spacing.xl};
   background-color: ${({ theme }) => theme.colors.background.box.blue.primary};
   color: ${({ theme }) => theme.colors.text.white};
 
@@ -95,5 +95,5 @@ const CustomLink = styled(BlueLink)`
 const FloatingContainer = styled(Float)`
   bottom: 0;
   width: 100%;
-  padding: 20px;
+  padding: ${({ theme }) => theme.spacing.xl};
 `;

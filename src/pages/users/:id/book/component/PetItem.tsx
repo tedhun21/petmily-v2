@@ -51,7 +51,7 @@ const Item = styled.li`
   flex-direction: column;
   align-items: center;
   cursor: pointer;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const PetImage = styled(RoundedImageWrapper)<{ $isChecked: boolean }>`
@@ -68,10 +68,10 @@ const Check = styled.div<{ $isChecked: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 24px;
-  height: 24px;
+  width: ${({ theme }) => theme.spacing._2xl};
+  height: ${({ theme }) => theme.spacing._2xl};
   background-color: ${({ theme }) => theme.colors.background.highlight};
-  border-radius: 50%;
+  border-radius: ${({ theme }) => theme.radius.circle};
   opacity: ${({ $isChecked }) => ($isChecked ? 1 : 0)};
   transform: ${({ $isChecked }) => ($isChecked ? 'scale(1)' : 'scale(0.5)')};
 `;

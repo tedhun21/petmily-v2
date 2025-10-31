@@ -36,6 +36,6 @@ const Nav = styled.nav`
 const List = styled.ul`
   display: flex;
   justify-content: space-between;
-  gap: 20px;
+  gap: ${({ theme }) => theme.spacing.xl};
   height: 100%;
 `;

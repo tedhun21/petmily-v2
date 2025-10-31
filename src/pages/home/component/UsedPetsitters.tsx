@@ -66,5 +66,5 @@ export default function UsedPetsitters() {
 const Section = styled.section`
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: ${({ theme }) => theme.spacing.lg};
 `;

@@ -48,13 +48,13 @@ export default function LocationCapsuleContainer({ data, handleLocationClick }: 
 
 const Container = styled(Column)`
   flex: 1 1 auto;
-  gap: 16px;
+  gap: ${({ theme }) => theme.spacing.lg};
 `;
 
 const List = styled.ul<{ $columnCount: number }>`
   display: grid;
   grid-template-columns: repeat(${({ $columnCount }) => $columnCount}, 1fr);
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
   width: 100%;
 `;
 
@@ -62,11 +62,11 @@ const Item = styled.li`
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: ${({ theme }) => theme.spacing.sm};
   border: 2px solid ${({ theme }) => theme.colors.line.box.primary};
   border-radius: ${({ theme }) => theme.radius.lg};
-  padding: 8px;
-  cursor: pointer;
   font-weight: ${({ theme }) => theme.fontWeight.light};
+  cursor: pointer;
   ${({ theme }) => theme.typeScale.sm};
 
   &:hover {

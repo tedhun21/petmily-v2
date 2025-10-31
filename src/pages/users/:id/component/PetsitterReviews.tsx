@@ -63,12 +63,12 @@ const Section = styled.section`
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: 16px;
+  gap: ${({ theme }) => theme.spacing.lg};
 `;
 
 const ReviewTitle = styled(Row)`
   align-items: center;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const StyledSwiper = styled(Swiper)`
@@ -79,14 +79,14 @@ const ReviewCard = styled.li`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 16px;
+  padding: ${({ theme }) => theme.spacing.lg};
   background-color: ${({ theme }) => theme.colors.background.secondary};
-  border-radius: ${({ theme }) => theme.radius.base};
+  border-radius: ${({ theme }) => theme.radius.md};
 `;
 
 const UserWrapper = styled(Row)`
   align-items: center;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const UserImage = styled(RoundedImageWrapper)`
@@ -96,5 +96,5 @@ const UserImage = styled(RoundedImageWrapper)`
 
 const StarWrapper = styled(Row)`
   align-items: center;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;

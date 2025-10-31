@@ -111,7 +111,7 @@ export default function ProgressButton({ meRole, reservation }: ProgressButtonPr
 const ButtonContainer = styled.div`
   display: flex;
   width: 100%;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 // 1. 고객
@@ -131,13 +131,12 @@ const Button = styled(BlueButton)<{ disabled?: boolean }>`
   justify-content: center;
   align-items: center;
   width: 100%;
-  border-radius: ${({ theme }) => theme.radius.base};
-  padding: 8px;
+  padding: ${({ theme }) => theme.spacing.sm};
+  background-color: ${({ theme, disabled }) =>
+    disabled ? theme.colors.background.box.blue.disabled : theme.colors.background.box.blue.primary};
+  border-radius: ${({ theme }) => theme.radius.md};
 
   /* hover와 active 스타일을 disabled일 때 비활성화 */
   pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
-  background-color: ${({ theme, disabled }) =>
-    disabled ? theme.colors.background.box.blue.disabled : theme.colors.background.box.blue.primary};
-
   ${({ theme }) => theme.typeScale.xl};
 `;

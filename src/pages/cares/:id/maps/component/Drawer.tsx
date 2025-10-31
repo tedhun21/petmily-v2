@@ -117,7 +117,7 @@ export default function MapsDrawer({ address, map, geocode }: MapsDrawerProps) {
         <DrawerHeader>
           <DrawerHandle />
         </DrawerHeader>
-        <Content ref={contentRef}>
+        <div ref={contentRef}>
           <CenterContainer>
             <span>{address}</span>
           </CenterContainer>
@@ -136,7 +136,7 @@ export default function MapsDrawer({ address, map, geocode }: MapsDrawerProps) {
               <span>길 찾기</span>
             </StyledButton>
           </ButtonWrapper>
-        </Content>
+        </div>
 
         {isOpen && (
           <XButton onClick={() => setIsOpen(false)}>
@@ -166,25 +166,23 @@ const DrawerHeader = styled(CenterContainer)`
 
 const DrawerHandle = styled.div`
   width: 52px;
-  height: 4px;
+  height: ${({ theme }) => theme.spacing.xs};
   background-color: ${({ theme }) => theme.colors.background.highlight};
-  border-radius: 20px;
+  border-radius: ${({ theme }) => theme.spacing.xl};
   cursor: grab;
 `;
 
-const Content = styled.div``;
-
 const XButton = styled(Button)`
   position: absolute;
-  top: 8px;
-  right: 8px;
-  padding: 4px;
+  top: 12px;
+  right: 12px;
+  padding: ${({ theme }) => theme.spacing.xs};
 `;
 
 const ButtonWrapper = styled.div`
   display: flex;
-  padding: 20px;
-  gap: 4px;
+  padding: ${({ theme }) => theme.spacing.xl};
+  gap: ${({ theme }) => theme.spacing.xs};
 
   button {
     flex: 1;
@@ -195,6 +193,6 @@ const StyledButton = styled(Button)`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
-  padding: 40px;
+  gap: ${({ theme }) => theme.spacing.xs};
+  padding: ${({ theme }) => theme.spacing._4xl};
 `;

@@ -40,10 +40,10 @@ export default function ReviewCard({ review }: ReviewCardProps) {
 }
 
 const Card = styled(Column)`
-  padding: 16px;
+  padding: ${({ theme }) => theme.spacing.lg};
   background-color: ${({ theme }) => theme.colors.background.box.default.primary};
   border-radius: ${({ theme }) => theme.radius.lg};
-  gap: 12px;
+  gap: ${({ theme }) => theme.spacing.md};
 `;
 
 const ClientContainer = styled(Row)`
@@ -54,7 +54,7 @@ const ClientContainer = styled(Row)`
 
 const ClientImageName = styled(Row)`
   align-items: center;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 const ClientImage = styled(RoundedImageWrapper)`
@@ -64,12 +64,12 @@ const ClientImage = styled(RoundedImageWrapper)`
 `;
 
 const ContentContainer = styled(Column)`
-  gap: 24px;
+  gap: ${({ theme }) => theme.spacing._2xl};
 `;
 
 const StarWrapper = styled(Row)`
   align-items: center;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 const UserTimeAgo = styled(Column)`

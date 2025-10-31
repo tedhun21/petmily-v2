@@ -26,15 +26,15 @@ export default function RecentSearches({ data, setRecentSearches }: any) {
 const List = styled.ul`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const Item = styled.li`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 4px 8px;
-  border-radius: ${({ theme }) => theme.radius.base};
+  padding: 4px ${({ theme }) => theme.spacing.sm};
+  border-radius: ${({ theme }) => theme.radius.md};
   ${({ theme }) => theme.typeScale.sm};
 
   &:hover {

@@ -248,23 +248,23 @@ const StarSection = styled.section`
 `;
 
 const Container = styled(Column)`
-  gap: 20px;
-  padding: 20px;
+  gap: ${({ theme }) => theme.spacing.xl};
+  padding: ${({ theme }) => theme.spacing.xl};
 `;
 
 const TextSection = styled.section`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const TextArea = styled.textarea`
   width: 100%;
   height: 100px;
-  padding: 8px;
-  border-radius: ${({ theme }) => theme.radius.base};
-  color: ${({ theme }) => theme.colors.text.active};
+  padding: ${({ theme }) => theme.spacing.sm};
   background-color: ${({ theme }) => theme.colors.background.input.primary};
+  border-radius: ${({ theme }) => theme.radius.md};
+  color: ${({ theme }) => theme.colors.text.active};
   ${({ theme }) => theme.typeScale.sm};
 
   &:hover {
@@ -275,22 +275,22 @@ const TextArea = styled.textarea`
 const ImageSection = styled.section`
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: ${({ theme }) => theme.spacing.lg};
 `;
 
 const ImageSelectWrapper = styled.div`
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
 
   > div {
-    ${({ theme }) => theme.typeScale.xs}
+    ${({ theme }) => theme.typeScale.xs};
   }
 `;
 
 const ImageSelectButton = styled(BlueButton)`
   padding: 4px 8px;
-  border-radius: ${({ theme }) => theme.radius.base};
+  border-radius: ${({ theme }) => theme.radius.md};
   ${({ theme }) => theme.typeScale.sm};
 `;
 
@@ -303,12 +303,12 @@ const ImagePreview = styled.div`
 const ImagePreviewItem = styled.div`
   position: relative;
   margin: 2px;
-  padding: 4px;
+  padding: ${({ theme }) => theme.spacing.xs};
 `;
 
 const Img = styled.img`
   width: 100px;
-  border-radius: ${({ theme }) => theme.radius.base};
+  border-radius: ${({ theme }) => theme.radius.md};
 `;
 
 const RemoveButton = styled.button`
@@ -322,21 +322,20 @@ const RemoveButton = styled.button`
   height: 24px;
   background-color: ${({ theme }) => theme.colors.background.highlight};
   border: 1px solid ${({ theme }) => theme.colors.line.box.primary};
-  border-radius: 50%;
+  border-radius: ${({ theme }) => theme.radius.circle};
 `;
 
 const FloatButtonContainer = styled(Float)`
   bottom: 0;
   left: 0;
   width: 100%;
-  padding: 20px;
+  padding: ${({ theme }) => theme.spacing.xl};
   background-color: ${({ theme }) => theme.colors.background.primary};
 `;
 
 const SubmitButton = styled(BlueButton)`
-  padding: 8px;
   width: 100%;
-  border-radius: ${({ theme }) => theme.radius.base};
-
+  padding: ${({ theme }) => theme.spacing.sm};
+  border-radius: ${({ theme }) => theme.radius.md};
   ${({ theme }) => theme.typeScale.base};
 `;

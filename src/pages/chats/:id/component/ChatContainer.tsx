@@ -88,7 +88,7 @@ const Sticky = styled.div`
 
 const AbsoluteBottomCenter = styled.div`
   position: absolute;
-  bottom: 8px;
+  bottom: ${({ theme }) => theme.spacing.sm};
   left: 50%;
   transform: translateX(-50%);
 `;
@@ -101,14 +101,14 @@ const AbsolutBottom = styled.div`
 
 const BottomWrapper = styled.div`
   display: flex;
-  padding: 12px;
+  padding: ${({ theme }) => theme.spacing.md};
 `;
 
 const NewMessageButton = styled.button`
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 4px;
+  padding: ${({ theme }) => theme.spacing.xs};
   background-color: ${({ theme }) => theme.colors.background.box.default.primary};
   border-radius: ${({ theme }) => theme.radius.lg};
   opacity: 0.9;
@@ -118,8 +118,8 @@ const NewMessageUser = styled.div`
   display: flex;
   flex: auto;
   align-items: center;
-  padding: 4px;
-  gap: 4px;
+  padding: ${({ theme }) => theme.spacing.xs};
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 const NewMessageUserPhoto = styled(RoundedImageWrapper)`
@@ -133,7 +133,7 @@ const NewMessage = styled(Texts14h20)`
 `;
 
 const DownButton = styled(Button)`
-  padding: 8px;
+  padding: ${({ theme }) => theme.spacing.sm};
   border-radius: ${({ theme }) => theme.radius.circle};
   opacity: 0.9;
 `;
@@ -142,5 +142,5 @@ const Empty = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;

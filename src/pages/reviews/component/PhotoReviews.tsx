@@ -60,5 +60,5 @@ const ReviewContainer = styled.section`
   display: flex;
   flex-direction: column;
   gap: 60px;
-  padding: 20px;
+  padding: ${({ theme }) => theme.spacing.xl};
 `;

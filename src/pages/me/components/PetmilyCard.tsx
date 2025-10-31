@@ -61,11 +61,11 @@ const PetCard = styled(Link)`
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  padding: 8px;
+  padding: ${({ theme }) => theme.spacing.sm};
   border: 2px solid ${({ theme }) => theme.colors.line.box.highlight};
-  border-radius: 16px;
+  border-radius: ${({ theme }) => theme.radius.md};
   color: inherit;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
   box-shadow: ${({ theme }) => theme.shadow.dp01};
   text-decoration: none;
 
@@ -88,12 +88,12 @@ const UpperContainer = styled(Row)`
 `;
 
 const PetImageNameSpecies = styled(Row)`
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
   align-items: center;
 `;
 
 const PetNameSpecies = styled(Column)`
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 const Species = styled(Texts12h16)`
@@ -108,7 +108,7 @@ const PetImage = styled(RoundedImageWrapper)`
 const LowerContainer = styled.ul`
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
   width: 100%;
 `;
 
@@ -118,10 +118,10 @@ const PetPropWrapper = styled.li`
   align-items: center;
   padding: 4px 8px;
   background-color: ${({ theme }) => theme.colors.background.highlight};
-  border-radius: 16px;
+  border-radius: ${({ theme }) => theme.radius.md};
 
   > span {
-    color: white;
+    color: ${({ theme }) => theme.colors.text.white};
     ${({ theme }) => theme.typeScale.sm};
   }
 `;

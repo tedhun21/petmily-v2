@@ -720,11 +720,11 @@ const Section = styled.section`
   flex-direction: column;
   overflow-y: auto;
   height: 100%;
-  padding: 20px;
+  padding: ${({ theme }) => theme.spacing.xl};
 `;
 
 const Question = styled.h1`
-  padding: 8px;
+  padding: ${({ theme }) => theme.spacing.sm};
   color: ${({ theme }) => theme.colors.text.highlight};
   ${({ theme }) => theme.typeScale.lg};
 `;
@@ -732,7 +732,7 @@ const Question = styled.h1`
 const List = styled.ul`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const Item = styled.li``;
@@ -742,16 +742,15 @@ const ListItemButton = styled.button`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: 8px;
+  padding: ${({ theme }) => theme.spacing.sm};
 
   hover: {
     background-color: ${({ theme }) => theme.colors.background.box.default.hover};
   }
 `;
 
-const ListTitle = styled.div`
-  display: flex;
-  gap: 8px;
+const ListTitle = styled(Row)`
+  gap: ${({ theme }) => theme.spacing.sm};
   ${({ theme }) => theme.typeScale.base};
 
   span:first-child {
@@ -760,8 +759,8 @@ const ListTitle = styled.div`
 `;
 
 const Answer = styled(Row)`
-  gap: 8px;
-  padding-left: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
+  padding-left: ${({ theme }) => theme.spacing.sm};
 
   img {
     width: 16px;
@@ -770,11 +769,11 @@ const Answer = styled(Row)`
 `;
 
 const ParagraphWrapper = styled(Column)`
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
   color: ${({ theme }) => theme.colors.text.secondary};
   ${({ theme }) => theme.typeScale.sm};
 
   p {
-    text-indent: 4px;
+    text-indent: ${({ theme }) => theme.spacing.xs};
   }
 `;

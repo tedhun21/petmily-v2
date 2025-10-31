@@ -104,10 +104,10 @@ const ConfirmContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 8px;
+  padding: ${({ theme }) => theme.spacing.sm};
   border-top: 1px solid ${({ theme }) => theme.colors.text.inactive};
   border-bottom: 1px solid ${({ theme }) => theme.colors.text.inactive};
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const TermsContainer = styled(Column)`
@@ -117,12 +117,12 @@ const TermsContainer = styled(Column)`
   overflow: auto;
   width: 400px;
   height: 600px;
-  padding: 24px;
+  padding: ${({ theme }) => theme.spacing._2xl};
   background-color: ${({ theme }) => theme.colors.background.box.default.primary};
-  border-radius: 12px;
+  border-radius: ${({ theme }) => theme.radius.sm};
   color: ${({ theme }) => theme.colors.text.active};
   transform: translate(-50%, -50%);
-  gap: 12px;
+  gap: ${({ theme }) => theme.spacing.md};
 `;
 
 const TextCenter = styled.div`
@@ -130,7 +130,7 @@ const TextCenter = styled.div`
 `;
 
 const Container = styled(Column)`
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const RedSubTitle = styled(SubTitle)`
@@ -140,32 +140,31 @@ const RedSubTitle = styled(SubTitle)`
 const List = styled.ul`
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
   list-style-type: disc;
 `;
 
 const Item = styled.li`
   list-style-position: inside;
-  ${({ theme }) => theme.typeScale.sm}
+  ${({ theme }) => theme.typeScale.sm};
 `;
 
 const SubItem = styled(Texts12h16)`
-  padding-left: 20px;
+  padding-left: ${({ theme }) => theme.spacing.xl};
   color: ${({ theme }) => theme.colors.text.inactive};
 `;
 
 const CheckButton = styled(BlueButton)`
   width: 100%;
-  padding: 12px;
-  border-radius: ${({ theme }) => theme.radius.base};
-
-  ${({ theme }) => theme.typeScale.base}
+  padding: ${({ theme }) => theme.spacing.md};
+  border-radius: ${({ theme }) => theme.radius.md};
+  ${({ theme }) => theme.typeScale.base};
 `;
 
 const Check = styled.div`
   position: absolute;
-  top: 20px;
-  left: 8px;
+  top: ${({ theme }) => theme.spacing.xl};
+  left: ${({ theme }) => theme.spacing.sm};
 `;
 
 const ConfirmText = styled(Texts16h24)<{ $isChecked: boolean }>`
@@ -173,7 +172,7 @@ const ConfirmText = styled(Texts16h24)<{ $isChecked: boolean }>`
 `;
 
 const TermsButton = styled.button`
-  text-decoration: underline;
   color: ${({ theme }) => theme.colors.text.secondary};
+  text-decoration: underline;
   ${({ theme }) => theme.typeScale.sm}
 `;

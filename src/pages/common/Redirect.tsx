@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 import { fetcher, updater } from 'api';
 import { UserRole } from 'types/user.type';
 import Loading from '@components/Loading';
+import { Column } from 'styles/commonStyle';
 
 // 1. URL에서 액세스 토큰 파싱
 // 2. 액세스 토큰을 이용해 내 정보 가져오기
@@ -70,21 +71,19 @@ const MainContainer = styled.main`
   align-items: center;
   width: 100%;
   height: 100%;
-  padding: 40px;
+  padding: ${({ theme }) => theme.spacing._4xl};
 `;
 
-const ImgContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+const ImgContainer = styled(Column)`
   width: 100%;
-  gap: 32px;
+  gap: ${({ theme }) => theme.spacing._3xl};
 `;
 
 const ImageButton = styled.button`
   position: relative;
   background-color: transparent;
   border: none;
-  border-radius: ${({ theme }) => theme.radius.base};
+  border-radius: ${({ theme }) => theme.radius.md};
   transition: all 0.2s linear;
 
   &:hover {

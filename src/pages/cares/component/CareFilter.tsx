@@ -76,7 +76,7 @@ const Sticky = styled.div`
   position: sticky;
   top: 100px;
   z-index: 10;
-  padding: 8px;
+  padding: ${({ theme }) => theme.spacing.sm};
 `;
 
 const FilterContainer = styled(Row)`
@@ -85,13 +85,13 @@ const FilterContainer = styled(Row)`
 `;
 
 const StatusFilters = styled(Row)`
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const FilterRadio = styled.div`
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
 
   input {
     display: none; /* Hide the default radio button */
@@ -99,12 +99,12 @@ const FilterRadio = styled.div`
 `;
 
 const CustomLabel = styled.label<{ $isSelected: boolean }>`
-  padding: 4px 8px;
-  border: ${({ theme, $isSelected }) => ($isSelected ? 'none' : `1px solid ${theme.colors.line.box.primary}`)};
-  border-radius: ${({ theme }) => theme.radius.base};
+  padding: 4px ${({ theme }) => theme.spacing.sm};
   background-color: ${({ theme, $isSelected }) =>
     $isSelected ? theme.colors.background.box.blue.primary : theme.colors.background.box.default.primary};
-  color: ${({ $isSelected, theme }) => ($isSelected ? 'white' : theme.colors.text.inactive)};
+  border: ${({ theme, $isSelected }) => ($isSelected ? 'none' : `1px solid ${theme.colors.line.box.primary}`)};
+  border-radius: ${({ theme }) => theme.radius.md};
+  color: ${({ $isSelected, theme }) => ($isSelected ? theme.colors.text.white : theme.colors.text.inactive)};
   transition:
     background-color 0.2s,
     color 0.2s;
@@ -114,14 +114,14 @@ const CustomLabel = styled.label<{ $isSelected: boolean }>`
 `;
 
 const SelectWrapper = styled(Row)`
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 const StyledSelect = styled.select`
-  padding: 6px 8px;
-  border: 1px solid ${({ theme }) => theme.colors.line.input.primary};
-  border-radius: ${({ theme }) => theme.radius.base};
+  padding: 6px ${({ theme }) => theme.spacing.sm};
   background-color: ${({ theme }) => theme.colors.background.box.default.primary};
+  border: 1px solid ${({ theme }) => theme.colors.line.input.primary};
+  border-radius: ${({ theme }) => theme.radius.md};
   color: inherit;
   ${({ theme }) => theme.typeScale.sm};
 

@@ -65,8 +65,8 @@ export default function CareCard({ reservation }: CareCardProps) {
 const Card = styled(DefaultLink)`
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 20px;
+  gap: ${({ theme }) => theme.spacing.sm};
+  padding: ${({ theme }) => theme.spacing.xl};
   border-radius: ${({ theme }) => theme.radius.lg};
 
   &:hover {
@@ -81,11 +81,11 @@ const FirstContainer = styled(Row)`
 
 const PetsitterContainer = styled(Row)`
   align-items: center;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const PetsitterName = styled(Row)`
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
   align-items: flex-end;
 `;
 
@@ -96,17 +96,17 @@ const PetsitterImage = styled(RoundedImageWrapper)`
 `;
 
 const ReservationContainer = styled(Column)`
-  /* gap: 4px; */
+  /* gap: ${({ theme }) => theme.spacing.xs}; */
 `;
 
 const Wrapper = styled(Row)`
   align-items: center;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 const PetWrapper = styled(Row)`
   display: flex;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
 
   > span {
     font-weight: ${({ theme }) => theme.fontWeight.bold};

@@ -21,7 +21,7 @@ export default function AdSwiper() {
 
 const CustomSwiper = styled(Swiper)`
   width: 100%;
-  border-radius: 16px;
+  border-radius: ${({ theme }) => theme.radius.md};
   box-shadow: ${({ theme }) => theme.shadow.dp01};
 `;
 

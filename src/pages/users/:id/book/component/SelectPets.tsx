@@ -46,11 +46,11 @@ export default function SelectPets() {
 const Section = styled.section`
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: ${({ theme }) => theme.spacing.lg};
 `;
 
 const List = styled.ul`
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
+  gap: ${({ theme }) => theme.spacing.lg};
 `;

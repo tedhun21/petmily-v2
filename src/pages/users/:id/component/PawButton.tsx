@@ -68,10 +68,10 @@ export default function PawButton({ userId }: IProps) {
 
 const CustomButton = styled(Button)`
   width: 100%;
-  padding: 8px;
+  padding: ${({ theme }) => theme.spacing.sm};
 `;
 
 const Div = styled(Row)`
   align-items: center;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;

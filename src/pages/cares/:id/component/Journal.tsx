@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 
 import Loading from '@components/Loading';
 import { poster, updater } from 'api';
-import { BlueButton, CenterContainer, Texts14h20, Texts16h24, Title } from 'styles/commonStyle';
+import { BlueButton, CenterContainer, Column, Texts14h20, Texts16h24, Title } from 'styles/commonStyle';
 
 export default function Journal({ journal, reservationId }: any) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -185,14 +185,14 @@ export default function Journal({ journal, reservationId }: any) {
 const Section = styled.section`
   display: flex;
   flex-direction: column;
-  padding: 16px;
-  border-radius: 16px;
+  padding: ${({ theme }) => theme.spacing.lg};
+  border-radius: ${({ theme }) => theme.radius.md};
 `;
 
 const ImageSelectWrapper = styled.div`
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
 
   > div {
     ${({ theme }) => theme.typeScale.xs};
@@ -201,7 +201,7 @@ const ImageSelectWrapper = styled.div`
 
 const ImageSelectButton = styled(BlueButton)`
   padding: 4px 8px;
-  border-radius: ${({ theme }) => theme.radius.base};
+  border-radius: ${({ theme }) => theme.radius.md};
   ${({ theme }) => theme.typeScale.sm};
 `;
 
@@ -214,12 +214,12 @@ const ImagePreview = styled.div`
 const ImagePreviewItem = styled.div`
   position: relative;
   margin: 2px;
-  padding: 4px;
+  padding: ${({ theme }) => theme.spacing.xs};
 `;
 
 const Img = styled.img`
   width: 100px;
-  border-radius: ${({ theme }) => theme.radius.base};
+  border-radius: ${({ theme }) => theme.radius.md};
 `;
 
 const RemoveButton = styled.button`
@@ -232,13 +232,11 @@ const RemoveButton = styled.button`
   width: 24px;
   height: 24px;
   background-color: ${({ theme }) => theme.colors.background.highlight};
-  border-radius: 50%;
+  border-radius: ${({ theme }) => theme.radius.circle};
 `;
 
-const TextContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+const TextContainer = styled(Column)`
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const TextTitle = styled(Texts16h24)``;
@@ -246,16 +244,14 @@ const TextTitle = styled(Texts16h24)``;
 const TextArea = styled.textarea`
   width: 100%;
   height: 100px;
-  padding: 8px;
-  border-radius: ${({ theme }) => theme.radius.base};
-
-  ${({ theme }) => theme.typeScale.sm}
+  padding: ${({ theme }) => theme.spacing.sm};
+  border-radius: ${({ theme }) => theme.radius.md};
+  ${({ theme }) => theme.typeScale.sm};
 `;
 
 const SubmitButton = styled(BlueButton)`
-  padding: 8px;
   width: 100%;
-  border-radius: ${({ theme }) => theme.radius.base};
-
-  ${({ theme }) => theme.typeScale.base}
+  padding: ${({ theme }) => theme.spacing.sm};
+  border-radius: ${({ theme }) => theme.radius.md};
+  ${({ theme }) => theme.typeScale.base};
 `;

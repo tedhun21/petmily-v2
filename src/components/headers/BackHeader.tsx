@@ -27,8 +27,8 @@ const Header = styled.header`
   align-items: center;
   width: 100%;
   height: 64px;
-  padding: 20px;
-  gap: 20px;
+  padding: ${({ theme }) => theme.spacing.xl};
+  gap: ${({ theme }) => theme.spacing.xl};
 `;
 
 const StyledButton = styled.button`

@@ -107,7 +107,7 @@ const StyledInMotionDiv = styled(motion.div)`
 `;
 
 const ContentWrapper = styled.div`
-  padding: 16px;
+  padding: ${({ theme }) => theme.spacing.lg};
 `;
 
 const MemberCount = styled(Texts16h24)`
@@ -118,22 +118,22 @@ const XButton = styled(Button)`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 4px;
+  padding: ${({ theme }) => theme.spacing.xs};
 `;
 
 const MemberList = styled.ul`
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
+  padding: ${({ theme }) => theme.spacing.sm};
 `;
 
 const MemberItem = styled.li`
   display: flex;
   align-items: center;
   width: 100%;
-  gap: 8px;
-  padding: 4px;
+  gap: ${({ theme }) => theme.spacing.sm};
+  padding: ${({ theme }) => theme.spacing.xs};
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.background.box.default.primary};

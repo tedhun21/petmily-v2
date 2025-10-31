@@ -6,7 +6,7 @@ import { FaChevronRight } from 'react-icons/fa6';
 
 import { dateAgo, dayFormat, timeRange } from 'utils/date';
 import { Reservation } from 'types/reservation.type';
-import { Texts12h16, Texts18h28 } from 'styles/commonStyle';
+import { Row, Texts12h16, Texts18h28 } from 'styles/commonStyle';
 
 interface DetailReservationProps {
   reservation: Reservation;
@@ -47,14 +47,13 @@ export default function DetailReservation({ reservation }: DetailReservationProp
 const DetailRservation = styled.section`
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 20px;
-  border-radius: 20px;
+  gap: ${({ theme }) => theme.spacing.sm};
+  padding: ${({ theme }) => theme.spacing.xl};
+  border-radius: ${({ theme }) => theme.radius.lg};
   box-shadow: ${({ theme }) => theme.shadow.dp03};
 `;
 
-const Wrapper = styled.div`
-  display: flex;
+const Wrapper = styled(Row)`
   justify-content: space-between;
 `;
 
@@ -65,7 +64,7 @@ const Label = styled(Texts18h28)`
 const LocationLink = styled(Link)`
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 const CustomLocationMarker = styled(HiOutlineLocationMarker)`
@@ -78,5 +77,5 @@ const CustomChevronRight = styled(FaChevronRight)`
 
 const RequestParagraph = styled.p`
   ${({ theme }) => theme.typeScale.sm};
-  padding-left: 8px;
+  padding-left: ${({ theme }) => theme.spacing.sm};
 `;

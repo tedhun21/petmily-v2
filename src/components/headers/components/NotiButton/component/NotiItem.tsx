@@ -34,7 +34,7 @@ export default function NotiItem({ notification, onReadClick }: NotiItemProps) {
 const Item = styled.li<{ $isRead: boolean }>`
   display: flex;
   flex-direction: column;
-  padding: 4px;
+  padding: ${({ theme }) => theme.spacing.xs};
   cursor: ${({ $isRead }) => ($isRead ? 'default' : 'pointer')};
 `;
 
@@ -44,12 +44,12 @@ const TopDiv = styled(Row)`
 `;
 
 const DayDiv = styled(Row)`
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
   align-items: flex-end;
 `;
 
 const IsUnread = styled.div`
-  padding: 4px;
+  padding: ${({ theme }) => theme.spacing.xs};
   background-color: ${({ theme }) => theme.colors.background.error};
   border-radius: ${({ theme }) => theme.radius.circle};
 `;

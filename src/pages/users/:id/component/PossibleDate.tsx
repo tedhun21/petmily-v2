@@ -240,7 +240,7 @@ const Section = styled.section`
   flex-direction: column;
   width: 100%;
   height: 100%;
-  gap: 16px;
+  gap: ${({ theme }) => theme.spacing.lg};
 `;
 
 const TitleContainer = styled(Row)`
@@ -252,7 +252,7 @@ const StyledDatePicker = styled(DatePicker)`
   font-family: inherit;
 
   .MuiInputBase-root {
-    border-radius: 12px;
+    border-radius: ${({ theme }) => theme.spacing.md};
   }
 `;
 
@@ -265,14 +265,14 @@ const DropdownMenu = styled(motion.div)`
 const ButtonContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  grid-gap: 8px;
+  grid-gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const ButtonWrapper = styled.div<{ disabled: boolean }>`
   position: relative;
   display: flex;
   border: 1px solid transparent;
-  border-radius: 12px;
+  border-radius: ${({ theme }) => theme.radius.sm};
 
   &:hover {
     border: 1px solid ${({ theme, disabled }) => (disabled ? 'none' : theme.colors.line.box.highlight)};
@@ -288,14 +288,14 @@ const TimeButton = styled.button<{ disabled: boolean; $isSelected: boolean; $isB
   justify-content: center;
   align-items: center;
   width: 100%;
-  padding: 20px;
+  padding: ${({ theme }) => theme.spacing.xl};
   background-color: ${({ $isSelected, $isBetween, theme }) =>
     $isSelected
       ? theme.colors.background.box.blue.active
       : $isBetween
         ? theme.colors.background.box.blue.primary
         : 'transparent'};
-  border-radius: 12px;
+  border-radius: ${({ theme }) => theme.radius.sm};
 
   /* hover와 active 스타일을 disabled일 때 비활성화 */
   pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
@@ -316,23 +316,21 @@ const TimeText = styled.span<{ disabled: boolean; $isBetween: boolean; $isSelect
 //   flex: 1;
 //   display: flex;
 //   justify-content: center;
-//   padding: 20px;
+//   padding: ${({ theme }) => theme.spacing.xl};
 //   background-color: ${({ theme }) => theme.colors.background.primary};
 // `;
 
 const StyledLink = styled(Link)<{ disabled: boolean }>`
   display: flex;
-  align-items: center;
   justify-content: center;
-  padding: 12px;
-  border-radius: ${({ theme }) => theme.radius.base};
+  align-items: center;
   width: 100%;
-  color: ${({ theme }) => theme.colors.text.white};
-
-  /* hover와 active 스타일을 disabled일 때 비활성화 */
-  pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
+  padding: ${({ theme }) => theme.spacing.md};
   background-color: ${({ theme, disabled }) =>
     disabled ? theme.colors.background.box.blue.disabled : theme.colors.background.box.blue.primary};
+  border-radius: ${({ theme }) => theme.radius.md};
+  color: ${({ theme }) => theme.colors.text.white};
+  pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.background.box.blue.hover};

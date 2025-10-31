@@ -66,7 +66,6 @@ export default function Maps() {
   return (
     <div style={{ position: 'relative', height: '100%', overflow: 'hidden' }}>
       <div ref={mapRef} style={{ width: '100%', height: '100%' }} />
-      {/* <div style={{ width: '100%', height: '100%', backgroundColor: 'white' }} /> */}
       <MapsDrawer address={address ?? undefined} map={mapObj} geocode={geocode ?? undefined} />
     </div>
   );

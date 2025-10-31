@@ -31,14 +31,14 @@ export default function ClientCard({ client }: ClientCardProps) {
 const Card = styled.section`
   display: flex;
   justify-content: space-between;
-  padding: 20px;
-  border-radius: 20px;
+  padding: ${({ theme }) => theme.spacing.xl};
+  border-radius: ${({ theme }) => theme.spacing.xl};
   box-shadow: ${({ theme }) => theme.shadow.dp03};
 `;
 
 const ImageName = styled(Row)`
   display: flex;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const ClientImage = styled(RoundedImageWrapper)`
@@ -55,10 +55,10 @@ const StyledLink = styled(Link)`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 8px;
+  padding: ${({ theme }) => theme.spacing.sm};
   background-color: ${({ theme }) => theme.colors.background.box.blue.primary};
   border-radius: ${({ theme }) => theme.radius.base};
-  color: white;
+  color: ${({ theme }) => theme.colors.text.white};
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.background.box.blue.hover};

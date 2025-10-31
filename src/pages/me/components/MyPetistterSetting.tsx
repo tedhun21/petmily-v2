@@ -58,22 +58,22 @@ const InfoList = styled.ul`
   display: grid;
   flex: 1;
   grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const InfoItem = styled.li`
   display: flex;
   flex-direction: column;
-  padding: 8px;
-  gap: 8px;
+  padding: ${({ theme }) => theme.spacing.sm};
+  gap: ${({ theme }) => theme.spacing.sm};
   border: 2px solid ${({ theme }) => theme.colors.line.box.highlight};
-  border-radius: 12px;
+  border-radius: ${({ theme }) => theme.radius.sm};
 `;
 
 const ItemWrapper = styled.ul`
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 const ItemLabel = styled(Texts14h20)`
@@ -82,6 +82,6 @@ const ItemLabel = styled(Texts14h20)`
   align-items: center;
   padding: 4px 8px;
   background-color: ${({ theme }) => theme.colors.text.highlight};
-  border-radius: ${({ theme }) => theme.radius.base};
-  color: white;
+  border-radius: ${({ theme }) => theme.radius.md};
+  color: ${({ theme }) => theme.colors.text.white};
 `;

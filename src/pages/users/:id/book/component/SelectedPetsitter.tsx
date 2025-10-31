@@ -75,23 +75,22 @@ const PetsitterSection = styled.section`
   box-shadow: ${({ theme }) => theme.shadow.dp01};
 `;
 
-const CardTitleContainer = styled.div`
+const CardTitleContainer = styled(Row)`
   position: relative;
-  display: flex;
   padding: 12px 36px;
   background-color: ${({ theme }) => theme.colors.background.highlight};
   color: ${({ theme }) => theme.colors.text.white};
 `;
 
 const NameWrapper = styled(Row)`
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
   align-items: flex-end;
 `;
 
 const PetsitterImg = styled(RoundedImageWrapper)`
   position: absolute;
-  top: 24px;
-  right: 24px;
+  top: ${({ theme }) => theme.spacing._2xl};
+  right: ${({ theme }) => theme.spacing._2xl};
   width: 64px;
   height: 64px;
 `;
@@ -105,19 +104,19 @@ const PetsitterTitle = styled(Texts14h20)`
 `;
 
 const CardBodyContainer = styled(Column)`
-  padding: 24px;
-  gap: 8px;
+  padding: ${({ theme }) => theme.spacing._2xl};
+  gap: ${({ theme }) => theme.spacing.sm};
   background-color: ${({ theme }) => theme.colors.background.box.default.primary};
 `;
 
 const StarReview = styled(Row)`
   align-items: center;
-  gap: 16px;
+  gap: ${({ theme }) => theme.spacing.lg};
 `;
 
 const Wrapper = styled(Row)`
   align-items: center;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const Count = styled(Texts18h28)`
@@ -125,22 +124,22 @@ const Count = styled(Texts18h28)`
 `;
 
 const PossibleContainer = styled(Column)`
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const PossibleWrapper = styled(Row)`
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const CapsuleWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 const Capsule = styled(Texts14h20)`
-  padding: 4px 8px;
+  padding: 4px ${({ theme }) => theme.spacing.sm};
   background-color: ${({ theme }) => theme.colors.background.highlight};
-  border-radius: 12px;
+  border-radius: ${({ theme }) => theme.radius.sm};
   color: ${({ theme }) => theme.colors.text.white};
 `;

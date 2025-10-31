@@ -42,7 +42,7 @@ const Header = styled.header`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: 20px;
+  padding: ${({ theme }) => theme.spacing.xl};
   box-shadow: ${({ theme }) => theme.shadow.dp01};
 `;
 

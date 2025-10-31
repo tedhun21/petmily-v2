@@ -21,7 +21,7 @@ export default function PawAndMessage({ userId }: IProps) {
 }
 
 const Wrapper = styled(Row)`
-  gap: 16px;
+  gap: ${({ theme }) => theme.spacing.lg};
 `;
 
 const CustomLink = styled(Link)`
@@ -29,10 +29,10 @@ const CustomLink = styled(Link)`
   justify-content: center;
   align-items: center;
   width: 100%;
-  padding: 8px;
+  padding: ${({ theme }) => theme.spacing.sm};
   background-color: ${({ theme }) => theme.colors.background.box.default.primary};
-  border-radius: ${({ theme }) => theme.radius.base};
-  gap: 8px;
+  border-radius: ${({ theme }) => theme.radius.md};
+  gap: ${({ theme }) => theme.spacing.sm};
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.background.box.default.hover};

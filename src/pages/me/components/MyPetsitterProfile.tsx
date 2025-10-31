@@ -28,5 +28,5 @@ export default function MyPetsitterProfile({ me }: MyPetsitterProfileProps) {
 const PetsitterContainer = styled.section`
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: ${({ theme }) => theme.spacing.lg};
 `;

@@ -50,8 +50,8 @@ export default function UsedPetsitterCard({ petsitter }: IProps) {
 
 const Card = styled(Link)`
   display: flex;
-  gap: 8px;
-  padding: 12px;
+  gap: ${({ theme }) => theme.spacing.sm};
+  padding: ${({ theme }) => theme.spacing.md};
 `;
 
 const ImageWrapper = styled(RoundedImageWrapper)`
@@ -64,16 +64,16 @@ const ImageWrapper = styled(RoundedImageWrapper)`
 const InfoContainer = styled(Column)`
   flex: 1;
   justify-content: space-between;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const StarWrapper = styled(Row)`
   align-items: center;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 const PossibleWrapper = styled(Row)`
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 const SubTitle = styled(Texts12h16)`

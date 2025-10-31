@@ -70,14 +70,14 @@ const Section = styled.section`
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
-  padding: 12px;
-  gap: 8px;
+  padding: ${({ theme }) => theme.spacing.md};
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const ChatInput = styled(Input)`
   flex: auto;
-  border-radius: ${({ theme }) => theme.radius.lg};
   padding: 8px 12px;
+  border-radius: ${({ theme }) => theme.radius.lg};
   ${({ theme }) => theme.typeScale.lg};
 `;
 

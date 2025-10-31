@@ -44,5 +44,5 @@ const List = styled.ul`
   display: flex;
   flex-direction: column-reverse;
   padding: 0 16px;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;

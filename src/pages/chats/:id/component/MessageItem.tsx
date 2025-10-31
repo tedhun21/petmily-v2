@@ -5,7 +5,7 @@ import { useInView } from 'framer-motion';
 import styled, { css } from 'styled-components';
 import { FaXmark } from 'react-icons/fa6';
 
-import { ImageCentered, RoundedImageWrapper, Texts12h16, Texts14h20, Texts16h24 } from 'styles/commonStyle';
+import { ImageCentered, RoundedImageWrapper, Row, Texts12h16, Texts14h20, Texts16h24 } from 'styles/commonStyle';
 import {
   formatToLocaleAMPM,
   shouldShowDateDivider,
@@ -99,21 +99,20 @@ export default React.memo(function MessageItem({
   );
 });
 
-const DateDivider = styled.div`
-  display: flex;
+const DateDivider = styled(Row)`
   justify-content: center;
-  padding: 24px;
+  padding: ${({ theme }) => theme.spacing._2xl};
 `;
 
 const Date = styled(Texts14h20)`
-  padding: 8px;
+  padding: ${({ theme }) => theme.spacing.sm};
   background-color: ${({ theme }) => theme.colors.background.box.default.active};
-  border-radius: ${({ theme }) => theme.radius.base};
+  border-radius: ${({ theme }) => theme.radius.md};
 `;
 
 const Item = styled.div<{ $isMyMessage: boolean }>`
   display: flex;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
   width: 100%;
   ${({ $isMyMessage }) =>
     $isMyMessage
@@ -144,27 +143,26 @@ const MessageContent = styled.div<{ $isMyMessage: boolean }>`
   flex: auto;
   flex-direction: ${({ $isMyMessage }) => ($isMyMessage ? 'row-reverse' : 'row')};
   align-items: flex-end;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const Content = styled(Texts16h24)<{ $isMyMessage: boolean }>`
   display: inline-block;
   max-width: 70%; /* 최대 너비를 설정하여 상대방 영역 침범 방지 */
-  padding: 8px;
+  padding: ${({ theme }) => theme.spacing.sm};
   background-color: ${({ theme, $isMyMessage }) =>
     $isMyMessage ? theme.colors.background.box.blue.primary : theme.colors.background.box.blue.hover};
-  border-radius: ${({ theme }) => theme.radius.base};
+  border-radius: ${({ theme }) => theme.radius.md};
   color: white;
   word-wrap: break-word; /* 긴 단어가 있을 경우 줄 바꿈 처리 */
 `;
 
-const ErrorStatus = styled.div`
-  display: flex;
+const ErrorStatus = styled(Row)`
   align-items: center;
-  padding: 4px;
+  padding: ${({ theme }) => theme.spacing.xs};
   background-color: ${({ theme }) => theme.colors.background.box.default.primary};
-  border-radius: ${({ theme }) => theme.radius.base};
-  gap: 4px;
+  border-radius: ${({ theme }) => theme.radius.md};
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 const Button = styled.button`

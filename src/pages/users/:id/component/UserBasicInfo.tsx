@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ImageCentered, RoundedImageWrapper, Row, Texts16h24 } from 'styles/commonStyle';
+import { Column, ImageCentered, RoundedImageWrapper, Row, Texts16h24 } from 'styles/commonStyle';
 import { UserRole } from 'types/user.type';
 import { PetsitterFeedback } from './PetsitterFeedback';
 
@@ -35,7 +35,7 @@ export default function UserBasicInfo({ role, nickname, photo, body, star, revie
 const Section = styled.section`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
   width: 100%;
 `;
 
@@ -44,15 +44,13 @@ const UserImage = styled(RoundedImageWrapper)`
   height: 80px;
 `;
 
-const Div = styled.div`
-  display: flex;
+const Div = styled(Column)`
   flex: 1;
-  flex-direction: column;
-  gap: 16px;
+  gap: ${({ theme }) => theme.spacing.lg};
 `;
 
 const UserInfo = styled(Row)`
-  gap: 16px;
+  gap: ${({ theme }) => theme.spacing.lg};
 `;
 
 const Body = styled.p`

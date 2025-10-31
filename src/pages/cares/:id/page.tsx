@@ -82,8 +82,8 @@ const Section = styled.section`
   flex-direction: column;
   overflow-y: auto;
   height: 100%;
-  padding: 20px;
-  gap: 20px;
+  padding: ${({ theme }) => theme.spacing.xl};
+  gap: ${({ theme }) => theme.spacing.xl};
 `;
 
 const TitleStatus = styled.div`
@@ -100,7 +100,7 @@ const TitleStatus = styled.div`
 export const PetInfoContainer = styled.ul`
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 export const PetInfoCapsule = styled.li`
@@ -113,5 +113,5 @@ export const PetInfoCapsule = styled.li`
 
 const ButtonContainer = styled.div`
   flex: 1;
-  padding: 20px;
+  padding: ${({ theme }) => theme.spacing.xl};
 `;

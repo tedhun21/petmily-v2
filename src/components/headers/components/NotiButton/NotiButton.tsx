@@ -50,7 +50,7 @@ const Button = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 4px;
+  padding: ${({ theme }) => theme.spacing.xs};
   border-radius: ${({ theme }) => theme.radius.base};
 
   &:hover {
@@ -64,7 +64,7 @@ const NotiContaier = styled.div`
 
 const Modal = styled.div`
   position: absolute;
-  top: 24px;
-  right: 24px;
+  top: ${({ theme }) => theme.spacing._2xl};
+  right: ${({ theme }) => theme.spacing._2xl};
   z-index: 20;
 `;

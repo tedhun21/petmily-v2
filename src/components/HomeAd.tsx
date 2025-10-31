@@ -30,14 +30,14 @@ const Image = styled.img`
 const TextWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 const TextContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 24px;
+  gap: ${({ theme }) => theme.spacing._2xl};
 `;
 
 const AdText = styled.div`

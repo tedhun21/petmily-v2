@@ -19,6 +19,6 @@ export default function ReviewsPage() {
 const Main = styled.main`
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  padding: 20px;
+  gap: ${({ theme }) => theme.spacing.xl};
+  padding: ${({ theme }) => theme.spacing.xl};
 `;

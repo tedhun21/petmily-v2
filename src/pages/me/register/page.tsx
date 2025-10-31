@@ -201,8 +201,8 @@ export const InputContainer = styled(Column)`
   flex: auto;
   overflow-y: auto;
   height: 100%;
-  padding: 20px;
-  gap: 20px;
+  padding: ${({ theme }) => theme.spacing.xl};
+  gap: ${({ theme }) => theme.spacing.xl};
 `;
 
 export const InputWrapper = styled(Row)`
@@ -210,11 +210,10 @@ export const InputWrapper = styled(Row)`
   width: 100%;
 `;
 
-export const PetSpeciesButtonContainer = styled.div`
-  display: flex;
+export const PetSpeciesButtonContainer = styled(Row)`
   overflow: hidden;
   width: 100%;
-  border-radius: ${({ theme }) => theme.radius.base};
+  border-radius: ${({ theme }) => theme.radius.md};
 `;
 
 export const TypeRadioLabel = styled.label<{ $isSelected?: boolean }>`
@@ -222,7 +221,7 @@ export const TypeRadioLabel = styled.label<{ $isSelected?: boolean }>`
   flex: 1;
   justify-content: center;
   align-items: center;
-  padding: 8px;
+  padding: ${({ theme }) => theme.spacing.sm};
   background-color: ${({ theme, $isSelected }) =>
     $isSelected ? theme.colors.background.highlight : theme.colors.text.inactive};
 
@@ -247,46 +246,45 @@ const InputError = styled(Column)`
 
 export const PetInput = styled(Input)`
   width: 100%;
-  padding: 8px;
+  padding: ${({ theme }) => theme.spacing.sm};
+  border-radius: ${({ theme }) => theme.radius.md};
   ${({ theme }) => theme.typeScale.base};
-  border-radius: ${({ theme }) => theme.radius.base};
 `;
 
 export const RadioContainer = styled(Row)`
   flex: auto;
   justify-content: space-around;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 export const GenderRadioLabel = styled.label`
-  ${({ theme }) => theme.typeScale.sm}
+  ${({ theme }) => theme.typeScale.sm};
 `;
 
-export const GenderWrapper = styled.div`
-  display: flex;
+export const GenderWrapper = styled(Row)`
   align-items: center;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 export const PetTextarea = styled.textarea`
   flex: auto;
   width: 100%;
-  padding: 8px;
+  padding: ${({ theme }) => theme.spacing.sm};
   background-color: ${({ theme }) => theme.colors.background.input.primary};
   border: 1px solid ${({ theme }) => theme.colors.line.input.primary};
-  border-radius: ${({ theme }) => theme.radius.base};
+  border-radius: ${({ theme }) => theme.radius.md};
   color: inherit;
 `;
 
 export const RowWrapper = styled(Row)`
   align-items: center;
   width: 100%;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 export const ButtonContainer = styled.div`
   flex: 1;
-  padding: 20px;
+  padding: ${({ theme }) => theme.spacing.xl};
 `;
 
 export const SubmitButton = styled(BlueButton)`
@@ -294,7 +292,7 @@ export const SubmitButton = styled(BlueButton)`
   justify-content: center;
   align-items: center;
   width: 100%;
-  padding: 8px;
-  border-radius: ${({ theme }) => theme.radius.base};
+  padding: ${({ theme }) => theme.spacing.sm};
+  border-radius: ${({ theme }) => theme.radius.md};
   ${({ theme }) => theme.typeScale.lg};
 `;

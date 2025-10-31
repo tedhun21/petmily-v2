@@ -249,14 +249,12 @@ const Main = styled.main`
 const SignupContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: ${({ theme }) => theme.spacing.xl};
   width: 100%;
   max-width: 360px;
 `;
 
-const TitleContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+const TitleContainer = styled(Column)`
   text-align: left;
 `;
 
@@ -264,16 +262,16 @@ const InputFormContainer = styled.form`
   display: flex;
   flex-direction: column;
   margin-top: 36px;
-  gap: 16px;
+  gap: ${({ theme }) => theme.spacing.lg};
 `;
 
 const InputFormWrapper = styled.div``;
 
 const SignupInputStyle = styled(Input)<{ error?: boolean }>`
   width: 100%;
-  padding: 8px;
+  padding: ${({ theme }) => theme.spacing.sm};
   border: 1px solid ${({ theme, error }) => (error ? theme.colors.line.input.error : theme.colors.line.input.primary)};
-  border-radius: ${({ theme }) => theme.radius.base};
+  border-radius: ${({ theme }) => theme.radius.md};
   ${({ theme }) => theme.typeScale.sm};
 
   &:focus {
@@ -282,12 +280,12 @@ const SignupInputStyle = styled(Input)<{ error?: boolean }>`
 `;
 
 const ButtonContainer = styled(Column)`
-  gap: 16px;
+  gap: ${({ theme }) => theme.spacing.lg};
 `;
 const CheckBoxWrapper = styled.div`
   display: flex;
-  padding-left: 4px;
-  gap: 8px;
+  padding-left: ${({ theme }) => theme.spacing.xs};
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const CheckBoxLabel = styled.label`

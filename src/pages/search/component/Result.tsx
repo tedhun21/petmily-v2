@@ -48,9 +48,9 @@ export default function Result({ petsitter }: ResultProps) {
 const Card = styled(Link)`
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 16px;
-  border-radius: 20px;
+  gap: ${({ theme }) => theme.spacing.lg};
+  padding: ${({ theme }) => theme.spacing.lg};
+  border-radius: ${({ theme }) => theme.spacing.xl};
   box-shadow: ${({ theme }) => theme.shadow.dp01};
 `;
 
@@ -61,22 +61,20 @@ const PetsitterImage = styled(RoundedImageWrapper)`
 
 const Wrapper = styled(Row)`
   align-items: center;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 const InfoWrapper = styled(Column)`
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const StarReviewWrapper = styled(Row)`
-  gap: 16px;
+  gap: ${({ theme }) => theme.spacing.lg};
 `;
 
 const PetList = styled.ul`
   display: flex;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
-const PetCapsule = styled.li`
-  /* border: 1px solid ${({ theme }) => theme.colors.line.box.highlight}; */
-`;
+const PetCapsule = styled.li``;

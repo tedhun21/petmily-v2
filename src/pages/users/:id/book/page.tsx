@@ -216,18 +216,18 @@ const Container = styled(Column)`
   flex: auto;
   overflow-y: auto;
   height: 100%;
-  padding: 20px;
-  gap: 20px;
+  padding: ${({ theme }) => theme.spacing.xl};
+  gap: ${({ theme }) => theme.spacing.xl};
 `;
 
 const Reservation = styled.section`
   display: flex;
   flex-direction: column;
-  padding: 24px;
+  padding: ${({ theme }) => theme.spacing._2xl};
   background-color: ${({ theme }) => theme.colors.background.box.default.primary};
-  border-radius: 12px;
+  border-radius: ${({ theme }) => theme.spacing.md};
   box-shadow: ${({ theme }) => theme.shadow.dp01};
-  gap: 16px;
+  gap: ${({ theme }) => theme.spacing.lg};
 `;
 
 const ReservationWrapper = styled(Row)`
@@ -242,7 +242,7 @@ const ReservationLabel = styled(Texts16h24)`
 const AddressSection = styled.section`
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: ${({ theme }) => theme.spacing.lg};
 `;
 
 const StyledTextField = styled(TextField)`
@@ -255,7 +255,7 @@ const StyledTextField = styled(TextField)`
   /* input 배경 */
   .MuiOutlinedInput-root {
     background-color: ${({ theme }) => theme.colors.background.input.primary};
-    border-radius: 12px;
+    border-radius: ${({ theme }) => theme.radius.sm};
 
     &:hover {
       background-color: ${({ theme }) => theme.colors.background.input.hover};
@@ -277,28 +277,23 @@ const StyledTextField = styled(TextField)`
 const RequestSection = styled.section`
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: ${({ theme }) => theme.spacing.lg};
 `;
 
-const ButtonContainer = styled.div`
-  display: flex;
+const ButtonContainer = styled(Column)`
   flex: 1;
-  flex-direction: column;
   justify-content: center;
-  padding: 20px;
+  padding: ${({ theme }) => theme.spacing.xl};
   background-color: ${({ theme }) => theme.colors.background.primary};
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const StyledButton = styled(BlueButton)<{ disabled: boolean }>`
-  border-radius: ${({ theme }) => theme.radius.base};
   width: 100%;
-  padding: 12px;
-
-  /* hover와 active 스타일을 disabled일 때 비활성화 */
-  pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
+  padding: ${({ theme }) => theme.spacing.md};
   background-color: ${({ theme, disabled }) =>
     disabled ? theme.colors.background.box.blue.disabled : theme.colors.background.box.blue.primary};
-
+  border-radius: ${({ theme }) => theme.radius.md};
+  pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
   ${({ theme }) => theme.typeScale.base};
 `;

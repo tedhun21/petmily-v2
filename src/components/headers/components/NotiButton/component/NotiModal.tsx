@@ -160,5 +160,5 @@ const Background = styled.div`
 const List = styled.ul`
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;

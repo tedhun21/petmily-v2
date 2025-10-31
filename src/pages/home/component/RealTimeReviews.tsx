@@ -78,5 +78,5 @@ export default function RealTimeReviews() {
 const Section = styled.section`
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: ${({ theme }) => theme.spacing.lg};
 `;

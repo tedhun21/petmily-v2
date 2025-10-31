@@ -470,12 +470,11 @@ const InputContainer = styled(Column)`
   flex: auto;
   overflow-y: auto;
   height: 100%;
-  padding: 20px;
-  gap: 20px;
+  padding: ${({ theme }) => theme.spacing.xl};
+  gap: ${({ theme }) => theme.spacing.xl};
 `;
 
-const EmailWrapper = styled.div`
-  display: flex;
+const EmailWrapper = styled(Row)`
   justify-content: space-between;
   align-items: center;
   width: 80%;
@@ -496,29 +495,29 @@ const InputError = styled(Column)`
 
 const MeInput = styled(Input)`
   width: 100%;
-  border-radius: ${({ theme }) => theme.radius.base};
-  padding: 8px;
-  ${({ theme }) => theme.typeScale.base}
+  padding: ${({ theme }) => theme.spacing.sm};
+  border-radius: ${({ theme }) => theme.radius.md};
+  ${({ theme }) => theme.typeScale.base};
 `;
 
 const LocationInputWrapper = styled(Column)`
   width: 80%;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 const LocationList = styled.ul`
   display: flex;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 const LocationItem = styled.li`
   display: flex;
   align-items: center;
-  padding: 4px;
+  padding: ${({ theme }) => theme.spacing.xs};
   background-color: ${({ theme }) => theme.colors.background.highlight};
-  border-radius: ${({ theme }) => theme.radius.base};
-  color: white;
-  gap: 4px;
+  border-radius: ${({ theme }) => theme.radius.md};
+  color: ${({ theme }) => theme.colors.text.white};
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 const LocationInputContainer = styled(Row)`
@@ -529,10 +528,10 @@ const LocationInputContainer = styled(Row)`
 
 const LocationInput = styled(Input)`
   width: 100%;
-  border-radius: ${({ theme }) => theme.radius.base};
-  padding: 8px;
-  ${({ theme }) => theme.typeScale.base};
+  padding: ${({ theme }) => theme.spacing.sm};
   background-color: ${({ theme }) => theme.colors.background.input.primary};
+  border-radius: ${({ theme }) => theme.radius.md};
+  ${({ theme }) => theme.typeScale.base};
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.background.input.hover};
@@ -546,16 +545,16 @@ const LocationInput = styled(Input)`
 const AddLocationButton = styled.button`
   position: absolute;
   top: 14px;
-  right: 12px;
+  right: ${({ theme }) => theme.spacing.md};
 `;
 
 const TextArea = styled.textarea`
   width: 80%;
-  border-radius: ${({ theme }) => theme.radius.base};
-  padding: 8px;
-  color: ${({ theme }) => theme.colors.text.active};
-  border: 1px solid ${({ theme }) => theme.colors.line.input.primary};
+  padding: ${({ theme }) => theme.spacing.sm};
   background-color: ${({ theme }) => theme.colors.background.input.primary};
+  border: 1px solid ${({ theme }) => theme.colors.line.input.primary};
+  border-radius: ${({ theme }) => theme.radius.md};
+  color: ${({ theme }) => theme.colors.text.active};
   ${({ theme }) => theme.typeScale.base};
 
   &:hover {
@@ -568,25 +567,23 @@ const TextArea = styled.textarea`
   }
 `;
 
-const PetSpeciesButtonContainer = styled.div`
-  display: flex;
+const PetSpeciesButtonContainer = styled(Row)`
   overflow: hidden;
   width: 80%;
-  border-radius: ${({ theme }) => theme.radius.base};
+  border-radius: ${({ theme }) => theme.radius.md};
 `;
 
-const WeekdaysWrapper = styled.div`
-  display: flex;
+const WeekdaysWrapper = styled(Row)`
   justify-content: space-between;
   width: 80%;
 `;
 
 const DayLabel = styled.label<{ $isSelected?: boolean }>`
-  padding: 8px;
+  padding: ${({ theme }) => theme.spacing.sm};
   background-color: ${({ theme, $isSelected }) =>
     $isSelected ? theme.colors.background.box.blue.primary : theme.colors.background.box.blue.disabled};
-  border-radius: ${({ theme }) => theme.radius.base};
-  color: white;
+  border-radius: ${({ theme }) => theme.radius.md};
+  color: ${({ theme }) => theme.colors.text.white};
 
   /* Adding transition for smooth effect */
   transition:
@@ -601,13 +598,13 @@ const DayLabel = styled.label<{ $isSelected?: boolean }>`
 
 const TimePickerContainer = styled(Row)`
   width: 80%;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const StyledTimePicker = styled(TimePicker)`
   .MuiInputBase-root {
     background-color: ${({ theme }) => theme.colors.background.input.primary};
-    border-radius: ${({ theme }) => theme.radius.base};
+    border-radius: ${({ theme }) => theme.radius.md};
 
     &:hover {
       background-color: ${({ theme }) => theme.colors.background.input.hover};
@@ -618,26 +615,26 @@ const StyledTimePicker = styled(TimePicker)`
     border-color: ${({ theme }) => theme.colors.line.input.primary};
 
     &:hover {
-      border-color: red;
+      border-color: ${({ theme }) => theme.colors.line.input.error};
     }
   }
 `;
 
 const ButtonContainer = styled(Column)`
   flex: 1;
-  gap: 12px;
-  padding: 20px;
+  gap: ${({ theme }) => theme.spacing.md};
+  padding: ${({ theme }) => theme.spacing.xl};
 `;
 
 const SubmitButton = styled(BlueButton)`
-  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: ${({ theme }) => theme.radius.base};
-  padding: 8px;
+  width: 100%;
+  padding: ${({ theme }) => theme.spacing.sm};
+  border-radius: ${({ theme }) => theme.radius.md};
+  font-weight: ${({ theme }) => theme.fontWeight.semibold};
   ${({ theme }) => theme.typeScale.lg};
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;
 
 const LinkContainer = styled(Row)`

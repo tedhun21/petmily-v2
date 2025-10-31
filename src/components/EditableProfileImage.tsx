@@ -64,7 +64,7 @@ export default function EditableProfileImage({
 const ImageContainer = styled(Column)`
   align-items: center;
   padding: 40px;
-  gap: 16px;
+  gap: ${({ theme }) => theme.spacing.lg};
 `;
 
 const ImageLabel = styled.label`
@@ -91,7 +91,7 @@ const XButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 4px;
+  padding: ${({ theme }) => theme.spacing.xs};
   background-color: ${({ theme }) => theme.colors.background.error};
   border-radius: ${({ theme }) => theme.radius.circle};
 `;

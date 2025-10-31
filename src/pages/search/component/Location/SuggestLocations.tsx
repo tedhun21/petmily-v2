@@ -26,10 +26,10 @@ const List = styled.ul`
 const Item = styled.li`
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
   width: 100%;
-  padding: 8px;
-  border-radius: ${({ theme }) => theme.radius.base};
+  padding: ${({ theme }) => theme.spacing.sm};
+  border-radius: ${({ theme }) => theme.radius.md};
   cursor: pointer;
 
   &:hover {
@@ -45,7 +45,7 @@ const IconBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 8px;
+  padding: ${({ theme }) => theme.spacing.sm};
   background-color: ${({ theme }) => theme.colors.background.box.default.primary};
-  border-radius: ${({ theme }) => theme.radius.base};
+  border-radius: ${({ theme }) => theme.radius.md};
 `;

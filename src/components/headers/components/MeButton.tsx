@@ -89,7 +89,7 @@ export default function MeButton({ me }: MeButtonProps) {
 const UserContainer = styled.div`
   position: relative;
   display: flex;
-  gap: 12px;
+  gap: ${({ theme }) => theme.spacing.md};
 `;
 
 const UserButton = styled.button`
@@ -106,8 +106,8 @@ const UserImage = styled(RoundedImageWrapper)`
 
 const LoginNavModal = styled.div`
   position: absolute;
-  top: 24px;
-  right: 24px;
+  top: ${({ theme }) => theme.spacing._2xl};
+  right: ${({ theme }) => theme.spacing._2xl};
   z-index: 20;
   justify-content: center;
   align-items: center;
@@ -117,9 +117,9 @@ const Nav = styled.nav`
   display: flex;
   flex-direction: column;
   width: 120px;
-  padding: 8px;
+  padding: ${({ theme }) => theme.spacing.sm};
   background-color: ${({ theme }) => theme.colors.background.box.default.primary};
-  border-radius: 12px;
+  border-radius: ${({ theme }) => theme.radius.base};
   box-shadow: ${({ theme }) => theme.shadow.dp03};
 `;
 
@@ -128,7 +128,7 @@ const StyledNavLink = styled(Link)`
   justify-content: center;
   align-items: center;
   padding: 8px 4px;
-  border-radius: 12px;
+  border-radius: ${({ theme }) => theme.radius.base};
   ${({ theme }) => theme.typeScale.sm};
 
   &:hover {

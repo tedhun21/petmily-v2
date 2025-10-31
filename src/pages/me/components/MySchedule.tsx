@@ -63,5 +63,5 @@ export default function MySchedule() {
 const ScheduleList = styled.ul`
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;

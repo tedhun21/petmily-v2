@@ -1,6 +1,5 @@
 import { PiCatBold, PiDogBold } from 'react-icons/pi';
 import styled from 'styled-components';
-import { Texts16h24 } from 'styles/commonStyle';
 import { timeRange, weekdays } from 'utils/date';
 
 interface IProps {
@@ -23,7 +22,7 @@ export default function PetsitterCapabilities({
       {/* 가능 펫 */}
       {possiblePetSpecies && (
         <Card>
-          <Title>가능 펫</Title>
+          <span>가능 펫</span>
           <PetList>
             {possiblePetSpecies.map((species, index) => (
               <PetItem key={index}>
@@ -40,7 +39,7 @@ export default function PetsitterCapabilities({
       {/* 가능 요일 */}
       {possibleDays && (
         <Card>
-          <Title>가능 요일</Title>
+          <span>가능 요일</span>
           <DayList>
             {possibleDays.map((day, index) => {
               const matchedDay = weekdays.find((weekday) => weekday.value === day);
@@ -52,14 +51,14 @@ export default function PetsitterCapabilities({
       {/* 가능 시간 */}
       {possibleStartTime && possibleEndTime && (
         <Card>
-          <Title>가능 시간</Title>
+          <span>가능 시간</span>
           <span>{timeRange(possibleStartTime, possibleEndTime)}</span>
         </Card>
       )}
       {/* 가능 지역 */}
       {possibleLocations && (
         <Card>
-          <Title>가능 지역</Title>
+          <span>가능 지역</span>
           <LocationList>
             {possibleLocations.map((location, index) => (
               <LocationItem key={index}>{location}</LocationItem>
@@ -74,54 +73,52 @@ export default function PetsitterCapabilities({
 const Wrapper = styled.ul`
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 const Card = styled.li`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 12px;
+  padding: ${({ theme }) => theme.spacing.md};
   border: 2px solid ${({ theme }) => theme.colors.line.box.highlight};
   border-radius: ${({ theme }) => theme.radius.lg};
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
-
-const Title = styled(Texts16h24)``;
 
 const PetList = styled.ul`
   display: flex;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const PetItem = styled.li`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 8px;
+  padding: ${({ theme }) => theme.spacing.sm};
   background-color: ${({ theme }) => theme.colors.background.highlight};
-  border-radius: ${({ theme }) => theme.radius.base};
+  border-radius: ${({ theme }) => theme.radius.md};
 `;
 
 const DayList = styled.ul`
   display: flex;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const DayItem = styled.li`
   display: flex;
   justify-content: center;
   align-items: cetner;
-  padding: 8px;
+  padding: ${({ theme }) => theme.spacing.sm};
   background-color: ${({ theme }) => theme.colors.background.highlight};
-  border-radius: ${({ theme }) => theme.radius.base};
+  border-radius: ${({ theme }) => theme.radius.md};
   color: white;
 `;
 
 const LocationList = styled.ul``;
 
 const LocationItem = styled.li`
-  padding: 8px;
+  padding: ${({ theme }) => theme.spacing.sm};
   background-color: ${({ theme }) => theme.colors.background.highlight};
-  border-radius: ${({ theme }) => theme.radius.base};
+  border-radius: ${({ theme }) => theme.radius.md};
 `;

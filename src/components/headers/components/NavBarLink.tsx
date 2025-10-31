@@ -30,7 +30,7 @@ const NavLi = styled.li<{ $isActive: boolean }>`
 `;
 
 const CustomLink = styled(Link)<{ $isActive: boolean }>`
-  font-weight: ${({ $isActive, theme }) => ($isActive ? theme.typeScale['2xl'] : theme.typeScale.xl)};
+  font-weight: ${({ $isActive, theme }) => ($isActive ? theme.typeScale._2xl : theme.typeScale.xl)};
 
   &:visited {
     text-decoration: none;

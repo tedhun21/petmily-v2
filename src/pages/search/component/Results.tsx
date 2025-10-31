@@ -72,7 +72,7 @@ export default function Results() {
 
 const Main = styled.main`
   height: 100%;
-  padding: 12px;
+  padding: ${({ theme }) => theme.spacing.md};
 `;
 
 const AlternativeContainer = styled(CenterContainer)`
@@ -82,5 +82,5 @@ const AlternativeContainer = styled(CenterContainer)`
 const ResultsList = styled.ul`
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: ${({ theme }) => theme.spacing.lg};
 `;

@@ -118,7 +118,7 @@ const Main = styled.main`
   align-items: center;
   width: 100%;
   height: 80%;
-  gap: 60px;
+  gap: ${({ theme }) => theme.spacing._5xl};
 `;
 
 const LoginContainer = styled.div`
@@ -134,20 +134,17 @@ const FormContainer = styled.form`
   flex-direction: column;
   justify-content: center;
   width: 100%;
-  gap: 12px;
+  gap: ${({ theme }) => theme.spacing.md};
 `;
 
 const LoginInput = styled(Input)`
   width: 100%;
-  padding: 8px;
-
-  ${({ theme }) => theme.typeScale.sm};
+  padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.typeScale.sm};
 `;
 
 export const SubmitButton = styled(BlueButton)`
   width: 100%;
-  padding: 8px;
-  ${({ theme }) => theme.typeScale.base};
+  padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.typeScale.base};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;
 
@@ -158,5 +155,5 @@ const CustomLink = styled(Link)`
 `;
 
 const InputError = styled(Column)`
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;

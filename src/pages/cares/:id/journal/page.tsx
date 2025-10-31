@@ -212,7 +212,7 @@ export default function JournalPage() {
 const Main = styled.main`
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding: ${({ theme }) => theme.spacing.xl};
 `;
 
 const SubTitle = styled(Texts16h24)``;
@@ -220,28 +220,28 @@ const SubTitle = styled(Texts16h24)``;
 const TextSection = styled.section`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const TextArea = styled.textarea`
   width: 100%;
   height: 100px;
-  padding: 8px;
-  border-radius: ${({ theme }) => theme.radius.base};
+  padding: ${({ theme }) => theme.spacing.sm};
+  border-radius: ${({ theme }) => theme.radius.md};
   font-family: inherit;
-  ${({ theme }) => theme.typeScale.sm}
+  ${({ theme }) => theme.typeScale.sm};
 `;
 
 const ImageSection = styled.section`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const ImageSelectWrapper = styled.div`
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
 
   > div {
     ${({ theme }) => theme.typeScale.xs}
@@ -250,8 +250,8 @@ const ImageSelectWrapper = styled.div`
 
 const ImageSelectButton = styled(BlueButton)`
   ${({ theme }) => theme.typeScale.sm}
-  padding:4px 8px;
-  border-radius: ${({ theme }) => theme.radius.base};
+  padding:4px ${({ theme }) => theme.spacing.sm};
+  border-radius: ${({ theme }) => theme.radius.md};
 `;
 
 const ImagePreview = styled.div`
@@ -263,12 +263,12 @@ const ImagePreview = styled.div`
 const ImagePreviewItem = styled.div`
   position: relative;
   margin: 2px;
-  padding: 4px;
+  padding: ${({ theme }) => theme.spacing.xs};
 `;
 
 const Img = styled.img`
   width: 100px;
-  border-radius: ${({ theme }) => theme.radius.base};
+  border-radius: ${({ theme }) => theme.radius.md};
 `;
 
 const RemoveButton = styled.button`
@@ -278,16 +278,16 @@ const RemoveButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 24px;
-  height: 24px;
+  width: ${({ theme }) => theme.spacing._2xl};
+  height: ${({ theme }) => theme.spacing._2xl};
   background-color: ${({ theme }) => theme.colors.background.box.blue.primary};
   border-radius: 50%;
 `;
 
 const SubmitButton = styled(BlueButton)`
-  padding: 8px;
   width: 100%;
-  border-radius: ${({ theme }) => theme.radius.base};
+  padding: ${({ theme }) => theme.spacing.sm};
+  border-radius: ${({ theme }) => theme.radius.md};
 
   ${({ theme }) => theme.typeScale.base}
 `;

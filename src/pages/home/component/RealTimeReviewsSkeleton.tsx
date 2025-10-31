@@ -1,16 +1,5 @@
 import styled, { keyframes } from 'styled-components';
-
-const pulse = keyframes`
-  50% {
-    opacity: 0.5;
-  }
-`;
-
-const SkeletonElement = styled.div`
-  background-color: ${({ theme }) => theme.colors.background.box.default.hover};
-  border-radius: 16px;
-  animation: ${pulse} 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-`;
+import { Column, Row } from 'styles/commonStyle';
 
 function SkeletonCard() {
   return (
@@ -41,12 +30,23 @@ export default function RealTimeReviewsSkeleton() {
   );
 }
 
-const Container = styled.div`
-  display: flex;
+const pulse = keyframes`
+  50% {
+    opacity: 0.5;
+  }
+`;
+
+const SkeletonElement = styled.div`
+  background-color: ${({ theme }) => theme.colors.background.box.default.hover};
+  border-radius: ${({ theme }) => theme.radius.md};
+  animation: ${pulse} 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+`;
+
+const Container = styled(Row)`
   justify-content: center;
   overflow-x: auto;
   width: 100%;
-  gap: 16px;
+  gap: ${({ theme }) => theme.spacing.lg};
 
   /* 스크롤바 숨기기 */
   &::-webkit-scrollbar {
@@ -54,34 +54,28 @@ const Container = styled.div`
   }
 `;
 
-const Card = styled.div`
-  display: flex;
+const Card = styled(Column)`
   flex-shrink: 0;
-  flex-direction: column;
   width: 300px;
   height: 156px;
-  padding: 16px;
+  padding: ${({ theme }) => theme.spacing.lg};
   background-color: ${({ theme }) => theme.colors.background.box.default.primary};
   border-radius: ${({ theme }) => theme.radius.lg};
-  gap: 12px;
+  gap: ${({ theme }) => theme.spacing.md};
 `;
 
-const ClientContainer = styled.div`
-  display: flex;
+const ClientContainer = styled(Row)`
   justify-content: space-between;
   align-items: flex-start;
   width: 100%;
 `;
 
-const ClientImageName = styled.div`
-  display: flex;
+const ClientImageName = styled(Row)`
   align-items: center;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
-const ContentContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+const ContentContainer = styled(Column)`
+  gap: ${({ theme }) => theme.spacing.sm};
   width: 100%;
 `;

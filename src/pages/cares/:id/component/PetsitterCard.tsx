@@ -63,8 +63,8 @@ export default function PetsitterCard({ petsitter }: PetsitterCardProps) {
 
 const Card = styled.section`
   display: flex;
-  padding: 20px;
-  border-radius: 20px;
+  padding: ${({ theme }) => theme.spacing.xl};
+  border-radius: ${({ theme }) => theme.radius.lg};
   box-shadow: ${({ theme }) => theme.shadow.dp03};
 
   > div {
@@ -74,7 +74,7 @@ const Card = styled.section`
 
 const ImageName = styled(Column)`
   align-items: center;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const PetsitterImage = styled(RoundedImageWrapper)`
@@ -99,20 +99,20 @@ const PetsitterName = styled(Texts18h28)`
 `;
 
 const LinkWrapper = styled(Row)`
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const StyledLink = styled(BlueLink)`
-  padding: 8px;
-  border-radius: ${({ theme }) => theme.radius.base};
+  padding: ${({ theme }) => theme.spacing.sm};
+  border-radius: ${({ theme }) => theme.radius.md};
 `;
 
 const StarReviewWrapper = styled(Row)`
   align-items: center;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const IconAndSpan = styled(Row)`
   align-items: center;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;

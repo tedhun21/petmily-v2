@@ -60,11 +60,11 @@ export default function ChatRoomItem({ chatRoom }: ChatRoomItemProps) {
 const ChatRoomLink = styled(Link)`
   display: flex;
   justify-content: space-between;
-  padding: 20px;
+  padding: ${({ theme }) => theme.spacing.xl};
 `;
 
 const PhotoName = styled(Row)`
-  gap: 20px;
+  gap: ${({ theme }) => theme.spacing.xl};
   align-items: center;
 `;
 
@@ -78,23 +78,22 @@ const Photo = styled.div`
 const MemberPhoto = styled(RoundedImageWrapper)``;
 
 const NameMessageWrapper = styled(Column)`
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const TimeUnreadCount = styled(Column)`
   justify-content: space-between;
   align-items: center;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
-const NewMessage = styled.div`
-  display: flex;
+const NewMessage = styled(Row)`
   justify-content: center;
   align-items: center;
-  min-width: 20px;
-  height: 20px;
-  padding: 4px;
+  min-width: ${({ theme }) => theme.spacing.xl};
+  height: ${({ theme }) => theme.spacing.xl};
+  padding: ${({ theme }) => theme.spacing.xs};
   background-color: ${({ theme }) => theme.colors.background.error};
-  border-radius: ${({ theme }) => theme.radius.base};
+  border-radius: ${({ theme }) => theme.radius.md};
   color: ${({ theme }) => theme.colors.text.white};
 `;

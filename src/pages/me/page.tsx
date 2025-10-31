@@ -5,7 +5,7 @@ import { useAuthSWR } from 'hooks/authSWR';
 
 import { fetcher } from 'api';
 import MyPetmily from '@pages/me/components/MyPetmily';
-import { ImageCentered, RoundedImageWrapper, Texts14h20 } from 'styles/commonStyle';
+import { Column, ImageCentered, RoundedImageWrapper, Row, Texts14h20, Texts16h24 } from 'styles/commonStyle';
 import MyPetsitterProfile from './components/MyPetsitterProfile';
 import BackHeader from '@components/headers/BackHeader';
 import { UserRole } from 'types/user.type';
@@ -54,24 +54,22 @@ export default function MyPage() {
 const MypageContainer = styled.main`
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: ${({ theme }) => theme.spacing._4xl};
   width: 100%;
   height: 100%;
   padding: 36px;
 `;
 
 // 유저 컨테이너
-const MyProfileContianer = styled.div`
-  display: flex;
+const MyProfileContianer = styled(Row)`
   justify-content: space-between;
   align-items: center;
   width: 100%;
   height: auto;
 `;
 
-const MyProfile = styled.div`
-  display: flex;
-  gap: 8px;
+const MyProfile = styled(Row)`
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const MyImage = styled(RoundedImageWrapper)`
@@ -80,32 +78,26 @@ const MyImage = styled(RoundedImageWrapper)`
   border: 2px solid ${({ theme }) => theme.colors.line.box.highlight};
 `;
 
-const TextWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
+const TextWrapper = styled(Column)`
   justify-content: space-around;
 `;
 
-const NameText = styled.div`
+const NameText = styled(Texts16h24)`
   font-weight: ${({ theme }) => theme.fontWeight.bold};
-  ${({ theme }) => theme.typeScale.lg};
 `;
 
-const HelloText = styled.div`
-  display: flex;
-  justify-content: space-between;
+const HelloText = styled(Texts16h24)`
   font-weight: ${({ theme }) => theme.fontWeight.bold};
-  ${({ theme }) => theme.typeScale.base};
 `;
 
 const EditLink = styled(Link)`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 8px;
+  padding: ${({ theme }) => theme.spacing.sm};
   background-color: ${({ theme }) => theme.colors.background.box.blue.primary};
-  border-radius: ${({ theme }) => theme.radius.base};
-  color: white;
+  border-radius: ${({ theme }) => theme.radius.md};
+  color: ${({ theme }) => theme.colors.text.white};
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.background.box.blue.hover};

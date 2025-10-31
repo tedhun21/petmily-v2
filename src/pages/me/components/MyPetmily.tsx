@@ -24,7 +24,7 @@ export default function MyPetmily() {
 const PetmilyContainer = styled.section`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const TitleContainer = styled(Row)`

@@ -93,7 +93,7 @@ export default function StartEndTimeModal() {
 const Content = styled.div``;
 
 const TimeContainer = styled(Column)`
-  gap: 16px;
+  gap: ${({ theme }) => theme.spacing.lg};
 `;
 
 const List = styled.ul`
@@ -113,10 +113,10 @@ const TimeCapsule = styled.li<{ $isSelected: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 12px 16px;
+  padding: 12px ${({ theme }) => theme.spacing.lg};
   background-color: ${({ theme, $isSelected }) => $isSelected && theme.colors.background.box.default.opposite};
   border: 1px solid transparent;
-  border-radius: 20px;
+  border-radius: ${({ theme }) => theme.spacing.xl};
   color: ${({ $isSelected, theme }) => $isSelected && theme.colors.text.opposite};
   font-weight: ${({ theme }) => theme.fontWeight.light};
   cursor: pointer;

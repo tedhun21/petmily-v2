@@ -33,6 +33,6 @@ const Wrapper = styled(Row)`
 const Item = styled.li`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
   align-items: center;
 `;

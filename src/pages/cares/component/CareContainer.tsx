@@ -5,7 +5,7 @@ import { useAuthSWRInfinite } from 'hooks/authSWR';
 import styled from 'styled-components';
 import { useInView } from 'framer-motion';
 
-import { CenterContainer } from 'styles/commonStyle';
+import { CenterContainer, Column } from 'styles/commonStyle';
 import { fetcher } from 'api';
 
 import Loading from '@components/Loading';
@@ -71,10 +71,8 @@ export default function CareContainer() {
   );
 }
 
-const CareCardContainer = styled.div`
-  display: flex;
+const CareCardContainer = styled(Column)`
   flex: auto;
-  flex-direction: column;
   height: 100%;
-  gap: 16px;
+  gap: ${({ theme }) => theme.spacing.lg};
 `;

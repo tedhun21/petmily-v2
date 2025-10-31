@@ -21,11 +21,9 @@ export default function GoogleOAuthButton({ children }: GoogleOAuthButtonProps) 
 const GoogleOAuthButtonStyle = styled(Button)`
   position: relative;
   width: 100%;
-  padding: 8px;
+  padding: ${({ theme }) => theme.spacing.sm};
   border: 1px solid ${({ theme }) => theme.colors.line.box.primary};
-  border-radius: 12px;
-
-  div {
+  border-radius: ${({ theme }) => theme.radius.md} div {
     color: ${({ theme }) => theme.colors.text.active};
     ${({ theme }) => theme.typeScale.base};
   }
@@ -33,6 +31,6 @@ const GoogleOAuthButtonStyle = styled(Button)`
 
 const GoogleImage = styled.img`
   position: absolute;
-  top: 8px;
-  left: 8px;
+  top: ${({ theme }) => theme.spacing.sm};
+  left: ${({ theme }) => theme.spacing.sm};
 `;

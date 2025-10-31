@@ -5,7 +5,7 @@ import 'swiper/css/pagination';
 
 import HomeAd from '@components/HomeAd';
 
-import { DefaultLink } from 'styles/commonStyle';
+import { DefaultLink, Row } from 'styles/commonStyle';
 import RealTimeReviews from './component/RealTimeReviews';
 import UsedPetsitters from './component/UsedPetsitters';
 import NavHeader from '@components/headers/NavHeader';
@@ -41,25 +41,20 @@ const Main = styled.main`
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 12px;
-  gap: 20px;
+  padding: ${({ theme }) => theme.spacing.md};
+  gap: ${({ theme }) => theme.spacing.xl};
 `;
 
-const LinkContainer = styled.div`
-  display: flex;
-  gap: 12px;
+const LinkContainer = styled(Row)`
+  gap: ${({ theme }) => theme.spacing.md};
 `;
 
 const PetsitterLink = styled(DefaultLink)`
   display: flex;
   justify-content: center;
-  padding: 24px;
-  border-radius: 16px;
+  padding: ${({ theme }) => theme.spacing._2xl};
+  border-radius: ${({ theme }) => theme.radius.md};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
 
   ${({ theme }) => theme.typeScale.base};
-
-  /* &:visited {
-    text-decoration: none;
-  } */
 `;

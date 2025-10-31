@@ -133,8 +133,7 @@ const BoxWrapper = styled(Row)`
   width: 100%;
 `;
 
-export const InputDiv = styled.div<{ $isSelected: boolean }>`
-  display: flex;
+export const InputDiv = styled(Row)<{ $isSelected: boolean }>`
   flex: 1;
   justify-content: space-between;
   align-items: center;
@@ -150,7 +149,7 @@ export const InputDiv = styled.div<{ $isSelected: boolean }>`
 `;
 
 export const Wrapper = styled(Column)`
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
   align-items: flex-start;
 `;
 
@@ -160,8 +159,8 @@ export const Label = styled.label`
 
 export const BoxInput = styled.input`
   width: 100%;
-  border: none;
   background-color: transparent;
+  border: none;
   ${({ theme }) => theme.typeScale.sm};
 
   &::placeholder {
@@ -177,7 +176,7 @@ export const XButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 4px;
+  padding: ${({ theme }) => theme.spacing.xs};
   border-radius: 50%;
 
   &:hover {
@@ -191,15 +190,14 @@ export const Modal = styled.div`
   left: 0;
   z-index: 1;
   width: 100%;
-  margin-top: 16px;
+  margin-top: ${({ theme }) => theme.spacing.lg};
 `;
 
-export const ModalLayOut = styled.div`
-  display: flex;
+export const ModalLayOut = styled(Row)`
   width: 100%;
-  padding: 20px;
+  padding: ${({ theme }) => theme.spacing.xl};
   background-color: ${({ theme }) => theme.colors.background.primary};
-  border-radius: 32px;
+  border-radius: ${({ theme }) => theme.spacing._3xl};
   box-shadow: ${({ theme }) => theme.shadow.dp02};
 `;
 
@@ -208,13 +206,13 @@ export const HalfModalLayOut = styled(ModalLayOut)`
 `;
 
 const ButtonDiv = styled.div`
-  margin: 8px;
+  margin: ${({ theme }) => theme.spacing.sm};
 `;
 
 const SearchButton = styled(BlueButton)`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 8px;
-  border-radius: 50%;
+  padding: ${({ theme }) => theme.spacing.sm};
+  border-radius: ${({ theme }) => theme.radius.circle};
 `;

@@ -5,7 +5,7 @@ export type Theme = {
     base: string;
     lg: string;
     xl: string;
-    '2xl': string;
+    _2xl: string;
   };
   fontWeight: {
     light: number;
@@ -17,9 +17,21 @@ export type Theme = {
 
   radius: {
     circle: string;
-    base: string;
+    sm: string;
     md: string;
     lg: string;
+  };
+
+  spacing: {
+    xs: string;
+    sm: string;
+    md: string;
+    lg: string;
+    xl: string;
+    _2xl: string;
+    _3xl: string;
+    _4xl: string;
+    _5xl: string;
   };
 
   colors: {
@@ -69,7 +81,7 @@ const baseTheme = {
     base: 'font-size: 1rem; line-height: 1.5rem;', // 16px, 24px
     lg: 'font-size: 1.125rem; line-height: 1.75rem;', // 18px, 28px
     xl: 'font-size: 1.25rem; line-height: 1.75rem;', // 20px, 28px
-    '2xl': 'font-size: 1.5rem; line-height: 2rem;', // 24px, 32px
+    _2xl: 'font-size: 1.5rem; line-height: 2rem;', // 24px, 32px
   },
 
   fontWeight: {
@@ -82,9 +94,21 @@ const baseTheme = {
 
   radius: {
     circle: '50%',
-    base: '0.75rem',
-    md: '1rem',
-    lg: '1.25rem',
+    sm: '0.75rem', // 12px
+    md: '1rem', // 16px
+    lg: '1.25rem', // 20px
+  },
+
+  spacing: {
+    xs: '0.25rem', // 4px
+    sm: '0.5rem', // 8px
+    md: '0.75rem', // 12px
+    lg: '1rem', // 16px
+    xl: '1.25rem', // 20px
+    _2xl: '1.5rem', // 24px
+    _3xl: '2rem', // 32px
+    _4xl: '2.5rem', // 40px
+    _5xl: '3.75rem', // 60px
   },
 };
 

@@ -22,13 +22,13 @@ export default function UsedPetsittersSkeleton() {
 
 const SkeletonList = styled.ul`
   display: flex;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const SkeletonItem = styled.li`
   display: flex;
   width: 220px;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const pulse = keyframes`
@@ -39,7 +39,7 @@ const pulse = keyframes`
 
 const SkeletonElement = styled.div`
   background-color: ${({ theme }) => theme.colors.background.box.default.hover};
-  border-radius: 16px;
+  border-radius: ${({ theme }) => theme.radius.md};
   animation: ${pulse} 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; /* pulse 애니메이션 
        적용 */
 `;
@@ -49,7 +49,7 @@ const SkeletonImage = styled(SkeletonElement)`
   width: 60px;
   height: 60px;
   background-color: ${({ theme }) => theme.colors.background.box.default.hover};
-  border-radius: 50%;
+  border-radius: ${({ theme }) => theme.radius.circle};
 `;
 
 const Div = styled(Column)`

@@ -104,13 +104,13 @@ const ReviewCard = styled.article`
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: 16px;
+  gap: ${({ theme }) => theme.spacing.lg};
 `;
 
 const ReviewContainer = styled(Column)`
   justify-content: space-between;
   width: 100%;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 const TitleContainer = styled(Row)`
@@ -119,7 +119,7 @@ const TitleContainer = styled(Row)`
 
 const StarWrapper = styled(Row)`
   align-items: center;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 const ReviewImageContainer = styled.div`
@@ -147,15 +147,15 @@ const RestButton = styled.button`
 const PetsitterContainer = styled(Row)`
   justify-content: space-between;
   align-items: center;
-  padding: 12px;
+  padding: ${({ theme }) => theme.spacing.md};
   border: 2px solid ${({ theme }) => theme.colors.line.box.highlight};
-  border-radius: 16px;
-  gap: 8px;
+  border-radius: ${({ theme }) => theme.radius.md};
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const PetsitterInfo = styled(Row)`
   align-items: center;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const PetsitterImage = styled(RoundedImageWrapper)`
@@ -166,13 +166,13 @@ const PetsitterImage = styled(RoundedImageWrapper)`
 
 const PetsitterDetailLink = styled(Link)`
   display: flex;
-  align-items: center;
   justify-content: center;
-  background-color: ${({ theme }) => theme.colors.background.box.blue.primary};
-  ${({ theme }) => theme.typeScale.sm}
+  align-items: center;
   padding: 4px 8px;
-  border-radius: ${({ theme }) => theme.radius.base};
-  color: white;
+  background-color: ${({ theme }) => theme.colors.background.box.blue.primary};
+  border-radius: ${({ theme }) => theme.radius.md};
+  color: ${({ theme }) => theme.colors.text.white};
+  ${({ theme }) => theme.typeScale.sm};
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.background.box.blue.hover};
