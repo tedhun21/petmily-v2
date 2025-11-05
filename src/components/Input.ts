@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 
 // Input props 타입을 정의합니다.
-type InputProps = {
+export type InputProps = {
   $size?: 'sm' | 'md' | 'lg';
   $variant?: 'default' | 'search';
   $error?: boolean;

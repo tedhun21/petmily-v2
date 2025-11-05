@@ -16,7 +16,6 @@ import {
   InputLabel,
   InputWrapper,
   Main,
-  PetInput,
   PetSpeciesButtonContainer,
   PetTextarea,
   RadioContainer,
@@ -33,6 +32,7 @@ import { FaXmark } from 'react-icons/fa6';
 import EditableProfileImage from '@components/EditableProfileImage';
 import { PetGender, PetSpecies } from 'types/pet.type';
 import { Button } from '@components/buttons/Button';
+import { Input } from '@components/Input';
 
 const schema = yup.object().shape({
   species: yup.string().oneOf(['dog', 'cat'], '강아지인가요 고양이인가요?').required('이 항목은 필수입니다.'),
@@ -194,7 +194,7 @@ export default function EditPetPage() {
           {/* 이름 */}
           <InputWrapper>
             <InputLabel htmlFor="name">이름</InputLabel>
-            <PetInput id="name" type="text" placeholder="e.g. 도기" {...register('name')} />
+            <Input id="name" type="text" placeholder="e.g. 도기" {...register('name')} />
           </InputWrapper>
 
           {/* 성별 */}
@@ -225,14 +225,14 @@ export default function EditPetPage() {
           {/* 품종 */}
           <InputWrapper>
             <InputLabel htmlFor="breed">품종</InputLabel>
-            <PetInput id="breed" type="text" placeholder="e.g. 골든 리트리버, 샴" {...register('breed')} />
+            <Input id="breed" type="text" placeholder="e.g. 골든 리트리버, 샴" {...register('breed')} />
           </InputWrapper>
 
           {/* 나이 */}
           <InputWrapper>
             <InputLabel htmlFor="age">나이</InputLabel>
             <RowWrapper>
-              <PetInput id="age" type="number" {...register('age')} />
+              <Input id="age" type="number" {...register('age')} />
               <span>살</span>
             </RowWrapper>
           </InputWrapper>
@@ -241,7 +241,7 @@ export default function EditPetPage() {
           <InputWrapper>
             <InputLabel htmlFor="weight">몸무게</InputLabel>
             <RowWrapper>
-              <PetInput id="weight" type="number" {...register('weight')} />
+              <Input id="weight" type="number" {...register('weight')} />
               <span>kg</span>
             </RowWrapper>
           </InputWrapper>

@@ -18,7 +18,7 @@ import { FaArrowUp, FaXmark } from 'react-icons/fa6';
 import { GoVerified } from 'react-icons/go';
 import { PiCatBold, PiDogBold } from 'react-icons/pi';
 
-import { Column, ErrorMessage, Input, Row, Texts14h20 } from 'styles/commonStyle';
+import { Column, ErrorMessage, Row, Texts14h20 } from 'styles/commonStyle';
 
 import { removeCookie } from 'utils/cookie';
 import { TypeRadioLabel } from '../pet/register/page';
@@ -37,7 +37,7 @@ import EditableProfileImage from '../../../components/EditableProfileImage';
 import { UserRole } from 'types/user.type';
 import { PetSpecies } from 'types/pet.type';
 import { Button } from '@components/buttons/Button';
-import XButton from '@components/buttons/XButton';
+import { Input } from '@components/Input';
 
 const schema = yup.object().shape({
   nickname: yup
@@ -268,21 +268,21 @@ export default function EditMePage() {
           <InputWrapper>
             <InputLabel htmlFor="nickname">닉네임</InputLabel>
             <InputError>
-              <MeInput id="nickname" {...register('nickname')} />
+              <Input id="nickname" {...register('nickname')} />
               {errors.nickname && <ErrorMessage>{errors.nickname.message}</ErrorMessage>}
             </InputError>
           </InputWrapper>
           <InputWrapper>
             <InputLabel htmlFor="phone">연락처</InputLabel>
             <InputError>
-              <MeInput id="phone" {...register('phone')} />
+              <Input id="phone" {...register('phone')} />
               {errors.phone && <ErrorMessage>{errors.phone.message}</ErrorMessage>}
             </InputError>
           </InputWrapper>
           <InputWrapper>
             <InputLabel htmlFor="address">주소</InputLabel>
             <InputError>
-              <MeInput id="address" onClick={onToggleModal} onKeyDown={onToggleModal} {...register('address')} />
+              <Input id="address" onClick={onToggleModal} onKeyDown={onToggleModal} {...register('address')} />
               {errors.address && <ErrorMessage>{errors.address.message}</ErrorMessage>}
             </InputError>
 
@@ -299,7 +299,7 @@ export default function EditMePage() {
           <InputWrapper>
             <InputLabel htmlFor="detailAddress">상세 주소</InputLabel>
             <InputError>
-              <MeInput id="detailAddress" {...register('detailAddress')} />
+              <Input id="detailAddress" {...register('detailAddress')} />
               {errors.detailAddress && <ErrorMessage>{errors.detailAddress.message}</ErrorMessage>}
             </InputError>
           </InputWrapper>
@@ -316,21 +316,21 @@ export default function EditMePage() {
                 <PetSpeciesButtonContainer>
                   <TypeRadioLabel $isSelected={watch('possiblePetSpecies')?.includes(PetSpecies.DOG)}>
                     <input
-                      hidden
                       type="checkbox"
                       value={PetSpecies.DOG}
                       {...register('possiblePetSpecies')}
                       onClick={handlePetSpecies}
+                      hidden
                     />
                     <PiDogBold size="20px" color="white" />
                   </TypeRadioLabel>
                   <TypeRadioLabel $isSelected={watch('possiblePetSpecies')?.includes(PetSpecies.CAT)}>
                     <input
-                      hidden
                       type="checkbox"
                       value={PetSpecies.CAT}
                       {...register('possiblePetSpecies')}
                       onClick={handlePetSpecies}
+                      hidden
                     />
                     <PiCatBold size="20px" color="white" />
                   </TypeRadioLabel>
@@ -481,13 +481,6 @@ const InputLabel = styled.label`
 
 const InputError = styled(Column)`
   width: 80%;
-`;
-
-const MeInput = styled(Input)`
-  width: 100%;
-  padding: ${({ theme }) => theme.spacing.sm};
-  border-radius: ${({ theme }) => theme.radius.md};
-  ${({ theme }) => theme.typeScale.base};
 `;
 
 const LocationInputWrapper = styled(Column)`

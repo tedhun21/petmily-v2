@@ -164,7 +164,7 @@ export default function JournalPage() {
               multiple
               ref={fileInputRef}
               onChange={handleFileChange}
-              style={{ display: 'none' }}
+              hidden
             />
             <ImageSelectWrapper>
               <Button type="button" onClick={openFileInput}>

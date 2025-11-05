@@ -7,8 +7,9 @@ import { IoMdArrowRoundUp } from 'react-icons/io';
 import ChatHeader from './ChatHeader';
 import ChatContainer from './ChatContainer';
 import { useChat } from '../contexts/ChatProvider';
-import { Input } from 'styles/commonStyle';
 import { Button } from '@components/buttons/Button';
+import { Input } from '@components/Input';
+import { Row } from 'styles/commonStyle';
 
 interface MessageFormValues {
   message: string;
@@ -39,9 +40,19 @@ export default function ChatSection() {
       <footer>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Wrapper>
-            <ChatInput type="text" placeholder="메시지 보내기" autoComplete="off" {...register('message')} />
+            <Input
+              type="text"
+              placeholder="메시지 보내기"
+              autoComplete="off"
+              {...register('message')}
+              $variant="default"
+              $size="lg"
+              $borderRadius="lg"
+              $fullWidth
+            />
+
             <ChatSubmitButton type="submit">
-              <IoMdArrowRoundUp size="28px" color="white" />
+              <IoMdArrowRoundUp size="32px" color="white" />
             </ChatSubmitButton>
           </Wrapper>
         </form>
@@ -68,18 +79,10 @@ const Section = styled.section`
   }
 `;
 
-const Wrapper = styled.div`
-  display: flex;
+const Wrapper = styled(Row)`
   align-items: center;
   padding: ${({ theme }) => theme.spacing.md};
   gap: ${({ theme }) => theme.spacing.sm};
-`;
-
-const ChatInput = styled(Input)`
-  flex: auto;
-  padding: 8px 12px;
-  border-radius: ${({ theme }) => theme.radius.lg};
-  ${({ theme }) => theme.typeScale.lg};
 `;
 
 const ChatSubmitButton = styled(Button).attrs(() => ({

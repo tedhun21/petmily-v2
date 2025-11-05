@@ -9,7 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import { PiCatBold, PiDogBold } from 'react-icons/pi';
 
-import { Column, Input, Row } from 'styles/commonStyle';
+import { Column, Row } from 'styles/commonStyle';
 
 import useSWRMutation from 'swr/mutation';
 import Loading from '@components/Loading';
@@ -21,6 +21,7 @@ import EditableProfileImage from '@components/EditableProfileImage';
 import { PetGender, PetSpecies } from 'types/pet.type';
 import { poster } from 'api';
 import { Button } from '@components/buttons/Button';
+import { Input } from '@components/Input';
 
 const schema = yup.object().shape({
   species: yup.string().oneOf(['dog', 'cat'], '강아지인가요 고양이인가요?').required('이 항목은 필수입니다.'),
@@ -117,7 +118,7 @@ export default function CreatePetPage() {
           {/* 이름 */}
           <InputWrapper>
             <InputLabel htmlFor="name">이름</InputLabel>
-            <PetInput type="text" placeholder="e.g. 도기" />
+            <Input type="text" placeholder="e.g. 도기" />
           </InputWrapper>
 
           {/* 성별 */}
@@ -145,7 +146,7 @@ export default function CreatePetPage() {
           <InputWrapper>
             <InputLabel htmlFor="breed">품종</InputLabel>
             <InputError>
-              <PetInput type="text" placeholder="e.g. 골든 리트리버, 샴" {...register('breed')} />
+              <Input type="text" placeholder="e.g. 골든 리트리버, 샴" {...register('breed')} />
             </InputError>
           </InputWrapper>
 
@@ -154,7 +155,7 @@ export default function CreatePetPage() {
             <InputLabel htmlFor="age">나이</InputLabel>
 
             <RowWrapper>
-              <PetInput type="number" {...register('age')} />
+              <Input type="number" {...register('age')} />
               <span>살</span>
             </RowWrapper>
           </InputWrapper>
@@ -163,7 +164,7 @@ export default function CreatePetPage() {
           <InputWrapper>
             <InputLabel htmlFor="weight">몸무게</InputLabel>
             <RowWrapper>
-              <PetInput type="number" {...register('weight')} />
+              <Input type="number" {...register('weight')} />
               <span>kg</span>
             </RowWrapper>
           </InputWrapper>
@@ -243,13 +244,6 @@ export const InputLabel = styled.label`
 
 const InputError = styled(Column)`
   width: 100%;
-`;
-
-export const PetInput = styled(Input)`
-  width: 100%;
-  padding: ${({ theme }) => theme.spacing.sm};
-  border-radius: ${({ theme }) => theme.radius.md};
-  ${({ theme }) => theme.typeScale.base};
 `;
 
 export const RadioContainer = styled(Row)`

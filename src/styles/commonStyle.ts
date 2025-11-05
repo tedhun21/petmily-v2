@@ -72,51 +72,6 @@ export const ErrorMessage = styled(Texts12h16)`
   color: ${({ theme }) => theme.colors.text.error};
 `;
 
-export const Input = styled.input`
-  background-color: ${({ theme }) => theme.colors.background.input.primary};
-  border: 1px solid ${({ theme }) => theme.colors.line.input.primary};
-  border-radius: ${({ theme }) => theme.radius.md};
-
-  &:hover {
-    border: 1px solid ${({ theme }) => theme.colors.line.input.hover};
-  }
-
-  &:focus {
-    border: 1px solid ${({ theme }) => theme.colors.line.input.focus};
-  }
-`;
-
-// export const Button = styled.button`
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   background-color: ${({ theme }) => theme.colors.background.box.default.primary};
-//   border-radius: ${({ theme }) => theme.radius.md};
-
-//   &:hover {
-//     background-color: ${({ theme }) => theme.colors.background.box.default.hover};
-//   }
-
-//   &:active {
-//     background-color: ${({ theme }) => theme.colors.background.box.default.active};
-//     box-shadow: ${({ theme }) => theme.shadow.inset};
-//   }
-// `;
-
-// export const BlueButton = styled(Button)`
-//   background-color: ${({ theme }) => theme.colors.background.box.accent.primary};
-//   color: ${({ theme }) => theme.colors.text.white};
-
-//   &:hover {
-//     background-color: ${({ theme }) => theme.colors.background.box.accent.hover};
-//   }
-
-//   &:active {
-//     background-color: ${({ theme }) => theme.colors.background.box.accent.active};
-//     box-shadow: ${({ theme }) => theme.shadow.inset};
-//   }
-// `;
-
 export const DefaultLink = styled(Link)`
   background-color: ${({ theme }) => theme.colors.background.box.default.primary};
   border-radius: ${({ theme }) => theme.radius.md};

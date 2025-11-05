@@ -2,25 +2,28 @@ import styled from 'styled-components';
 import { API_URL } from 'config';
 import { Button } from './Button';
 import { Texts16h24 } from 'styles/commonStyle';
+import { InputProps } from '@components/Input';
 
-interface GoogleOAuthButtonProps {
+interface GoogleOAuthButtonProps extends InputProps {
   children: React.ReactNode;
 }
 
-export default function GoogleOAuthButton({ children }: GoogleOAuthButtonProps) {
+export default function GoogleOAuthButton({ children, $size, $borderRadius }: GoogleOAuthButtonProps) {
   const handleGooleOAuth = () => {
     window.location.assign(`${API_URL}/connect/google`);
   };
   return (
-    <GoogleOAuthButtonStyle type="button" onClick={handleGooleOAuth}>
+    <GoogleOAuthButtonStyle type="button" onClick={handleGooleOAuth} $size={$size} $borderRadius={$borderRadius}>
       <GoogleImage src="/imgs/GoogleLogo.svg" alt="google logo" width="24" />
       <Texts16h24>{children}</Texts16h24>
     </GoogleOAuthButtonStyle>
   );
 }
 
-const GoogleOAuthButtonStyle = styled(Button).attrs(() => ({
+const GoogleOAuthButtonStyle = styled(Button).attrs((props) => ({
   $variant: 'secondary',
+  $size: props.$size,
+  $borderRadius: props.$borderRadius,
 }))`
   position: relative;
   span {
@@ -30,6 +33,7 @@ const GoogleOAuthButtonStyle = styled(Button).attrs(() => ({
 
 const GoogleImage = styled.img`
   position: absolute;
-  top: ${({ theme }) => theme.spacing.sm};
-  left: ${({ theme }) => theme.spacing.sm};
+  top: 50%;
+  left: ${({ theme }) => theme.spacing.md};
+  transform: translateY(-50%);
 `;
