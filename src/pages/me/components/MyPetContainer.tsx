@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useInView } from 'framer-motion';
 
-import { CenterContainer, Column } from 'styles/commonStyle';
+import { Center, Column } from 'styles/commonStyle';
 
 import { useAuthSWRInfinite } from 'hooks/authSWR';
 import PetmilyCard from './PetmilyCard';
@@ -36,9 +36,9 @@ export default function MyPetContainer() {
 
   if (isLoading) {
     return (
-      <CenterContainer>
+      <Center>
         <Loading color="#279EFF" />
-      </CenterContainer>
+      </Center>
     );
   }
 
@@ -59,9 +59,9 @@ export default function MyPetContainer() {
         data?.map((page: any) => page?.results.map((pet: Pet) => <PetmilyCard key={pet.id} pet={pet} />))}
 
       {!isEnd && (
-        <CenterContainer ref={ref}>
+        <Center ref={ref}>
           <Loading color="#279EFF" />
-        </CenterContainer>
+        </Center>
       )}
     </CardContainer>
   );
@@ -89,16 +89,16 @@ const StyledLink = styled(Link)`
   justify-content: center;
   align-items: center;
   padding: ${({ theme }) => theme.spacing.sm};
-  background-color: ${({ theme }) => theme.colors.background.box.blue.primary};
+  background-color: ${({ theme }) => theme.colors.background.box.accent.primary};
   border-radius: ${({ theme }) => theme.radius.md};
   color: ${({ theme }) => theme.colors.text.white};
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.background.box.blue.hover};
+    background-color: ${({ theme }) => theme.colors.background.box.accent.hover};
   }
 
   &:active {
-    background-color: ${({ theme }) => theme.colors.background.box.blue.active};
+    background-color: ${({ theme }) => theme.colors.background.box.accent.active};
     box-shadow: ${({ theme }) => theme.shadow.inset};
   }
 

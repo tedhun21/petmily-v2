@@ -9,7 +9,8 @@ import { IoNotificationsOutline } from 'react-icons/io5';
 import { RootState } from 'store';
 import useOutsideClickModal from 'hooks/useOutsideClickModal';
 import { closeModal, ModalType, openModal } from 'store/modalSlice';
-import NotiModal from './component/NotiModal';
+import NotiModal from './components/NotiModal';
+import { Button } from '@components/buttons/Button';
 
 export default function NotiButton() {
   const dispatch = useDispatch();
@@ -30,8 +31,8 @@ export default function NotiButton() {
 
   return (
     <NotiContaier id="noti-container">
-      <Button type="button" onClick={toggleNoti}>
-        <IoNotificationsOutline size="20px" />
+      <Button type="button" onClick={toggleNoti} $variant="icon" $borderRadius="circle">
+        <IoNotificationsOutline size="24px" />
       </Button>
       {currentModal === ModalType.NOTIFICATION &&
         notiContainer &&
@@ -44,19 +45,6 @@ export default function NotiButton() {
     </NotiContaier>
   );
 }
-
-const Button = styled.button`
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: ${({ theme }) => theme.spacing.xs};
-  border-radius: ${({ theme }) => theme.radius.base};
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.background.box.default.hover};
-  }
-`;
 
 const NotiContaier = styled.div`
   position: relative;

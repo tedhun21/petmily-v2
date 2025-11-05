@@ -1,17 +1,17 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import styled from 'styled-components';
-import { FaArrowLeft } from 'react-icons/fa6';
+
 import { FiMenu } from 'react-icons/fi';
 
 import { Texts20h28 } from 'styles/commonStyle';
 import { ChatMember } from 'types/chat.type';
 import ChatRoomDrawer from './ChatRoomDrawer';
 import { useChat } from '../contexts/ChatProvider';
+import BackButton from '@components/buttons/BackButton';
+import { Button } from '@components/buttons/Button';
 
 export default function ChatHeader() {
-  const navigate = useNavigate();
   const {
     chatRoomValues: { otherMembers },
   } = useChat();
@@ -24,13 +24,11 @@ export default function ChatHeader() {
 
   return (
     <Header>
-      <StyledBackButton onClick={() => navigate(-1)}>
-        <FaArrowLeft color="#279EFF" size="24px" />
-      </StyledBackButton>
+      <BackButton />
       <Texts20h28>{otherMembers?.map((other: ChatMember) => other?.user?.nickname)?.join(', ')}</Texts20h28>
-      <button onClick={handleDrawerToggle}>
-        <FiMenu size="24px" color="#279EFF" />
-      </button>
+      <Button type="button" onClick={handleDrawerToggle} $variant="icon" $borderRadius="circle">
+        <FiMenu size="28px" color="#279EFF" />
+      </Button>
       <ChatRoomDrawer isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} />
     </Header>
   );
@@ -44,11 +42,4 @@ const Header = styled.header`
   width: 100%;
   padding: ${({ theme }) => theme.spacing.xl};
   box-shadow: ${({ theme }) => theme.shadow.dp01};
-`;
-
-const StyledBackButton = styled.button`
-  z-index: 2;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
 `;

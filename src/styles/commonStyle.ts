@@ -31,7 +31,7 @@ export const Texts20h28 = styled.span`
 `;
 
 export const Texts24h32 = styled.span`
-  ${({ theme }) => theme.typeScale['2xl']};
+  ${({ theme }) => theme.typeScale._2xl};
 `;
 
 export const Title = styled.h1`
@@ -62,12 +62,10 @@ export const ImageCentered = styled.img`
   transform: translate(-50%, -50%);
 `;
 
-export const CenterContainer = styled.div`
+export const Center = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 100%;
 `;
 
 export const ErrorMessage = styled(Texts12h16)`
@@ -77,51 +75,51 @@ export const ErrorMessage = styled(Texts12h16)`
 export const Input = styled.input`
   background-color: ${({ theme }) => theme.colors.background.input.primary};
   border: 1px solid ${({ theme }) => theme.colors.line.input.primary};
-  border-radius: ${({ theme }) => theme.radius.base};
+  border-radius: ${({ theme }) => theme.radius.md};
 
   &:hover {
     border: 1px solid ${({ theme }) => theme.colors.line.input.hover};
   }
 
   &:focus {
-    border: 1px solid ${({ theme }) => theme.colors.line.input.highlight};
+    border: 1px solid ${({ theme }) => theme.colors.line.input.focus};
   }
 `;
 
-export const Button = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: ${({ theme }) => theme.colors.background.box.default.primary};
-  border-radius: ${({ theme }) => theme.radius.base};
+// export const Button = styled.button`
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   background-color: ${({ theme }) => theme.colors.background.box.default.primary};
+//   border-radius: ${({ theme }) => theme.radius.md};
 
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.background.box.default.hover};
-  }
+//   &:hover {
+//     background-color: ${({ theme }) => theme.colors.background.box.default.hover};
+//   }
 
-  &:active {
-    background-color: ${({ theme }) => theme.colors.background.box.default.active};
-    box-shadow: ${({ theme }) => theme.shadow.inset};
-  }
-`;
+//   &:active {
+//     background-color: ${({ theme }) => theme.colors.background.box.default.active};
+//     box-shadow: ${({ theme }) => theme.shadow.inset};
+//   }
+// `;
 
-export const BlueButton = styled(Button)`
-  background-color: ${({ theme }) => theme.colors.background.box.blue.primary};
-  color: ${({ theme }) => theme.colors.text.white};
+// export const BlueButton = styled(Button)`
+//   background-color: ${({ theme }) => theme.colors.background.box.accent.primary};
+//   color: ${({ theme }) => theme.colors.text.white};
 
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.background.box.blue.hover};
-  }
+//   &:hover {
+//     background-color: ${({ theme }) => theme.colors.background.box.accent.hover};
+//   }
 
-  &:active {
-    background-color: ${({ theme }) => theme.colors.background.box.blue.active};
-    box-shadow: ${({ theme }) => theme.shadow.inset};
-  }
-`;
+//   &:active {
+//     background-color: ${({ theme }) => theme.colors.background.box.accent.active};
+//     box-shadow: ${({ theme }) => theme.shadow.inset};
+//   }
+// `;
 
 export const DefaultLink = styled(Link)`
   background-color: ${({ theme }) => theme.colors.background.box.default.primary};
-  border-radius: ${({ theme }) => theme.radius.base};
+  border-radius: ${({ theme }) => theme.radius.md};
   color: inherit;
 
   &:hover {
@@ -134,15 +132,15 @@ export const DefaultLink = styled(Link)`
 `;
 
 export const BlueLink = styled(DefaultLink)`
-  background-color: ${({ theme }) => theme.colors.background.box.blue.primary};
+  background-color: ${({ theme }) => theme.colors.background.box.accent.primary};
   color: ${({ theme }) => theme.colors.text.white};
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.background.box.blue.hover};
+    background-color: ${({ theme }) => theme.colors.background.box.accent.hover};
   }
 
   &:active {
-    background-color: ${({ theme }) => theme.colors.background.box.blue.active};
+    background-color: ${({ theme }) => theme.colors.background.box.accent.active};
     box-shadow: ${({ theme }) => theme.shadow.inset};
   }
 `;

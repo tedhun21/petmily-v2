@@ -45,7 +45,7 @@ export type Theme = {
       error: string;
     };
     line: {
-      input: { primary: string; hover: string; highlight: string; error: string };
+      input: { primary: string; hover: string; focus: string; error: string };
       box: { primary: string; hover: string; highlight: string };
       divider: { primary: string; highlight: string };
     };
@@ -58,9 +58,10 @@ export type Theme = {
       error: string;
       box: {
         default: { primary: string; hover: string; active: string; opposite: string };
-        blue: { primary: string; hover: string; active: string; disabled: string };
+        accent: { primary: string; hover: string; active: string; disabled: string };
+        error: { primary: string; hover: string; active: string };
       };
-      input: { primary: string; hover: string };
+      input: { primary: string; hover: string; disabled: string };
     };
   };
 
@@ -122,10 +123,10 @@ const lightTheme: Theme = {
       highlight: '#279EFF',
       secondary: '#B5B5B5',
       opposite: '#EAEAEA',
-      error: '#FF6161',
+      error: '#ff3d3d',
     },
     line: {
-      input: { primary: '#D4D4D4', hover: '#808080', highlight: '#279EFF', error: '#FF6161' },
+      input: { primary: '#D4D4D4', hover: '#808080', focus: '#279EFF', error: '#ff3d3d' },
       box: { primary: '#CDCDCD', hover: '#525252', highlight: '#279EFF' },
       divider: { primary: '#DEEDE0', highlight: '#1A73E8' },
     },
@@ -135,12 +136,13 @@ const lightTheme: Theme = {
       highlight: '#279EFF',
       deepHighlight: '#1D8CE7',
       darkHighlight: '#096DBE',
-      error: '#FF6161',
+      error: '#ff3d3d',
       box: {
         default: { primary: '#F2F2F2', hover: '#E8E8E8', active: '#D6D6D6', opposite: '#2C2C2C' },
-        blue: { primary: '#279EFF', hover: '#1D8CE7', active: '#096DBE', disabled: '#757575' },
+        accent: { primary: '#279EFF', hover: '#1D8CE7', active: '#096DBE', disabled: '#757575' },
+        error: { primary: '#ff3d3d', hover: '#ff5c5c', active: '#fb7474' },
       },
-      input: { primary: '#F7F7F7', hover: '#E8E8E8' },
+      input: { primary: '#F7F7F7', hover: '#E8E8E8', disabled: '#EAEAEA' },
     },
   },
 
@@ -165,11 +167,11 @@ const darkTheme: Theme = {
       highlight: '#1A73E8',
       secondary: '#A6A6A6',
       opposite: '#1A1A1A',
-      error: '#FF5A5A',
+      error: '#eb0000',
     },
 
     line: {
-      input: { primary: '#474747', hover: '#636363', highlight: '#1A73E8', error: '#FF5A5A' },
+      input: { primary: '#474747', hover: '#636363', focus: '#1A73E8', error: '#eb0000' },
       box: { primary: '#525252', hover: '#CDCDCD', highlight: '#1A73E8' },
       divider: { primary: '#525252', highlight: '#1A73E8' },
     },
@@ -180,12 +182,13 @@ const darkTheme: Theme = {
       highlight: '#1A73E8',
       deepHighlight: '#1451A5',
       darkHighlight: '#0D3B73',
-      error: '#FF5A5A',
+      error: '#eb0000',
       box: {
         default: { primary: '#2C2C2C', hover: '#3B3B3B', active: '#404040', opposite: '#F2F2F2' },
-        blue: { primary: '#1A73E8', hover: '#1451A5', active: '#0D3B73', disabled: '#787878' },
+        accent: { primary: '#1A73E8', hover: '#1451A5', active: '#0D3B73', disabled: '#787878' },
+        error: { primary: '#eb0000', hover: '#c20000', active: '#800000' },
       },
-      input: { primary: '#232323', hover: '#383838' },
+      input: { primary: '#232323', hover: '#383838', disabled: '#2C2C2C' },
     },
   },
 

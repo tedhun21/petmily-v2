@@ -8,7 +8,7 @@ import DateBox from './Date/DateBox';
 import LocationBox from './Location/LocationBox';
 import { saveToRecentSearch } from 'utils/localStorage';
 import StartEndTimeBox from './StartEndTime/StartEndTimeBox';
-import { BlueButton, Column, Divider, Row, Texts14h20 } from 'styles/commonStyle';
+import { Column, Divider, Row, Texts14h20 } from 'styles/commonStyle';
 
 import { useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -100,9 +100,9 @@ export default function SearchBox() {
             </BoxWrapper>
 
             <ButtonDiv>
-              <SearchButton type="submit">
+              <button type="submit">
                 <FiSearch size="24px" color="white" />
-              </SearchButton>
+              </button>
             </ButtonDiv>
           </Container>
         </form>
@@ -209,10 +209,10 @@ const ButtonDiv = styled.div`
   margin: ${({ theme }) => theme.spacing.sm};
 `;
 
-const SearchButton = styled(BlueButton)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: ${({ theme }) => theme.spacing.sm};
-  border-radius: ${({ theme }) => theme.radius.circle};
-`;
+// const SearchButton = styled(BlueButton)`
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   padding: ${({ theme }) => theme.spacing.sm};
+//   border-radius: ${({ theme }) => theme.radius.circle};
+// `;

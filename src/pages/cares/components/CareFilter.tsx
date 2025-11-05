@@ -8,6 +8,7 @@ import { fetcher } from 'api';
 import { RootState } from 'store';
 import { setFilter, setMonth } from 'store/contextSlice';
 import { ReservationStatus } from 'types/reservation.type';
+import { Button } from '@components/buttons/Button';
 
 export type FilterType = {
   id: number;
@@ -31,8 +32,8 @@ export default function CareFilter() {
 
   const { data: monthData } = useAuthSWR('/reservations/month', fetcher);
 
-  const handleFilterClick = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setFilter(e.target.value));
+  const handleFilterClick = (e: React.MouseEvent<HTMLInputElement>) => {
+    dispatch(setFilter(e.currentTarget.value));
   };
 
   const handleMonthChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -45,10 +46,16 @@ export default function CareFilter() {
         <StatusFilters>
           {filters.map((el) => (
             <FilterRadio key={el.id}>
-              <input type="radio" id={`filter-${el.id}`} value={el.value} onChange={handleFilterClick} />
-              <CustomLabel htmlFor={`filter-${el.id}`} $isSelected={filter === el.value}>
+              <input type="radio" id={`filter-${el.id}`} value={el.value} onClick={handleFilterClick} />
+              <RadioButton
+                as="label"
+                htmlFor={`filter-${el.id}`}
+                $isSelected={filter === el.value}
+                $variant={filter === el.value ? 'primary' : 'secondary'}
+                $size="sm"
+              >
                 {el.label}
-              </CustomLabel>
+              </RadioButton>
             </FilterRadio>
           ))}
         </StatusFilters>
@@ -98,20 +105,22 @@ const FilterRadio = styled.div`
   }
 `;
 
-const CustomLabel = styled.label<{ $isSelected: boolean }>`
-  padding: 4px ${({ theme }) => theme.spacing.sm};
-  background-color: ${({ theme, $isSelected }) =>
-    $isSelected ? theme.colors.background.box.blue.primary : theme.colors.background.box.default.primary};
-  border: ${({ theme, $isSelected }) => ($isSelected ? 'none' : `1px solid ${theme.colors.line.box.primary}`)};
-  border-radius: ${({ theme }) => theme.radius.md};
-  color: ${({ $isSelected, theme }) => ($isSelected ? theme.colors.text.white : theme.colors.text.inactive)};
-  transition:
-    background-color 0.2s,
-    color 0.2s;
-  cursor: pointer;
+const RadioButton = styled(Button)<{ $isSelected: boolean }>``;
 
-  ${({ theme }) => theme.typeScale.sm};
-`;
+// const RadioButton = styled(Button)<{ $isSelected: boolean }>`
+//   padding: 4px ${({ theme }) => theme.spacing.sm};
+//   background-color: ${({ theme, $isSelected }) =>
+//     $isSelected ? theme.colors.background.box.accent.primary : theme.colors.background.box.default.primary};
+//   border: ${({ theme, $isSelected }) => ($isSelected ? 'none' : `1px solid ${theme.colors.line.box.primary}`)};
+//   border-radius: ${({ theme }) => theme.radius.md};
+//   color: ${({ $isSelected, theme }) => ($isSelected ? theme.colors.text.white : theme.colors.text.inactive)};
+//   transition:
+//     background-color 0.2s,
+//     color 0.2s;
+//   cursor: pointer;
+
+//   ${({ theme }) => theme.typeScale.sm};
+// `;
 
 const SelectWrapper = styled(Row)`
   gap: ${({ theme }) => theme.spacing.xs};
@@ -127,6 +136,6 @@ const StyledSelect = styled.select`
 
   &:focus {
     outline: none;
-    border: 1px solid ${({ theme }) => theme.colors.line.input.highlight};
+    border: 1px solid ${({ theme }) => theme.colors.line.input.focus};
   }
 `;

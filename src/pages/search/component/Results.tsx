@@ -2,7 +2,7 @@ import useSWRInfinite from 'swr/infinite';
 import styled from 'styled-components';
 import { fetcher } from 'api';
 import Result from './Result';
-import { CenterContainer } from 'styles/commonStyle';
+import { Center } from 'styles/commonStyle';
 import Loading from '@components/Loading';
 import { useEffect, useRef } from 'react';
 import { useInView } from 'framer-motion';
@@ -62,9 +62,9 @@ export default function Results() {
       )}
 
       {data && !isEnd && (
-        <CenterContainer ref={ref}>
+        <Center ref={ref}>
           <Loading color="#279EFF" />
-        </CenterContainer>
+        </Center>
       )}
     </Main>
   );
@@ -75,7 +75,7 @@ const Main = styled.main`
   padding: ${({ theme }) => theme.spacing.md};
 `;
 
-const AlternativeContainer = styled(CenterContainer)`
+const AlternativeContainer = styled(Center)`
   height: 100%;
 `;
 

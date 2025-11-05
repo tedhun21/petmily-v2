@@ -1,11 +1,12 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import styled from 'styled-components';
 
-import { Button, ImageCentered, RoundedImageWrapper, Texts16h24, Title } from 'styles/commonStyle';
+import { Column, ImageCentered, RoundedImageWrapper, Row, Texts16h24, Title } from 'styles/commonStyle';
 import { Link } from 'react-router-dom';
 import { FaXmark } from 'react-icons/fa6';
 import { ChatMember } from 'types/chat.type';
 import { useChat } from '../contexts/ChatProvider';
+import { Button } from '@components/buttons/Button';
 
 interface ChatRoomDrawerProps {
   isDrawerOpen: boolean;
@@ -28,26 +29,28 @@ export default function ChatRoomDrawer({ isDrawerOpen, setIsDrawerOpen }: ChatRo
           onClick={() => setIsDrawerOpen(false)}
         >
           <StyledInMotionDiv
-            initial={{ y: '-100%' }}
-            animate={{ y: '0' }}
-            exit={{ y: '-100%' }}
+            initial={{ x: '100%' }}
+            animate={{ x: '0' }}
+            exit={{ x: '100%' }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
             onClick={(e) => e.stopPropagation()}
           >
             <ContentWrapper>
+              <Row style={{ justifyContent: 'flex-end' }}>
+                <Button onClick={() => setIsDrawerOpen(false)} $variant="icon" $borderRadius="circle">
+                  <FaXmark size="24px" />
+                </Button>
+              </Row>
+
               <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Title>채팅 참여자</Title>
-                    <MemberCount>{(otherMembers?.length ?? 0) + 1}</MemberCount>
-                  </div>
-                  <XButton onClick={() => setIsDrawerOpen(false)}>
-                    <FaXmark size="20px" />
-                  </XButton>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <Title>채팅 참여자</Title>
+                  <MemberCount>{(otherMembers?.length ?? 0) + 1}</MemberCount>
                 </div>
-                <MemberList>
+
+                <MemberList as="ul">
                   <Link to={`/users/${meMember?.user.nickname}`}>
-                    <MemberItem>
+                    <MemberItem as="li">
                       <MemberImage>
                         <ImageCentered
                           src={meMember?.user.photo ? `${meMember?.user.photo}` : '/imgs/DefaultUserProfile.jpg'}
@@ -59,7 +62,7 @@ export default function ChatRoomDrawer({ isDrawerOpen, setIsDrawerOpen }: ChatRo
 
                   {otherMembers?.map((member: ChatMember) => (
                     <Link to={`/users/${member.user.nickname}`} key={member.user?.id}>
-                      <MemberItem>
+                      <MemberItem as="li">
                         <MemberImage>
                           <ImageCentered
                             src={meMember?.user.photo ? `${meMember?.user.photo}` : '/imgs/DefaultUserProfile.jpg'}
@@ -71,6 +74,7 @@ export default function ChatRoomDrawer({ isDrawerOpen, setIsDrawerOpen }: ChatRo
                   ))}
                 </MemberList>
               </div>
+
               <div>
                 <span>채팅방 나가기</span>
               </div>
@@ -91,45 +95,51 @@ const StyledOutMotionDiv = styled(motion.div)`
   width: 100%;
   height: 100%;
   background-color: rgb(0 0 0 / 20%);
-  filter: blur(2px);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
 `;
 
 const StyledInMotionDiv = styled(motion.div)`
   position: absolute;
   top: 0;
-  left: 0;
+  right: 0;
   z-index: 11;
-  width: 100%;
+  width: 60%;
+  height: 100%;
   background-color: ${({ theme }) => theme.colors.background.primary};
   box-shadow: ${({ theme }) => theme.shadow.onlyBottom};
+  border-top-left-radius: ${({ theme }) => theme.radius.lg};
   border-bottom-left-radius: ${({ theme }) => theme.radius.lg};
-  border-bottom-right-radius: ${({ theme }) => theme.radius.lg};
 `;
 
-const ContentWrapper = styled.div`
-  padding: ${({ theme }) => theme.spacing.lg};
+const ContentWrapper = styled(Column)`
+  width: 100%;
+  height: 100%;
+  padding: ${({ theme }) => theme.spacing.xl};
+
+  & > :nth-child(1) {
+    flex: 0;
+  }
+
+  & > :nth-child(2) {
+    flex: 1;
+  }
+
+  & > :nth-child(3) {
+    flex: 0;
+  }
 `;
 
 const MemberCount = styled(Texts16h24)`
   color: ${({ theme }) => theme.colors.text.highlight};
 `;
 
-const XButton = styled(Button)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: ${({ theme }) => theme.spacing.xs};
-`;
-
-const MemberList = styled.ul`
-  display: flex;
-  flex-direction: column;
+const MemberList = styled(Column)`
   gap: ${({ theme }) => theme.spacing.sm};
   padding: ${({ theme }) => theme.spacing.sm};
 `;
 
-const MemberItem = styled.li`
-  display: flex;
+const MemberItem = styled(Row)`
   align-items: center;
   width: 100%;
   gap: ${({ theme }) => theme.spacing.sm};

@@ -18,10 +18,10 @@ import { FaArrowUp, FaXmark } from 'react-icons/fa6';
 import { GoVerified } from 'react-icons/go';
 import { PiCatBold, PiDogBold } from 'react-icons/pi';
 
-import { BlueButton, Column, ErrorMessage, Input, Row, Texts14h20 } from 'styles/commonStyle';
+import { Column, ErrorMessage, Input, Row, Texts14h20 } from 'styles/commonStyle';
 
 import { removeCookie } from 'utils/cookie';
-import { TypeRadioLabel } from '../register/page';
+import { TypeRadioLabel } from '../pet/register/page';
 
 import Loading from '@components/Loading';
 import 'react-toastify/dist/ReactToastify.css';
@@ -36,6 +36,8 @@ import BackHeader from '@components/headers/BackHeader';
 import EditableProfileImage from '../../../components/EditableProfileImage';
 import { UserRole } from 'types/user.type';
 import { PetSpecies } from 'types/pet.type';
+import { Button } from '@components/buttons/Button';
+import XButton from '@components/buttons/XButton';
 
 const schema = yup.object().shape({
   nickname: yup
@@ -240,9 +242,9 @@ export default function EditMePage() {
   }, [isLoading, me]);
 
   return (
-    <Main>
+    <>
       <BackHeader title="회원 정보 수정" />
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      <Form as="form" onSubmit={handleSubmit(onSubmit)}>
         <InputContainer>
           <EditableProfileImage
             setImageFile={setImageFile}
@@ -341,13 +343,9 @@ export default function EditMePage() {
                     {watch('possibleLocations')?.map((location: any) => (
                       <LocationItem key={location}>
                         <Texts14h20>{location}</Texts14h20>
-                        <button
-                          type="button"
-                          onClick={() => handleDeleteLocation(location)}
-                          style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-                        >
+                        <Button type="button" onClick={() => handleDeleteLocation(location)} $variant="icon">
                           <FaXmark size="16px" color="red" />
-                        </button>
+                        </Button>
                       </LocationItem>
                     ))}
                   </LocationList>
@@ -435,33 +433,25 @@ export default function EditMePage() {
         </InputContainer>
 
         <ButtonContainer>
-          <SubmitButton disabled={isMutating} type="submit">
+          <Button disabled={isMutating} type="submit" $variant="primary" $size="lg" $fullWidth>
             {isLoading ? <Loading /> : <span>수정하기</span>}
-          </SubmitButton>
+          </Button>
           <LinkContainer>
-            <StyledButton type="button" onClick={handleLogout}>
+            <Button type="button" onClick={handleLogout} $variant="secondary">
               로그아웃
-            </StyledButton>
-            <StyledButton type="button" onClick={deleteAccount}>
+            </Button>
+            <Button type="button" onClick={deleteAccount} $variant="secondary">
               회원 탈퇴
-            </StyledButton>
+            </Button>
           </LinkContainer>
         </ButtonContainer>
       </Form>
-    </Main>
+    </>
   );
 }
 
-const Main = styled.main`
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-`;
-
-const Form = styled.form`
-  display: flex;
+const Form = styled(Column)`
   flex: auto;
-  flex-direction: column;
   overflow: hidden;
   height: 100%;
 `;
@@ -538,7 +528,7 @@ const LocationInput = styled(Input)`
   }
 
   &:focus {
-    border: 1px solid ${({ theme }) => theme.colors.line.input.highlight};
+    border: 1px solid ${({ theme }) => theme.colors.line.input.focus};
   }
 `;
 
@@ -563,7 +553,7 @@ const TextArea = styled.textarea`
 
   &:focus {
     outline: none;
-    border: 1px solid ${({ theme }) => theme.colors.line.input.highlight};
+    border: 1px solid ${({ theme }) => theme.colors.line.input.focus};
   }
 `;
 
@@ -581,7 +571,7 @@ const WeekdaysWrapper = styled(Row)`
 const DayLabel = styled.label<{ $isSelected?: boolean }>`
   padding: ${({ theme }) => theme.spacing.sm};
   background-color: ${({ theme, $isSelected }) =>
-    $isSelected ? theme.colors.background.box.blue.primary : theme.colors.background.box.blue.disabled};
+    $isSelected ? theme.colors.background.box.accent.primary : theme.colors.background.box.accent.disabled};
   border-radius: ${({ theme }) => theme.radius.md};
   color: ${({ theme }) => theme.colors.text.white};
 
@@ -592,7 +582,7 @@ const DayLabel = styled.label<{ $isSelected?: boolean }>`
   cursor: pointer;
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.background.box.blue.hover};
+    background-color: ${({ theme }) => theme.colors.background.box.accent.hover};
   }
 `;
 
@@ -626,28 +616,7 @@ const ButtonContainer = styled(Column)`
   padding: ${({ theme }) => theme.spacing.xl};
 `;
 
-const SubmitButton = styled(BlueButton)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  padding: ${({ theme }) => theme.spacing.sm};
-  border-radius: ${({ theme }) => theme.radius.md};
-  font-weight: ${({ theme }) => theme.fontWeight.semibold};
-  ${({ theme }) => theme.typeScale.lg};
-`;
-
 const LinkContainer = styled(Row)`
   justify-content: space-between;
   width: 100%;
-`;
-
-const StyledButton = styled.button`
-  background: none;
-
-  ${({ theme }) => theme.typeScale.sm};
-
-  &:hover {
-    color: ${({ theme }) => theme.colors.text.highlight};
-  }
 `;

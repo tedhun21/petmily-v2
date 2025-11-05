@@ -39,8 +39,8 @@ import SignupPage from '@pages/signup/page';
 
 import MyPage from '@pages/me/page';
 import EditMePage from '@pages/me/edit/page';
-import CreatePetPage from '@pages/me/register/page';
-import EditPetPage from '@pages/me/editPet/page';
+import CreatePetPage from '@pages/me/pet/register/page';
+import EditPetPage from '@pages/me/pet/:id/edit/page';
 
 import CaresPage from '@pages/cares/page';
 import CarePage from '@pages/cares/:id/page';
@@ -77,8 +77,8 @@ const router = createBrowserRouter(
       <Route path="auth/connect/google/callback" element={<RedirectPage />} />
       <Route path="me" element={<MyPage />} />
       <Route path="me/edit" element={<EditMePage />} />
-      <Route path="me/register" element={<CreatePetPage />} />
-      <Route path="me/:petId/edit" element={<EditPetPage />} />
+      <Route path="me/pet/register" element={<CreatePetPage />} />
+      <Route path="me/:id/edit" element={<EditPetPage />} />
       <Route path="faq" element={<FaQPage />} />
       <Route path="cares/:id" element={<CarePage />} />
       <Route path="cares/:id/review" element={<ReviewPage />} />

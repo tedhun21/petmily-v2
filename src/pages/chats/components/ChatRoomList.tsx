@@ -6,7 +6,7 @@ import { useInView } from 'framer-motion';
 import useChatRooms from '@pages/chats/hooks/useChatRooms';
 import ChatRoomItem from './ChatRoomItem';
 import Loading from '@components/Loading';
-import { CenterContainer } from 'styles/commonStyle';
+import { Center } from 'styles/commonStyle';
 
 export default function ChatRoomList() {
   const ref = useRef<HTMLDivElement | null>(null);
@@ -21,17 +21,17 @@ export default function ChatRoomList() {
 
   if (isLoading && chatRooms.length === 0) {
     return (
-      <CenterContainer>
+      <Center>
         <Loading color="279EFF" />
-      </CenterContainer>
+      </Center>
     );
   }
 
   if (!isLoading && chatRooms.length === 0) {
     return (
-      <CenterContainer>
+      <Center>
         <span>채팅방이 없습니다.</span>
-      </CenterContainer>
+      </Center>
     );
   }
 
@@ -43,9 +43,9 @@ export default function ChatRoomList() {
         ))}
       </ul>
       {!isEnd && (
-        <CenterContainer ref={ref}>
+        <Center ref={ref}>
           <Loading color="#279EFF" />
-        </CenterContainer>
+        </Center>
       )}
     </Main>
   );

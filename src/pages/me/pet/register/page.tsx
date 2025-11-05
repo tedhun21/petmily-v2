@@ -9,7 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import { PiCatBold, PiDogBold } from 'react-icons/pi';
 
-import { BlueButton, Column, Input, Row } from 'styles/commonStyle';
+import { Column, Input, Row } from 'styles/commonStyle';
 
 import useSWRMutation from 'swr/mutation';
 import Loading from '@components/Loading';
@@ -20,6 +20,7 @@ import BackHeader from '@components/headers/BackHeader';
 import EditableProfileImage from '@components/EditableProfileImage';
 import { PetGender, PetSpecies } from 'types/pet.type';
 import { poster } from 'api';
+import { Button } from '@components/buttons/Button';
 
 const schema = yup.object().shape({
   species: yup.string().oneOf(['dog', 'cat'], '강아지인가요 고양이인가요?').required('이 항목은 필수입니다.'),
@@ -174,9 +175,9 @@ export default function CreatePetPage() {
           </InputWrapper>
         </InputContainer>
         <ButtonContainer>
-          <SubmitButton type="submit" disabled={isMutating}>
+          <Button type="submit" disabled={isMutating} $variant="primary" $size="lg" $fullWidth>
             {isMutating ? <Loading /> : <span>펫 등록하기</span>}
-          </SubmitButton>
+          </Button>
         </ButtonContainer>
       </Form>
     </Main>
@@ -232,7 +233,7 @@ export const TypeRadioLabel = styled.label<{ $isSelected?: boolean }>`
   cursor: pointer;
 
   &:hover {
-    background-color: ${({ theme, $isSelected }) => ($isSelected ? '' : theme.colors.background.box.blue.hover)};
+    background-color: ${({ theme, $isSelected }) => ($isSelected ? '' : theme.colors.background.box.accent.hover)};
   }
 `;
 
@@ -284,15 +285,16 @@ export const RowWrapper = styled(Row)`
 
 export const ButtonContainer = styled.div`
   flex: 1;
+  background-color: transparent;
   padding: ${({ theme }) => theme.spacing.xl};
 `;
 
-export const SubmitButton = styled(BlueButton)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  padding: ${({ theme }) => theme.spacing.sm};
-  border-radius: ${({ theme }) => theme.radius.md};
-  ${({ theme }) => theme.typeScale.lg};
-`;
+// export const SubmitButton = styled(BlueButton)`
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   width: 100%;
+//   padding: ${({ theme }) => theme.spacing.sm};
+//   border-radius: ${({ theme }) => theme.radius.md};
+//   ${({ theme }) => theme.typeScale.lg};
+// `;

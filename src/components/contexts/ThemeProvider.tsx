@@ -44,7 +44,7 @@ export default function ThemeProvider({ children }: ThemePropviderProps) {
         <MuiThemeProvider theme={isDarkMode ? muiDarkTheme : muiLightTheme}>
           {children}
           <ToastContainer
-            position="top-right"
+            position="bottom-center"
             autoClose={2000}
             theme={isDarkMode ? 'dark' : 'light'}
             hideProgressBar={true}

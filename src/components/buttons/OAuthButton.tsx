@@ -1,6 +1,7 @@
-import { Button } from 'styles/commonStyle';
 import styled from 'styled-components';
 import { API_URL } from 'config';
+import { Button } from './Button';
+import { Texts16h24 } from 'styles/commonStyle';
 
 interface GoogleOAuthButtonProps {
   children: React.ReactNode;
@@ -13,19 +14,17 @@ export default function GoogleOAuthButton({ children }: GoogleOAuthButtonProps) 
   return (
     <GoogleOAuthButtonStyle type="button" onClick={handleGooleOAuth}>
       <GoogleImage src="/imgs/GoogleLogo.svg" alt="google logo" width="24" />
-      <div>{children}</div>
+      <Texts16h24>{children}</Texts16h24>
     </GoogleOAuthButtonStyle>
   );
 }
 
-const GoogleOAuthButtonStyle = styled(Button)`
+const GoogleOAuthButtonStyle = styled(Button).attrs(() => ({
+  $variant: 'secondary',
+}))`
   position: relative;
-  width: 100%;
-  padding: ${({ theme }) => theme.spacing.sm};
-  border: 1px solid ${({ theme }) => theme.colors.line.box.primary};
-  border-radius: ${({ theme }) => theme.radius.md} div {
+  span {
     color: ${({ theme }) => theme.colors.text.active};
-    ${({ theme }) => theme.typeScale.base};
   }
 `;
 

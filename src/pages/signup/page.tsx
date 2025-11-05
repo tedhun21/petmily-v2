@@ -13,10 +13,10 @@ import { toast } from 'react-toastify';
 
 import { poster } from 'api';
 import Loading from '@components/Loading';
-import { SubmitButton } from '@pages/login/page';
 import BackHeader from '@components/headers/BackHeader';
 import CustomDaumPostcode from '@components/CustomDaumPostcode';
-import { Column, ErrorMessage, Input, Texts16h24, Texts20h28 } from 'styles/commonStyle';
+import { Center, Column, ErrorMessage, Input, Texts16h24, Texts20h28 } from 'styles/commonStyle';
+import { Button } from '@components/buttons/Button';
 
 const schema = yup.object().shape({
   username: yup
@@ -227,9 +227,9 @@ export default function SignupPage() {
               <input type="checkbox" id="isPetsitter" {...register('isPetsitter')} />
             </CheckBoxWrapper>
             <ButtonContainer>
-              <SubmitButton type="submit" disabled={isMutating}>
+              <Button type="submit" disabled={isMutating} $variant="primary">
                 {isMutating ? <Loading /> : '펫밀리 등록'}
-              </SubmitButton>
+              </Button>
               <GoogleOAuthButton>Sign up with Google</GoogleOAuthButton>
             </ButtonContainer>
           </InputFormContainer>
@@ -239,12 +239,7 @@ export default function SignupPage() {
   );
 }
 
-const Main = styled.main`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-`;
+const Main = styled(Center)``;
 
 const SignupContainer = styled.div`
   display: flex;
@@ -275,7 +270,7 @@ const SignupInputStyle = styled(Input)<{ error?: boolean }>`
   ${({ theme }) => theme.typeScale.sm};
 
   &:focus {
-    border: 1px solid ${({ theme }) => theme.colors.line.input.highlight};
+    border: 1px solid ${({ theme }) => theme.colors.line.input.focus};
   }
 `;
 

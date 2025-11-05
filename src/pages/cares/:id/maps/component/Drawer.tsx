@@ -2,12 +2,14 @@ import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import { useMemo, useState } from 'react';
 import useMeasure from 'hooks/useMeasure';
-import { Button, CenterContainer } from 'styles/commonStyle';
+import { Center, Row } from 'styles/commonStyle';
 import useCoords from 'hooks/useCoords';
 import { FaXmark } from 'react-icons/fa6';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 import { TbCurrentLocation } from 'react-icons/tb';
 import { GrMapLocation } from 'react-icons/gr';
+import { Button } from '@components/buttons/Button';
+import XButton from '@components/buttons/XButton';
 
 interface MapsDrawerProps {
   address?: string;
@@ -118,30 +120,29 @@ export default function MapsDrawer({ address, map, geocode }: MapsDrawerProps) {
           <DrawerHandle />
         </DrawerHeader>
         <div ref={contentRef}>
-          <CenterContainer>
+          <Center>
             <span>{address}</span>
-          </CenterContainer>
+          </Center>
           <ButtonWrapper>
-            <StyledButton onClick={handleMarkerCenter}>
+            <Button onClick={handleMarkerCenter}>
               <HiOutlineLocationMarker size="24px" />
               <span>주소 위치</span>
-            </StyledButton>
-            <StyledButton onClick={handleMyLocation}>
+            </Button>
+            <Button onClick={handleMyLocation}>
               <TbCurrentLocation size="24px" />
               <span>내 위치</span>
-            </StyledButton>
-
-            <StyledButton onClick={handleRouteSearch}>
+            </Button>
+            <Button onClick={handleRouteSearch}>
               <GrMapLocation size="24px" />
               <span>길 찾기</span>
-            </StyledButton>
+            </Button>
           </ButtonWrapper>
         </div>
 
         {isOpen && (
-          <XButton onClick={() => setIsOpen(false)}>
-            <FaXmark size="20px" />
-          </XButton>
+          <Absolute>
+            <XButton onClick={() => setIsOpen(false)} />
+          </Absolute>
         )}
       </div>
     </StyledMotionDiv>
@@ -160,7 +161,7 @@ const StyledMotionDiv = styled(motion.div)`
   border-top-right-radius: ${({ theme }) => theme.radius.lg};
 `;
 
-const DrawerHeader = styled(CenterContainer)`
+const DrawerHeader = styled(Center)`
   height: 52px;
 `;
 
@@ -172,27 +173,17 @@ const DrawerHandle = styled.div`
   cursor: grab;
 `;
 
-const XButton = styled(Button)`
+const Absolute = styled.div`
   position: absolute;
   top: 12px;
   right: 12px;
-  padding: ${({ theme }) => theme.spacing.xs};
 `;
 
-const ButtonWrapper = styled.div`
-  display: flex;
+const ButtonWrapper = styled(Row)`
   padding: ${({ theme }) => theme.spacing.xl};
   gap: ${({ theme }) => theme.spacing.xs};
 
   button {
     flex: 1;
   }
-`;
-
-const StyledButton = styled(Button)`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.xs};
-  padding: ${({ theme }) => theme.spacing._4xl};
 `;

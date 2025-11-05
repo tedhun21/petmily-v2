@@ -21,9 +21,8 @@ import {
   PetTextarea,
   RadioContainer,
   RowWrapper,
-  SubmitButton,
   TypeRadioLabel,
-} from '../register/page';
+} from '../../register/page';
 
 import { fetcher, updater, deleter } from 'api';
 import Loading from '@components/Loading';
@@ -33,6 +32,7 @@ import BackHeader from '@components/headers/BackHeader';
 import { FaXmark } from 'react-icons/fa6';
 import EditableProfileImage from '@components/EditableProfileImage';
 import { PetGender, PetSpecies } from 'types/pet.type';
+import { Button } from '@components/buttons/Button';
 
 const schema = yup.object().shape({
   species: yup.string().oneOf(['dog', 'cat'], '강아지인가요 고양이인가요?').required('이 항목은 필수입니다.'),
@@ -61,7 +61,7 @@ type IEditPet = yup.InferType<typeof schema>;
 export default function EditPetPage() {
   const navigate = useNavigate();
 
-  const { petId } = useParams();
+  const { id } = useParams();
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [serverImageUrl, setServerImageUrl] = useState<string | null>(null);
   const [deletePhoto, setDeletePhoto] = useState<string | null>(null);
@@ -76,9 +76,9 @@ export default function EditPetPage() {
     resolver: yupResolver(schema),
   });
 
-  const { data: pet } = useAuthSWR(`/pets/${petId}`, fetcher);
+  const { data: pet } = useAuthSWR(`/pets/${id}`, fetcher);
 
-  const { trigger: updateTrigger, isMutating } = useAuthSWRMutation(`/pets/${petId}`, updater, {
+  const { trigger: updateTrigger, isMutating } = useAuthSWRMutation(`/pets/${id}`, updater, {
     onSuccess: () => {
       navigate('/me');
       toast.success('수정이 완료되었습니다!');
@@ -88,7 +88,7 @@ export default function EditPetPage() {
     },
   });
 
-  const { trigger: deleteTrigger } = useAuthSWRMutation(`/pets/${petId}`, deleter, {
+  const { trigger: deleteTrigger } = useAuthSWRMutation(`/pets/${id}`, deleter, {
     onSuccess: () => {
       navigate('/me');
       toast.success('펫 정보가 삭제되었습니다!');
@@ -151,9 +151,9 @@ export default function EditPetPage() {
       <Form onSubmit={handleSubmit(onSubmit)}>
         <InputContainer>
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <button type="button" onClick={handleDeletePet}>
-              <FaXmark size="24px" />
-            </button>
+            <Button type="button" onClick={handleDeletePet} $variant="icon" $borderRadius="circle">
+              <FaXmark size="28px" />
+            </Button>
           </div>
           <EditableProfileImage
             setImageFile={setImageFile}
@@ -254,9 +254,9 @@ export default function EditPetPage() {
         </InputContainer>
 
         <ButtonContainer>
-          <SubmitButton type="submit" disabled={isMutating}>
-            {isMutating ? <Loading /> : <span>펫 수정하기</span>}
-          </SubmitButton>
+          <Button type="submit" disabled={isMutating} $variant="primary" $size="lg" $fullWidth>
+            {isMutating ? <Loading /> : <span>펫 수정</span>}
+          </Button>
         </ButtonContainer>
       </Form>
     </Main>

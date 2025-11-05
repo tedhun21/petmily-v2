@@ -291,9 +291,9 @@ const TimeButton = styled.button<{ disabled: boolean; $isSelected: boolean; $isB
   padding: ${({ theme }) => theme.spacing.xl};
   background-color: ${({ $isSelected, $isBetween, theme }) =>
     $isSelected
-      ? theme.colors.background.box.blue.active
+      ? theme.colors.background.box.accent.active
       : $isBetween
-        ? theme.colors.background.box.blue.primary
+        ? theme.colors.background.box.accent.primary
         : 'transparent'};
   border-radius: ${({ theme }) => theme.radius.sm};
 
@@ -327,17 +327,17 @@ const StyledLink = styled(Link)<{ disabled: boolean }>`
   width: 100%;
   padding: ${({ theme }) => theme.spacing.md};
   background-color: ${({ theme, disabled }) =>
-    disabled ? theme.colors.background.box.blue.disabled : theme.colors.background.box.blue.primary};
+    disabled ? theme.colors.background.box.accent.disabled : theme.colors.background.box.accent.primary};
   border-radius: ${({ theme }) => theme.radius.md};
   color: ${({ theme }) => theme.colors.text.white};
   pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.background.box.blue.hover};
+    background-color: ${({ theme }) => theme.colors.background.box.accent.hover};
   }
 
   &:active {
-    background-color: ${({ theme }) => theme.colors.background.box.blue.active};
+    background-color: ${({ theme }) => theme.colors.background.box.accent.active};
     box-shadow: ${({ theme }) => theme.shadow.inset};
   }
 

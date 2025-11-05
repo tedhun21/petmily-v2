@@ -4,7 +4,7 @@ import useSWRInfinite from 'swr/infinite';
 import { useInView } from 'framer-motion';
 
 import { fetcher } from 'api';
-import { CenterContainer } from 'styles/commonStyle';
+import { Center } from 'styles/commonStyle';
 import styled from 'styled-components';
 import Loading from '@components/Loading';
 import PhotoReviewCardSkeleton from './PhotoReviewCardSkeleton';
@@ -33,9 +33,9 @@ export default function PhotoReviews() {
 
   if (isEmpty) {
     return (
-      <CenterContainer>
+      <Center>
         <span>No Photo Review</span>
-      </CenterContainer>
+      </Center>
     );
   }
 
@@ -48,9 +48,9 @@ export default function PhotoReviews() {
         data?.map((page) => page?.results.map((review: any) => <PhotoReviewCard key={review.id} review={review} />))}
 
       {data && !isEnd && (
-        <CenterContainer ref={ref}>
+        <Center ref={ref}>
           <Loading color="#279EFF" />
-        </CenterContainer>
+        </Center>
       )}
     </ReviewContainer>
   );

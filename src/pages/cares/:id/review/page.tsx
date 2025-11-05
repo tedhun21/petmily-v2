@@ -9,18 +9,11 @@ import { toast } from 'react-toastify';
 import { FaXmark } from 'react-icons/fa6';
 
 import Loading from '@components/Loading';
-import {
-  BlueButton,
-  BottomFixed,
-  CenterContainer,
-  Column,
-  Float,
-  Texts14h20,
-  Texts16h24,
-  Title,
-} from 'styles/commonStyle';
+import { BottomFixed, Center, Column, Float, Texts14h20, Texts16h24, Title } from 'styles/commonStyle';
 import { fetcher, poster, updater } from 'api';
 import HoverRating from '@components/HoverRating';
+import { Button } from '@components/buttons/Button';
+import XButton from '@components/buttons/XButton';
 
 interface ReviewFormValues {
   star: number;
@@ -161,16 +154,16 @@ export default function ReviewPage() {
   }, [review]);
 
   return (
-    <Main>
-      <CenterContainer>
+    <Column as="main">
+      <Center>
         <Title>{review ? '후기 수정' : '후기 작성'}</Title>
-      </CenterContainer>
+      </Center>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Container>
-          <StarSection>
+          <Column>
             <Texts16h24>별점</Texts16h24>
             <HoverRating value={watch('star')} setValue={setValue} />
-          </StarSection>
+          </Column>
 
           <TextSection>
             <Texts16h24>후기 내용</Texts16h24>
@@ -189,9 +182,9 @@ export default function ReviewPage() {
             />
 
             <ImageSelectWrapper>
-              <ImageSelectButton type="button" onClick={openFileInput}>
+              <Button type="button" onClick={openFileInput}>
                 파일 선택
-              </ImageSelectButton>
+              </Button>
               <Texts14h20>최대 5개의 이미지를 선택할 수 있습니다.</Texts14h20>
             </ImageSelectWrapper>
 
@@ -200,9 +193,9 @@ export default function ReviewPage() {
                 Array.from(selectedFiles as File[]).map((file: File, index: number) => (
                   <ImagePreviewItem key={index}>
                     <Img src={URL.createObjectURL(file)} alt={`selected_${index}`} />
-                    <RemoveButton type="button" onClick={() => handleRemoveInputImage(index)}>
-                      <FaXmark color="white" size="16px" />
-                    </RemoveButton>
+                    <Absolute>
+                      <XButton onClick={() => handleRemoveInputImage(index)} />
+                    </Absolute>
                   </ImagePreviewItem>
                 ))}
               {Array.isArray(imageUrls) &&
@@ -221,40 +214,28 @@ export default function ReviewPage() {
 
         <BottomFixed>
           <FloatButtonContainer>
-            <SubmitButton type="submit" disabled={isCreateMutating || isUpdateMutating}>
+            <Button type="submit" disabled={isCreateMutating || isUpdateMutating} $size="lg" $fullWidth>
               {isCreateMutating || isUpdateMutating ? (
-                <CenterContainer>
+                <Center>
                   <Loading />
-                </CenterContainer>
+                </Center>
               ) : (
                 <span>{review ? '후기 수정' : '후기 등록'}</span>
               )}
-            </SubmitButton>
+            </Button>
           </FloatButtonContainer>
         </BottomFixed>
       </form>
-    </Main>
+    </Column>
   );
 }
-
-const Main = styled.main`
-  display: flex;
-  flex-direction: column;
-`;
-
-const StarSection = styled.section`
-  display: flex;
-  flex-direction: column;
-`;
 
 const Container = styled(Column)`
   gap: ${({ theme }) => theme.spacing.xl};
   padding: ${({ theme }) => theme.spacing.xl};
 `;
 
-const TextSection = styled.section`
-  display: flex;
-  flex-direction: column;
+const TextSection = styled(Column)`
   gap: ${({ theme }) => theme.spacing.sm};
 `;
 
@@ -272,9 +253,7 @@ const TextArea = styled.textarea`
   }
 `;
 
-const ImageSection = styled.section`
-  display: flex;
-  flex-direction: column;
+const ImageSection = styled(Column)`
   gap: ${({ theme }) => theme.spacing.lg};
 `;
 
@@ -286,12 +265,6 @@ const ImageSelectWrapper = styled.div`
   > div {
     ${({ theme }) => theme.typeScale.xs};
   }
-`;
-
-const ImageSelectButton = styled(BlueButton)`
-  padding: 4px 8px;
-  border-radius: ${({ theme }) => theme.radius.md};
-  ${({ theme }) => theme.typeScale.sm};
 `;
 
 const ImagePreview = styled.div`
@@ -325,17 +298,16 @@ const RemoveButton = styled.button`
   border-radius: ${({ theme }) => theme.radius.circle};
 `;
 
+const Absolute = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+`;
+
 const FloatButtonContainer = styled(Float)`
   bottom: 0;
   left: 0;
   width: 100%;
   padding: ${({ theme }) => theme.spacing.xl};
   background-color: ${({ theme }) => theme.colors.background.primary};
-`;
-
-const SubmitButton = styled(BlueButton)`
-  width: 100%;
-  padding: ${({ theme }) => theme.spacing.sm};
-  border-radius: ${({ theme }) => theme.radius.md};
-  ${({ theme }) => theme.typeScale.base};
 `;

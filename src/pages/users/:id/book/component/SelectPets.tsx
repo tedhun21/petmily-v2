@@ -1,5 +1,5 @@
 import { fetcher } from 'api';
-import { CenterContainer, SubTitle } from 'styles/commonStyle';
+import { Center, SubTitle } from 'styles/commonStyle';
 import styled from 'styled-components';
 import { useAuthSWRInfinite } from 'hooks/authSWR';
 import PetItem from './PetItem';
@@ -30,11 +30,11 @@ export default function SelectPets() {
               data[0].results?.length > 0 &&
               data?.map((page: any) => page?.results.map((pet: Pet) => <PetItem key={pet.id} pet={pet} />))}
             {!isEnd && (
-              <CenterContainer>
+              <Center>
                 <button onClick={() => setSize(size + 1)}>
                   <FiMoreHorizontal size="40px" color="#279EFF" />
                 </button>
-              </CenterContainer>
+              </Center>
             )}
           </List>
         </Section>

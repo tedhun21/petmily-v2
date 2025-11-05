@@ -5,14 +5,15 @@ import 'swiper/css/pagination';
 
 import HomeAd from '@components/HomeAd';
 
-import { DefaultLink, Row } from 'styles/commonStyle';
-import RealTimeReviews from './component/RealTimeReviews';
-import UsedPetsitters from './component/UsedPetsitters';
+import RealTimeReviews from './components/RealTimeReviews';
+import UsedPetsitters from './components/UsedPetsitters';
 import NavHeader from '@components/headers/NavHeader';
 
-import EventSwiper from './component/EventSwiper';
-import AdSwiper from './component/AdSwiper';
+import EventSwiper from './components/EventSwiper';
+import AdSwiper from './components/AdSwiper';
 import SearchBox from '@pages/search/component/SearchBox';
+import { Link } from 'react-router-dom';
+import { Button } from '@components/buttons/Button';
 
 export default function HomePage() {
   return (
@@ -20,9 +21,12 @@ export default function HomePage() {
       <NavHeader />
       <Main>
         <HomeAd />
-        <LinkContainer>
-          <PetsitterLink to="/faq">자주 묻는 질문</PetsitterLink>
-        </LinkContainer>
+
+        <NoticeWrapper>
+          <Button as={Link} to="/faq" $variant="secondary" $size="lg">
+            자주 묻는 질문
+          </Button>
+        </NoticeWrapper>
 
         <EventSwiper />
         <AdSwiper />
@@ -45,16 +49,7 @@ const Main = styled.main`
   gap: ${({ theme }) => theme.spacing.xl};
 `;
 
-const LinkContainer = styled(Row)`
-  gap: ${({ theme }) => theme.spacing.md};
-`;
-
-const PetsitterLink = styled(DefaultLink)`
+const NoticeWrapper = styled.div`
   display: flex;
-  justify-content: center;
-  padding: ${({ theme }) => theme.spacing._2xl};
-  border-radius: ${({ theme }) => theme.radius.md};
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
-
-  ${({ theme }) => theme.typeScale.base};
+  flex-wrap: wrap;
 `;

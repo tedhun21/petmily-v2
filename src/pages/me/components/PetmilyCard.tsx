@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { TbGenderFemale, TbGenderMale } from 'react-icons/tb';
 
 import { Pet, PetGender, PetSpecies } from 'types/pet.type';
-import { CenterContainer, Column, ImageCentered, RoundedImageWrapper, Row, Texts12h16 } from 'styles/commonStyle';
+import { Center, Column, ImageCentered, RoundedImageWrapper, Row, Texts12h16 } from 'styles/commonStyle';
 
 interface PetmilyCardProps {
   pet: Pet;
@@ -36,13 +36,13 @@ export default function PetmilyCard({ pet }: PetmilyCardProps) {
 
       <LowerContainer>
         <PetPropWrapper>
-          <CenterContainer>
+          <Center>
             {pet?.gender === PetGender.MALE ? (
               <TbGenderMale size="21px" color="white" />
             ) : pet?.gender === PetGender.FEMALE ? (
               <TbGenderFemale size="21px" color="white" />
             ) : null}
-          </CenterContainer>
+          </Center>
         </PetPropWrapper>
 
         <PetPropWrapper>

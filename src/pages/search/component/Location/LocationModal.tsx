@@ -6,7 +6,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { fetcher } from 'api';
 import { useDebounceValue } from 'hooks/useDebounce';
-import { CenterContainer, Column, Divider, Row, Texts12h16 } from 'styles/commonStyle';
+import { Center, Column, Divider, Row, Texts12h16 } from 'styles/commonStyle';
 import RecentSearches from './RecentSearches';
 import SuggestLocations from './SuggestLocations';
 import LocationCapsuleContainer from './LocationCapsuleContainer';
@@ -85,7 +85,7 @@ export default function LocationModal({ handleSetValue }: LocationModalProps) {
   );
 }
 
-const AlternativeContainer = styled(CenterContainer)`
+const AlternativeContainer = styled(Center)`
   width: 100%;
   height: 300px;
 `;

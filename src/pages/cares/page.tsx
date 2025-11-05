@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import CareContainer from './component/CareContainer';
+import CareContainer from './components/CareContainer';
 import NavHeader from '@components/headers/NavHeader';
-import CareFilter from '@pages/cares/component/CareFilter';
+import CareFilter from '@pages/cares/components/CareFilter';
 
 export default function CaresPage() {
   return (

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { BlueButton, Column, Row, Texts20h28 } from 'styles/commonStyle';
+import { Column, Row, Texts20h28 } from 'styles/commonStyle';
 
 export default function NotFoundPage() {
   return (
@@ -12,7 +12,7 @@ export default function NotFoundPage() {
         <Image src="/imgs/404.svg" alt="Page not found" />
         <Info>요청하신 페이지를 찾을 수 없습니다.</Info>
         <Link to="/">
-          <BlueButton>홈으로 이동</BlueButton>
+          <span>홈으로 이동</span>
         </Link>
         <Link to="/">
           <Logo src="/imgs/Petmily.svg" alt="Logo" />

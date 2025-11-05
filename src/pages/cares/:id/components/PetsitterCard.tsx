@@ -3,10 +3,12 @@ import styled from 'styled-components';
 import { PiStarFill } from 'react-icons/pi';
 import { MdOutlineRateReview } from 'react-icons/md';
 
-import { BlueLink, Column, ImageCentered, RoundedImageWrapper, Row, Texts18h28 } from 'styles/commonStyle';
+import { Column, ImageCentered, RoundedImageWrapper, Row, Texts18h28 } from 'styles/commonStyle';
 import { PetInfoCapsule, PetInfoContainer } from '@pages/cares/:id/page';
 import { timeRange, weekdays } from 'utils/date';
 import { Petsitter } from 'types/user.type';
+import { Button } from '@components/buttons/Button';
+import { Link } from 'react-router-dom';
 
 interface PetsitterCardProps {
   petsitter: Petsitter;
@@ -16,7 +18,7 @@ export default function PetsitterCard({ petsitter }: PetsitterCardProps) {
   const opponentIds = [petsitter?.id];
   const params = new URLSearchParams();
   if (petsitter?.id !== undefined) {
-    opponentIds.forEach((id) => params.append('opponentIds', id.toString())); // opponentIds=1&opponentIds=2
+    opponentIds.forEach((id) => params.append('opponentIds', id.toString()));
   }
 
   return (
@@ -30,8 +32,12 @@ export default function PetsitterCard({ petsitter }: PetsitterCardProps) {
         </PetsitterImage>
         <PetsitterName>{petsitter?.nickname} 님</PetsitterName>
         <LinkWrapper>
-          <StyledLink to={`/chats/temp?${params.toString()}`}>채팅 하기</StyledLink>
-          <StyledLink to={`/users/${petsitter?.nickname}`}>프로필 보기</StyledLink>
+          <Button as={Link} to={`/chats/temp?${params.toString()}`} $size="sm" $borderRadius="sm">
+            채팅 하기
+          </Button>
+          <Button as={Link} to={`/users/${petsitter?.nickname}`} $size="sm" $borderRadius="sm">
+            프로필 보기
+          </Button>
         </LinkWrapper>
       </ImageName>
       <PetsitterInfo>
@@ -99,12 +105,7 @@ const PetsitterName = styled(Texts18h28)`
 `;
 
 const LinkWrapper = styled(Row)`
-  gap: ${({ theme }) => theme.spacing.sm};
-`;
-
-const StyledLink = styled(BlueLink)`
-  padding: ${({ theme }) => theme.spacing.sm};
-  border-radius: ${({ theme }) => theme.radius.md};
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 const StarReviewWrapper = styled(Row)`

@@ -5,7 +5,7 @@ import { useAuthSWRInfinite } from 'hooks/authSWR';
 import styled from 'styled-components';
 import { useInView } from 'framer-motion';
 
-import { CenterContainer, Column } from 'styles/commonStyle';
+import { Center, Column } from 'styles/commonStyle';
 import { fetcher } from 'api';
 
 import Loading from '@components/Loading';
@@ -40,17 +40,17 @@ export default function CareContainer() {
 
   if (isLoading) {
     return (
-      <CenterContainer style={{ height: '100%' }}>
+      <Center style={{ height: '100%' }}>
         <Loading color="#279EFF" />
-      </CenterContainer>
+      </Center>
     );
   }
 
   if (isEmpty) {
     return (
-      <CenterContainer style={{ height: '100%' }}>
+      <Center style={{ height: '100%' }}>
         <span>No Reservation</span>
-      </CenterContainer>
+      </Center>
     );
   }
 
@@ -63,9 +63,9 @@ export default function CareContainer() {
         )}
 
       {data && !isEnd && (
-        <CenterContainer ref={ref}>
+        <Center ref={ref}>
           <Loading color="#279EFF" />
-        </CenterContainer>
+        </Center>
       )}
     </CareCardContainer>
   );

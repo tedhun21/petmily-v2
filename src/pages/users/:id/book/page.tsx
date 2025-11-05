@@ -17,7 +17,7 @@ import { Modal, TextField } from '@mui/material';
 import { timeRange } from 'utils/date';
 import { fetcher, poster } from 'api';
 import SelectPets from './component/SelectPets';
-import { BlueButton, Column, Divider, Row, SubTitle, Texts14h20, Texts16h24 } from 'styles/commonStyle';
+import { Column, Divider, Row, SubTitle, Texts14h20, Texts16h24 } from 'styles/commonStyle';
 
 import Confirm from '@pages/users/:id/book/component/Confirm';
 
@@ -25,6 +25,7 @@ import Loading from '@components/Loading';
 import CustomDaumPostcode from '@components/CustomDaumPostcode';
 import SelectedPetsitter from './component/SelectedPetsitter';
 import BackHeader from '@components/headers/BackHeader';
+import { Button } from '@components/buttons/Button';
 
 const schema = yup.object().shape({
   checkedPets: yup.array().min(1, '적도오 한 마리의 펫을 선택해야 합니다.'),
@@ -198,7 +199,9 @@ export default function BookPage() {
           <ButtonContainer>
             <Confirm isChecked={isChecked} setIsChecked={setIsChecked} />
 
-            <StyledButton disabled={disabled}>{isMutating ? <Loading /> : <span>예약하기</span>}</StyledButton>
+            <Button disabled={disabled} $size="lg" $borderRadius="lg" $fullWidth>
+              {isMutating ? <Loading /> : <span>예약하기</span>}
+            </Button>
           </ButtonContainer>
         </Main>
       </form>
@@ -288,12 +291,12 @@ const ButtonContainer = styled(Column)`
   gap: ${({ theme }) => theme.spacing.sm};
 `;
 
-const StyledButton = styled(BlueButton)<{ disabled: boolean }>`
-  width: 100%;
-  padding: ${({ theme }) => theme.spacing.md};
-  background-color: ${({ theme, disabled }) =>
-    disabled ? theme.colors.background.box.blue.disabled : theme.colors.background.box.blue.primary};
-  border-radius: ${({ theme }) => theme.radius.md};
-  pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
-  ${({ theme }) => theme.typeScale.base};
-`;
+// const StyledButton = styled(BlueButton)<{ disabled: boolean }>`
+//   width: 100%;
+//   padding: ${({ theme }) => theme.spacing.md};
+//   background-color: ${({ theme, disabled }) =>
+//     disabled ? theme.colors.background.box.accent.disabled : theme.colors.background.box.accent.primary};
+//   border-radius: ${({ theme }) => theme.radius.md};
+//   pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
+//   ${({ theme }) => theme.typeScale.base};
+// `;

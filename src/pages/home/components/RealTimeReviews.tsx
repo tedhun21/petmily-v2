@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 
-import { CenterContainer, Title } from 'styles/commonStyle';
+import { Center, Title } from 'styles/commonStyle';
 
 import ReviewCard from './ReviewCard';
 import { fetcher } from 'api';
@@ -30,9 +30,9 @@ export default function RealTimeReviews() {
 
   if (isEmpty) {
     return (
-      <CenterContainer>
+      <Center>
         <span>조건에 맞는 펫시터가 없습니다</span>
-      </CenterContainer>
+      </Center>
     );
   }
 

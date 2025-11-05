@@ -7,15 +7,16 @@ import { useAuthSWR } from 'hooks/authSWR';
 import { formatStatus } from 'utils/misc';
 import { fetcher } from 'api';
 
-import PetsitterCard from './component/PetsitterCard';
-import PetContainer from './component/PetContainer';
-import DetailReservation from './component/DetailReservation';
-import ProgressButton from './component/ProgressButton';
-import ClientCard from './component/ClientCard';
+import PetsitterCard from './components/PetsitterCard';
+import PetContainer from './components/PetContainer';
+import DetailReservation from './components/DetailReservation';
+import ProgressButton from './components/ProgressButton';
+import ClientCard from './components/ClientCard';
 import { UserRole } from 'types/user.type';
 import BackHeader from '@components/headers/BackHeader';
 import { SocketContext } from '@components/contexts/SocketProvider';
 import { ReservationStatus } from 'types/reservation.type';
+import { Column } from 'styles/commonStyle';
 
 export default function CarePage() {
   const { id } = useParams();
@@ -46,9 +47,9 @@ export default function CarePage() {
   }, [reservation?.id]);
 
   return (
-    <Main>
+    <>
       <BackHeader />
-      <Section>
+      <Section as="section">
         <TitleStatus>
           <span>{formatStatus(reservation?.status)}...</span>
         </TitleStatus>
@@ -66,20 +67,12 @@ export default function CarePage() {
       <ButtonContainer>
         <ProgressButton meRole={me?.role} reservation={reservation} />
       </ButtonContainer>
-    </Main>
+    </>
   );
 }
 
-const Main = styled.main`
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-`;
-
-const Section = styled.section`
-  display: flex;
+const Section = styled(Column)`
   flex: auto;
-  flex-direction: column;
   overflow-y: auto;
   height: 100%;
   padding: ${({ theme }) => theme.spacing.xl};
@@ -105,7 +98,7 @@ export const PetInfoContainer = styled.ul`
 
 export const PetInfoCapsule = styled.li`
   padding: 4px 8px;
-  background-color: ${({ theme }) => theme.colors.background.box.blue.primary};
+  background-color: ${({ theme }) => theme.colors.background.box.accent.primary};
   border-radius: ${({ theme }) => theme.radius.lg};
   color: ${({ theme }) => theme.colors.text.white};
   ${({ theme }) => theme.typeScale.sm};

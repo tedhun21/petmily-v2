@@ -169,17 +169,17 @@ const PetsitterDetailLink = styled(Link)`
   justify-content: center;
   align-items: center;
   padding: 4px 8px;
-  background-color: ${({ theme }) => theme.colors.background.box.blue.primary};
+  background-color: ${({ theme }) => theme.colors.background.box.accent.primary};
   border-radius: ${({ theme }) => theme.radius.md};
   color: ${({ theme }) => theme.colors.text.white};
   ${({ theme }) => theme.typeScale.sm};
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.background.box.blue.hover};
+    background-color: ${({ theme }) => theme.colors.background.box.accent.hover};
   }
 
   &:active {
-    background-color: ${({ theme }) => theme.colors.background.box.blue.active};
+    background-color: ${({ theme }) => theme.colors.background.box.accent.active};
     box-shadow: ${({ theme }) => theme.shadow.inset};
   }
 `;

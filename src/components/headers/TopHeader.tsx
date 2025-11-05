@@ -11,10 +11,11 @@ import { MdNightlightRound } from 'react-icons/md';
 import { useAuthSWR } from 'hooks/authSWR';
 import { RootState } from 'store';
 import { fetcher } from 'api';
-import { Row } from 'styles/commonStyle';
+import { Center, Row } from 'styles/commonStyle';
 import MeButton from './components/MeButton';
 import NotiButton from './components/NotiButton/NotiButton';
 import { ThemeContext } from '@components/contexts/ThemeProvider';
+import { Button } from '@components/buttons/Button';
 
 export default function TopHeader() {
   const { isDarkMode, setIsDarkMode } = useContext(ThemeContext);
@@ -42,15 +43,14 @@ export default function TopHeader() {
       <Link to="/">
         <img src="/imgs/Logo.svg" alt="logo" />
       </Link>
-      <Wrapper>
-        <ButtonContainer>
-          <Button type="button" onClick={handleDarkMode}>
-            {isDarkMode ? <FiSun size="20px" /> : <MdNightlightRound size="20px" />}
+      <MenuContainer>
+        <IconContainer>
+          <Button type="button" onClick={handleDarkMode} $variant="icon" $borderRadius="circle">
+            {isDarkMode ? <FiSun size="24px" /> : <MdNightlightRound size="24px" />}
           </Button>
-        </ButtonContainer>
-        {me ? (
-          <>
-            <ButtonContainer>
+
+          {me && (
+            <>
               <NotiButton />
               {/* {unreadNotificationCount > 0 && (
                 <UnreadCountContainer>
@@ -59,27 +59,31 @@ export default function TopHeader() {
                   </UnreadCount>
                 </UnreadCountContainer>
               )} */}
-            </ButtonContainer>
 
-            <ButtonContainer>
-              <StyledLink to="/chats">
-                <FaRegPaperPlane size="20px" />
-              </StyledLink>
-              {unreadChatCount > 0 && (
-                <UnreadCountContainer>
-                  <UnreadCount>
-                    <span>{unreadChatCount}</span>
-                  </UnreadCount>
-                </UnreadCountContainer>
-              )}
-            </ButtonContainer>
+              <div style={{ position: 'relative' }}>
+                <Button as={Link} to="/chats" $variant="icon" $borderRadius="circle">
+                  <FaRegPaperPlane size="24px" />
+                </Button>
+                {unreadChatCount > 0 && (
+                  <UnreadCountContainer>
+                    <UnreadCount>
+                      <span>{unreadChatCount}</span>
+                    </UnreadCount>
+                  </UnreadCountContainer>
+                )}
+              </div>
+            </>
+          )}
+        </IconContainer>
 
-            <MeButton me={me} />
-          </>
+        {me ? (
+          <MeButton me={me} />
         ) : (
-          <LoginNavLink to="/login">로그인/회원가입</LoginNavLink>
+          <Button as={Link} to="/login" $variant="primary" $size="sm" $borderRadius="sm">
+            로그인/회원가입
+          </Button>
         )}
-      </Wrapper>
+      </MenuContainer>
     </Container>
   );
 }
@@ -90,59 +94,13 @@ const Container = styled(Row)`
   padding: ${({ theme }) => theme.spacing.md};
 `;
 
-const Wrapper = styled(Row)`
+const MenuContainer = styled(Row)`
+  gap: ${({ theme }) => theme.spacing.sm};
+`;
+
+const IconContainer = styled(Row)`
   align-items: center;
   gap: ${({ theme }) => theme.spacing.xs};
-`;
-
-const ButtonContainer = styled.div`
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 36px;
-  height: 36px;
-`;
-
-const Button = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: ${({ theme }) => theme.spacing.xs};
-  border-radius: ${({ theme }) => theme.radius.base};
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.background.box.default.hover};
-  }
-`;
-
-const StyledLink = styled(Link)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: ${({ theme }) => theme.spacing.xs};
-  border-radius: ${({ theme }) => theme.radius.base};
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.background.box.default.hover};
-  }
-`;
-
-const LoginNavLink = styled(Link)`
-  padding: 4px 8px;
-  background-color: ${({ theme }) => theme.colors.background.box.blue.primary};
-  border-radius: ${({ theme }) => theme.radius.base};
-  color: ${({ theme }) => theme.colors.text.white};
-  ${({ theme }) => theme.typeScale.sm};
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.background.box.blue.hover};
-  }
-
-  &:active {
-    background-color: ${({ theme }) => theme.colors.background.box.blue.active};
-    box-shadow: ${({ theme }) => theme.shadow.inset};
-  }
 `;
 
 const UnreadCountContainer = styled.div`
@@ -151,10 +109,7 @@ const UnreadCountContainer = styled.div`
   right: 0;
 `;
 
-const UnreadCount = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+const UnreadCount = styled(Center)`
   min-width: ${({ theme }) => theme.spacing.lg};
   height: ${({ theme }) => theme.spacing.lg};
   background-color: ${({ theme }) => theme.colors.background.error};

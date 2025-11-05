@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { FaRegCircleCheck, FaCircleCheck } from 'react-icons/fa6';
 import { Modal } from '@mui/material';
 
-import { BlueButton, Column, SubTitle, Texts12h16, Texts16h24, Title } from 'styles/commonStyle';
+import { Column, SubTitle, Texts12h16, Texts16h24, Title } from 'styles/commonStyle';
 
 interface ConfirmProps {
   isChecked: boolean;
@@ -92,7 +92,9 @@ export default function Confirm({ isChecked, setIsChecked }: ConfirmProps) {
               </Column>
             </List>
           </Container>
-          <CheckButton onClick={handleCheck}>확인했습니다</CheckButton>
+          <button type="button" onClick={handleCheck}>
+            확인했습니다
+          </button>
         </TermsContainer>
       </Modal>
     </ConfirmContainer>
@@ -154,12 +156,12 @@ const SubItem = styled(Texts12h16)`
   color: ${({ theme }) => theme.colors.text.inactive};
 `;
 
-const CheckButton = styled(BlueButton)`
-  width: 100%;
-  padding: ${({ theme }) => theme.spacing.md};
-  border-radius: ${({ theme }) => theme.radius.md};
-  ${({ theme }) => theme.typeScale.base};
-`;
+// const CheckButton = styled(BlueButton)`
+//   width: 100%;
+//   padding: ${({ theme }) => theme.spacing.md};
+//   border-radius: ${({ theme }) => theme.radius.md};
+//   ${({ theme }) => theme.typeScale.base};
+// `;
 
 const Check = styled.div`
   position: absolute;

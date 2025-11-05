@@ -56,16 +56,16 @@ const StyledLink = styled(Link)`
   justify-content: center;
   align-items: center;
   padding: ${({ theme }) => theme.spacing.sm};
-  background-color: ${({ theme }) => theme.colors.background.box.blue.primary};
-  border-radius: ${({ theme }) => theme.radius.base};
+  background-color: ${({ theme }) => theme.colors.background.box.accent.primary};
+  border-radius: ${({ theme }) => theme.radius.md};
   color: ${({ theme }) => theme.colors.text.white};
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.background.box.blue.hover};
+    background-color: ${({ theme }) => theme.colors.background.box.accent.hover};
   }
 
   &:active {
-    background-color: ${({ theme }) => theme.colors.background.box.blue.active};
+    background-color: ${({ theme }) => theme.colors.background.box.accent.active};
     box-shadow: ${({ theme }) => theme.shadow.inset};
   }
 

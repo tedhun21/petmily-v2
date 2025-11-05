@@ -15,6 +15,7 @@ import { clearAccessToken } from 'store/authSlice';
 import useOutsideClickModal from 'hooks/useOutsideClickModal';
 import { closeModal, ModalType, openModal } from 'store/modalSlice';
 import { ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
+import { Button } from '@components/buttons/Button';
 
 interface MeButtonProps {
   me?: User;
@@ -54,8 +55,13 @@ export default function MeButton({ me }: MeButtonProps) {
     }
   };
 
+  const handleMenuClick = () => {
+    dispatch(closeModal());
+  };
+
   // 로그아웃 처리
   const handleLogout = async () => {
+    handleMenuClick();
     await trigger();
   };
 
@@ -73,11 +79,13 @@ export default function MeButton({ me }: MeButtonProps) {
         createPortal(
           <LoginNavModal ref={modalRef}>
             <Nav>
-              <StyledNavLink to="/me" onClick={() => dispatch(closeModal())}>
-                마이페이지
-              </StyledNavLink>
+              <Button as={Link} to="/me" onClick={handleMenuClick} $variant="transparent" $borderRadius="sm">
+                내 정보
+              </Button>
 
-              <StyledNavButton onClick={handleLogout}>로그아웃</StyledNavButton>
+              <Button type="button" onClick={handleLogout} $variant="transparent" $borderRadius="sm">
+                로그아웃
+              </Button>
             </Nav>
           </LoginNavModal>,
           userContainer,
@@ -94,8 +102,8 @@ const UserContainer = styled.div`
 
 const UserButton = styled.button`
   position: relative;
-  border: 2px solid ${({ theme }) => theme.colors.background.box.blue.primary};
-  border-radius: 50%;
+  border: 2px solid ${({ theme }) => theme.colors.background.box.accent.primary};
+  border-radius: ${({ theme }) => theme.radius.circle};
   cursor: pointer;
 `;
 
@@ -119,33 +127,6 @@ const Nav = styled.nav`
   width: 120px;
   padding: ${({ theme }) => theme.spacing.sm};
   background-color: ${({ theme }) => theme.colors.background.box.default.primary};
-  border-radius: ${({ theme }) => theme.radius.base};
+  border-radius: ${({ theme }) => theme.radius.md};
   box-shadow: ${({ theme }) => theme.shadow.dp03};
-`;
-
-const StyledNavLink = styled(Link)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 8px 4px;
-  border-radius: ${({ theme }) => theme.radius.base};
-  ${({ theme }) => theme.typeScale.sm};
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.background.box.default.hover};
-  }
-`;
-
-const StyledNavButton = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 8px 4px;
-  border-radius: ${({ theme }) => theme.radius.base};
-
-  ${({ theme }) => theme.typeScale.sm};
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.background.box.default.hover};
-  }
 `;

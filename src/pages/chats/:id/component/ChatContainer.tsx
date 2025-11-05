@@ -2,12 +2,13 @@ import { useRef } from 'react';
 import styled from 'styled-components';
 import { FaChevronDown } from 'react-icons/fa6';
 
-import { Button, CenterContainer, ImageCentered, RoundedImageWrapper, Texts14h20 } from 'styles/commonStyle';
+import { Center, ImageCentered, RoundedImageWrapper, Row, Texts14h20 } from 'styles/commonStyle';
 
 import MessageList from './MessageList';
 import Loading from '@components/Loading';
 import { useChat } from '../contexts/ChatProvider';
 import { useChatUIEffects } from '../hooks/useChatUIEffects';
+import { Button } from '@components/buttons/Button';
 
 export default function ChatContainer() {
   const {
@@ -34,9 +35,9 @@ export default function ChatContainer() {
   return (
     <Container ref={chatRef}>
       {isLoading && messages.length === 0 ? (
-        <CenterContainer>
+        <Center>
           <Loading />
-        </CenterContainer>
+        </Center>
       ) : !isLoading && messages.length > 0 ? (
         <>
           <MessageList />
@@ -61,9 +62,8 @@ export default function ChatContainer() {
                       <span>{downButtonState.lastestNewMessages?.sender.nickname}</span>
                       <NewMessage>{downButtonState.lastestNewMessages?.content}</NewMessage>
                     </NewMessageUser>
-                    <div style={{ padding: '8px' }}>
-                      <FaChevronDown size="16px" />
-                    </div>
+
+                    <FaChevronDown size="16px" />
                   </NewMessageButton>
                 </BottomWrapper>
               </AbsolutBottom>
@@ -99,26 +99,20 @@ const AbsolutBottom = styled.div`
   width: 100%;
 `;
 
-const BottomWrapper = styled.div`
-  display: flex;
+const BottomWrapper = styled(Row)`
   padding: ${({ theme }) => theme.spacing.md};
 `;
 
-const NewMessageButton = styled.button`
-  display: flex;
-  align-items: center;
+const NewMessageButton = styled(Button).attrs(() => ({ $variant: 'secondary', $size: 'md', $borderRadius: 'lg' }))`
   width: 100%;
-  padding: ${({ theme }) => theme.spacing.xs};
-  background-color: ${({ theme }) => theme.colors.background.box.default.primary};
-  border-radius: ${({ theme }) => theme.radius.lg};
+
   opacity: 0.9;
 `;
 
-const NewMessageUser = styled.div`
-  display: flex;
+const NewMessageUser = styled(Row)`
   flex: auto;
   align-items: center;
-  padding: ${({ theme }) => theme.spacing.xs};
+
   gap: ${({ theme }) => theme.spacing.xs};
 `;
 
@@ -132,15 +126,9 @@ const NewMessage = styled(Texts14h20)`
   text-align: start;
 `;
 
-const DownButton = styled(Button)`
+const DownButton = styled(Button).attrs(() => ({
+  $variant: 'secondary',
+  $borderRadius: 'circle',
+}))`
   padding: ${({ theme }) => theme.spacing.sm};
-  border-radius: ${({ theme }) => theme.radius.circle};
-  opacity: 0.9;
-`;
-
-const Empty = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.sm};
 `;

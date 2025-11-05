@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Column, Texts14h20, Texts18h28 } from 'styles/commonStyle';
 
 export default function HomeAd() {
   return (
@@ -27,30 +28,26 @@ const Image = styled.img`
   width: 80px;
 `;
 
-const TextWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
+const TextWrapper = styled(Column)`
   gap: ${({ theme }) => theme.spacing.sm};
 `;
-const TextContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+
+const TextContainer = styled(Column)`
   justify-content: center;
   align-items: center;
   gap: ${({ theme }) => theme.spacing._2xl};
 `;
 
-const AdText = styled.div`
-  color: ${({ theme }) => theme.colors.text.highlight};
+const AdText = styled(Texts18h28)`
+  color: ${({ theme }) => theme.colors.text.active};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
-  font-size: 18px;
 `;
 
-const InfoText = styled.div`
+const InfoText = styled(Texts14h20)`
   color: ${({ theme }) => theme.colors.text.secondary};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
-  font-size: 14px;
 `;
+
 const GifContainer = styled.img`
   width: 300px;
 `;

@@ -5,7 +5,15 @@ import { useInView } from 'framer-motion';
 import styled, { css } from 'styled-components';
 import { FaXmark } from 'react-icons/fa6';
 
-import { ImageCentered, RoundedImageWrapper, Row, Texts12h16, Texts14h20, Texts16h24 } from 'styles/commonStyle';
+import {
+  Column,
+  ImageCentered,
+  RoundedImageWrapper,
+  Row,
+  Texts12h16,
+  Texts14h20,
+  Texts16h24,
+} from 'styles/commonStyle';
 import {
   formatToLocaleAMPM,
   shouldShowDateDivider,
@@ -16,6 +24,7 @@ import {
 import { ChatMessage, Message, PendingMessage } from 'types/chat.type';
 import { IoMdRefresh } from 'react-icons/io';
 import { useChat } from '../contexts/ChatProvider';
+import { Button } from '@components/buttons/Button';
 
 interface IProps {
   message: ChatMessage;
@@ -75,7 +84,7 @@ export default React.memo(function MessageItem({
         ) : !isMyMessage ? (
           <EmptySpace />
         ) : null}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', width: '100%' }}>
+        <Column style={{ gap: '4px', width: '100%' }}>
           {showNickname && !isMyMessage && <Texts14h20>{message.sender?.nickname}</Texts14h20>}
           <MessageContent $isMyMessage={isMyMessage}>
             <Content $isMyMessage={isMyMessage}>{message.content}</Content>
@@ -83,17 +92,22 @@ export default React.memo(function MessageItem({
             {isPendingMessage(message)
               ? message.status === 'error' && (
                   <ErrorStatus>
-                    <Button onClick={() => sendMessage(message.content, message?.tempId)}>
+                    <Button
+                      onClick={() => sendMessage(message.content, message?.tempId)}
+                      $variant="icon"
+                      $size="sm"
+                      $borderRadius="circle"
+                    >
                       <ReSendMark />
                     </Button>
-                    <Button onClick={deleteNewMessage}>
+                    <Button onClick={deleteNewMessage} $variant="icon" $size="sm" $borderRadius="circle">
                       <XMark />
                     </Button>
                   </ErrorStatus>
                 )
               : unreadCount > 0 && <ReadCount>{unreadCount}</ReadCount>}
           </MessageContent>
-        </div>
+        </Column>
       </Item>
     </li>
   );
@@ -151,7 +165,7 @@ const Content = styled(Texts16h24)<{ $isMyMessage: boolean }>`
   max-width: 70%; /* 최대 너비를 설정하여 상대방 영역 침범 방지 */
   padding: ${({ theme }) => theme.spacing.sm};
   background-color: ${({ theme, $isMyMessage }) =>
-    $isMyMessage ? theme.colors.background.box.blue.primary : theme.colors.background.box.blue.hover};
+    $isMyMessage ? theme.colors.background.box.accent.primary : theme.colors.background.box.accent.hover};
   border-radius: ${({ theme }) => theme.radius.md};
   color: white;
   word-wrap: break-word; /* 긴 단어가 있을 경우 줄 바꿈 처리 */
@@ -162,23 +176,14 @@ const ErrorStatus = styled(Row)`
   padding: ${({ theme }) => theme.spacing.xs};
   background-color: ${({ theme }) => theme.colors.background.box.default.primary};
   border-radius: ${({ theme }) => theme.radius.md};
-  gap: ${({ theme }) => theme.spacing.xs};
-`;
-
-const Button = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 const ReSendMark = styled(IoMdRefresh)`
   color: ${({ theme }) => theme.colors.text.highlight};
-  ${({ theme }) => theme.typeScale.lg};
 `;
 
 const XMark = styled(FaXmark)`
   color: ${({ theme }) => theme.colors.text.error};
-  ${({ theme }) => theme.typeScale.lg};
 `;
 
 const ReadCount = styled(Texts12h16)`

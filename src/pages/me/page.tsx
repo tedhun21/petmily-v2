@@ -9,6 +9,7 @@ import { Column, ImageCentered, RoundedImageWrapper, Row, Texts14h20, Texts16h24
 import MyPetsitterProfile from './components/MyPetsitterProfile';
 import BackHeader from '@components/headers/BackHeader';
 import { UserRole } from 'types/user.type';
+import { Button } from '@components/buttons/Button';
 
 export default function MyPage() {
   const { data: me } = useAuthSWR('/users/me', fetcher);
@@ -16,7 +17,7 @@ export default function MyPage() {
   return (
     <>
       <BackHeader link="/" />
-      <MypageContainer>
+      <Main as="main">
         <MyProfileContianer>
           <MyProfile>
             <MyImage>
@@ -35,9 +36,9 @@ export default function MyPage() {
               )}
             </TextWrapper>
           </MyProfile>
-          <EditLink to="/me/edit">
-            <span>회원정보 수정</span>
-          </EditLink>
+          <Button as={Link} to="/me/edit">
+            내 정보 수정
+          </Button>
         </MyProfileContianer>
 
         {me?.role === UserRole.CLIENT ? (
@@ -45,19 +46,17 @@ export default function MyPage() {
         ) : me?.role === UserRole.PETSITTER ? (
           <MyPetsitterProfile me={me} />
         ) : null}
-      </MypageContainer>
+      </Main>
     </>
   );
 }
 
 // 전체 페이지
-const MypageContainer = styled.main`
-  display: flex;
-  flex-direction: column;
+const Main = styled(Column)`
   gap: ${({ theme }) => theme.spacing._4xl};
   width: 100%;
   height: 100%;
-  padding: 36px;
+  padding: 20px;
 `;
 
 // 유저 컨테이너
@@ -88,27 +87,4 @@ const NameText = styled(Texts16h24)`
 
 const HelloText = styled(Texts16h24)`
   font-weight: ${({ theme }) => theme.fontWeight.bold};
-`;
-
-const EditLink = styled(Link)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: ${({ theme }) => theme.spacing.sm};
-  background-color: ${({ theme }) => theme.colors.background.box.blue.primary};
-  border-radius: ${({ theme }) => theme.radius.md};
-  color: ${({ theme }) => theme.colors.text.white};
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.background.box.blue.hover};
-  }
-
-  &:active {
-    background-color: ${({ theme }) => theme.colors.background.box.blue.active};
-    box-shadow: ${({ theme }) => theme.shadow.inset};
-  }
-
-  > span {
-    color: inherit;
-  }
 `;

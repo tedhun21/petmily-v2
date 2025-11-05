@@ -12,7 +12,7 @@ import { RootState } from 'store';
 import { fetcher, updater } from 'api';
 import Loading from '@components/Loading';
 import { ModalType } from 'store/modalSlice';
-import { CenterContainer } from 'styles/commonStyle';
+import { Center } from 'styles/commonStyle';
 import { Notification } from 'types/notification.type';
 import { clearNewNotifications } from 'store/notificationSlice';
 
@@ -113,9 +113,9 @@ export default function NotiModal() {
   if (isLoading) {
     return (
       <Background>
-        <CenterContainer>
+        <Center>
           <Loading color="#279EFF" />
-        </CenterContainer>
+        </Center>
       </Background>
     );
   }
@@ -123,9 +123,9 @@ export default function NotiModal() {
   if (isEmpty) {
     return (
       <Background>
-        <CenterContainer>
+        <Center>
           <div>알림이 없습니다</div>
-        </CenterContainer>
+        </Center>
       </Background>
     );
   }
@@ -138,9 +138,9 @@ export default function NotiModal() {
         ))}
 
         {!isEnd && (
-          <CenterContainer ref={moreLoadRef}>
+          <Center ref={moreLoadRef}>
             <Loading color="#279EFF" />
-          </CenterContainer>
+          </Center>
         )}
       </List>
     </Background>
@@ -153,7 +153,7 @@ const Background = styled.div`
   max-height: 300px;
   padding: 8px 16px;
   background-color: ${({ theme }) => theme.colors.background.box.default.primary};
-  border-radius: ${({ theme }) => theme.radius.base};
+  border-radius: ${({ theme }) => theme.radius.md};
   box-shadow: ${({ theme }) => theme.shadow.dp01};
 `;
 

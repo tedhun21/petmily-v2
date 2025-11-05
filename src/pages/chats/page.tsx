@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import ChatRoomList from './component/ChatRoomList';
+import ChatRoomList from './components/ChatRoomList';
 import TopHeader from '@components/headers/TopHeader';
 
 export default function ChatsPage() {

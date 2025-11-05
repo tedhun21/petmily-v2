@@ -1,7 +1,9 @@
 import { useRef, ChangeEvent, useState } from 'react';
-import { FaXmark } from 'react-icons/fa6';
+
 import styled from 'styled-components';
 import { Column, ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
+import { Button } from './buttons/Button';
+import XButton from './buttons/XButton';
 
 interface IProps {
   setImageFile: (file: File | null) => void;
@@ -50,13 +52,15 @@ export default function EditableProfileImage({
           <input id="photoInput" type="file" accept="image/*" ref={fileInputRef} onChange={handleImageChange} hidden />
         </UserImageWrapper>
         {(previewUrl || serverImageUrl) && (
-          <XButton type="button" onClick={handlePhotoDelete}>
-            <FaXmark color="white" />
-          </XButton>
+          <Absolute>
+            <XButton onClick={handlePhotoDelete} />
+          </Absolute>
         )}
       </Relative>
 
-      <ImageLabel htmlFor="photoInput">프로필 사진 선택</ImageLabel>
+      <Button as="label" htmlFor="photoInput">
+        프로필 사진 선택
+      </Button>
     </ImageContainer>
   );
 }
@@ -65,14 +69,6 @@ const ImageContainer = styled(Column)`
   align-items: center;
   padding: 40px;
   gap: ${({ theme }) => theme.spacing.lg};
-`;
-
-const ImageLabel = styled.label`
-  cursor: pointer;
-
-  &:hover {
-    color: ${({ theme }) => theme.colors.text.highlight};
-  }
 `;
 
 const Relative = styled.div`
@@ -84,14 +80,8 @@ const UserImageWrapper = styled(RoundedImageWrapper)`
   height: 100px;
 `;
 
-const XButton = styled.button`
+const Absolute = styled.div`
   position: absolute;
   top: 0;
   right: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: ${({ theme }) => theme.spacing.xs};
-  background-color: ${({ theme }) => theme.colors.background.error};
-  border-radius: ${({ theme }) => theme.radius.circle};
 `;

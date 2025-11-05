@@ -9,7 +9,8 @@ import { FaXmark } from 'react-icons/fa6';
 
 import Loading from '@components/Loading';
 import { fetcher, poster, updater } from 'api';
-import { BlueButton, CenterContainer, Texts14h20, Texts16h24, Title } from 'styles/commonStyle';
+import { BottomFixed, Center, Column, Float, Texts14h20, Texts16h24, Title } from 'styles/commonStyle';
+import { Button } from '@components/buttons/Button';
 
 interface JournalFormValue {
   body: string;
@@ -143,83 +144,92 @@ export default function JournalPage() {
   }, [journal]);
 
   return (
-    <Main>
-      <CenterContainer>
+    <Column as="main">
+      <Center>
         <Title>{journal ? '케어일지 수정' : '케어일지 작성'}</Title>
-      </CenterContainer>
+      </Center>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <TextSection>
-          <SubTitle>케어일지 내용</SubTitle>
-          <TextArea placeholder="케어 중 무슨 일이 있으셨나요?" {...register('body')} />
-        </TextSection>
+        <Container>
+          <TextSection>
+            <SubTitle>케어일지 내용</SubTitle>
+            <TextArea placeholder="케어 중 무슨 일이 있으셨나요?" {...register('body')} />
+          </TextSection>
 
-        <ImageSection>
-          <SubTitle>사진 첨부</SubTitle>
-          <input
-            type="file"
-            accept="image/png, image/jpg, image/jpeg"
-            multiple
-            ref={fileInputRef}
-            onChange={handleFileChange}
-            style={{ display: 'none' }}
-          />
-          <ImageSelectWrapper>
-            <ImageSelectButton type="button" onClick={openFileInput}>
-              파일 선택
-            </ImageSelectButton>
-            <Texts14h20>최대 5개의 이미지를 선택할 수 있습니다.</Texts14h20>
-          </ImageSelectWrapper>
+          <ImageSection>
+            <SubTitle>사진 첨부</SubTitle>
+            <input
+              type="file"
+              accept="image/png, image/jpg, image/jpeg"
+              multiple
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              style={{ display: 'none' }}
+            />
+            <ImageSelectWrapper>
+              <Button type="button" onClick={openFileInput}>
+                파일 선택
+              </Button>
+              <Texts14h20>최대 5개의 이미지를 선택할 수 있습니다.</Texts14h20>
+            </ImageSelectWrapper>
 
-          <ImagePreview>
-            {selectedFiles &&
-              selectedFiles.map((file: File, index: number) => (
-                <ImagePreviewItem key={index}>
-                  <Img src={URL.createObjectURL(file)} alt={`selected_${index}`} />
-                  <RemoveButton type="button" onClick={() => handleRemoveInputImage(index)}>
-                    <FaXmark color="white" size="16px" />
-                  </RemoveButton>
-                </ImagePreviewItem>
-              ))}
-            {imageUrls &&
-              Array.isArray(imageUrls) &&
-              imageUrls.length > 0 &&
-              imageUrls.map((url: string, index: number) => (
-                <ImagePreviewItem key={index}>
-                  <Img src={`${url}`} alt={`review_server_image_${index}`} />
-                  <RemoveButton type="button" onClick={() => handleRemoveReviewImage(index)}>
-                    <FaXmark color="white" size="16px" />
-                  </RemoveButton>
-                </ImagePreviewItem>
-              ))}
-          </ImagePreview>
-        </ImageSection>
+            <ImagePreview>
+              {selectedFiles &&
+                selectedFiles.map((file: File, index: number) => (
+                  <ImagePreviewItem key={index}>
+                    <Img src={URL.createObjectURL(file)} alt={`selected_${index}`} />
+                    <RemoveButton type="button" onClick={() => handleRemoveInputImage(index)}>
+                      <FaXmark color="white" size="16px" />
+                    </RemoveButton>
+                  </ImagePreviewItem>
+                ))}
+              {imageUrls &&
+                Array.isArray(imageUrls) &&
+                imageUrls.length > 0 &&
+                imageUrls.map((url: string, index: number) => (
+                  <ImagePreviewItem key={index}>
+                    <Img src={`${url}`} alt={`review_server_image_${index}`} />
+                    <RemoveButton type="button" onClick={() => handleRemoveReviewImage(index)}>
+                      <FaXmark color="white" size="16px" />
+                    </RemoveButton>
+                  </ImagePreviewItem>
+                ))}
+            </ImagePreview>
+          </ImageSection>
+        </Container>
 
-        <SubmitButton type="submit" disabled={isCreateMutating || isUpdateMutating}>
-          {isCreateMutating || isUpdateMutating ? (
-            <CenterContainer>
-              <Loading />
-            </CenterContainer>
-          ) : (
-            <span>{journal ? '케어일지 수정' : '케어일지 등록'}</span>
-          )}
-        </SubmitButton>
+        <BottomFixed>
+          <FloatButtonContainer>
+            <Button
+              type="submit"
+              disabled={isCreateMutating || isUpdateMutating}
+              $size="lg"
+              $borderRadius="lg"
+              $fullWidth
+            >
+              {isCreateMutating || isUpdateMutating ? (
+                <Center>
+                  <Loading />
+                </Center>
+              ) : (
+                <span>{journal ? '케어일지 수정' : '케어일지 등록'}</span>
+              )}
+            </Button>
+          </FloatButtonContainer>
+        </BottomFixed>
       </form>
-    </Main>
+    </Column>
   );
 }
 
-const Main = styled.main`
-  display: flex;
-  flex-direction: column;
+const Container = styled(Column)`
+  gap: ${({ theme }) => theme.spacing.xl};
   padding: ${({ theme }) => theme.spacing.xl};
 `;
 
 const SubTitle = styled(Texts16h24)``;
 
-const TextSection = styled.section`
-  display: flex;
-  flex-direction: column;
+const TextSection = styled(Column)`
   gap: ${({ theme }) => theme.spacing.sm};
 `;
 
@@ -227,9 +237,14 @@ const TextArea = styled.textarea`
   width: 100%;
   height: 100px;
   padding: ${({ theme }) => theme.spacing.sm};
+  background-color: ${({ theme }) => theme.colors.background.input.primary};
   border-radius: ${({ theme }) => theme.radius.md};
-  font-family: inherit;
+  color: ${({ theme }) => theme.colors.text.active};
   ${({ theme }) => theme.typeScale.sm};
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.background.input.hover};
+  }
 `;
 
 const ImageSection = styled.section`
@@ -246,12 +261,6 @@ const ImageSelectWrapper = styled.div`
   > div {
     ${({ theme }) => theme.typeScale.xs}
   }
-`;
-
-const ImageSelectButton = styled(BlueButton)`
-  ${({ theme }) => theme.typeScale.sm}
-  padding:4px ${({ theme }) => theme.spacing.sm};
-  border-radius: ${({ theme }) => theme.radius.md};
 `;
 
 const ImagePreview = styled.div`
@@ -280,14 +289,14 @@ const RemoveButton = styled.button`
   align-items: center;
   width: ${({ theme }) => theme.spacing._2xl};
   height: ${({ theme }) => theme.spacing._2xl};
-  background-color: ${({ theme }) => theme.colors.background.box.blue.primary};
+  background-color: ${({ theme }) => theme.colors.background.box.accent.primary};
   border-radius: 50%;
 `;
 
-const SubmitButton = styled(BlueButton)`
+const FloatButtonContainer = styled(Float)`
+  bottom: 0;
+  left: 0;
   width: 100%;
-  padding: ${({ theme }) => theme.spacing.sm};
-  border-radius: ${({ theme }) => theme.radius.md};
-
-  ${({ theme }) => theme.typeScale.base}
+  padding: ${({ theme }) => theme.spacing.xl};
+  background-color: ${({ theme }) => theme.colors.background.primary};
 `;

@@ -5,15 +5,16 @@ import { LuBadgePlus } from 'react-icons/lu';
 
 import { Row, Texts18h28 } from 'styles/commonStyle';
 import MyPetContainer from './MyPetContainer';
+import { Button } from '@components/buttons/Button';
 
 export default function MyPetmily() {
   return (
     <PetmilyContainer>
       <TitleContainer>
         <Texts18h28>나의 Petmily</Texts18h28>
-        <Link to="/me/register">
-          <StyledPlusIcon size="32px" />
-        </Link>
+        <Button as={Link} to="/me/pet/register" $variant="icon" $borderRadius="circle">
+          <StyledPlusIcon size="28px" />
+        </Button>
       </TitleContainer>
 
       <MyPetContainer />
@@ -33,13 +34,5 @@ const TitleContainer = styled(Row)`
 `;
 
 const StyledPlusIcon = styled(LuBadgePlus)`
-  color: ${({ theme }) => theme.colors.background.highlight};
-
-  &:hover {
-    color: ${({ theme }) => theme.colors.background.deepHighlight};
-  }
-
-  &:active {
-    color: ${({ theme }) => theme.colors.background.darkHighlight};
-  }
+  color: ${({ theme }) => theme.colors.text.highlight};
 `;

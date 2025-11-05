@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { useInView } from 'framer-motion';
 import { useAuthSWRInfinite } from 'hooks/authSWR';
 
-import { CenterContainer } from 'styles/commonStyle';
+import { Center } from 'styles/commonStyle';
 import { fetcher } from 'api';
 import Loading from '@components/Loading';
 
@@ -31,17 +31,17 @@ export default function MySchedule() {
 
   if (isLoading) {
     return (
-      <CenterContainer>
+      <Center>
         <Loading color="#279EFF" />
-      </CenterContainer>
+      </Center>
     );
   }
 
   if (isEmpty) {
     return (
-      <CenterContainer>
+      <Center>
         <span>No Schedule</span>
-      </CenterContainer>
+      </Center>
     );
   }
 
@@ -52,9 +52,9 @@ export default function MySchedule() {
         data?.map((page) => page?.results.map((schedule: any) => <div key={schedule.id}>{schedule.id}</div>))}
 
       {!isEnd && (
-        <CenterContainer ref={ref}>
+        <Center ref={ref}>
           <Loading color="#279EFF" />
-        </CenterContainer>
+        </Center>
       )}
     </ScheduleList>
   );

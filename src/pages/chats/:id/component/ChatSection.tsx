@@ -7,7 +7,8 @@ import { IoMdArrowRoundUp } from 'react-icons/io';
 import ChatHeader from './ChatHeader';
 import ChatContainer from './ChatContainer';
 import { useChat } from '../contexts/ChatProvider';
-import { BlueButton, Input } from 'styles/commonStyle';
+import { Input } from 'styles/commonStyle';
+import { Button } from '@components/buttons/Button';
 
 interface MessageFormValues {
   message: string;
@@ -81,7 +82,17 @@ const ChatInput = styled(Input)`
   ${({ theme }) => theme.typeScale.lg};
 `;
 
-const ChatSubmitButton = styled(BlueButton)`
-  padding: 6px;
-  border-radius: ${({ theme }) => theme.radius.circle};
+const ChatSubmitButton = styled(Button).attrs(() => ({
+  $variant: 'icon',
+  $borderRadius: 'circle',
+}))`
+  background-color: ${({ theme }) => theme.colors.background.box.accent.primary};
+
+  &:hover:not(:disabled) {
+    background-color: ${({ theme }) => theme.colors.background.box.accent.hover};
+  }
+
+  &:active:not(:disalbed) {
+    background-color: ${({ theme }) => theme.colors.background.box.accent.active};
+  }
 `;

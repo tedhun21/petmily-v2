@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
-import { Column } from 'styles/commonStyle';
-import NavBar from './components/NavBar';
 import TopHeader from './TopHeader';
+import NavBar from './components/NavBar';
+import { Column } from 'styles/commonStyle';
 
 export default function NavHeader() {
   return (
