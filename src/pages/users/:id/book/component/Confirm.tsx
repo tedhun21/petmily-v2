@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { FaRegCircleCheck, FaCircleCheck } from 'react-icons/fa6';
 import { Modal } from '@mui/material';
 
-import { Column, SubTitle, Texts12h16, Texts16h24, Title } from 'styles/commonStyle';
+import { Column, SubTitle, Title } from 'styles/commonStyle';
 
 interface ConfirmProps {
   isChecked: boolean;
@@ -151,9 +151,10 @@ const Item = styled.li`
   ${({ theme }) => theme.typeScale.sm};
 `;
 
-const SubItem = styled(Texts12h16)`
+const SubItem = styled.span`
   padding-left: ${({ theme }) => theme.spacing.xl};
   color: ${({ theme }) => theme.colors.text.inactive};
+  ${({ theme }) => theme.typeScale.xs};
 `;
 
 // const CheckButton = styled(BlueButton)`
@@ -169,12 +170,13 @@ const Check = styled.div`
   left: ${({ theme }) => theme.spacing.sm};
 `;
 
-const ConfirmText = styled(Texts16h24)<{ $isChecked: boolean }>`
+const ConfirmText = styled.span<{ $isChecked: boolean }>`
   color: ${({ $isChecked, theme }) => ($isChecked ? theme.colors.text.highlight : theme.colors.text.inactive)};
+  ${({ theme }) => theme.typeScale.base};
 `;
 
 const TermsButton = styled.button`
   color: ${({ theme }) => theme.colors.text.secondary};
   text-decoration: underline;
-  ${({ theme }) => theme.typeScale.sm}
+  ${({ theme }) => theme.typeScale.sm};
 `;

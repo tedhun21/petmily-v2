@@ -7,7 +7,7 @@ import Loading from '@components/Loading';
 import { Reservation, ReservationStatus } from 'types/reservation.type';
 import { UserRole } from 'types/user.type';
 import { SocketContext } from '@components/contexts/SocketProvider';
-import { Button } from '@components/buttons/Button';
+import { Button } from 'styles/common/Button';
 import { Row } from 'styles/commonStyle';
 
 interface ProgressButtonProps {

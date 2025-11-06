@@ -1,7 +1,10 @@
-import { ImageCentered, RoundedImageWrapper, Row, Texts18h28 } from 'styles/commonStyle';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+
 import { User } from 'types/user.type';
+import { Text } from 'styles/common/Text';
+import { Button } from 'styles/common/Button';
+import { ImageCentered, RoundedImageWrapper, Row } from 'styles/commonStyle';
 
 interface ClientCardProps {
   client: User;
@@ -20,10 +23,14 @@ export default function ClientCard({ client }: ClientCardProps) {
         <ClientImage>
           <ImageCentered src={client?.photo ? `${client?.photo}` : '/imgs/DefaultUserProfile.jpg'} alt="client_photo" />
         </ClientImage>
-        <ClientName>{client?.nickname} 님</ClientName>
+        <Text $size="lg" $weight="semibold">
+          {client?.nickname} 님
+        </Text>
       </ImageName>
 
-      <StyledLink to={`/chats/temp?${params.toString()}`}>채팅 하기</StyledLink>
+      <Button as={Link} to={`/chats/temp?${params.toString()}`} $variant="primary">
+        채팅 하기
+      </Button>
     </Card>
   );
 }
@@ -37,7 +44,6 @@ const Card = styled.section`
 `;
 
 const ImageName = styled(Row)`
-  display: flex;
   gap: ${({ theme }) => theme.spacing.sm};
 `;
 
@@ -45,31 +51,4 @@ const ClientImage = styled(RoundedImageWrapper)`
   width: 80px;
   height: 80px;
   border: 2px solid ${({ theme }) => theme.colors.line.box.highlight};
-`;
-
-const ClientName = styled(Texts18h28)`
-  font-weight: ${({ theme }) => theme.fontWeight.semibold};
-`;
-
-const StyledLink = styled(Link)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: ${({ theme }) => theme.spacing.sm};
-  background-color: ${({ theme }) => theme.colors.background.box.accent.primary};
-  border-radius: ${({ theme }) => theme.radius.md};
-  color: ${({ theme }) => theme.colors.text.white};
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.background.box.accent.hover};
-  }
-
-  &:active {
-    background-color: ${({ theme }) => theme.colors.background.box.accent.active};
-    box-shadow: ${({ theme }) => theme.shadow.inset};
-  }
-
-  > span {
-    color: inherit;
-  }
 `;

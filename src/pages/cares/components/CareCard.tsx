@@ -1,20 +1,11 @@
 import styled from 'styled-components';
 
-import {
-  Column,
-  DefaultLink,
-  ImageCentered,
-  RoundedImageWrapper,
-  Row,
-  Texts12h16,
-  Texts14h20,
-  Texts16h24,
-  Texts18h28,
-} from 'styles/commonStyle';
+import { Column, DefaultLink, ImageCentered, RoundedImageWrapper, Row } from 'styles/commonStyle';
 import { formatStatus } from 'utils/misc';
 import { dayFormat, timeRange } from 'utils/date';
 import { Reservation } from 'types/reservation.type';
 import { Pet } from 'types/pet.type';
+import { Text } from 'styles/common/Text';
 
 interface CareCardProps {
   reservation: Reservation;
@@ -31,29 +22,33 @@ export default function CareCard({ reservation }: CareCardProps) {
             />
           </PetsitterImage>
           <PetsitterName>
-            <Texts16h24>{reservation?.petsitter?.nickname}</Texts16h24>
-            <Texts14h20>펫시터님</Texts14h20>
+            <Text $size="base">{reservation?.petsitter?.nickname}</Text>
+            <Text $size="sm">펫시터님</Text>
           </PetsitterName>
         </PetsitterContainer>
-        <PropgressSpan>{formatStatus(reservation?.status)}</PropgressSpan>
+        <Text $size="lg" $weight="semibold" $color="highlight">
+          {formatStatus(reservation?.status)}
+        </Text>
       </FirstContainer>
 
       <ReservationContainer>
         <Wrapper>
-          <Texts14h20>일시:</Texts14h20>
-          <Texts12h16>
+          <Text $size="sm">일시:</Text>
+          <Text $size="xs">
             {reservation?.date} ({dayFormat(reservation?.date)})
-          </Texts12h16>
+          </Text>
         </Wrapper>
         <Wrapper>
-          <Texts14h20>시간:</Texts14h20>
-          <Texts12h16>{timeRange(reservation?.startTime, reservation?.endTime)}</Texts12h16>
+          <Text $size="sm">시간:</Text>
+          <Text $size="xs">{timeRange(reservation?.startTime, reservation?.endTime)}</Text>
         </Wrapper>
         <Wrapper>
-          <Texts14h20>맡기실 펫:</Texts14h20>
+          <Text $size="sm">맡기실 펫:</Text>
           <PetWrapper>
             {reservation?.pets.map((pet: Pet) => (
-              <Texts12h16 key={pet.id}>{pet.name}</Texts12h16>
+              <Text $size="xs" key={pet.id}>
+                {pet.name}
+              </Text>
             ))}
           </PetWrapper>
         </Wrapper>
@@ -112,9 +107,4 @@ const PetWrapper = styled(Row)`
     font-weight: ${({ theme }) => theme.fontWeight.bold};
     ${({ theme }) => theme.typeScale.xs};
   }
-`;
-
-const PropgressSpan = styled(Texts18h28)`
-  color: ${({ theme }) => theme.colors.text.highlight};
-  font-weight: ${({ theme }) => theme.fontWeight.semibold};
 `;

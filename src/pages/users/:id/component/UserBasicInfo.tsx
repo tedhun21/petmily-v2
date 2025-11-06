@@ -1,7 +1,8 @@
 import styled from 'styled-components';
-import { Column, ImageCentered, RoundedImageWrapper, Row, Texts16h24 } from 'styles/commonStyle';
+import { Column, ImageCentered, RoundedImageWrapper, Row } from 'styles/commonStyle';
 import { UserRole } from 'types/user.type';
 import { PetsitterFeedback } from './PetsitterFeedback';
+import { Text } from 'styles/common/Text';
 
 interface IProps {
   role: UserRole;
@@ -23,7 +24,7 @@ export default function UserBasicInfo({ role, nickname, photo, body, star, revie
           <ImageCentered src={photo ?? '/imgs/DefaultUserProfile.jpg'} alt="user_photo" />
         </UserImage>
         <Div>
-          <Texts16h24>{role === UserRole.PETSITTER ? `펫시터: ${nickname} 님` : `${nickname} 님`}</Texts16h24>
+          <Text $size="base">{role === UserRole.PETSITTER ? `펫시터: ${nickname} 님` : `${nickname} 님`}</Text>
           <PetsitterFeedback star={star} reviewCount={reviewCount} />
         </Div>
       </UserInfo>

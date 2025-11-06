@@ -3,12 +3,13 @@ import styled from 'styled-components';
 import { PiStarFill } from 'react-icons/pi';
 import { MdOutlineRateReview } from 'react-icons/md';
 
-import { Column, ImageCentered, RoundedImageWrapper, Row, Texts18h28 } from 'styles/commonStyle';
+import { Column, ImageCentered, RoundedImageWrapper, Row } from 'styles/commonStyle';
 import { PetInfoCapsule, PetInfoContainer } from '@pages/cares/:id/page';
 import { timeRange, weekdays } from 'utils/date';
 import { Petsitter } from 'types/user.type';
-import { Button } from '@components/buttons/Button';
+import { Button } from 'styles/common/Button';
 import { Link } from 'react-router-dom';
+import { Text } from 'styles/common/Text';
 
 interface PetsitterCardProps {
   petsitter: Petsitter;
@@ -22,7 +23,7 @@ export default function PetsitterCard({ petsitter }: PetsitterCardProps) {
   }
 
   return (
-    <Card>
+    <Card as="section">
       <ImageName>
         <PetsitterImage>
           <ImageCentered
@@ -30,7 +31,9 @@ export default function PetsitterCard({ petsitter }: PetsitterCardProps) {
             alt="petsitter_photo"
           />
         </PetsitterImage>
-        <PetsitterName>{petsitter?.nickname} 님</PetsitterName>
+        <Text $size="lg" $weight="semibold">
+          {petsitter?.nickname} 님
+        </Text>
         <LinkWrapper>
           <Button as={Link} to={`/chats/temp?${params.toString()}`} $size="sm" $borderRadius="sm">
             채팅 하기
@@ -44,11 +47,11 @@ export default function PetsitterCard({ petsitter }: PetsitterCardProps) {
         <StarReviewWrapper>
           <IconAndSpan>
             <PiStarFill size="28px" color="#279EFF" />
-            <Texts18h28>{petsitter?.star}</Texts18h28>
+            <Text $size="lg">{petsitter?.star}</Text>
           </IconAndSpan>
           <IconAndSpan>
             <MdOutlineRateReview size="28px">review</MdOutlineRateReview>
-            <Texts18h28>{petsitter?.reviewCount}</Texts18h28>
+            <Text $size="lg">{petsitter?.reviewCount}</Text>
           </IconAndSpan>
         </StarReviewWrapper>
 
@@ -67,8 +70,7 @@ export default function PetsitterCard({ petsitter }: PetsitterCardProps) {
   );
 }
 
-const Card = styled.section`
-  display: flex;
+const Card = styled(Row)`
   padding: ${({ theme }) => theme.spacing.xl};
   border-radius: ${({ theme }) => theme.radius.lg};
   box-shadow: ${({ theme }) => theme.shadow.dp03};
@@ -98,10 +100,6 @@ const PetsitterInfo = styled(Column)`
     justify-content: center;
     align-items: center;
   }
-`;
-
-const PetsitterName = styled(Texts18h28)`
-  font-weight: ${({ theme }) => theme.fontWeight.semibold};
 `;
 
 const LinkWrapper = styled(Row)`

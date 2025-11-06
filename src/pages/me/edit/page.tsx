@@ -18,7 +18,7 @@ import { FaArrowUp, FaXmark } from 'react-icons/fa6';
 import { GoVerified } from 'react-icons/go';
 import { PiCatBold, PiDogBold } from 'react-icons/pi';
 
-import { Column, ErrorMessage, Row, Texts14h20 } from 'styles/commonStyle';
+import { Column, Row } from 'styles/commonStyle';
 
 import { removeCookie } from 'utils/cookie';
 import { TypeRadioLabel } from '../pet/register/page';
@@ -36,8 +36,9 @@ import BackHeader from '@components/headers/BackHeader';
 import EditableProfileImage from '../../../components/EditableProfileImage';
 import { UserRole } from 'types/user.type';
 import { PetSpecies } from 'types/pet.type';
-import { Button } from '@components/buttons/Button';
-import { Input } from '@components/Input';
+import { Button } from 'styles/common/Button';
+import { Input } from 'styles/common/Input';
+import { Text } from 'styles/common/Text';
 
 const schema = yup.object().shape({
   nickname: yup
@@ -269,21 +270,33 @@ export default function EditMePage() {
             <InputLabel htmlFor="nickname">닉네임</InputLabel>
             <InputError>
               <Input id="nickname" {...register('nickname')} />
-              {errors.nickname && <ErrorMessage>{errors.nickname.message}</ErrorMessage>}
+              {errors.nickname && (
+                <Text $size="sm" $color="error">
+                  {errors.nickname.message}
+                </Text>
+              )}
             </InputError>
           </InputWrapper>
           <InputWrapper>
             <InputLabel htmlFor="phone">연락처</InputLabel>
             <InputError>
               <Input id="phone" {...register('phone')} />
-              {errors.phone && <ErrorMessage>{errors.phone.message}</ErrorMessage>}
+              {errors.phone && (
+                <Text $size="sm" $color="error">
+                  {errors.phone.message}
+                </Text>
+              )}
             </InputError>
           </InputWrapper>
           <InputWrapper>
             <InputLabel htmlFor="address">주소</InputLabel>
             <InputError>
               <Input id="address" onClick={onToggleModal} onKeyDown={onToggleModal} {...register('address')} />
-              {errors.address && <ErrorMessage>{errors.address.message}</ErrorMessage>}
+              {errors.address && (
+                <Text $size="sm" $color="error">
+                  {errors.address.message}
+                </Text>
+              )}
             </InputError>
 
             <Modal
@@ -300,7 +313,11 @@ export default function EditMePage() {
             <InputLabel htmlFor="detailAddress">상세 주소</InputLabel>
             <InputError>
               <Input id="detailAddress" {...register('detailAddress')} />
-              {errors.detailAddress && <ErrorMessage>{errors.detailAddress.message}</ErrorMessage>}
+              {errors.detailAddress && (
+                <Text $size="sm" $color="error">
+                  {errors.detailAddress.message}
+                </Text>
+              )}
             </InputError>
           </InputWrapper>
           <InputWrapper>
@@ -342,7 +359,7 @@ export default function EditMePage() {
                   <LocationList>
                     {watch('possibleLocations')?.map((location: any) => (
                       <LocationItem key={location}>
-                        <Texts14h20>{location}</Texts14h20>
+                        <Text $size="sm">{location}</Text>
                         <Button type="button" onClick={() => handleDeleteLocation(location)} $variant="icon">
                           <FaXmark size="16px" color="red" />
                         </Button>

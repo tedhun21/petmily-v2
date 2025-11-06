@@ -7,8 +7,8 @@ import { IoMdArrowRoundUp } from 'react-icons/io';
 import ChatHeader from './ChatHeader';
 import ChatContainer from './ChatContainer';
 import { useChat } from '../contexts/ChatProvider';
-import { Button } from '@components/buttons/Button';
-import { Input } from '@components/Input';
+import { Button } from 'styles/common/Button';
+import { Input } from 'styles/common/Input';
 import { Row } from 'styles/commonStyle';
 
 interface MessageFormValues {

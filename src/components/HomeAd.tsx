@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { Column, Texts14h20, Texts18h28 } from 'styles/commonStyle';
+import { Text } from 'styles/common/Text';
+import { Column } from 'styles/commonStyle';
 
 export default function HomeAd() {
   return (
@@ -8,10 +9,16 @@ export default function HomeAd() {
       <TextContainer>
         <Image src="/imgs/CatsAndDogs.png" alt="Image" />
         <TextWrapper>
-          <InfoText>딩동~</InfoText>
-          <AdText>펫시터 방문 케어 서비스</AdText>
+          <Text $size="sm" $weight="bold" $color="secondary">
+            딩동~
+          </Text>
+          <Text $size="lg" $weight="bold">
+            펫시터 방문 케어 서비스
+          </Text>
         </TextWrapper>
-        <AdText>We&apos;re Petmily!</AdText>
+        <Text $size="sm" $weight="bold">
+          We&apos;re Petmily!
+        </Text>
       </TextContainer>
     </AdContainer>
   );
@@ -36,16 +43,6 @@ const TextContainer = styled(Column)`
   justify-content: center;
   align-items: center;
   gap: ${({ theme }) => theme.spacing._2xl};
-`;
-
-const AdText = styled(Texts18h28)`
-  color: ${({ theme }) => theme.colors.text.active};
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
-`;
-
-const InfoText = styled(Texts14h20)`
-  color: ${({ theme }) => theme.colors.text.secondary};
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;
 
 const GifContainer = styled.img`

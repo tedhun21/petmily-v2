@@ -15,7 +15,7 @@ import { Center, Row } from 'styles/commonStyle';
 import MeButton from './components/MeButton';
 import NotiButton from './components/NotiButton/NotiButton';
 import { ThemeContext } from '@components/contexts/ThemeProvider';
-import { Button } from '@components/buttons/Button';
+import { Button } from 'styles/common/Button';
 
 export default function TopHeader() {
   const { isDarkMode, setIsDarkMode } = useContext(ThemeContext);

@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import { TbGenderFemale, TbGenderMale } from 'react-icons/tb';
 
 import { Pet, PetGender, PetSpecies } from 'types/pet.type';
-import { Center, Column, ImageCentered, RoundedImageWrapper, Row, Texts12h16 } from 'styles/commonStyle';
+import { Center, Column, ImageCentered, RoundedImageWrapper, Row } from 'styles/commonStyle';
+import { Text } from 'styles/common/Text';
 
 interface PetmilyCardProps {
   pet: Pet;
@@ -29,7 +30,9 @@ export default function PetmilyCard({ pet }: PetmilyCardProps) {
           </PetImage>
           <PetNameSpecies>
             <span>{pet?.name}</span>
-            <Species>{pet?.species}</Species>
+            <Text $size="xs" color="inactive">
+              {pet?.species}
+            </Text>
           </PetNameSpecies>
         </PetImageNameSpecies>
       </UpperContainer>
@@ -94,10 +97,6 @@ const PetImageNameSpecies = styled(Row)`
 
 const PetNameSpecies = styled(Column)`
   gap: ${({ theme }) => theme.spacing.xs};
-`;
-
-const Species = styled(Texts12h16)`
-  color: ${({ theme }) => theme.colors.text.inactive};
 `;
 
 const PetImage = styled(RoundedImageWrapper)`

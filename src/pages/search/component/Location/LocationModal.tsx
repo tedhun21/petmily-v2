@@ -6,13 +6,14 @@ import { useFormContext } from 'react-hook-form';
 
 import { fetcher } from 'api';
 import { useDebounceValue } from 'hooks/useDebounce';
-import { Center, Column, Divider, Row, Texts12h16 } from 'styles/commonStyle';
+import { Center, Column, Divider, Row } from 'styles/commonStyle';
 import RecentSearches from './RecentSearches';
 import SuggestLocations from './SuggestLocations';
 import LocationCapsuleContainer from './LocationCapsuleContainer';
 import Loading from '@components/Loading';
 import { ModalLayOut, HalfModalLayOut, FormValues } from '@pages/search/component/SearchBox';
 import { getRecentSearches } from 'utils/localStorage';
+import { Text } from 'styles/common/Text';
 
 interface LocationModalProps {
   handleSetValue: (field: keyof FormValues, value: any) => void;
@@ -69,7 +70,7 @@ export default function LocationModal({ handleSetValue }: LocationModalProps) {
             {recentSearches?.length > 0 && (
               <RecentContainer>
                 <RecentWrapper>
-                  <RecentTitle>최근 검색 내역</RecentTitle>
+                  <Text $size="xs">최근 검색 내역</Text>
                   <RecentSearches data={recentSearches} setRecentSearches={setRecentSearches} />
                 </RecentWrapper>
                 <Divider $orientation="vertical" $thickness="1px" />
@@ -105,5 +106,3 @@ const RecentWrapper = styled(Column)`
   flex: 1;
   gap: ${({ theme }) => theme.spacing.xl};
 `;
-
-const RecentTitle = styled(Texts12h16)``;

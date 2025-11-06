@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { Row, Texts12h16, Texts14h20 } from 'styles/commonStyle';
+import { Text } from 'styles/common/Text';
+import { Column, Row } from 'styles/commonStyle';
 import { Notification } from 'types/notification.type';
 import { dateAgo, dateFormat } from 'utils/date';
 
@@ -18,22 +19,23 @@ export default function NotiItem({ notification, onReadClick }: NotiItemProps) {
   };
 
   return (
-    <Item key={notification.id} onClick={handleClick} $isRead={isRead}>
+    <Item as="li" key={notification.id} onClick={handleClick} $isRead={isRead}>
       <TopDiv>
         <DayDiv>
-          <Day>{`${dateFormat(notification.createdAt).year}.${dateFormat(notification.createdAt).month}.${dateFormat(notification.createdAt).day}`}</Day>
-          <Ago>{dateAgo(notification.createdAt)}</Ago>
+          <Text
+            $size="sm"
+            $weight="semibold"
+          >{`${dateFormat(notification.createdAt).year}.${dateFormat(notification.createdAt).month}.${dateFormat(notification.createdAt).day}`}</Text>
+          <Text $size="xs">{dateAgo(notification.createdAt)}</Text>
         </DayDiv>
         {!isRead && <IsUnread />}
       </TopDiv>
-      {/* <Message>{notification.message}</Message> */}
+      {/* <Text $size="sm">{notification.message}</Text> */}
     </Item>
   );
 }
 
-const Item = styled.li<{ $isRead: boolean }>`
-  display: flex;
-  flex-direction: column;
+const Item = styled(Column)<{ $isRead: boolean }>`
   padding: ${({ theme }) => theme.spacing.xs};
   cursor: ${({ $isRead }) => ($isRead ? 'default' : 'pointer')};
 `;
@@ -52,15 +54,4 @@ const IsUnread = styled.div`
   padding: ${({ theme }) => theme.spacing.xs};
   background-color: ${({ theme }) => theme.colors.background.error};
   border-radius: ${({ theme }) => theme.radius.circle};
-`;
-
-const Day = styled(Texts14h20)`
-  font-weight: ${({ theme }) => theme.fontWeight.semibold};
-`;
-
-const Ago = styled(Texts12h16)``;
-
-const Message = styled(Texts14h20)`
-  width: 100%;
-  white-space: nowrap;
 `;

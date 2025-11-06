@@ -17,7 +17,7 @@ import { Modal, TextField } from '@mui/material';
 import { timeRange } from 'utils/date';
 import { fetcher, poster } from 'api';
 import SelectPets from './component/SelectPets';
-import { Column, Divider, Row, SubTitle, Texts14h20, Texts16h24 } from 'styles/commonStyle';
+import { Column, Divider, Row, SubTitle } from 'styles/commonStyle';
 
 import Confirm from '@pages/users/:id/book/component/Confirm';
 
@@ -25,7 +25,8 @@ import Loading from '@components/Loading';
 import CustomDaumPostcode from '@components/CustomDaumPostcode';
 import SelectedPetsitter from './component/SelectedPetsitter';
 import BackHeader from '@components/headers/BackHeader';
-import { Button } from '@components/buttons/Button';
+import { Button } from 'styles/common/Button';
+import { Text } from 'styles/common/Text';
 
 const schema = yup.object().shape({
   checkedPets: yup.array().min(1, '적도오 한 마리의 펫을 선택해야 합니다.'),
@@ -123,12 +124,16 @@ export default function BookPage() {
 
               <Column>
                 <ReservationWrapper>
-                  <ReservationLabel>예약 날짜</ReservationLabel>
-                  <Texts14h20>{date}</Texts14h20>
+                  <Text $size="base" $weight="bold">
+                    예약 날짜
+                  </Text>
+                  <Text $size="sm">{date}</Text>
                 </ReservationWrapper>
                 <ReservationWrapper>
-                  <ReservationLabel>예약 시간</ReservationLabel>
-                  <Texts14h20>{timeRange(startTime, endTime)}</Texts14h20>
+                  <Text $size="base" $weight="bold">
+                    예약 시간
+                  </Text>
+                  <Text $size="sm">{timeRange(startTime, endTime)}</Text>
                 </ReservationWrapper>
               </Column>
 
@@ -141,7 +146,7 @@ export default function BookPage() {
 
                 <Divider />
 
-                <AddressSection>
+                <AddressSection as="section">
                   <SubTitle>어디로 방문할까요?</SubTitle>
                   <Controller
                     name="address"
@@ -172,7 +177,7 @@ export default function BookPage() {
 
                 <Divider />
 
-                <RequestSection>
+                <RequestSection as="section">
                   <SubTitle>요청사항</SubTitle>
                   <Controller
                     name="body"
@@ -238,13 +243,7 @@ const ReservationWrapper = styled(Row)`
   align-items: center;
 `;
 
-const ReservationLabel = styled(Texts16h24)`
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
-`;
-
-const AddressSection = styled.section`
-  display: flex;
-  flex-direction: column;
+const AddressSection = styled(Column)`
   gap: ${({ theme }) => theme.spacing.lg};
 `;
 
@@ -277,9 +276,7 @@ const StyledTextField = styled(TextField)`
   }
 `;
 
-const RequestSection = styled.section`
-  display: flex;
-  flex-direction: column;
+const RequestSection = styled(Column)`
   gap: ${({ theme }) => theme.spacing.lg};
 `;
 
@@ -290,13 +287,3 @@ const ButtonContainer = styled(Column)`
   background-color: ${({ theme }) => theme.colors.background.primary};
   gap: ${({ theme }) => theme.spacing.sm};
 `;
-
-// const StyledButton = styled(BlueButton)<{ disabled: boolean }>`
-//   width: 100%;
-//   padding: ${({ theme }) => theme.spacing.md};
-//   background-color: ${({ theme, disabled }) =>
-//     disabled ? theme.colors.background.box.accent.disabled : theme.colors.background.box.accent.primary};
-//   border-radius: ${({ theme }) => theme.radius.md};
-//   pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
-//   ${({ theme }) => theme.typeScale.base};
-// `;

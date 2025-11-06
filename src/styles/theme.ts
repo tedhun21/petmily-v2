@@ -7,6 +7,7 @@ export type Theme = {
     xl: string;
     _2xl: string;
   };
+
   fontWeight: {
     light: number;
     normal: number;

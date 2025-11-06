@@ -8,7 +8,7 @@ import { FaXmark } from 'react-icons/fa6';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 import { TbCurrentLocation } from 'react-icons/tb';
 import { GrMapLocation } from 'react-icons/gr';
-import { Button } from '@components/buttons/Button';
+import { Button } from 'styles/common/Button';
 import XButton from '@components/buttons/XButton';
 
 interface MapsDrawerProps {

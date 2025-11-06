@@ -12,11 +12,12 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { poster } from 'api';
 import GoogleOAuthButton from '@components/buttons/OAuthButton';
 import Loading from '@components/Loading';
-import { Center, Column, ErrorMessage } from 'styles/commonStyle';
+import { Center, Column } from 'styles/commonStyle';
 
 import { AuthContext } from '@components/contexts/AuthProvider';
-import { Button } from '@components/buttons/Button';
-import { Input } from '@components/Input';
+import { Button } from 'styles/common/Button';
+import { Input } from 'styles/common/Input';
+import { Text } from 'styles/common/Text';
 
 const schema = yup.object().shape({
   email: yup.string().email('이메일 형식을 지켜주세요.').required('ID는 필수입니다.'),
@@ -94,7 +95,11 @@ export default function LoginPage() {
             $size="md"
             $error={!!errors.email}
           />
-          {errors?.email && <ErrorMessage>{errors.email?.message}</ErrorMessage>}
+          {errors?.email && (
+            <Text $size="xs" $color="error">
+              {errors.email?.message}
+            </Text>
+          )}
         </InputError>
         <InputError>
           <Input
@@ -105,7 +110,11 @@ export default function LoginPage() {
             $size="md"
             $error={!!errors.password}
           />
-          {errors?.password && <ErrorMessage>{errors.password?.message}</ErrorMessage>}
+          {errors?.password && (
+            <Text $size="xs" $color="error">
+              {errors.password?.message}
+            </Text>
+          )}
         </InputError>
 
         <Button type="submit" disabled={isMutating} $variant="primary" $size="md" $fullWidth>

@@ -2,13 +2,14 @@ import { useRef } from 'react';
 import styled from 'styled-components';
 import { FaChevronDown } from 'react-icons/fa6';
 
-import { Center, ImageCentered, RoundedImageWrapper, Row, Texts14h20 } from 'styles/commonStyle';
+import { Center, ImageCentered, RoundedImageWrapper, Row } from 'styles/commonStyle';
 
 import MessageList from './MessageList';
 import Loading from '@components/Loading';
 import { useChat } from '../contexts/ChatProvider';
 import { useChatUIEffects } from '../hooks/useChatUIEffects';
-import { Button } from '@components/buttons/Button';
+import { Button } from 'styles/common/Button';
+import { Text } from 'styles/common/Text';
 
 export default function ChatContainer() {
   const {
@@ -60,7 +61,9 @@ export default function ChatContainer() {
                         />
                       </NewMessageUserPhoto>
                       <span>{downButtonState.lastestNewMessages?.sender.nickname}</span>
-                      <NewMessage>{downButtonState.lastestNewMessages?.content}</NewMessage>
+                      <Text $size="sm" $weight="semibold" style={{ textAlign: 'start' }}>
+                        {downButtonState.lastestNewMessages?.content}
+                      </Text>
                     </NewMessageUser>
 
                     <FaChevronDown size="16px" />
@@ -119,11 +122,6 @@ const NewMessageUser = styled(Row)`
 const NewMessageUserPhoto = styled(RoundedImageWrapper)`
   width: 32px;
   height: 32px;
-`;
-
-const NewMessage = styled(Texts14h20)`
-  font-weight: ${({ theme }) => theme.fontWeight.semibold};
-  text-align: start;
 `;
 
 const DownButton = styled(Button).attrs(() => ({

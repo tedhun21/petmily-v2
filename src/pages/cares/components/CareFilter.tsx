@@ -8,7 +8,7 @@ import { fetcher } from 'api';
 import { RootState } from 'store';
 import { setFilter, setMonth } from 'store/contextSlice';
 import { ReservationStatus } from 'types/reservation.type';
-import { Button } from '@components/buttons/Button';
+import { Button } from 'styles/common/Button';
 
 export type FilterType = {
   id: number;

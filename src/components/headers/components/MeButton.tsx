@@ -15,7 +15,7 @@ import { clearAccessToken } from 'store/authSlice';
 import useOutsideClickModal from 'hooks/useOutsideClickModal';
 import { closeModal, ModalType, openModal } from 'store/modalSlice';
 import { ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
-import { Button } from '@components/buttons/Button';
+import { Button } from 'styles/common/Button';
 
 interface MeButtonProps {
   me?: User;

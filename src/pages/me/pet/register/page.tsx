@@ -20,8 +20,8 @@ import BackHeader from '@components/headers/BackHeader';
 import EditableProfileImage from '@components/EditableProfileImage';
 import { PetGender, PetSpecies } from 'types/pet.type';
 import { poster } from 'api';
-import { Button } from '@components/buttons/Button';
-import { Input } from '@components/Input';
+import { Button } from 'styles/common/Button';
+import { Input } from 'styles/common/Input';
 
 const schema = yup.object().shape({
   species: yup.string().oneOf(['dog', 'cat'], '강아지인가요 고양이인가요?').required('이 항목은 필수입니다.'),

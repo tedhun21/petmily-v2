@@ -5,11 +5,12 @@ import { useAuthSWR } from 'hooks/authSWR';
 
 import { fetcher } from 'api';
 import MyPetmily from '@pages/me/components/MyPetmily';
-import { Column, ImageCentered, RoundedImageWrapper, Row, Texts14h20, Texts16h24 } from 'styles/commonStyle';
+import { Column, ImageCentered, RoundedImageWrapper, Row } from 'styles/commonStyle';
 import MyPetsitterProfile from './components/MyPetsitterProfile';
 import BackHeader from '@components/headers/BackHeader';
 import { UserRole } from 'types/user.type';
-import { Button } from '@components/buttons/Button';
+import { Button } from 'styles/common/Button';
+import { Text } from 'styles/common/Text';
 
 export default function MyPage() {
   const { data: me } = useAuthSWR('/users/me', fetcher);
@@ -28,11 +29,13 @@ export default function MyPage() {
             </MyImage>
 
             <TextWrapper>
-              <HelloText>안녕하세요!</HelloText>
+              <Text $size="base" $weight="bold">
+                안녕하세요!
+              </Text>
               {me?.nickname ? (
-                <NameText>{`${me?.nickname} 님`}</NameText>
+                <Text $size="base" $weight="bold">{`${me?.nickname} 님`}</Text>
               ) : (
-                <Texts14h20>닉네임을 설정해주세요</Texts14h20>
+                <Text $size="sm">닉네임을 설정해주세요</Text>
               )}
             </TextWrapper>
           </MyProfile>
@@ -79,12 +82,4 @@ const MyImage = styled(RoundedImageWrapper)`
 
 const TextWrapper = styled(Column)`
   justify-content: space-around;
-`;
-
-const NameText = styled(Texts16h24)`
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
-`;
-
-const HelloText = styled(Texts16h24)`
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;

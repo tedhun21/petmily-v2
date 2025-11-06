@@ -1,8 +1,9 @@
 import styled from 'styled-components';
-import { Row, Texts18h28 } from 'styles/commonStyle';
+import { Row } from 'styles/commonStyle';
 import PawButton from './PawButton';
 import { FaRegPaperPlane } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
+import { Text } from 'styles/common/Text';
 
 interface IProps {
   userId: number | null;
@@ -13,7 +14,7 @@ export default function PawAndMessage({ userId }: IProps) {
     <Wrapper>
       <PawButton userId={userId} />
       <CustomLink to={`/chats/temp?opponentIds=${userId}`}>
-        <Texts18h28>message</Texts18h28>
+        <Text $size="lg">message</Text>
         <FaRegPaperPlane size="20px" />
       </CustomLink>
     </Wrapper>

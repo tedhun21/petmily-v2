@@ -2,16 +2,16 @@ import styled from 'styled-components';
 import { PiStarFill } from 'react-icons/pi';
 
 import { timeRange, weekdays } from 'utils/date';
-import { Column, ImageCentered, RoundedImageWrapper, Row, Texts12h16 } from 'styles/commonStyle';
+import { Column, ImageCentered, RoundedImageWrapper, Row } from 'styles/commonStyle';
 import { Petsitter } from 'types/user.type';
 import { Link } from 'react-router-dom';
+import { Text } from 'styles/common/Text';
 
 interface IProps {
   petsitter: Petsitter;
 }
 
 export default function UsedPetsitterCard({ petsitter }: IProps) {
-  console.log(petsitter);
   const possibleTimeRange = timeRange(petsitter?.possibleStartTime ?? null, petsitter?.possibleEndTime ?? null);
 
   return (
@@ -24,7 +24,7 @@ export default function UsedPetsitterCard({ petsitter }: IProps) {
       </ImageWrapper>
 
       <InfoContainer>
-        <div style={{ display: 'flex' }}>
+        <Row>
           <span>{petsitter?.nickname}</span>
           <span>·</span>
           {petsitter.star && (
@@ -33,15 +33,21 @@ export default function UsedPetsitterCard({ petsitter }: IProps) {
               <span>{petsitter?.star}</span>
             </StarWrapper>
           )}
-        </div>
+        </Row>
         <PossibleWrapper>
           {petsitter?.possibleDays?.map((day: string, index: number) => {
             const matchedDay = weekdays.find((weekday) => weekday.value === day);
-            return <SubTitle key={index}>{matchedDay?.label}</SubTitle>;
+            return (
+              <Text $size="xs" $color="secondary" key={index}>
+                {matchedDay?.label}
+              </Text>
+            );
           })}
         </PossibleWrapper>
         <PossibleWrapper>
-          <SubTitle>{possibleTimeRange}</SubTitle>
+          <Text $size="xs" $color="secondary">
+            {possibleTimeRange}
+          </Text>
         </PossibleWrapper>
       </InfoContainer>
     </Card>
@@ -74,8 +80,4 @@ const StarWrapper = styled(Row)`
 
 const PossibleWrapper = styled(Row)`
   gap: ${({ theme }) => theme.spacing.xs};
-`;
-
-const SubTitle = styled(Texts12h16)`
-  color: ${({ theme }) => theme.colors.text.secondary};
 `;

@@ -5,15 +5,7 @@ import { useInView } from 'framer-motion';
 import styled, { css } from 'styled-components';
 import { FaXmark } from 'react-icons/fa6';
 
-import {
-  Column,
-  ImageCentered,
-  RoundedImageWrapper,
-  Row,
-  Texts12h16,
-  Texts14h20,
-  Texts16h24,
-} from 'styles/commonStyle';
+import { Column, ImageCentered, RoundedImageWrapper, Row } from 'styles/commonStyle';
 import {
   formatToLocaleAMPM,
   shouldShowDateDivider,
@@ -24,7 +16,8 @@ import {
 import { ChatMessage, Message, PendingMessage } from 'types/chat.type';
 import { IoMdRefresh } from 'react-icons/io';
 import { useChat } from '../contexts/ChatProvider';
-import { Button } from '@components/buttons/Button';
+import { Button } from 'styles/common/Button';
+import { Text } from 'styles/common/Text';
 
 interface IProps {
   message: ChatMessage;
@@ -73,7 +66,7 @@ export default React.memo(function MessageItem({
     <li ref={ref}>
       {showDateDivider && (
         <DateDivider>
-          <Date>{dayjs(message.createdAt).format('MMMM D[일], YYYY')}</Date>
+          <Text $size="sm">{dayjs(message.createdAt).format('MMMM D[일], YYYY')}</Text>
         </DateDivider>
       )}
       <Item $isMyMessage={isMyMessage}>
@@ -85,10 +78,10 @@ export default React.memo(function MessageItem({
           <EmptySpace />
         ) : null}
         <Column style={{ gap: '4px', width: '100%' }}>
-          {showNickname && !isMyMessage && <Texts14h20>{message.sender?.nickname}</Texts14h20>}
+          {showNickname && !isMyMessage && <Text $size="sm">{message.sender?.nickname}</Text>}
           <MessageContent $isMyMessage={isMyMessage}>
-            <Content $isMyMessage={isMyMessage}>{message.content}</Content>
-            {showTime && <Texts12h16>{formatToLocaleAMPM(message.createdAt)}</Texts12h16>}
+            {/* <Content $isMyMessage={isMyMessage}>{message.content}</Content> */}
+            {showTime && <Text $size="xs">{formatToLocaleAMPM(message.createdAt)}</Text>}
             {isPendingMessage(message)
               ? message.status === 'error' && (
                   <ErrorStatus>
@@ -105,7 +98,11 @@ export default React.memo(function MessageItem({
                     </Button>
                   </ErrorStatus>
                 )
-              : unreadCount > 0 && <ReadCount>{unreadCount}</ReadCount>}
+              : unreadCount > 0 && (
+                  <Text $size="xs" $color="highlight" $weight="semibold">
+                    {unreadCount}
+                  </Text>
+                )}
           </MessageContent>
         </Column>
       </Item>
@@ -116,16 +113,11 @@ export default React.memo(function MessageItem({
 const DateDivider = styled(Row)`
   justify-content: center;
   padding: ${({ theme }) => theme.spacing._2xl};
-`;
-
-const Date = styled(Texts14h20)`
-  padding: ${({ theme }) => theme.spacing.sm};
-  background-color: ${({ theme }) => theme.colors.background.box.default.active};
   border-radius: ${({ theme }) => theme.radius.md};
+  background-color: ${({ theme }) => theme.colors.background.box.default.active};
 `;
 
-const Item = styled.div<{ $isMyMessage: boolean }>`
-  display: flex;
+const Item = styled(Row)<{ $isMyMessage: boolean }>`
   gap: ${({ theme }) => theme.spacing.sm};
   width: 100%;
   ${({ $isMyMessage }) =>
@@ -160,16 +152,16 @@ const MessageContent = styled.div<{ $isMyMessage: boolean }>`
   gap: ${({ theme }) => theme.spacing.sm};
 `;
 
-const Content = styled(Texts16h24)<{ $isMyMessage: boolean }>`
-  display: inline-block;
-  max-width: 70%; /* 최대 너비를 설정하여 상대방 영역 침범 방지 */
-  padding: ${({ theme }) => theme.spacing.sm};
-  background-color: ${({ theme, $isMyMessage }) =>
-    $isMyMessage ? theme.colors.background.box.accent.primary : theme.colors.background.box.accent.hover};
-  border-radius: ${({ theme }) => theme.radius.md};
-  color: white;
-  word-wrap: break-word; /* 긴 단어가 있을 경우 줄 바꿈 처리 */
-`;
+// const Content = styled(Texts16h24)<{ $isMyMessage: boolean }>`
+//   display: inline-block;
+//   max-width: 70%; /* 최대 너비를 설정하여 상대방 영역 침범 방지 */
+//   padding: ${({ theme }) => theme.spacing.sm};
+//   background-color: ${({ theme, $isMyMessage }) =>
+//     $isMyMessage ? theme.colors.background.box.accent.primary : theme.colors.background.box.accent.hover};
+//   border-radius: ${({ theme }) => theme.radius.md};
+//   color: white;
+//   word-wrap: break-word; /* 긴 단어가 있을 경우 줄 바꿈 처리 */
+// `;
 
 const ErrorStatus = styled(Row)`
   align-items: center;
@@ -184,9 +176,4 @@ const ReSendMark = styled(IoMdRefresh)`
 
 const XMark = styled(FaXmark)`
   color: ${({ theme }) => theme.colors.text.error};
-`;
-
-const ReadCount = styled(Texts12h16)`
-  color: ${({ theme }) => theme.colors.text.highlight};
-  font-weight: ${({ theme }) => theme.fontWeight.semibold};
 `;

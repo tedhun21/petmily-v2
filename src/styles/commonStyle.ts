@@ -10,30 +10,6 @@ export const Row = styled.div`
   flex-direction: row;
 `;
 
-export const Texts12h16 = styled.span`
-  ${({ theme }) => theme.typeScale.xs};
-`;
-
-export const Texts14h20 = styled.span`
-  ${({ theme }) => theme.typeScale.sm};
-`;
-
-export const Texts16h24 = styled.span`
-  ${({ theme }) => theme.typeScale.base};
-`;
-
-export const Texts18h28 = styled.span`
-  ${({ theme }) => theme.typeScale.lg};
-`;
-
-export const Texts20h28 = styled.span`
-  ${({ theme }) => theme.typeScale.xl};
-`;
-
-export const Texts24h32 = styled.span`
-  ${({ theme }) => theme.typeScale._2xl};
-`;
-
 export const Title = styled.h1`
   color: ${({ theme }) => theme.colors.text.active};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
@@ -66,10 +42,6 @@ export const Center = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`;
-
-export const ErrorMessage = styled(Texts12h16)`
-  color: ${({ theme }) => theme.colors.text.error};
 `;
 
 export const DefaultLink = styled(Link)`

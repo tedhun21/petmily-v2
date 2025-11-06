@@ -3,15 +3,16 @@ import { Link } from 'react-router-dom';
 
 import { LuBadgePlus } from 'react-icons/lu';
 
-import { Row, Texts18h28 } from 'styles/commonStyle';
+import { Column, Row } from 'styles/commonStyle';
 import MyPetContainer from './MyPetContainer';
-import { Button } from '@components/buttons/Button';
+import { Button } from 'styles/common/Button';
+import { Text } from 'styles/common/Text';
 
 export default function MyPetmily() {
   return (
-    <PetmilyContainer>
+    <PetmilyContainer as="section">
       <TitleContainer>
-        <Texts18h28>나의 Petmily</Texts18h28>
+        <Text $size="lg">나의 Petmily</Text>
         <Button as={Link} to="/me/pet/register" $variant="icon" $borderRadius="circle">
           <StyledPlusIcon size="28px" />
         </Button>
@@ -22,9 +23,7 @@ export default function MyPetmily() {
   );
 }
 
-const PetmilyContainer = styled.section`
-  display: flex;
-  flex-direction: column;
+const PetmilyContainer = styled(Column)`
   gap: ${({ theme }) => theme.spacing.sm};
 `;
 

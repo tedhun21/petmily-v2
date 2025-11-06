@@ -4,9 +4,10 @@ import { MdOutlineRateReview } from 'react-icons/md';
 import { PiStarFill } from 'react-icons/pi';
 
 import { weekdays } from 'utils/date';
-import { Column, Divider, ImageCentered, RoundedImageWrapper, Row, Texts14h20, Texts18h28 } from 'styles/commonStyle';
+import { Column, Divider, ImageCentered, RoundedImageWrapper, Row } from 'styles/commonStyle';
 import { Petsitter } from 'types/user.type';
 import { DayOfWeekType } from 'types/common.type';
+import { Text } from 'styles/common/Text';
 
 interface SelectedPetsitterProps {
   petsitter: Petsitter;
@@ -17,8 +18,12 @@ export default function SelectedPetsitter({ petsitter }: SelectedPetsitterProps)
     <PetsitterSection>
       <CardTitleContainer>
         <NameWrapper>
-          <PetsitterName>{petsitter?.nickname}</PetsitterName>
-          <PetsitterTitle>펫시터</PetsitterTitle>
+          <Text $size="lg" $weight="bold">
+            {petsitter?.nickname}
+          </Text>
+          <Text $size="sm" $weight="light">
+            펫시터
+          </Text>
         </NameWrapper>
         <PetsitterImg>
           <ImageCentered
@@ -32,11 +37,15 @@ export default function SelectedPetsitter({ petsitter }: SelectedPetsitterProps)
         <StarReview>
           <Wrapper>
             <PiStarFill size="28px" color="#279EFF" />
-            <Count>{petsitter?.star}</Count>
+            <Text $size="lg" $weight="bold">
+              {petsitter?.star}
+            </Text>
           </Wrapper>
           <Wrapper>
             <MdOutlineRateReview size="28px" />
-            <Count>{petsitter?.reviewCount}</Count>
+            <Text $size="lg" $weight="bold">
+              {petsitter?.reviewCount}
+            </Text>
           </Wrapper>
         </StarReview>
         <PossibleContainer>
@@ -95,14 +104,6 @@ const PetsitterImg = styled(RoundedImageWrapper)`
   height: 64px;
 `;
 
-const PetsitterName = styled(Texts18h28)`
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
-`;
-
-const PetsitterTitle = styled(Texts14h20)`
-  font-weight: ${({ theme }) => theme.fontWeight.light};
-`;
-
 const CardBodyContainer = styled(Column)`
   padding: ${({ theme }) => theme.spacing._2xl};
   gap: ${({ theme }) => theme.spacing.sm};
@@ -119,10 +120,6 @@ const Wrapper = styled(Row)`
   gap: ${({ theme }) => theme.spacing.sm};
 `;
 
-const Count = styled(Texts18h28)`
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
-`;
-
 const PossibleContainer = styled(Column)`
   gap: ${({ theme }) => theme.spacing.sm};
 `;
@@ -137,9 +134,10 @@ const CapsuleWrapper = styled.div`
   gap: ${({ theme }) => theme.spacing.xs};
 `;
 
-const Capsule = styled(Texts14h20)`
+const Capsule = styled.span`
   padding: 4px ${({ theme }) => theme.spacing.sm};
   background-color: ${({ theme }) => theme.colors.background.highlight};
   border-radius: ${({ theme }) => theme.radius.sm};
   color: ${({ theme }) => theme.colors.text.white};
+  ${({ theme }) => theme.typeScale.sm};
 `;

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Column, Row, Texts20h28 } from 'styles/commonStyle';
+import { Column, Row } from 'styles/commonStyle';
+import { Text } from 'styles/common/Text';
 
 export default function NotFoundPage() {
   return (
@@ -10,7 +11,9 @@ export default function NotFoundPage() {
           <Icon src="/imgs/NotFound.svg" alt="sorry" />
         </IconContainer>
         <Image src="/imgs/404.svg" alt="Page not found" />
-        <Info>요청하신 페이지를 찾을 수 없습니다.</Info>
+        <Text $size="xl" $color="inactive" $weight="bold">
+          요청하신 페이지를 찾을 수 없습니다.
+        </Text>
         <Link to="/">
           <span>홈으로 이동</span>
         </Link>
@@ -46,11 +49,6 @@ const Icon = styled.img`
 const Image = styled.img`
   width: 200px;
   margin-bottom: ${({ theme }) => theme.spacing._3xl};
-`;
-
-const Info = styled(Texts20h28)`
-  color: ${({ theme }) => theme.colors.text.inactive};
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;
 
 const Logo = styled.img`

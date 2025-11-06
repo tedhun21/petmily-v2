@@ -1,8 +1,9 @@
-import { Column, ImageCentered, RoundedImageWrapper, Row, Texts12h16, Texts14h20 } from 'styles/commonStyle';
+import { Column, ImageCentered, RoundedImageWrapper, Row } from 'styles/commonStyle';
 import styled from 'styled-components';
 import { PiStarFill } from 'react-icons/pi';
 import { dateAgo } from 'utils/date';
 import { Review } from 'types/review.type';
+import { Text } from 'styles/common/Text';
 
 interface ReviewCardProps {
   review: Review;
@@ -22,7 +23,7 @@ export default function ReviewCard({ review }: ReviewCardProps) {
           <ClientImage>
             <ImageCentered src={client?.photo ? `${client?.photo}` : '/imgs/DefaultUserProfile.jpg'} alt="user_photo" />
           </ClientImage>
-          <Texts14h20>{client?.nickname.slice(0, 2) + '*****'}</Texts14h20>
+          <Text $size="sm">{client?.nickname.slice(0, 2) + '*****'}</Text>
         </ClientImageName>
         <StarWrapper>
           <PiStarFill size="20px" color="#279EFF" />
@@ -32,7 +33,7 @@ export default function ReviewCard({ review }: ReviewCardProps) {
       <ContentContainer>
         <ReviewText>{body}</ReviewText>
         <UserTimeAgo>
-          <Texts12h16>{dateAgo(review.createdAt)}</Texts12h16>
+          <Text $size="xs">{dateAgo(review.createdAt)}</Text>
         </UserTimeAgo>
       </ContentContainer>
     </Card>

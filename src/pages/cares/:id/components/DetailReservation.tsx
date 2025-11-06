@@ -6,7 +6,8 @@ import { FaChevronRight } from 'react-icons/fa6';
 
 import { dateAgo, dayFormat, timeRange } from 'utils/date';
 import { Reservation } from 'types/reservation.type';
-import { Row, Texts12h16, Texts18h28 } from 'styles/commonStyle';
+import { Column, Row } from 'styles/commonStyle';
+import { Text } from 'styles/common/Text';
 
 interface DetailReservationProps {
   reservation: Reservation;
@@ -14,39 +15,45 @@ interface DetailReservationProps {
 
 export default function DetailReservation({ reservation }: DetailReservationProps) {
   return (
-    <DetailRservation>
+    <Section as="section">
       <Wrapper>
-        <Label>예약 날짜</Label>
+        <Text $size="lg" $weight="semibold">
+          예약 날짜
+        </Text>
         <div>
           <span>{reservation?.date}</span>
           <span>({dayFormat(reservation?.date)})</span>
         </div>
       </Wrapper>
       <Wrapper>
-        <Label>예약 시간</Label>
+        <Text $size="lg" $weight="semibold">
+          예약 시간
+        </Text>
         <span>{timeRange(reservation?.startTime, reservation?.endTime)}</span>
       </Wrapper>
       <Wrapper>
-        <Label>예약 장소</Label>
+        <Text $size="lg" $weight="semibold">
+          예약 장소
+        </Text>
         <LocationLink to={`/cares/${reservation?.id}/maps?address=${reservation?.address}`}>
           <CustomLocationMarker />
           <span>{reservation?.address}</span>
           <CustomChevronRight />
         </LocationLink>
       </Wrapper>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-        <Label>요청 사항</Label>
+      <RequestContaier>
+        <Text $size="lg" $weight="semibold">
+          요청 사항
+        </Text>
         <RequestParagraph>{reservation?.body}</RequestParagraph>
-      </div>
+      </RequestContaier>
 
-      <Texts12h16>{dateAgo(reservation?.createdAt)}</Texts12h16>
-    </DetailRservation>
+      <Text $size="sm">{dateAgo(reservation?.createdAt)}</Text>
+    </Section>
   );
 }
 
-const DetailRservation = styled.section`
-  display: flex;
-  flex-direction: column;
+const Section = styled(Column)`
   gap: ${({ theme }) => theme.spacing.sm};
   padding: ${({ theme }) => theme.spacing.xl};
   border-radius: ${({ theme }) => theme.radius.lg};
@@ -55,10 +62,6 @@ const DetailRservation = styled.section`
 
 const Wrapper = styled(Row)`
   justify-content: space-between;
-`;
-
-const Label = styled(Texts18h28)`
-  font-weight: ${({ theme }) => theme.fontWeight.semibold};
 `;
 
 const LocationLink = styled(Link)`
@@ -73,6 +76,10 @@ const CustomLocationMarker = styled(HiOutlineLocationMarker)`
 
 const CustomChevronRight = styled(FaChevronRight)`
   color: ${({ theme }) => theme.colors.text.highlight};
+`;
+
+const RequestContaier = styled(Column)`
+  gap: 8px;
 `;
 
 const RequestParagraph = styled.p`

@@ -4,7 +4,8 @@ import { RootState } from 'store';
 import { selectNewMessagesByChatRoom } from 'store/newMessageSlice';
 
 import styled from 'styled-components';
-import { Column, ImageCentered, RoundedImageWrapper, Row, Texts12h16 } from 'styles/commonStyle';
+import { Text } from 'styles/common/Text';
+import { Column, ImageCentered, RoundedImageWrapper, Row } from 'styles/commonStyle';
 import { ChatMember, ChatRoom } from 'types/chat.type';
 import { updatedAtAgo } from 'utils/date';
 
@@ -42,14 +43,14 @@ export default function ChatRoomItem({ chatRoom }: ChatRoomItemProps) {
               <span key={other.id}>{other.user?.nickname ?? 'unknown'}</span>
             ))}
           </div>
-          <Texts12h16>{lastMessage?.content}</Texts12h16>
+          <Text $size="xs">{lastMessage?.content}</Text>
         </NameMessageWrapper>
       </PhotoName>
       <TimeUnreadCount>
-        <Texts12h16>{updatedAtAgo(lastMessage?.createdAt)}</Texts12h16>
+        <Text $size="xs">{updatedAtAgo(lastMessage?.createdAt)}</Text>
         {unreadCount > 0 && (
           <NewMessage>
-            <Texts12h16>{unreadCount}</Texts12h16>
+            <Text $size="xs">{unreadCount}</Text>
           </NewMessage>
         )}
       </TimeUnreadCount>

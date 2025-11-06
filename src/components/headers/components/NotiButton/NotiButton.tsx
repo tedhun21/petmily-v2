@@ -10,7 +10,7 @@ import { RootState } from 'store';
 import useOutsideClickModal from 'hooks/useOutsideClickModal';
 import { closeModal, ModalType, openModal } from 'store/modalSlice';
 import NotiModal from './components/NotiModal';
-import { Button } from '@components/buttons/Button';
+import { Button } from 'styles/common/Button';
 
 export default function NotiButton() {
   const dispatch = useDispatch();

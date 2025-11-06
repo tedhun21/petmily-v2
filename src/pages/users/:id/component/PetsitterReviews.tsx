@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 import { fetcher } from 'api';
-import { ImageCentered, RoundedImageWrapper, Row, Texts12h16, Title } from 'styles/commonStyle';
+import { Column, ImageCentered, RoundedImageWrapper, Row, Title } from 'styles/commonStyle';
 import ReadOnlyRating from '@components/ReadOnlyRating';
 
 import useSWR from 'swr';
 import { dateAgo } from 'utils/date';
 import { Review } from 'types/review.type';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { Text } from 'styles/common/Text';
 
 interface ReviewsProps {
   nickname?: string;
@@ -16,7 +17,7 @@ export default function PetsitterReviews({ nickname }: ReviewsProps) {
   const { data } = useSWR(`/reviews/petsitter/${nickname}?page=1&pageSize=6`, fetcher);
 
   return (
-    <Section>
+    <Section as="section">
       <ReviewTitle>
         <Title>후기</Title>
         <span>{data?.pagination.total} 개</span>
@@ -26,7 +27,7 @@ export default function PetsitterReviews({ nickname }: ReviewsProps) {
         {data &&
           data.results.map((review: Review) => (
             <SwiperSlide key={review.id}>
-              <ReviewCard>
+              <ReviewCard as="li">
                 <div>
                   <UserWrapper>
                     <UserImage>
@@ -43,7 +44,7 @@ export default function PetsitterReviews({ nickname }: ReviewsProps) {
                   <StarWrapper>
                     <ReadOnlyRating size="12px" value={review.star} />
                     <span>·</span>
-                    <Texts12h16>{dateAgo(review.createdAt)}</Texts12h16>
+                    <Text $size="xs">{dateAgo(review.createdAt)}</Text>
                   </StarWrapper>
                   <p>{review.body}</p>
                 </div>
@@ -59,9 +60,7 @@ export default function PetsitterReviews({ nickname }: ReviewsProps) {
   );
 }
 
-const Section = styled.section`
-  display: flex;
-  flex-direction: column;
+const Section = styled(Column)`
   width: 100%;
   gap: ${({ theme }) => theme.spacing.lg};
 `;
@@ -75,9 +74,7 @@ const StyledSwiper = styled(Swiper)`
   width: 100%;
 `;
 
-const ReviewCard = styled.li`
-  display: flex;
-  flex-direction: row;
+const ReviewCard = styled(Row)`
   justify-content: space-between;
   padding: ${({ theme }) => theme.spacing.lg};
   background-color: ${({ theme }) => theme.colors.background.secondary};

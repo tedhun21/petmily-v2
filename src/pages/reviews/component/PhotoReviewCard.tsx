@@ -9,8 +9,9 @@ import { Pagination } from 'swiper/modules';
 import { PiStarFill } from 'react-icons/pi';
 
 import { dateAgo } from 'utils/date';
-import { Column, ImageCentered, RoundedImageWrapper, Row, Texts12h16, Texts16h24 } from 'styles/commonStyle';
+import { Column, ImageCentered, RoundedImageWrapper, Row } from 'styles/commonStyle';
 import { Review } from 'types/review.type';
+import { Text } from 'styles/common/Text';
 
 interface ReviewPhotoCardProps {
   review: Review;
@@ -42,7 +43,7 @@ export default function PhotoReviewCard({ review }: ReviewPhotoCardProps) {
   }, [review.body]);
 
   return (
-    <ReviewCard>
+    <ReviewCard as="article">
       {/* 이미지 캐러셀 */}
       <Swiper
         pagination={{
@@ -64,7 +65,7 @@ export default function PhotoReviewCard({ review }: ReviewPhotoCardProps) {
       <ReviewContainer>
         <TitleContainer>
           <StarWrapper>
-            <Texts16h24>{client?.nickname.slice(0, 2) + '*****'}</Texts16h24>
+            <Text $size="base">{client?.nickname.slice(0, 2) + '*****'}</Text>
             {Array.from({ length: review?.star }).map((_, index) => (
               <PiStarFill key={index} size="28px" color="#279EFF" />
             ))}
@@ -80,7 +81,7 @@ export default function PhotoReviewCard({ review }: ReviewPhotoCardProps) {
             </RestButton>
           )}
         </div>
-        <Texts12h16>{dateAgo(review.createdAt)}</Texts12h16>
+        <Text $size="xs">{dateAgo(review.createdAt)}</Text>
       </ReviewContainer>
 
       {/* 펫시터 카드 */}
@@ -100,9 +101,7 @@ export default function PhotoReviewCard({ review }: ReviewPhotoCardProps) {
   );
 }
 
-const ReviewCard = styled.article`
-  display: flex;
-  flex-direction: column;
+const ReviewCard = styled(Column)`
   width: 100%;
   gap: ${({ theme }) => theme.spacing.lg};
 `;

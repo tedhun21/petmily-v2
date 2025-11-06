@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { FaXmark } from 'react-icons/fa6';
-import { Button } from './Button';
+import { Button } from '../../styles/common/Button';
 
 interface XButtonProps {
   onClick: () => void;

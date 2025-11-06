@@ -9,11 +9,12 @@ import { toast } from 'react-toastify';
 import { FaXmark } from 'react-icons/fa6';
 
 import Loading from '@components/Loading';
-import { BottomFixed, Center, Column, Float, Texts14h20, Texts16h24, Title } from 'styles/commonStyle';
+import { BottomFixed, Center, Column, Float, Title } from 'styles/commonStyle';
 import { fetcher, poster, updater } from 'api';
 import HoverRating from '@components/HoverRating';
-import { Button } from '@components/buttons/Button';
+import { Button } from 'styles/common/Button';
 import XButton from '@components/buttons/XButton';
+import { Text } from 'styles/common/Text';
 
 interface ReviewFormValues {
   star: number;
@@ -161,17 +162,17 @@ export default function ReviewPage() {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Container>
           <Column>
-            <Texts16h24>별점</Texts16h24>
+            <Text $size="base">별점</Text>
             <HoverRating value={watch('star')} setValue={setValue} />
           </Column>
 
           <TextSection>
-            <Texts16h24>후기 내용</Texts16h24>
+            <Text $size="base">후기 내용</Text>
             <TextArea placeholder="케어는 어떠셨나요?" {...register('body')} />
           </TextSection>
 
           <ImageSection>
-            <Texts16h24>사진 첨부</Texts16h24>
+            <Text $size="base">사진 첨부</Text>
             <input
               type="file"
               accept="image/png, image/jpg, image/jpeg"
@@ -185,7 +186,7 @@ export default function ReviewPage() {
               <Button type="button" onClick={openFileInput}>
                 파일 선택
               </Button>
-              <Texts14h20>최대 5개의 이미지를 선택할 수 있습니다.</Texts14h20>
+              <Text $size="sm">최대 5개의 이미지를 선택할 수 있습니다.</Text>
             </ImageSelectWrapper>
 
             <ImagePreview>

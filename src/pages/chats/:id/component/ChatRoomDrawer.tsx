@@ -1,12 +1,13 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import styled from 'styled-components';
 
-import { Column, ImageCentered, RoundedImageWrapper, Row, Texts16h24, Title } from 'styles/commonStyle';
+import { Column, ImageCentered, RoundedImageWrapper, Row, Title } from 'styles/commonStyle';
 import { Link } from 'react-router-dom';
 import { FaXmark } from 'react-icons/fa6';
 import { ChatMember } from 'types/chat.type';
 import { useChat } from '../contexts/ChatProvider';
-import { Button } from '@components/buttons/Button';
+import { Button } from 'styles/common/Button';
+import { Text } from 'styles/common/Text';
 
 interface ChatRoomDrawerProps {
   isDrawerOpen: boolean;
@@ -45,7 +46,9 @@ export default function ChatRoomDrawer({ isDrawerOpen, setIsDrawerOpen }: ChatRo
               <div>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <Title>채팅 참여자</Title>
-                  <MemberCount>{(otherMembers?.length ?? 0) + 1}</MemberCount>
+                  <Text $size="base" $color="highlight">
+                    {(otherMembers?.length ?? 0) + 1}
+                  </Text>
                 </div>
 
                 <MemberList as="ul">
@@ -128,10 +131,6 @@ const ContentWrapper = styled(Column)`
   & > :nth-child(3) {
     flex: 0;
   }
-`;
-
-const MemberCount = styled(Texts16h24)`
-  color: ${({ theme }) => theme.colors.text.highlight};
 `;
 
 const MemberList = styled(Column)`

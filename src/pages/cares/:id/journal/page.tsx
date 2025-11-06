@@ -9,8 +9,9 @@ import { FaXmark } from 'react-icons/fa6';
 
 import Loading from '@components/Loading';
 import { fetcher, poster, updater } from 'api';
-import { BottomFixed, Center, Column, Float, Texts14h20, Texts16h24, Title } from 'styles/commonStyle';
-import { Button } from '@components/buttons/Button';
+import { BottomFixed, Center, Column, Float, Row, Title } from 'styles/commonStyle';
+import { Button } from 'styles/common/Button';
+import { Text } from 'styles/common/Text';
 
 interface JournalFormValue {
   body: string;
@@ -152,12 +153,12 @@ export default function JournalPage() {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Container>
           <TextSection>
-            <SubTitle>케어일지 내용</SubTitle>
+            <Text $size="base">케어일지 내용</Text>
             <TextArea placeholder="케어 중 무슨 일이 있으셨나요?" {...register('body')} />
           </TextSection>
 
           <ImageSection>
-            <SubTitle>사진 첨부</SubTitle>
+            <Text $size="base">사진 첨부</Text>
             <input
               type="file"
               accept="image/png, image/jpg, image/jpeg"
@@ -170,7 +171,7 @@ export default function JournalPage() {
               <Button type="button" onClick={openFileInput}>
                 파일 선택
               </Button>
-              <Texts14h20>최대 5개의 이미지를 선택할 수 있습니다.</Texts14h20>
+              <Text $size="sm">최대 5개의 이미지를 선택할 수 있습니다.</Text>
             </ImageSelectWrapper>
 
             <ImagePreview>
@@ -227,8 +228,6 @@ const Container = styled(Column)`
   padding: ${({ theme }) => theme.spacing.xl};
 `;
 
-const SubTitle = styled(Texts16h24)``;
-
 const TextSection = styled(Column)`
   gap: ${({ theme }) => theme.spacing.sm};
 `;
@@ -247,14 +246,11 @@ const TextArea = styled.textarea`
   }
 `;
 
-const ImageSection = styled.section`
-  display: flex;
-  flex-direction: column;
+const ImageSection = styled(Column)`
   gap: ${({ theme }) => theme.spacing.sm};
 `;
 
-const ImageSelectWrapper = styled.div`
-  display: flex;
+const ImageSelectWrapper = styled(Row)`
   align-items: center;
   gap: ${({ theme }) => theme.spacing.xs};
 

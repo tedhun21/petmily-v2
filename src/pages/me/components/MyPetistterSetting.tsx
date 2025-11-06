@@ -1,6 +1,7 @@
-import { Texts14h20 } from 'styles/commonStyle';
 import { PiCatBold, PiDogBold } from 'react-icons/pi';
 import styled from 'styled-components';
+import { Text } from 'styles/common/Text';
+import { Center } from 'styles/commonStyle';
 import { PetSpecies } from 'types/pet.type';
 import { timeRange, weekdays } from 'utils/date';
 
@@ -12,7 +13,7 @@ export default function MyPetsitterSettings({ petsitter }: any) {
           <span>케어 가능 동물</span>
           <ItemWrapper>
             {petsitter.possiblePetSpecies.map((species: PetSpecies) => (
-              <ItemLabel key={species}>
+              <ItemLabel as="li" key={species}>
                 {species === PetSpecies.DOG ? (
                   <PiDogBold size="20px" color="white" />
                 ) : species === PetSpecies.CAT ? (
@@ -28,7 +29,11 @@ export default function MyPetsitterSettings({ petsitter }: any) {
           <span>케어 가능 지역</span>
           <ItemWrapper>
             {petsitter.possibleLocations.map((location: string) => (
-              <ItemLabel key={location}>{location}</ItemLabel>
+              <ItemLabel as="li" key={location}>
+                <Text $size="sm" $color="white">
+                  {location}
+                </Text>
+              </ItemLabel>
             ))}
           </ItemWrapper>
         </InfoItem>
@@ -39,7 +44,13 @@ export default function MyPetsitterSettings({ petsitter }: any) {
           <ItemWrapper>
             {petsitter.possibleDays.map((day: string) => {
               const matchedDay = weekdays.find((weekday) => weekday.value === day);
-              return <ItemLabel key={day}>{matchedDay?.label}</ItemLabel>;
+              return (
+                <ItemLabel as="li" key={day}>
+                  <Text $size="sm" $color="white">
+                    {matchedDay?.label}
+                  </Text>
+                </ItemLabel>
+              );
             })}
           </ItemWrapper>
         </InfoItem>
@@ -47,7 +58,11 @@ export default function MyPetsitterSettings({ petsitter }: any) {
       {petsitter?.possibleStartTime && petsitter?.possibleEndTime && (
         <InfoItem>
           <span>케어 가능 시간</span>
-          <ItemLabel>{timeRange(petsitter?.possibleStartTime, petsitter?.possibleEndTime)}</ItemLabel>
+          <ItemLabel as="li">
+            <Text $size="sm" $color="white">
+              {timeRange(petsitter?.possibleStartTime, petsitter?.possibleEndTime)}
+            </Text>
+          </ItemLabel>
         </InfoItem>
       )}
     </InfoList>
@@ -76,12 +91,8 @@ const ItemWrapper = styled.ul`
   gap: ${({ theme }) => theme.spacing.xs};
 `;
 
-const ItemLabel = styled(Texts14h20)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+const ItemLabel = styled(Center)`
   padding: 4px 8px;
   background-color: ${({ theme }) => theme.colors.text.highlight};
   border-radius: ${({ theme }) => theme.radius.md};
-  color: ${({ theme }) => theme.colors.text.white};
 `;

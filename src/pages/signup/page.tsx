@@ -15,9 +15,10 @@ import { poster } from 'api';
 import Loading from '@components/Loading';
 import BackHeader from '@components/headers/BackHeader';
 import CustomDaumPostcode from '@components/CustomDaumPostcode';
-import { Center, Column, ErrorMessage, Row, Texts16h24, Texts20h28 } from 'styles/commonStyle';
-import { Button } from '@components/buttons/Button';
-import { Input } from '@components/Input';
+import { Column, Row } from 'styles/commonStyle';
+import { Button } from 'styles/common/Button';
+import { Input } from 'styles/common/Input';
+import { Text } from 'styles/common/Text';
 
 const schema = yup.object().shape({
   username: yup
@@ -139,8 +140,8 @@ export default function SignupPage() {
       <Main>
         <SignupContainer>
           <TitleContainer>
-            <Texts20h28>We&apos;re Petmily!</Texts20h28>
-            <Texts16h24>회원가입</Texts16h24>
+            <Text $size="xl">We&apos;re Petmily!</Text>
+            <Text>회원가입</Text>
           </TitleContainer>
 
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -152,7 +153,11 @@ export default function SignupPage() {
                   {...register('username', { required: true })}
                   $error={errors.username ? true : undefined}
                 />
-                {errors.username?.message && <ErrorMessage>{errors.username?.message}</ErrorMessage>}
+                {errors.username?.message && (
+                  <Text $size="xs" $color="error">
+                    {errors.username?.message}
+                  </Text>
+                )}
               </InputWrapper>
               <InputWrapper>
                 <Input
@@ -160,7 +165,11 @@ export default function SignupPage() {
                   {...register('phone', { required: true })}
                   $error={errors.phone ? true : undefined}
                 />
-                {errors.phone?.message && <ErrorMessage>{errors.phone?.message}</ErrorMessage>}
+                {errors.phone?.message && (
+                  <Text $size="xs" $color="error">
+                    {errors.phone?.message}
+                  </Text>
+                )}
               </InputWrapper>
               <InputWrapper>
                 <Input
@@ -171,7 +180,11 @@ export default function SignupPage() {
                   $error={errors.address ? true : undefined}
                   autoComplete="off"
                 />
-                {errors.address?.message && <ErrorMessage>{errors.address?.message}</ErrorMessage>}
+                {errors.address?.message && (
+                  <Text $size="xs" $color="error">
+                    {errors.address?.message}
+                  </Text>
+                )}
 
                 <Modal
                   open={isModalOpen}
@@ -189,7 +202,11 @@ export default function SignupPage() {
                   {...register('detailAddress', { required: true })}
                   $error={errors.detailAddress ? true : undefined}
                 />
-                {errors.detailAddress?.message && <ErrorMessage>{errors.detailAddress?.message}</ErrorMessage>}
+                {errors.detailAddress?.message && (
+                  <Text $size="xs" $color="error">
+                    {errors.detailAddress?.message}
+                  </Text>
+                )}
               </InputWrapper>
               <InputWrapper>
                 <Input
@@ -198,7 +215,11 @@ export default function SignupPage() {
                   {...register('email', { required: true })}
                   $error={errors.email ? true : undefined}
                 />
-                {errors.email?.message && <ErrorMessage>{errors.email?.message}</ErrorMessage>}
+                {errors.email?.message && (
+                  <Text $size="xs" $color="error">
+                    {errors.email?.message}
+                  </Text>
+                )}
               </InputWrapper>
               <InputWrapper>
                 <Input
@@ -206,7 +227,11 @@ export default function SignupPage() {
                   {...register('nickname', { required: true })}
                   $error={errors.nickname ? true : undefined}
                 />
-                {errors.nickname?.message && <ErrorMessage>{errors.nickname?.message}</ErrorMessage>}
+                {errors.nickname?.message && (
+                  <Text $size="xs" $color="error">
+                    {errors.nickname?.message}
+                  </Text>
+                )}
               </InputWrapper>
               <InputWrapper>
                 <Input
@@ -215,7 +240,11 @@ export default function SignupPage() {
                   {...register('password', { required: true })}
                   $error={errors.password ? true : undefined}
                 />
-                {errors.password?.message && <ErrorMessage>{errors.password?.message}</ErrorMessage>}
+                {errors.password?.message && (
+                  <Text $size="xs" $color="error">
+                    {errors.password?.message}
+                  </Text>
+                )}
               </InputWrapper>
               <InputWrapper>
                 <Input
@@ -224,7 +253,11 @@ export default function SignupPage() {
                   {...register('passwordConfirm', { required: true })}
                   $error={errors.passwordConfirm ? true : undefined}
                 />
-                {errors.passwordConfirm?.message && <ErrorMessage>{errors.passwordConfirm?.message}</ErrorMessage>}
+                {errors.passwordConfirm?.message && (
+                  <Text $size="xs" $color="error">
+                    {errors.passwordConfirm?.message}
+                  </Text>
+                )}
               </InputWrapper>
               <CheckBoxWrapper>
                 <CheckBoxLabel htmlFor="isPetsitter">펫시터로 가입하기</CheckBoxLabel>
@@ -278,6 +311,6 @@ const CheckBoxWrapper = styled(Row)`
 `;
 
 const CheckBoxLabel = styled.label`
-  ${({ theme }) => theme.typeScale.sm}
-  color:${({ theme }) => theme.colors.text.secondary}
+  color: ${({ theme }) => theme.colors.text.secondary};
+  ${({ theme }) => theme.typeScale.sm};
 `;

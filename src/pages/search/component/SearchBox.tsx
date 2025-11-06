@@ -8,7 +8,7 @@ import DateBox from './Date/DateBox';
 import LocationBox from './Location/LocationBox';
 import { saveToRecentSearch } from 'utils/localStorage';
 import StartEndTimeBox from './StartEndTime/StartEndTimeBox';
-import { Column, Divider, Row, Texts14h20 } from 'styles/commonStyle';
+import { Column, Divider, Row } from 'styles/commonStyle';
 
 import { useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -168,8 +168,9 @@ export const BoxInput = styled.input`
   }
 `;
 
-export const AddText = styled(Texts14h20)<{ $isClicked?: boolean }>`
+export const AddText = styled.span<{ $isClicked?: boolean }>`
   color: ${({ theme, $isClicked }) => ($isClicked ? theme.colors.text.active : theme.colors.text.inactive)};
+  ${({ theme }) => theme.typeScale.sm}
 `;
 
 export const XButton = styled.button`

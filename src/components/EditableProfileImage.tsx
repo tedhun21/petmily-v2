@@ -2,7 +2,7 @@ import { useRef, ChangeEvent, useState } from 'react';
 
 import styled from 'styled-components';
 import { Column, ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
-import { Button } from './buttons/Button';
+import { Button } from '../styles/common/Button';
 import XButton from './buttons/XButton';
 
 interface IProps {

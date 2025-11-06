@@ -13,7 +13,7 @@ import EventSwiper from './components/EventSwiper';
 import AdSwiper from './components/AdSwiper';
 import SearchBox from '@pages/search/component/SearchBox';
 import { Link } from 'react-router-dom';
-import { Button } from '@components/buttons/Button';
+import { Button } from 'styles/common/Button';
 
 export default function HomePage() {
   return (
