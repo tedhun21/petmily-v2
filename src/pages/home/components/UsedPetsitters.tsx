@@ -2,7 +2,6 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
-import styled from 'styled-components';
 
 import { useAuthSWR, useAuthSWRInfinite } from 'hooks/authSWR';
 
@@ -35,7 +34,7 @@ export default function UsedPetsitters() {
   }
 
   return (
-    <Section>
+    <section>
       <Title>이용한 펫시터 서비스</Title>
 
       {isLoading ? (
@@ -59,12 +58,6 @@ export default function UsedPetsitters() {
             )}
         </Swiper>
       )}
-    </Section>
+    </section>
   );
 }
-
-const Section = styled.section`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.lg};
-`;

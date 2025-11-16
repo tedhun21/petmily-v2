@@ -4,10 +4,12 @@ import { MdOutlineRateReview } from 'react-icons/md';
 import { PiStarFill } from 'react-icons/pi';
 
 import { weekdays } from 'utils/date';
-import { Column, Divider, ImageCentered, RoundedImageWrapper, Row } from 'styles/commonStyle';
+import { Divider, ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
 import { Petsitter } from 'types/user.type';
 import { DayOfWeekType } from 'types/common.type';
-import { Text } from 'styles/common/Text';
+import { Text } from '@components/Text';
+import Box from '@components/Box';
+import { Flex } from '@components/Flex';
 
 interface SelectedPetsitterProps {
   petsitter: Petsitter;
@@ -17,14 +19,14 @@ export default function SelectedPetsitter({ petsitter }: SelectedPetsitterProps)
   return (
     <PetsitterSection>
       <CardTitleContainer>
-        <NameWrapper>
-          <Text $size="lg" $weight="bold">
+        <Flex alignItems="flex-end" gap="sm">
+          <Text size="lg" weight="bold">
             {petsitter?.nickname}
           </Text>
-          <Text $size="sm" $weight="light">
+          <Text size="sm" weight="light">
             펫시터
           </Text>
-        </NameWrapper>
+        </Flex>
         <PetsitterImg>
           <ImageCentered
             src={petsitter?.photo ? `${petsitter?.photo}` : '/imgs/DefaultUserProfile.jpg'}
@@ -33,31 +35,33 @@ export default function SelectedPetsitter({ petsitter }: SelectedPetsitterProps)
         </PetsitterImg>
       </CardTitleContainer>
 
-      <CardBodyContainer>
-        <StarReview>
-          <Wrapper>
-            <PiStarFill size="28px" color="#279EFF" />
-            <Text $size="lg" $weight="bold">
-              {petsitter?.star}
-            </Text>
-          </Wrapper>
-          <Wrapper>
-            <MdOutlineRateReview size="28px" />
-            <Text $size="lg" $weight="bold">
-              {petsitter?.reviewCount}
-            </Text>
-          </Wrapper>
-        </StarReview>
-        <PossibleContainer>
-          <PossibleWrapper>
+      <Box p="2xl" bg="background.box.default.primary">
+        <Flex direction="column" gap="sm">
+          <Flex alignItems="center" gap="lg">
+            <Flex alignItems="center" gap="sm">
+              <PiStarFill size="28px" color="#279EFF" />
+              <Text size="lg" weight="bold">
+                {petsitter?.star}
+              </Text>
+            </Flex>
+            <Flex alignItems="center" gap="sm">
+              <MdOutlineRateReview size="28px" />
+              <Text size="lg" weight="bold">
+                {petsitter?.reviewCount}
+              </Text>
+            </Flex>
+          </Flex>
+        </Flex>
+        <Flex direction="column" gap="sm">
+          <Flex gap="sm">
             <span>가능 장소</span>
             <CapsuleWrapper>
               {petsitter?.possibleLocations?.map((location: string) => (
                 <Capsule key={location}>{location}</Capsule>
               ))}
             </CapsuleWrapper>
-          </PossibleWrapper>
-          <PossibleWrapper>
+          </Flex>
+          <Flex gap="sm">
             <span>가능 요일</span>
             <CapsuleWrapper>
               {petsitter?.possibleDays?.map((day: DayOfWeekType) => {
@@ -65,13 +69,13 @@ export default function SelectedPetsitter({ petsitter }: SelectedPetsitterProps)
                 return <Capsule key={day}>{matchedDay?.label}</Capsule>;
               })}
             </CapsuleWrapper>
-          </PossibleWrapper>
-        </PossibleContainer>
+          </Flex>
+        </Flex>
 
         <Divider />
 
         <div>{petsitter?.body}</div>
-      </CardBodyContainer>
+      </Box>
     </PetsitterSection>
   );
 }
@@ -84,48 +88,21 @@ const PetsitterSection = styled.section`
   box-shadow: ${({ theme }) => theme.shadow.dp01};
 `;
 
-const CardTitleContainer = styled(Row)`
+// TODO
+const CardTitleContainer = styled.div`
   position: relative;
+  display: flex;
   padding: 12px 36px;
   background-color: ${({ theme }) => theme.colors.background.highlight};
   color: ${({ theme }) => theme.colors.text.white};
 `;
 
-const NameWrapper = styled(Row)`
-  gap: ${({ theme }) => theme.spacing.sm};
-  align-items: flex-end;
-`;
-
 const PetsitterImg = styled(RoundedImageWrapper)`
   position: absolute;
-  top: ${({ theme }) => theme.spacing._2xl};
-  right: ${({ theme }) => theme.spacing._2xl};
+  top: ${({ theme }) => theme.spacing['2xl']};
+  right: ${({ theme }) => theme.spacing['2xl']};
   width: 64px;
   height: 64px;
-`;
-
-const CardBodyContainer = styled(Column)`
-  padding: ${({ theme }) => theme.spacing._2xl};
-  gap: ${({ theme }) => theme.spacing.sm};
-  background-color: ${({ theme }) => theme.colors.background.box.default.primary};
-`;
-
-const StarReview = styled(Row)`
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.lg};
-`;
-
-const Wrapper = styled(Row)`
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.sm};
-`;
-
-const PossibleContainer = styled(Column)`
-  gap: ${({ theme }) => theme.spacing.sm};
-`;
-
-const PossibleWrapper = styled(Row)`
-  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const CapsuleWrapper = styled.div`
@@ -134,6 +111,7 @@ const CapsuleWrapper = styled.div`
   gap: ${({ theme }) => theme.spacing.xs};
 `;
 
+// TODO
 const Capsule = styled.span`
   padding: 4px ${({ theme }) => theme.spacing.sm};
   background-color: ${({ theme }) => theme.colors.background.highlight};

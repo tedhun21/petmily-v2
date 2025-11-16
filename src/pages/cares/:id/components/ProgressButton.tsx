@@ -7,8 +7,7 @@ import Loading from '@components/Loading';
 import { Reservation, ReservationStatus } from 'types/reservation.type';
 import { UserRole } from 'types/user.type';
 import { SocketContext } from '@components/contexts/SocketProvider';
-import { Button } from 'styles/common/Button';
-import { Row } from 'styles/commonStyle';
+import { Button } from '@components/buttons/Button';
 
 interface ProgressButtonProps {
   meRole: UserRole;
@@ -53,30 +52,30 @@ export default function ProgressButton({ meRole, reservation }: ProgressButtonPr
       switch (reservation?.status) {
         case ReservationStatus.PENDING:
           return (
-            <Button type="button" disabled={isLoading} onClick={handleAccept} $size="lg">
+            <Button type="button" disabled={isLoading} onClick={handleAccept} size="lg">
               {isLoading ? <Loading /> : '수락'}
             </Button>
           );
         case ReservationStatus.ACCEPTED:
           // CONFIRMED => "FINISHED"
           return (
-            <Button type="button" disabled={isLoading} onClick={handleCancel} $size="lg">
+            <Button type="button" disabled={isLoading} onClick={handleCancel} size="lg">
               {isLoading ? <Loading /> : '취소'}
             </Button>
           );
         case ReservationStatus.CANCELED:
           return (
-            <Button disabled $size="lg">
+            <Button disabled size="lg">
               취소됨
             </Button>
           );
         case ReservationStatus.COMPLETED:
           return (
             <>
-              <Button type="button" onClick={handleLinkJournal} $size="lg">
+              <Button type="button" onClick={handleLinkJournal} size="lg">
                 {reservation?.journal ? '케어일지 수정' : '케어일지 작성'}
               </Button>
-              <Button disabled $size="lg">
+              <Button disabled size="lg">
                 완료됨
               </Button>
             </>
@@ -90,29 +89,29 @@ export default function ProgressButton({ meRole, reservation }: ProgressButtonPr
         case ReservationStatus.PENDING:
           // "PENDING" => "CANCELED"
           return (
-            <Button type="button" disabled={isLoading} onClick={handleCancel} $variant="primary" $size="lg">
+            <Button type="button" disabled={isLoading} onClick={handleCancel} variant="primary" size="lg">
               {isLoading ? <Loading /> : '취소'}
             </Button>
           );
         case ReservationStatus.ACCEPTED:
           return (
-            <Button type="button" disabled onClick={handleCancel} $size="lg">
+            <Button type="button" disabled onClick={handleCancel} size="lg">
               {isLoading ? <Loading /> : '진행중'}
             </Button>
           );
         case ReservationStatus.CANCELED:
           return (
-            <Button disabled $size="lg">
+            <Button disabled size="lg">
               취소됨
             </Button>
           );
         case ReservationStatus.COMPLETED:
           return (
             <>
-              <Button type="button" onClick={handleLinkReview} $variant="primary" $size="lg" $borderRadius="lg">
+              <Button type="button" onClick={handleLinkReview} variant="primary" size="lg" borderRadius="lg">
                 {reservation?.review ? '후기 수정' : '후기 작성'}
               </Button>
-              <Button disabled $size="lg" $borderRadius="lg">
+              <Button disabled size="lg" borderRadius="lg">
                 완료됨
               </Button>
             </>
@@ -125,8 +124,10 @@ export default function ProgressButton({ meRole, reservation }: ProgressButtonPr
   return <ButtonContainer>{renderButton()}</ButtonContainer>;
 }
 
-const ButtonContainer = styled(Row)`
+// TODO
+const ButtonContainer = styled.div`
   width: 100%;
+  display: flex;
   gap: ${({ theme }) => theme.spacing.sm};
 
   & > button {

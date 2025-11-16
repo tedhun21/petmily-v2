@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
 
 import styled from 'styled-components';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -9,9 +8,12 @@ import { Pagination } from 'swiper/modules';
 import { PiStarFill } from 'react-icons/pi';
 
 import { dateAgo } from 'utils/date';
-import { Column, ImageCentered, RoundedImageWrapper, Row } from 'styles/commonStyle';
+import { ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
 import { Review } from 'types/review.type';
-import { Text } from 'styles/common/Text';
+import { Text } from '@components/Text';
+
+import { Flex } from '@components/Flex';
+import Link from '@components/Link';
 
 interface ReviewPhotoCardProps {
   review: Review;
@@ -43,83 +45,67 @@ export default function PhotoReviewCard({ review }: ReviewPhotoCardProps) {
   }, [review.body]);
 
   return (
-    <ReviewCard as="article">
-      {/* 이미지 캐러셀 */}
-      <Swiper
-        pagination={{
-          dynamicBullets: true,
-        }}
-        modules={[Pagination]}
-        style={{ width: '100%', borderRadius: '16px' }}
-      >
-        {review?.photos &&
-          review.photos.map((photo: string, index: number) => (
-            <SwiperSlide key={index}>
-              <ReviewImageContainer>
-                <ImageCentered src={`${photo}`} alt={`review_photo_${index}`} />
-              </ReviewImageContainer>
-            </SwiperSlide>
-          ))}
-      </Swiper>
-
-      <ReviewContainer>
-        <TitleContainer>
-          <StarWrapper>
-            <Text $size="base">{client?.nickname.slice(0, 2) + '*****'}</Text>
-            {Array.from({ length: review?.star }).map((_, index) => (
-              <PiStarFill key={index} size="28px" color="#279EFF" />
+    <article>
+      <Flex direction="column" gap="lg">
+        {/* 이미지 캐러셀 */}
+        <Swiper
+          pagination={{
+            dynamicBullets: true,
+          }}
+          modules={[Pagination]}
+          style={{ width: '100%', borderRadius: '16px' }}
+        >
+          {review?.photos &&
+            review.photos.map((photo: string, index: number) => (
+              <SwiperSlide key={index}>
+                <ReviewImageContainer>
+                  <ImageCentered src={`${photo}`} alt={`review_photo_${index}`} />
+                </ReviewImageContainer>
+              </SwiperSlide>
             ))}
-          </StarWrapper>
-        </TitleContainer>
-        <div>
-          <ReviewText ref={textRef} $isExpanded={isExpanded}>
-            {review?.body}
-          </ReviewText>
-          {isTextOverflow && !isExpanded && (
-            <RestButton type="button" onClick={handleRestOpen}>
-              더보기
-            </RestButton>
-          )}
-        </div>
-        <Text $size="xs">{dateAgo(review.createdAt)}</Text>
-      </ReviewContainer>
+        </Swiper>
 
-      {/* 펫시터 카드 */}
-      <PetsitterContainer>
-        <PetsitterInfo>
-          <PetsitterImage>
-            <ImageCentered
-              src={petsitter?.photo ? `${petsitter.photo}` : '/imgs/DefaultUserProfile.jpg'}
-              alt="petsitter_photo"
-            />
-          </PetsitterImage>
-          <span>{petsitter?.nickname} 펫시터님</span>
-        </PetsitterInfo>
-        <PetsitterDetailLink to={`/users/${petsitter?.nickname}`}>자세히 보기</PetsitterDetailLink>
-      </PetsitterContainer>
-    </ReviewCard>
+        <Flex direction="column" justifyContent="space-between" gap="xs">
+          <Flex alignItems="center">
+            <Flex alignItems="center" gap="xs">
+              <Text size="base">{client?.nickname.slice(0, 2) + '*****'}</Text>
+              {Array.from({ length: review?.star }).map((_, index) => (
+                <PiStarFill key={index} size="28px" color="#279EFF" />
+              ))}
+            </Flex>
+          </Flex>
+          <div>
+            <ReviewText ref={textRef} $isExpanded={isExpanded}>
+              {review?.body}
+            </ReviewText>
+            {isTextOverflow && !isExpanded && (
+              <RestButton type="button" onClick={handleRestOpen}>
+                더보기
+              </RestButton>
+            )}
+          </div>
+          <Text size="xs">{dateAgo(review.createdAt)}</Text>
+        </Flex>
+
+        {/* 펫시터 카드 */}
+        <PetsitterContainer>
+          <Flex alignItems="center" gap="sm">
+            <PetsitterImage>
+              <ImageCentered
+                src={petsitter?.photo ? `${petsitter.photo}` : '/imgs/DefaultUserProfile.jpg'}
+                alt="petsitter_photo"
+              />
+            </PetsitterImage>
+            <span>{petsitter?.nickname} 펫시터님</span>
+          </Flex>
+          <Link to={`/users/${petsitter?.nickname}`} type="text">
+            자세히 보기
+          </Link>
+        </PetsitterContainer>
+      </Flex>
+    </article>
   );
 }
-
-const ReviewCard = styled(Column)`
-  width: 100%;
-  gap: ${({ theme }) => theme.spacing.lg};
-`;
-
-const ReviewContainer = styled(Column)`
-  justify-content: space-between;
-  width: 100%;
-  gap: ${({ theme }) => theme.spacing.xs};
-`;
-
-const TitleContainer = styled(Row)`
-  align-items: center;
-`;
-
-const StarWrapper = styled(Row)`
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.xs};
-`;
 
 const ReviewImageContainer = styled.div`
   position: relative;
@@ -143,7 +129,9 @@ const RestButton = styled.button`
   ${({ theme }) => theme.typeScale.xs};
 `;
 
-const PetsitterContainer = styled(Row)`
+// TODO: border
+const PetsitterContainer = styled.div`
+  display: flex;
   justify-content: space-between;
   align-items: center;
   padding: ${({ theme }) => theme.spacing.md};
@@ -152,33 +140,8 @@ const PetsitterContainer = styled(Row)`
   gap: ${({ theme }) => theme.spacing.sm};
 `;
 
-const PetsitterInfo = styled(Row)`
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.sm};
-`;
-
 const PetsitterImage = styled(RoundedImageWrapper)`
   width: 40px;
   height: 40px;
   border: 2px solid ${({ theme }) => theme.colors.line.box.highlight};
-`;
-
-const PetsitterDetailLink = styled(Link)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 4px 8px;
-  background-color: ${({ theme }) => theme.colors.background.box.accent.primary};
-  border-radius: ${({ theme }) => theme.radius.md};
-  color: ${({ theme }) => theme.colors.text.white};
-  ${({ theme }) => theme.typeScale.sm};
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.background.box.accent.hover};
-  }
-
-  &:active {
-    background-color: ${({ theme }) => theme.colors.background.box.accent.active};
-    box-shadow: ${({ theme }) => theme.shadow.inset};
-  }
 `;

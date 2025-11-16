@@ -1,9 +1,11 @@
-import { Column, ImageCentered, RoundedImageWrapper, Row } from 'styles/commonStyle';
+import Box from '@components/Box';
+import { ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
 import styled from 'styled-components';
 import { PiStarFill } from 'react-icons/pi';
 import { dateAgo } from 'utils/date';
 import { Review } from 'types/review.type';
-import { Text } from 'styles/common/Text';
+import { Text } from '@components/Text';
+import { flex, Flex } from '@components/Flex';
 
 interface ReviewCardProps {
   review: Review;
@@ -17,64 +19,44 @@ export default function ReviewCard({ review }: ReviewCardProps) {
   } = review;
 
   return (
-    <Card>
-      <ClientContainer>
-        <ClientImageName>
+    <Container>
+      <Flex direction="row" justifyContent="space-between" alignItems="flex-start">
+        <Flex alignItems="center" gap="xs">
           <ClientImage>
             <ImageCentered src={client?.photo ? `${client?.photo}` : '/imgs/DefaultUserProfile.jpg'} alt="user_photo" />
           </ClientImage>
-          <Text $size="sm">{client?.nickname.slice(0, 2) + '*****'}</Text>
-        </ClientImageName>
-        <StarWrapper>
+          <Text size="sm">{client?.nickname.slice(0, 2) + '*****'}</Text>
+        </Flex>
+        <Flex alignItems="center" gap="xs">
           <PiStarFill size="20px" color="#279EFF" />
           <span>{star}</span>
-        </StarWrapper>
-      </ClientContainer>
-      <ContentContainer>
+        </Flex>
+      </Flex>
+      <Flex direction="column" gap="2xl">
         <ReviewText>{body}</ReviewText>
-        <UserTimeAgo>
-          <Text $size="xs">{dateAgo(review.createdAt)}</Text>
-        </UserTimeAgo>
-      </ContentContainer>
-    </Card>
+        <div style={{ textAlign: 'right' }}>
+          <Text size="xs">{dateAgo(review.createdAt)}</Text>
+        </div>
+      </Flex>
+    </Container>
   );
 }
 
-const Card = styled(Column)`
-  padding: ${({ theme }) => theme.spacing.lg};
-  background-color: ${({ theme }) => theme.colors.background.box.default.primary};
-  border-radius: ${({ theme }) => theme.radius.lg};
-  gap: ${({ theme }) => theme.spacing.md};
-`;
-
-const ClientContainer = styled(Row)`
-  justify-content: space-between;
-  align-items: start;
-  width: 100%;
-`;
-
-const ClientImageName = styled(Row)`
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.xs};
+const Container = styled(Box).attrs(() => ({
+  p: 'lg',
+  bg: 'background.box.default.primary',
+  br: 'lg',
+}))`
+  ${flex({
+    direction: 'column',
+    gap: 'md',
+  })}
 `;
 
 const ClientImage = styled(RoundedImageWrapper)`
   width: 46px;
   height: 46px;
   border: 2px solid ${({ theme }) => theme.colors.line.box.highlight};
-`;
-
-const ContentContainer = styled(Column)`
-  gap: ${({ theme }) => theme.spacing._2xl};
-`;
-
-const StarWrapper = styled(Row)`
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.xs};
-`;
-
-const UserTimeAgo = styled(Column)`
-  text-align: right;
 `;
 
 const ReviewText = styled.p`

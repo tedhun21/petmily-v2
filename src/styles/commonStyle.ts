@@ -1,15 +1,6 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-export const Column = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-export const Row = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
-
 export const Title = styled.h1`
   color: ${({ theme }) => theme.colors.text.active};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
@@ -36,12 +27,6 @@ export const ImageCentered = styled.img`
   width: 100%;
   height: 100%;
   transform: translate(-50%, -50%);
-`;
-
-export const Center = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 export const DefaultLink = styled(Link)`

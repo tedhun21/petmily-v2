@@ -2,14 +2,16 @@ import { useRef } from 'react';
 import styled from 'styled-components';
 import { FaChevronDown } from 'react-icons/fa6';
 
-import { Center, ImageCentered, RoundedImageWrapper, Row } from 'styles/commonStyle';
+import { ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
 
 import MessageList from './MessageList';
 import Loading from '@components/Loading';
 import { useChat } from '../contexts/ChatProvider';
 import { useChatUIEffects } from '../hooks/useChatUIEffects';
-import { Button } from 'styles/common/Button';
-import { Text } from 'styles/common/Text';
+import { Button } from '@components/buttons/Button';
+import { Text } from '@components/Text';
+import Box from '@components/Box';
+import { flex, Flex } from '@components/Flex';
 
 export default function ChatContainer() {
   const {
@@ -36,9 +38,9 @@ export default function ChatContainer() {
   return (
     <Container ref={chatRef}>
       {isLoading && messages.length === 0 ? (
-        <Center>
+        <Flex justifyContent="center" alignItems="center">
           <Loading />
-        </Center>
+        </Flex>
       ) : !isLoading && messages.length > 0 ? (
         <>
           <MessageList />
@@ -52,7 +54,7 @@ export default function ChatContainer() {
             )}
             {downButtonState.state === 'newMessage' && (
               <AbsolutBottom>
-                <BottomWrapper>
+                <Wrapper>
                   <NewMessageButton type="button" onClick={() => scrollToBottom({ behavior: 'smooth' })}>
                     <NewMessageUser>
                       <NewMessageUserPhoto>
@@ -61,14 +63,14 @@ export default function ChatContainer() {
                         />
                       </NewMessageUserPhoto>
                       <span>{downButtonState.lastestNewMessages?.sender.nickname}</span>
-                      <Text $size="sm" $weight="semibold" style={{ textAlign: 'start' }}>
+                      <Text size="sm" weight="semibold" style={{ textAlign: 'start' }}>
                         {downButtonState.lastestNewMessages?.content}
                       </Text>
                     </NewMessageUser>
 
                     <FaChevronDown size="16px" />
                   </NewMessageButton>
-                </BottomWrapper>
+                </Wrapper>
               </AbsolutBottom>
             )}
           </Sticky>
@@ -102,17 +104,21 @@ const AbsolutBottom = styled.div`
   width: 100%;
 `;
 
-const BottomWrapper = styled(Row)`
-  padding: ${({ theme }) => theme.spacing.md};
+const Wrapper = styled(Box).attrs(() => ({
+  p: 'md',
+}))`
+  ${flex()}
 `;
 
-const NewMessageButton = styled(Button).attrs(() => ({ $variant: 'secondary', $size: 'md', $borderRadius: 'lg' }))`
+const NewMessageButton = styled(Button).attrs(() => ({ variant: 'secondary', size: 'md', borderRadius: 'lg' }))`
   width: 100%;
 
   opacity: 0.9;
 `;
 
-const NewMessageUser = styled(Row)`
+// TODO
+const NewMessageUser = styled.div`
+  display: flex;
   flex: auto;
   align-items: center;
 
@@ -125,8 +131,8 @@ const NewMessageUserPhoto = styled(RoundedImageWrapper)`
 `;
 
 const DownButton = styled(Button).attrs(() => ({
-  $variant: 'secondary',
-  $borderRadius: 'circle',
+  variant: 'secondary',
+  borderRadius: 'circle',
 }))`
   padding: ${({ theme }) => theme.spacing.sm};
 `;

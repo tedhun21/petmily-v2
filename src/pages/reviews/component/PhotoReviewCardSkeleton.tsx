@@ -1,19 +1,20 @@
 import styled, { keyframes } from 'styled-components';
-import { Column } from 'styles/commonStyle';
+
+import { Flex } from '@components/Flex';
 
 export default function PhotoReviewCardSkeleton() {
   return (
     <ReviewCard>
       <SkeletonImage />
-      <ReviewContainer>
+      <Flex direction="column" gap="xs">
         <TitleContainer />
 
-        <ReviewWrapper>
+        <Flex direction="column" gap="xs">
           <ReviewText />
           <ReviewText />
           <ReviewText />
-        </ReviewWrapper>
-      </ReviewContainer>
+        </Flex>
+      </Flex>
 
       <PetsitterContainer />
     </ReviewCard>
@@ -46,20 +47,10 @@ const SkeletonImage = styled(SkeletonElement)`
   border-radius: ${({ theme }) => theme.radius.lg};
 `;
 
-const ReviewContainer = styled(Column)`
-  gap: ${({ theme }) => theme.spacing.xs};
-`;
-
 const TitleContainer = styled(SkeletonElement)`
   width: 20%;
-  height: ${({ theme }) => theme.spacing._2xl};
+  height: ${({ theme }) => theme.spacing['2xl']};
   padding: ${({ theme }) => theme.spacing.sm};
-`;
-
-const ReviewWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 const ReviewText = styled(SkeletonElement)`

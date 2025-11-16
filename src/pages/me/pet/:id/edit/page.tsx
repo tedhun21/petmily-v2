@@ -11,7 +11,6 @@ import { PiCatBold, PiDogBold } from 'react-icons/pi';
 import {
   ButtonContainer,
   Form,
-  GenderWrapper,
   InputContainer,
   InputLabel,
   InputWrapper,
@@ -19,7 +18,6 @@ import {
   PetSpeciesButtonContainer,
   PetTextarea,
   RadioContainer,
-  RowWrapper,
   TypeRadioLabel,
 } from '../../register/page';
 
@@ -31,8 +29,9 @@ import BackHeader from '@components/headers/BackHeader';
 import { FaXmark } from 'react-icons/fa6';
 import EditableProfileImage from '@components/EditableProfileImage';
 import { PetGender, PetSpecies } from 'types/pet.type';
-import { Button } from 'styles/common/Button';
-import { Input } from 'styles/common/Input';
+import { Button } from '@components/buttons/Button';
+import { Input } from '@components/Input';
+import { Flex } from '@components/Flex';
 
 const schema = yup.object().shape({
   species: yup.string().oneOf(['dog', 'cat'], '강아지인가요 고양이인가요?').required('이 항목은 필수입니다.'),
@@ -150,11 +149,11 @@ export default function EditPetPage() {
       <BackHeader title="나의 펫밀리 수정" />
       <Form onSubmit={handleSubmit(onSubmit)}>
         <InputContainer>
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <Button type="button" onClick={handleDeletePet} $variant="icon" $borderRadius="circle">
-              <FaXmark size="28px" />
+          <Flex justifyContent="flex-end">
+            <Button type="button" onClick={handleDeletePet} variant="icon" borderRadius="circle">
+              <FaXmark />
             </Button>
-          </div>
+          </Flex>
           <EditableProfileImage
             setImageFile={setImageFile}
             serverImageUrl={serverImageUrl}
@@ -201,18 +200,18 @@ export default function EditPetPage() {
           <InputWrapper>
             <InputLabel>성별</InputLabel>
             <RadioContainer>
-              <GenderWrapper>
+              <Flex alignItems="center" gap="sm">
                 <input id="male" type="radio" value={PetGender.MALE} {...register('gender')} />
                 <label htmlFor="male">
                   <TbGenderMale size="32px" />
                 </label>
-              </GenderWrapper>
-              <GenderWrapper>
+              </Flex>
+              <Flex alignItems="center" gap="sm">
                 <input id="female" type="radio" value={PetGender.FEMALE} {...register('gender')} />
                 <label htmlFor="female">
                   <TbGenderFemale size="32px" />
                 </label>
-              </GenderWrapper>
+              </Flex>
             </RadioContainer>
           </InputWrapper>
 
@@ -231,19 +230,19 @@ export default function EditPetPage() {
           {/* 나이 */}
           <InputWrapper>
             <InputLabel htmlFor="age">나이</InputLabel>
-            <RowWrapper>
+            <Flex alignItems="center" gap="sm">
               <Input id="age" type="number" {...register('age')} />
               <span>살</span>
-            </RowWrapper>
+            </Flex>
           </InputWrapper>
 
           {/* 몸무게 */}
           <InputWrapper>
             <InputLabel htmlFor="weight">몸무게</InputLabel>
-            <RowWrapper>
+            <Flex alignItems="center" gap="sm">
               <Input id="weight" type="number" {...register('weight')} />
               <span>kg</span>
-            </RowWrapper>
+            </Flex>
           </InputWrapper>
 
           {/* 펫소개 */}
@@ -254,7 +253,7 @@ export default function EditPetPage() {
         </InputContainer>
 
         <ButtonContainer>
-          <Button type="submit" disabled={isMutating} $variant="primary" $size="lg" $fullWidth>
+          <Button type="submit" disabled={isMutating} variant="primary" size="lg" fullWidth>
             {isMutating ? <Loading /> : <span>펫 수정</span>}
           </Button>
         </ButtonContainer>

@@ -2,13 +2,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useAuthSWR } from 'hooks/authSWR';
 import dayjs from 'dayjs';
 import styled from 'styled-components';
-import { Row } from 'styles/commonStyle';
 
 import { fetcher } from 'api';
 import { RootState } from 'store';
 import { setFilter, setMonth } from 'store/contextSlice';
 import { ReservationStatus } from 'types/reservation.type';
-import { Button } from 'styles/common/Button';
+import { Button } from '@components/buttons/Button';
+import Box from '@components/Box';
+import { Flex } from '@components/Flex';
 
 export type FilterType = {
   id: number;
@@ -42,8 +43,8 @@ export default function CareFilter() {
 
   return (
     <Sticky>
-      <FilterContainer>
-        <StatusFilters>
+      <Flex justifyContent="space-between" alignItems="center">
+        <Flex gap="sm">
           {filters.map((el) => (
             <FilterRadio key={el.id}>
               <input type="radio" id={`filter-${el.id}`} value={el.value} onClick={handleFilterClick} />
@@ -51,16 +52,16 @@ export default function CareFilter() {
                 as="label"
                 htmlFor={`filter-${el.id}`}
                 $isSelected={filter === el.value}
-                $variant={filter === el.value ? 'primary' : 'secondary'}
-                $size="sm"
+                variant={filter === el.value ? 'primary' : 'secondary'}
+                size="sm"
               >
                 {el.label}
               </RadioButton>
             </FilterRadio>
           ))}
-        </StatusFilters>
+        </Flex>
 
-        <SelectWrapper>
+        <Flex gap="xs">
           <StyledSelect value={month} onChange={handleMonthChange}>
             <option value="">월 선택</option>
             {monthData && monthData.length > 0 ? (
@@ -73,8 +74,8 @@ export default function CareFilter() {
               <option value="">----</option>
             )}
           </StyledSelect>
-        </SelectWrapper>
-      </FilterContainer>
+        </Flex>
+      </Flex>
     </Sticky>
   );
 }
@@ -84,15 +85,6 @@ const Sticky = styled.div`
   top: 100px;
   z-index: 10;
   padding: ${({ theme }) => theme.spacing.sm};
-`;
-
-const FilterContainer = styled(Row)`
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const StatusFilters = styled(Row)`
-  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const FilterRadio = styled.div`
@@ -105,6 +97,7 @@ const FilterRadio = styled.div`
   }
 `;
 
+// TODO
 const RadioButton = styled(Button)<{ $isSelected: boolean }>``;
 
 // const RadioButton = styled(Button)<{ $isSelected: boolean }>`
@@ -121,10 +114,6 @@ const RadioButton = styled(Button)<{ $isSelected: boolean }>``;
 
 //   ${({ theme }) => theme.typeScale.sm};
 // `;
-
-const SelectWrapper = styled(Row)`
-  gap: ${({ theme }) => theme.spacing.xs};
-`;
 
 const StyledSelect = styled.select`
   padding: 6px ${({ theme }) => theme.spacing.sm};

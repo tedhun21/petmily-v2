@@ -3,13 +3,14 @@ import styled from 'styled-components';
 import { PiStarFill } from 'react-icons/pi';
 import { MdOutlineRateReview } from 'react-icons/md';
 
-import { Column, ImageCentered, RoundedImageWrapper, Row } from 'styles/commonStyle';
-import { PetInfoCapsule, PetInfoContainer } from '@pages/cares/:id/page';
+import { ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
 import { timeRange, weekdays } from 'utils/date';
 import { Petsitter } from 'types/user.type';
-import { Button } from 'styles/common/Button';
-import { Link } from 'react-router-dom';
-import { Text } from 'styles/common/Text';
+
+import { Text } from '@components/Text';
+import { Flex } from '@components/Flex';
+import Box from '@components/Box';
+import Link from '@components/Link';
 
 interface PetsitterCardProps {
   petsitter: Petsitter;
@@ -23,67 +24,60 @@ export default function PetsitterCard({ petsitter }: PetsitterCardProps) {
   }
 
   return (
-    <Card as="section">
-      <ImageName>
-        <PetsitterImage>
-          <ImageCentered
-            src={petsitter?.photo ? `${petsitter?.photo}` : '/imgs/DefaultUserProfile.jpg'}
-            alt="petsitter_photo"
-          />
-        </PetsitterImage>
-        <Text $size="lg" $weight="semibold">
-          {petsitter?.nickname} 님
-        </Text>
-        <LinkWrapper>
-          <Button as={Link} to={`/chats/temp?${params.toString()}`} $size="sm" $borderRadius="sm">
-            채팅 하기
-          </Button>
-          <Button as={Link} to={`/users/${petsitter?.nickname}`} $size="sm" $borderRadius="sm">
-            프로필 보기
-          </Button>
-        </LinkWrapper>
-      </ImageName>
-      <PetsitterInfo>
-        <StarReviewWrapper>
-          <IconAndSpan>
-            <PiStarFill size="28px" color="#279EFF" />
-            <Text $size="lg">{petsitter?.star}</Text>
-          </IconAndSpan>
-          <IconAndSpan>
-            <MdOutlineRateReview size="28px">review</MdOutlineRateReview>
-            <Text $size="lg">{petsitter?.reviewCount}</Text>
-          </IconAndSpan>
-        </StarReviewWrapper>
+    <section>
+      <Box p="xl" br="lg" shadow="dp03">
+        <Flex direction="column" alignItems="center" gap="sm">
+          <PetsitterImage>
+            <ImageCentered
+              src={petsitter?.photo ? `${petsitter?.photo}` : '/imgs/DefaultUserProfile.jpg'}
+              alt="petsitter_photo"
+            />
+          </PetsitterImage>
+          <Text size="lg" weight="semibold">
+            {petsitter?.nickname} 님
+          </Text>
+          <Flex gap="xs">
+            <Link to={`/chats/temp?${params.toString()}`} type="text" size="sm">
+              채팅 하기
+            </Link>
+            <Link to={`/users/${petsitter?.nickname}`} type="text" size="sm">
+              프로필 보기
+            </Link>
+          </Flex>
+        </Flex>
+        <Flex direction="column">
+          <Flex>
+            <Flex alignItems="center" gap="xs">
+              <PiStarFill size="28px" color="#279EFF" />
+              <Text size="lg">{petsitter?.star}</Text>
+            </Flex>
+            <Flex alignItems="center" gap="xs">
+              <MdOutlineRateReview size="28px">review</MdOutlineRateReview>
+              <Text size="lg">{petsitter?.reviewCount}</Text>
+            </Flex>
+          </Flex>
 
-        <PetInfoContainer>
-          {petsitter?.possibleDays?.map((day: string, index: number) => {
-            const matchedDay = weekdays.find((weekday) => weekday.value === day);
-            return <PetInfoCapsule key={index}>{matchedDay?.label}</PetInfoCapsule>;
-          })}
-        </PetInfoContainer>
+          <Flex alignItems="center" gap="sm">
+            {petsitter?.possibleDays?.map((day: string, index: number) => {
+              const matchedDay = weekdays.find((weekday) => weekday.value === day);
+              return (
+                <PetInfoCapsule key={index}>
+                  <Text size="sm" color="white">
+                    {matchedDay?.label}
+                  </Text>
+                </PetInfoCapsule>
+              );
+            })}
+          </Flex>
 
-        <div>
-          <span>{timeRange(petsitter?.possibleStartTime ?? null, petsitter?.possibleEndTime ?? null)}</span>
-        </div>
-      </PetsitterInfo>
-    </Card>
+          <div>
+            <span>{timeRange(petsitter?.possibleStartTime ?? null, petsitter?.possibleEndTime ?? null)}</span>
+          </div>
+        </Flex>
+      </Box>
+    </section>
   );
 }
-
-const Card = styled(Row)`
-  padding: ${({ theme }) => theme.spacing.xl};
-  border-radius: ${({ theme }) => theme.radius.lg};
-  box-shadow: ${({ theme }) => theme.shadow.dp03};
-
-  > div {
-    flex: 1;
-  }
-`;
-
-const ImageName = styled(Column)`
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.sm};
-`;
 
 const PetsitterImage = styled(RoundedImageWrapper)`
   width: 100px;
@@ -91,27 +85,8 @@ const PetsitterImage = styled(RoundedImageWrapper)`
   border: 2px solid ${({ theme }) => theme.colors.line.box.highlight};
 `;
 
-const PetsitterInfo = styled(Column)`
-  flex: auto;
-
-  > div {
-    display: flex;
-    flex: 1;
-    justify-content: center;
-    align-items: center;
-  }
-`;
-
-const LinkWrapper = styled(Row)`
-  gap: ${({ theme }) => theme.spacing.xs};
-`;
-
-const StarReviewWrapper = styled(Row)`
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.sm};
-`;
-
-const IconAndSpan = styled(Row)`
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.xs};
+const PetInfoCapsule = styled.li`
+  padding: 4px 8px;
+  background-color: ${({ theme }) => theme.colors.background.box.accent.primary};
+  border-radius: ${({ theme }) => theme.radius.lg};
 `;

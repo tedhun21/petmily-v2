@@ -1,11 +1,11 @@
-import { Row } from 'styles/commonStyle';
+import { useState } from 'react';
 import { PiPawPrint, PiPawPrintFill } from 'react-icons/pi';
+
 import { useAuthSWR, useAuthSWRMutation } from 'hooks/authSWR';
 import { fetcher, updater } from 'api';
-import { useState } from 'react';
-import styled from 'styled-components';
 import Loading from '@components/Loading';
-import { Text } from 'styles/common/Text';
+import { Text } from '@components/Text';
+import { Flex } from '@components/Flex';
 
 interface IProps {
   userId: number | null;
@@ -53,21 +53,16 @@ export default function PawButton({ userId }: IProps) {
       {isMutating && isLoading ? (
         <Loading />
       ) : isPawed ? (
-        <Div>
-          <Text $size="lg">unpaw</Text>
+        <Flex alignItems="center" gap="sm">
+          <Text size="lg">unpaw</Text>
           <PiPawPrint size="24px" />
-        </Div>
+        </Flex>
       ) : (
-        <Div>
-          <Text $size="lg">paw</Text>
+        <Flex alignItems="center" gap="sm">
+          <Text size="lg">paw</Text>
           <PiPawPrintFill size="24px" />
-        </Div>
+        </Flex>
       )}
     </button>
   );
 }
-
-const Div = styled(Row)`
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.sm};
-`;

@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 import { fetcher, updater } from 'api';
 import { UserRole } from 'types/user.type';
 import Loading from '@components/Loading';
-import { Column } from 'styles/commonStyle';
+import { Flex } from '@components/Flex';
 
 // 1. URL에서 액세스 토큰 파싱
 // 2. 액세스 토큰을 이용해 내 정보 가져오기
@@ -46,9 +46,9 @@ export default function RedirectPage() {
   }, [me, navigate]);
 
   return (
-    <MainContainer>
+    <Flex as="main" justifyContent="center" alignItems="center">
       {me && me.role === UserRole.USER ? (
-        <ImgContainer>
+        <Flex direction="column" gap="3xl">
           <ImageButton onClick={handleClientOAuth}>
             <Image src="/imgs/Signupforclient.png" alt="보호자로 가입하기" />
             <ClientSign>보호자로 가입하기</ClientSign>
@@ -57,27 +57,13 @@ export default function RedirectPage() {
             <Image src="/imgs/Signupforpetsitter.png" alt="펫시터로 가입하기" />
             <PetsitterSign>펫시터로 가입하기</PetsitterSign>
           </ImageButton>
-        </ImgContainer>
+        </Flex>
       ) : (
         <Loading />
       )}
-    </MainContainer>
+    </Flex>
   );
 }
-
-const MainContainer = styled.main`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  padding: ${({ theme }) => theme.spacing._4xl};
-`;
-
-const ImgContainer = styled(Column)`
-  width: 100%;
-  gap: ${({ theme }) => theme.spacing._3xl};
-`;
 
 const ImageButton = styled.button`
   position: relative;

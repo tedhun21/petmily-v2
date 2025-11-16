@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import useSWRMutation from 'swr/mutation';
 import styled from 'styled-components';
@@ -12,12 +12,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { poster } from 'api';
 import GoogleOAuthButton from '@components/buttons/OAuthButton';
 import Loading from '@components/Loading';
-import { Center, Column } from 'styles/commonStyle';
 
 import { AuthContext } from '@components/contexts/AuthProvider';
-import { Button } from 'styles/common/Button';
-import { Input } from 'styles/common/Input';
-import { Text } from 'styles/common/Text';
+import { Button } from '@components/buttons/Button';
+import { Input } from '@components/Input';
+import { Text } from '@components/Text';
+import { Flex } from '@components/Flex';
+import Link from '@components/Link';
 
 const schema = yup.object().shape({
   email: yup.string().email('이메일 형식을 지켜주세요.').required('ID는 필수입니다.'),
@@ -82,80 +83,66 @@ export default function LoginPage() {
   };
 
   return (
-    <Main as="main">
-      <img src="/imgs/Logo.svg" alt="logo" width="150px" height="48px" />
+    <main>
+      <Flex direction="column" alignItems="center" gap="5xl">
+        <img src="/imgs/Logo.svg" alt="logo" width="150px" height="48px" />
 
-      <FormContainer as="form" onSubmit={handleSubmit(onSubmit)}>
-        <InputError>
-          <Input
-            type="email"
-            placeholder="아이디"
-            {...register('email', { required: true })}
-            $fullWidth
-            $size="md"
-            $error={!!errors.email}
-          />
-          {errors?.email && (
-            <Text $size="xs" $color="error">
-              {errors.email?.message}
-            </Text>
-          )}
-        </InputError>
-        <InputError>
-          <Input
-            type="password"
-            placeholder="비밀번호"
-            {...register('password', { required: true })}
-            $fullWidth
-            $size="md"
-            $error={!!errors.password}
-          />
-          {errors?.password && (
-            <Text $size="xs" $color="error">
-              {errors.password?.message}
-            </Text>
-          )}
-        </InputError>
+        <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%', maxWidth: '400px' }}>
+          <Flex direction="column" gap="md">
+            <Flex direction="column" gap="xs">
+              <Input
+                type="email"
+                placeholder="아이디"
+                {...register('email', { required: true })}
+                fullWidth
+                size="md"
+                error={!!errors.email}
+              />
+              {errors?.email && (
+                <Text size="xs" color="error">
+                  {errors.email?.message}
+                </Text>
+              )}
+            </Flex>
+            <Flex direction="column" gap="xs">
+              <Input
+                type="password"
+                placeholder="비밀번호"
+                {...register('password', { required: true })}
+                fullWidth
+                size="md"
+                error={!!errors.password}
+              />
+              {errors?.password && (
+                <Text size="xs" color="error">
+                  {errors.password?.message}
+                </Text>
+              )}
+            </Flex>
 
-        <Button type="submit" disabled={isMutating} $variant="primary" $size="md" $fullWidth>
-          {isMutating ? <Loading /> : '로 그 인'}
-        </Button>
+            <Button type="submit" disabled={isMutating} variant="primary" size="md" fullWidth>
+              {isMutating ? <Loading /> : '로 그 인'}
+            </Button>
 
-        <GoogleOAuthButton>Log in with Google</GoogleOAuthButton>
-      </FormContainer>
+            <GoogleOAuthButton>Log in with Google</GoogleOAuthButton>
+          </Flex>
+        </form>
 
-      <div>
-        <Center>
-          <span>처음이신가요?</span>
-          <CustomLink to="/signup">회원가입하기</CustomLink>
-        </Center>
-        <Center>
-          <span>아이디를 잊으셨나요?</span>
-          <CustomLink to="/login/find-id">아이디 찾기</CustomLink>
-        </Center>
-      </div>
-    </Main>
+        <div>
+          <Flex justifyContent="center" alignItems="center" gap="md">
+            <span>처음이신가요?</span>
+            <Link to="/signup" type="text">
+              회원가입하기
+            </Link>
+          </Flex>
+          <Flex justifyContent="center" alignItems="center" gap="md">
+            <span>아이디를 잊으셨나요?</span>
+            <Link to="/login/find-id" type="text">
+              아이디 찾기
+            </Link>
+          </Flex>
+        </div>
+      </Flex>
+    </main>
   );
 }
-
-const Main = styled(Center)`
-  flex-direction: column;
-  height: 100%;
-  gap: ${({ theme }) => theme.spacing._5xl};
-`;
-
-const FormContainer = styled(Column)`
-  width: 100%;
-  max-width: 360px;
-  gap: ${({ theme }) => theme.spacing.md};
-`;
-
-const CustomLink = styled(Link)`
-  color: ${({ theme }) => theme.colors.text.highlight};
-  font-size: ${({ theme }) => theme.typeScale.sm};
-  text-decoration-line: none;
-`;
-
-const InputError = styled(Column)`
-  gap: ${({ theme }) => theme.spacing.xs};
-`;

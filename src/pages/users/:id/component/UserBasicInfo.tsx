@@ -1,8 +1,10 @@
 import styled from 'styled-components';
-import { Column, ImageCentered, RoundedImageWrapper, Row } from 'styles/commonStyle';
+import { ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
 import { UserRole } from 'types/user.type';
 import { PetsitterFeedback } from './PetsitterFeedback';
-import { Text } from 'styles/common/Text';
+import { Text } from '@components/Text';
+import Box from '@components/Box';
+import { flex, Flex } from '@components/Flex';
 
 interface IProps {
   role: UserRole;
@@ -14,30 +16,26 @@ interface IProps {
 }
 
 export default function UserBasicInfo({ role, nickname, photo, body, star, reviewCount }: IProps) {
-  // 유저의 사진
-  // 유저의 닉네임
-  // 유저의 소개 밑으로
   return (
-    <Section>
-      <UserInfo>
+    <Container>
+      <Flex gap="lg">
         <UserImage>
           <ImageCentered src={photo ?? '/imgs/DefaultUserProfile.jpg'} alt="user_photo" />
         </UserImage>
         <Div>
-          <Text $size="base">{role === UserRole.PETSITTER ? `펫시터: ${nickname} 님` : `${nickname} 님`}</Text>
+          <Text size="base">{role === UserRole.PETSITTER ? `펫시터: ${nickname} 님` : `${nickname} 님`}</Text>
           <PetsitterFeedback star={star} reviewCount={reviewCount} />
         </Div>
-      </UserInfo>
+      </Flex>
       <Body>{body}</Body>
-    </Section>
+    </Container>
   );
 }
 
-const Section = styled.section`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.sm};
-  width: 100%;
+const Container = styled(Box).attrs(() => ({
+  w: '100%',
+}))`
+  ${flex({ direction: 'column', gap: 'sm' })}
 `;
 
 const UserImage = styled(RoundedImageWrapper)`
@@ -45,12 +43,11 @@ const UserImage = styled(RoundedImageWrapper)`
   height: 80px;
 `;
 
-const Div = styled(Column)`
+// TODO
+const Div = styled.div`
+  display: flex;
+  flex-direction: column;
   flex: 1;
-  gap: ${({ theme }) => theme.spacing.lg};
-`;
-
-const UserInfo = styled(Row)`
   gap: ${({ theme }) => theme.spacing.lg};
 `;
 

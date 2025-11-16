@@ -1,4 +1,4 @@
-import NavHeader from '@components/headers/NavHeader';
+import NavHeader from '@components/headers/NavigationHeader';
 import Results from './component/Results';
 import SearchBox from './component/SearchBox';
 

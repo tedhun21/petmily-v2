@@ -1,17 +1,15 @@
 import { useEffect, useRef } from 'react';
 
-import { Link } from 'react-router-dom';
-
 import styled from 'styled-components';
 import { useInView } from 'framer-motion';
-
-import { Center, Column } from 'styles/commonStyle';
 
 import { useAuthSWRInfinite } from 'hooks/authSWR';
 import PetmilyCard from './PetmilyCard';
 import { fetcher } from 'api';
 import Loading from '@components/Loading';
 import { Pet } from 'types/pet.type';
+import { Flex } from '@components/Flex';
+import Link from '@components/Link';
 
 export default function MyPetContainer() {
   const ref = useRef(null);
@@ -36,19 +34,21 @@ export default function MyPetContainer() {
 
   if (isLoading) {
     return (
-      <Center>
+      <Flex justifyContent="center" alignItems="center">
         <Loading color="#279EFF" />
-      </Center>
+      </Flex>
     );
   }
 
   if (isEmpty) {
     return (
-      <NoPetsContainer>
-        <div>등록된 펫밀리가 없습니다.</div>
-        <div>프로필을 등록하면 빠른 예약이 가능해요!</div>
-        <StyledLink to="/me/register">등록하러 가기</StyledLink>
-      </NoPetsContainer>
+      <Flex direction="column" alignItems="center">
+        <span>등록된 펫밀리가 없습니다.</span>
+        <span>프로필을 등록하면 빠른 예약이 가능해요!</span>
+        <Link to="/me/register" type="text">
+          등록하러 가기
+        </Link>
+      </Flex>
     );
   }
 
@@ -59,9 +59,11 @@ export default function MyPetContainer() {
         data?.map((page: any) => page?.results.map((pet: Pet) => <PetmilyCard key={pet.id} pet={pet} />))}
 
       {!isEnd && (
-        <Center ref={ref}>
-          <Loading color="#279EFF" />
-        </Center>
+        <div ref={ref}>
+          <Flex justifyContent="center" alignItems="center">
+            <Loading color="#279EFF" />
+          </Flex>
+        </div>
       )}
     </CardContainer>
   );
@@ -72,37 +74,4 @@ const CardContainer = styled.ul`
   grid-template-columns: repeat(2, 1fr);
   grid-gap: ${({ theme }) => theme.spacing.md};
   width: 100%;
-`;
-
-// 반려동물이 없을 때
-const NoPetsContainer = styled(Column)`
-  align-items: center;
-  text-align: center;
-
-  & > div {
-    margin-bottom: 30px;
-  }
-`;
-
-const StyledLink = styled(Link)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: ${({ theme }) => theme.spacing.sm};
-  background-color: ${({ theme }) => theme.colors.background.box.accent.primary};
-  border-radius: ${({ theme }) => theme.radius.md};
-  color: ${({ theme }) => theme.colors.text.white};
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.background.box.accent.hover};
-  }
-
-  &:active {
-    background-color: ${({ theme }) => theme.colors.background.box.accent.active};
-    box-shadow: ${({ theme }) => theme.shadow.inset};
-  }
-
-  > span {
-    color: inherit;
-  }
 `;

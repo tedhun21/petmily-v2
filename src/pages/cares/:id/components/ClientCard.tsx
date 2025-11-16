@@ -1,10 +1,11 @@
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { User } from 'types/user.type';
-import { Text } from 'styles/common/Text';
-import { Button } from 'styles/common/Button';
-import { ImageCentered, RoundedImageWrapper, Row } from 'styles/commonStyle';
+import { Text } from '@components/Text';
+import { ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
+import { flex, Flex } from '@components/Flex';
+import Box from '@components/Box';
+import Link from '@components/Link';
 
 interface ClientCardProps {
   client: User;
@@ -18,33 +19,31 @@ export default function ClientCard({ client }: ClientCardProps) {
   }
 
   return (
-    <Card>
-      <ImageName>
+    <Container>
+      <Flex gap="sm">
         <ClientImage>
           <ImageCentered src={client?.photo ? `${client?.photo}` : '/imgs/DefaultUserProfile.jpg'} alt="client_photo" />
         </ClientImage>
-        <Text $size="lg" $weight="semibold">
+        <Text size="lg" weight="semibold">
           {client?.nickname} 님
         </Text>
-      </ImageName>
+      </Flex>
 
-      <Button as={Link} to={`/chats/temp?${params.toString()}`} $variant="primary">
+      <Link to={`/chats/temp?${params.toString()}`} type="text">
         채팅 하기
-      </Button>
-    </Card>
+      </Link>
+    </Container>
   );
 }
 
-const Card = styled.section`
-  display: flex;
-  justify-content: space-between;
-  padding: ${({ theme }) => theme.spacing.xl};
-  border-radius: ${({ theme }) => theme.spacing.xl};
-  box-shadow: ${({ theme }) => theme.shadow.dp03};
-`;
-
-const ImageName = styled(Row)`
-  gap: ${({ theme }) => theme.spacing.sm};
+const Container = styled(Box).attrs(() => ({
+  p: 'xl',
+  br: 'lg',
+  shaodw: 'dp03',
+}))`
+  ${flex({
+    justifyContent: 'space-between',
+  })}
 `;
 
 const ClientImage = styled(RoundedImageWrapper)`

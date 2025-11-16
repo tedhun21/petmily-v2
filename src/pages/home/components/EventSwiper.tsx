@@ -25,5 +25,5 @@ const CustomSwiper = styled(Swiper)`
 
 const EventCard = styled.div`
   height: 100px;
-  padding: ${({ theme }) => theme.spacing._2xl};
+  padding: ${({ theme }) => theme.spacing['2xl']};
 `;

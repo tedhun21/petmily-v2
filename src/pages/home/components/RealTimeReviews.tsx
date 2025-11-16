@@ -1,10 +1,9 @@
 import useSWRInfinite from 'swr/infinite';
 
-import styled from 'styled-components';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 
-import { Center, Title } from 'styles/commonStyle';
+import { Title } from 'styles/commonStyle';
 
 import ReviewCard from './ReviewCard';
 import { fetcher } from 'api';
@@ -14,6 +13,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Review } from 'types/review.type';
 import RealTimeReviewsSkeleton from './RealTimeReviewsSkeleton';
+import { Flex } from '@components/Flex';
 
 export default function RealTimeReviews() {
   const pageSize = 10;
@@ -30,14 +30,14 @@ export default function RealTimeReviews() {
 
   if (isEmpty) {
     return (
-      <Center>
+      <Flex justifyContent="center" alignItems="center">
         <span>조건에 맞는 펫시터가 없습니다</span>
-      </Center>
+      </Flex>
     );
   }
 
   return (
-    <Section>
+    <section>
       <Title>실시간 후기</Title>
 
       {isLoading ? (
@@ -71,12 +71,6 @@ export default function RealTimeReviews() {
             )}
         </Swiper>
       )}
-    </Section>
+    </section>
   );
 }
-
-const Section = styled.section`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.lg};
-`;

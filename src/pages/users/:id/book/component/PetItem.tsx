@@ -68,8 +68,8 @@ const Check = styled.div<{ $isChecked: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: ${({ theme }) => theme.spacing._2xl};
-  height: ${({ theme }) => theme.spacing._2xl};
+  width: ${({ theme }) => theme.spacing['2xl']};
+  height: ${({ theme }) => theme.spacing['2xl']};
   background-color: ${({ theme }) => theme.colors.background.highlight};
   border-radius: ${({ theme }) => theme.radius.circle};
   opacity: ${({ $isChecked }) => ($isChecked ? 1 : 0)};

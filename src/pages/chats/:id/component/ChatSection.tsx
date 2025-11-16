@@ -7,9 +7,10 @@ import { IoMdArrowRoundUp } from 'react-icons/io';
 import ChatHeader from './ChatHeader';
 import ChatContainer from './ChatContainer';
 import { useChat } from '../contexts/ChatProvider';
-import { Button } from 'styles/common/Button';
-import { Input } from 'styles/common/Input';
-import { Row } from 'styles/commonStyle';
+import { Button } from '@components/buttons/Button';
+import { Input } from '@components/Input';
+import Box from '@components/Box';
+import { flex } from '@components/Flex';
 
 interface MessageFormValues {
   message: string;
@@ -45,10 +46,10 @@ export default function ChatSection() {
               placeholder="메시지 보내기"
               autoComplete="off"
               {...register('message')}
-              $variant="default"
-              $size="lg"
-              $borderRadius="lg"
-              $fullWidth
+              variant="default"
+              size="lg"
+              borderRadius="lg"
+              fullWidth
             />
 
             <ChatSubmitButton type="submit">
@@ -79,15 +80,15 @@ const Section = styled.section`
   }
 `;
 
-const Wrapper = styled(Row)`
-  align-items: center;
-  padding: ${({ theme }) => theme.spacing.md};
-  gap: ${({ theme }) => theme.spacing.sm};
+const Wrapper = styled(Box).attrs(() => ({
+  p: 'md',
+}))`
+  ${flex({ alignItems: 'center', gap: 'sm' })}
 `;
 
 const ChatSubmitButton = styled(Button).attrs(() => ({
-  $variant: 'icon',
-  $borderRadius: 'circle',
+  variant: 'icon',
+  borderRadius: 'circle',
 }))`
   background-color: ${({ theme }) => theme.colors.background.box.accent.primary};
 

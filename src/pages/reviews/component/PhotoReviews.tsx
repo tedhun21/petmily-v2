@@ -4,11 +4,11 @@ import useSWRInfinite from 'swr/infinite';
 import { useInView } from 'framer-motion';
 
 import { fetcher } from 'api';
-import { Center } from 'styles/commonStyle';
 import styled from 'styled-components';
 import Loading from '@components/Loading';
 import PhotoReviewCardSkeleton from './PhotoReviewCardSkeleton';
 import PhotoReviewCard from './PhotoReviewCard';
+import { Flex } from '@components/Flex';
 
 export default function PhotoReviews() {
   const ref = useRef(null);
@@ -33,9 +33,9 @@ export default function PhotoReviews() {
 
   if (isEmpty) {
     return (
-      <Center>
+      <Flex justifyContent="center" alignItems="center">
         <span>No Photo Review</span>
-      </Center>
+      </Flex>
     );
   }
 
@@ -48,9 +48,11 @@ export default function PhotoReviews() {
         data?.map((page) => page?.results.map((review: any) => <PhotoReviewCard key={review.id} review={review} />))}
 
       {data && !isEnd && (
-        <Center ref={ref}>
-          <Loading color="#279EFF" />
-        </Center>
+        <div ref={ref}>
+          <Flex justifyContent="center" alignItems="center">
+            <Loading color="#279EFF" />
+          </Flex>
+        </div>
       )}
     </ReviewContainer>
   );

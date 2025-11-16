@@ -1,12 +1,14 @@
 import styled, { css } from 'styled-components';
 
+const styleProps = ['size', 'variant', 'error', 'fullWidth', 'borderRadius'];
+
 // Input props 타입을 정의합니다.
 export type InputProps = {
-  $size?: 'sm' | 'md' | 'lg';
-  $variant?: 'default' | 'search';
-  $error?: boolean;
-  $fullWidth?: boolean;
-  $borderRadius?: 'sm' | 'md' | 'lg' | 'circle';
+  size?: 'sm' | 'md' | 'lg';
+  variant?: 'default' | 'search';
+  error?: boolean;
+  fullWidth?: boolean;
+  borderRadius?: 'sm' | 'md' | 'lg' | 'circle';
 };
 
 const sizes = {
@@ -32,8 +34,8 @@ const variants = {
       border-color: ${({ theme }) => theme.colors.line.input.focus};
     }
 
-    ${({ $error, theme }) =>
-      $error &&
+    ${({ error, theme }) =>
+      error &&
       css`
         border-color: ${theme.colors.line.input.error};
       `}
@@ -43,7 +45,9 @@ const variants = {
   `,
 };
 
-export const Input = styled.input<InputProps>`
+export const Input = styled.input.withConfig({
+  shouldForwardProp: (prop) => !styleProps.includes(prop),
+})<InputProps>`
   font-weight: 500;
   transition: all 0.2s ease-in-out;
   outline: none;
@@ -60,11 +64,11 @@ export const Input = styled.input<InputProps>`
     color: ${({ theme }) => theme.colors.text.inactive};
   }
 
-  border-radius: ${({ theme, $borderRadius = 'md' }) => theme.radius[$borderRadius]};
-  ${({ $size = 'md' }) => sizes[$size]};
-  ${({ $variant = 'default' }) => variants[$variant]};
-  ${({ $fullWidth }) =>
-    $fullWidth &&
+  border-radius: ${({ theme, borderRadius = 'md' }) => theme.radius[borderRadius]};
+  ${({ size = 'md' }) => sizes[size]};
+  ${({ variant = 'default' }) => variants[variant]};
+  ${({ fullWidth }) =>
+    fullWidth &&
     css`
       width: 100%;
     `};

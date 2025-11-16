@@ -5,12 +5,14 @@ import { useFormContext } from 'react-hook-form';
 
 import { FaXmark } from 'react-icons/fa6';
 
-import { Divider, Row } from 'styles/commonStyle';
+import { Divider } from 'styles/commonStyle';
 import StartTimeOutModal from './StartEndTimeModal';
 import { AddText, InputDiv, Label, Modal, Wrapper, XButton } from '../SearchBox';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
 import { closeModal, ModalType, openModal } from 'store/modalSlice';
+import Box from '@components/Box';
+import { Flex } from '@components/Flex';
 
 export default function StartEndTimeBox() {
   const dispatch = useDispatch();
@@ -53,7 +55,7 @@ export default function StartEndTimeBox() {
   }, []);
 
   return (
-    <Row style={{ flex: 2, alignItems: 'center' }}>
+    <Flex alignItems="center" style={{ flex: 2 }}>
       <InputDiv onClick={(e) => handlestartTimeBoxClick(e)} $isSelected={currentModal === ModalType.SEARCH_START_TIME}>
         <Wrapper>
           <Label>체크인</Label>
@@ -87,6 +89,6 @@ export default function StartEndTimeBox() {
           </Modal>,
           container,
         )}
-    </Row>
+    </Flex>
   );
 }

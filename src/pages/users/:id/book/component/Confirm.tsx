@@ -3,7 +3,10 @@ import styled from 'styled-components';
 import { FaRegCircleCheck, FaCircleCheck } from 'react-icons/fa6';
 import { Modal } from '@mui/material';
 
-import { Column, SubTitle, Title } from 'styles/commonStyle';
+import { SubTitle, Title } from 'styles/commonStyle';
+import { Text } from '@components/Text';
+import { Button } from '@components/buttons/Button';
+import { Flex } from '@components/Flex';
 
 interface ConfirmProps {
   isChecked: boolean;
@@ -23,12 +26,12 @@ export default function Confirm({ isChecked, setIsChecked }: ConfirmProps) {
   return (
     <ConfirmContainer>
       <Check>{isChecked ? <FaCircleCheck size="28px" color="279EFF" /> : <FaRegCircleCheck size="28px" />}</Check>
-      <Column>
+      <Flex direction="column">
         <ConfirmText $isChecked={isChecked}>안내사항을 모두 확인하였습니다</ConfirmText>
         <TermsButton type="button" onClick={handleOpen}>
           펫밀리 안내사항 보기
         </TermsButton>
-      </Column>
+      </Flex>
 
       <Modal open={open} onClose={handleClose}>
         <TermsContainer>
@@ -39,14 +42,14 @@ export default function Confirm({ isChecked, setIsChecked }: ConfirmProps) {
             <SubTitle>펫시터님께 미리 알려주세요!</SubTitle>
             <List>
               <Item>급식할 사료의 양</Item>
-              <Column>
+              <Flex direction="column">
                 <Item>식수 제공방법</Item>
                 <SubItem>예) 정수기, 자동 급수 등</SubItem>
-              </Column>
-              <Column>
+              </Flex>
+              <Flex direction="column">
                 <Item>배변 처리 방법</Item>
                 <SubItem>예) 변기, 일반 쓰레기 등</SubItem>
-              </Column>
+              </Flex>
               <Item>강아지의 경우, 산책시 발 세쳑 방법</Item>
               <Item>(30분 산책시, 시간 관계상 물티슈 닦기만 가능)</Item>
               <Item>고양이의 경우, 주로 숨어 있는 장소</Item>
@@ -84,17 +87,17 @@ export default function Confirm({ isChecked, setIsChecked }: ConfirmProps) {
           <Container>
             <RedSubTitle>산책이 불가한 경우</RedSubTitle>
             <List>
-              <Column>
+              <Flex direction="column">
                 <Item>인식표 미지참 / 산택 줄 길이 2M 초과시</Item>
                 <SubItem>실내 산책, 놀이로 대체될 수 있음</SubItem>
                 <SubItem>동물보호법 제 12조 / 동물보호범 시행규칙 제 11조 [시행 2020. 3. 21]</SubItem>
                 <SubItem>동물 보호 제 12조(안전조치) [시행 2022, 2. 11]</SubItem>
-              </Column>
+              </Flex>
             </List>
           </Container>
-          <button type="button" onClick={handleCheck}>
+          <Button type="button" onClick={handleCheck} variant="primary">
             확인했습니다
-          </button>
+          </Button>
         </TermsContainer>
       </Modal>
     </ConfirmContainer>
@@ -112,14 +115,17 @@ const ConfirmContainer = styled.div`
   gap: ${({ theme }) => theme.spacing.sm};
 `;
 
-const TermsContainer = styled(Column)`
+// TODO
+const TermsContainer = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
   overflow: auto;
   width: 400px;
   height: 600px;
-  padding: ${({ theme }) => theme.spacing._2xl};
+  display: flex;
+  flex-direction: column;
+  padding: ${({ theme }) => theme.spacing['2xl']};
   background-color: ${({ theme }) => theme.colors.background.box.default.primary};
   border-radius: ${({ theme }) => theme.radius.sm};
   color: ${({ theme }) => theme.colors.text.active};
@@ -131,13 +137,16 @@ const TextCenter = styled.div`
   text-align: center;
 `;
 
-const Container = styled(Column)`
-  gap: ${({ theme }) => theme.spacing.sm};
-`;
+const Container = styled(Flex).attrs(() => ({
+  direction: 'column',
+  gap: 'sm',
+}))``;
 
-const RedSubTitle = styled(SubTitle)`
-  color: ${({ theme }) => theme.colors.text.error};
-`;
+const RedSubTitle = styled(Text).attrs(() => ({
+  size: 'lg',
+  weight: 'bold',
+  color: 'error',
+}))``;
 
 const List = styled.ul`
   display: flex;
@@ -156,13 +165,6 @@ const SubItem = styled.span`
   color: ${({ theme }) => theme.colors.text.inactive};
   ${({ theme }) => theme.typeScale.xs};
 `;
-
-// const CheckButton = styled(BlueButton)`
-//   width: 100%;
-//   padding: ${({ theme }) => theme.spacing.md};
-//   border-radius: ${({ theme }) => theme.radius.md};
-//   ${({ theme }) => theme.typeScale.base};
-// `;
 
 const Check = styled.div`
   position: absolute;

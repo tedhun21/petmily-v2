@@ -6,7 +6,7 @@ import { useInView } from 'framer-motion';
 import useChatRooms from '@pages/chats/hooks/useChatRooms';
 import ChatRoomItem from './ChatRoomItem';
 import Loading from '@components/Loading';
-import { Center } from 'styles/commonStyle';
+import { Flex } from '@components/Flex';
 
 export default function ChatRoomList() {
   const ref = useRef<HTMLDivElement | null>(null);
@@ -21,17 +21,17 @@ export default function ChatRoomList() {
 
   if (isLoading && chatRooms.length === 0) {
     return (
-      <Center>
+      <Flex justifyContent="center" alignItems="center">
         <Loading color="279EFF" />
-      </Center>
+      </Flex>
     );
   }
 
   if (!isLoading && chatRooms.length === 0) {
     return (
-      <Center>
+      <Flex justifyContent="center" alignItems="center">
         <span>채팅방이 없습니다.</span>
-      </Center>
+      </Flex>
     );
   }
 
@@ -43,9 +43,11 @@ export default function ChatRoomList() {
         ))}
       </ul>
       {!isEnd && (
-        <Center ref={ref}>
-          <Loading color="#279EFF" />
-        </Center>
+        <div ref={ref}>
+          <Flex justifyContent="center" alignItems="center">
+            <Loading color="#279EFF" />
+          </Flex>
+        </div>
       )}
     </Main>
   );

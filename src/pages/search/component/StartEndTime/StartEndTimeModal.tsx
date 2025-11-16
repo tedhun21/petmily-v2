@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import { ModalLayOut } from '../SearchBox';
-import { Column } from 'styles/commonStyle';
 import { timeOptions } from 'utils/date';
 import { useFormContext } from 'react-hook-form';
 import dayjs from 'dayjs';
 import { RootState } from 'store';
 import { useDispatch, useSelector } from 'react-redux';
 import { ModalType, openModal } from 'store/modalSlice';
+import { Flex } from '@components/Flex';
 
 export default function StartEndTimeModal() {
   const dispatch = useDispatch();
@@ -66,35 +66,27 @@ export default function StartEndTimeModal() {
 
   return (
     <ModalLayOut>
-      <Content>
-        <TimeContainer>
-          <span>{currentModal === ModalType.SEARCH_START_TIME ? '체크인' : '체크아웃'} 시간 선택</span>
-          <List>
-            {timeOptions().map((time: string) => {
-              const inTime = startTime === time;
-              const outTime = endTime === time;
-              const isBetween = isTimeBetween(time);
+      <Flex direction="column" gap="lg">
+        <span>{currentModal === ModalType.SEARCH_START_TIME ? '체크인' : '체크아웃'} 시간 선택</span>
+        <List>
+          {timeOptions().map((time: string) => {
+            const inTime = startTime === time;
+            const outTime = endTime === time;
+            const isBetween = isTimeBetween(time);
 
-              return (
-                <CapsuleWrapper key={time} $isBetween={isBetween} $isStartTime={inTime} $isEndTime={outTime}>
-                  <TimeCapsule onClick={(e) => handleCapsuleClick(e, time)} $isSelected={inTime || outTime}>
-                    {time}
-                  </TimeCapsule>
-                </CapsuleWrapper>
-              );
-            })}
-          </List>
-        </TimeContainer>
-      </Content>
+            return (
+              <CapsuleWrapper key={time} $isBetween={isBetween} $isStartTime={inTime} $isEndTime={outTime}>
+                <TimeCapsule onClick={(e) => handleCapsuleClick(e, time)} $isSelected={inTime || outTime}>
+                  {time}
+                </TimeCapsule>
+              </CapsuleWrapper>
+            );
+          })}
+        </List>
+      </Flex>
     </ModalLayOut>
   );
 }
-
-const Content = styled.div``;
-
-const TimeContainer = styled(Column)`
-  gap: ${({ theme }) => theme.spacing.lg};
-`;
 
 const List = styled.ul`
   display: flex;
@@ -114,10 +106,10 @@ const TimeCapsule = styled.li<{ $isSelected: boolean }>`
   justify-content: center;
   align-items: center;
   padding: 12px ${({ theme }) => theme.spacing.lg};
-  background-color: ${({ theme, $isSelected }) => $isSelected && theme.colors.background.box.default.opposite};
+  background-color: ${({ theme, $isSelected }) => $isSelected && theme.colors.background.box.default.inverse};
   border: 1px solid transparent;
   border-radius: ${({ theme }) => theme.spacing.xl};
-  color: ${({ $isSelected, theme }) => $isSelected && theme.colors.text.opposite};
+  color: ${({ $isSelected, theme }) => $isSelected && theme.colors.text.inverse};
   font-weight: ${({ theme }) => theme.fontWeight.light};
   cursor: pointer;
 

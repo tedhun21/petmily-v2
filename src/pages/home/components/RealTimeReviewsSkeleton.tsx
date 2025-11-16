@@ -1,21 +1,21 @@
 import styled, { keyframes } from 'styled-components';
-import { Column, Row } from 'styles/commonStyle';
+import { Flex } from '@components/Flex';
 
 function SkeletonCard() {
   return (
     <Card>
-      <ClientContainer>
-        <ClientImageName>
+      <Flex justifyContent="space-between" alignItems="flex-start">
+        <Flex alignItems="center" gap="xs">
           <SkeletonElement style={{ width: '46px', height: '46px', borderRadius: '50%' }} />
           <SkeletonElement style={{ width: '80px', height: '21px' }} />
-        </ClientImageName>
+        </Flex>
         <SkeletonElement style={{ width: '50px', height: '28px' }} />
-      </ClientContainer>
-      <ContentContainer>
+      </Flex>
+      <Flex gap="sm">
         <SkeletonElement style={{ width: '100%', height: '18px' }} />
         <SkeletonElement style={{ width: '80%', height: '18px' }} />
         <SkeletonElement style={{ width: '40%', height: '18px', alignSelf: 'flex-end' }} />
-      </ContentContainer>
+      </Flex>
     </Card>
   );
 }
@@ -42,7 +42,8 @@ const SkeletonElement = styled.div`
   animation: ${pulse} 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 `;
 
-const Container = styled(Row)`
+const Container = styled.div`
+  display: flex;
   justify-content: center;
   overflow-x: auto;
   width: 100%;
@@ -54,7 +55,9 @@ const Container = styled(Row)`
   }
 `;
 
-const Card = styled(Column)`
+const Card = styled.div`
+  display: flex;
+  flex-direction: column;
   flex-shrink: 0;
   width: 300px;
   height: 156px;
@@ -62,20 +65,4 @@ const Card = styled(Column)`
   background-color: ${({ theme }) => theme.colors.background.box.default.primary};
   border-radius: ${({ theme }) => theme.radius.lg};
   gap: ${({ theme }) => theme.spacing.md};
-`;
-
-const ClientContainer = styled(Row)`
-  justify-content: space-between;
-  align-items: flex-start;
-  width: 100%;
-`;
-
-const ClientImageName = styled(Row)`
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.xs};
-`;
-
-const ContentContainer = styled(Column)`
-  gap: ${({ theme }) => theme.spacing.sm};
-  width: 100%;
 `;

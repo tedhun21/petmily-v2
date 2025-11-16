@@ -9,9 +9,11 @@ import { FaXmark } from 'react-icons/fa6';
 
 import Loading from '@components/Loading';
 import { fetcher, poster, updater } from 'api';
-import { BottomFixed, Center, Column, Float, Row, Title } from 'styles/commonStyle';
-import { Button } from 'styles/common/Button';
-import { Text } from 'styles/common/Text';
+import { BottomFixed, Float, Title } from 'styles/commonStyle';
+import { Button } from '@components/buttons/Button';
+import { Text } from '@components/Text';
+import { Flex } from '@components/Flex';
+import Box from '@components/Box';
 
 interface JournalFormValue {
   body: string;
@@ -145,92 +147,85 @@ export default function JournalPage() {
   }, [journal]);
 
   return (
-    <Column as="main">
-      <Center>
-        <Title>{journal ? '케어일지 수정' : '케어일지 작성'}</Title>
-      </Center>
+    <main>
+      <Box p="xl">
+        <Flex justifyContent="center" alignItems="center">
+          <Title>{journal ? '케어일지 수정' : '케어일지 작성'}</Title>
+        </Flex>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Container>
-          <TextSection>
-            <Text $size="base">케어일지 내용</Text>
-            <TextArea placeholder="케어 중 무슨 일이 있으셨나요?" {...register('body')} />
-          </TextSection>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Flex>
+            <Flex gap="sm">
+              <Text size="base">케어일지 내용</Text>
+              <TextArea placeholder="케어 중 무슨 일이 있으셨나요?" {...register('body')} />
+            </Flex>
 
-          <ImageSection>
-            <Text $size="base">사진 첨부</Text>
-            <input
-              type="file"
-              accept="image/png, image/jpg, image/jpeg"
-              multiple
-              ref={fileInputRef}
-              onChange={handleFileChange}
-              hidden
-            />
-            <ImageSelectWrapper>
-              <Button type="button" onClick={openFileInput}>
-                파일 선택
+            <Flex direction="column" gap="sm">
+              <Text size="base">사진 첨부</Text>
+              <input
+                type="file"
+                accept="image/png, image/jpg, image/jpeg"
+                multiple
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                hidden
+              />
+              <Flex alignItems="center" gap="xs">
+                <Button type="button" onClick={openFileInput}>
+                  파일 선택
+                </Button>
+                <Text size="sm">최대 5개의 이미지를 선택할 수 있습니다.</Text>
+              </Flex>
+
+              <ImagePreview>
+                {selectedFiles &&
+                  selectedFiles.map((file: File, index: number) => (
+                    <ImagePreviewItem key={index}>
+                      <Img src={URL.createObjectURL(file)} alt={`selected_${index}`} />
+                      <RemoveButton type="button" onClick={() => handleRemoveInputImage(index)}>
+                        <FaXmark color="white" size="16px" />
+                      </RemoveButton>
+                    </ImagePreviewItem>
+                  ))}
+                {imageUrls &&
+                  Array.isArray(imageUrls) &&
+                  imageUrls.length > 0 &&
+                  imageUrls.map((url: string, index: number) => (
+                    <ImagePreviewItem key={index}>
+                      <Img src={`${url}`} alt={`review_server_image_${index}`} />
+                      <RemoveButton type="button" onClick={() => handleRemoveReviewImage(index)}>
+                        <FaXmark color="white" size="16px" />
+                      </RemoveButton>
+                    </ImagePreviewItem>
+                  ))}
+              </ImagePreview>
+            </Flex>
+          </Flex>
+
+          <BottomFixed>
+            <FloatButtonContainer>
+              <Button
+                type="submit"
+                disabled={isCreateMutating || isUpdateMutating}
+                size="lg"
+                borderRadius="lg"
+                fullWidth
+              >
+                {isCreateMutating || isUpdateMutating ? (
+                  <Flex justifyContent="center" alignItems="center">
+                    <Loading />
+                  </Flex>
+                ) : (
+                  <span>{journal ? '케어일지 수정' : '케어일지 등록'}</span>
+                )}
               </Button>
-              <Text $size="sm">최대 5개의 이미지를 선택할 수 있습니다.</Text>
-            </ImageSelectWrapper>
-
-            <ImagePreview>
-              {selectedFiles &&
-                selectedFiles.map((file: File, index: number) => (
-                  <ImagePreviewItem key={index}>
-                    <Img src={URL.createObjectURL(file)} alt={`selected_${index}`} />
-                    <RemoveButton type="button" onClick={() => handleRemoveInputImage(index)}>
-                      <FaXmark color="white" size="16px" />
-                    </RemoveButton>
-                  </ImagePreviewItem>
-                ))}
-              {imageUrls &&
-                Array.isArray(imageUrls) &&
-                imageUrls.length > 0 &&
-                imageUrls.map((url: string, index: number) => (
-                  <ImagePreviewItem key={index}>
-                    <Img src={`${url}`} alt={`review_server_image_${index}`} />
-                    <RemoveButton type="button" onClick={() => handleRemoveReviewImage(index)}>
-                      <FaXmark color="white" size="16px" />
-                    </RemoveButton>
-                  </ImagePreviewItem>
-                ))}
-            </ImagePreview>
-          </ImageSection>
-        </Container>
-
-        <BottomFixed>
-          <FloatButtonContainer>
-            <Button
-              type="submit"
-              disabled={isCreateMutating || isUpdateMutating}
-              $size="lg"
-              $borderRadius="lg"
-              $fullWidth
-            >
-              {isCreateMutating || isUpdateMutating ? (
-                <Center>
-                  <Loading />
-                </Center>
-              ) : (
-                <span>{journal ? '케어일지 수정' : '케어일지 등록'}</span>
-              )}
-            </Button>
-          </FloatButtonContainer>
-        </BottomFixed>
-      </form>
-    </Column>
+            </FloatButtonContainer>
+          </BottomFixed>
+        </form>
+      </Box>
+    </main>
   );
 }
-
-const Container = styled(Column)`
-  gap: ${({ theme }) => theme.spacing.xl};
-  padding: ${({ theme }) => theme.spacing.xl};
-`;
-
-const TextSection = styled(Column)`
-  gap: ${({ theme }) => theme.spacing.sm};
-`;
 
 const TextArea = styled.textarea`
   width: 100%;
@@ -243,19 +238,6 @@ const TextArea = styled.textarea`
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.background.input.hover};
-  }
-`;
-
-const ImageSection = styled(Column)`
-  gap: ${({ theme }) => theme.spacing.sm};
-`;
-
-const ImageSelectWrapper = styled(Row)`
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.xs};
-
-  > div {
-    ${({ theme }) => theme.typeScale.xs}
   }
 `;
 
@@ -283,8 +265,8 @@ const RemoveButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: ${({ theme }) => theme.spacing._2xl};
-  height: ${({ theme }) => theme.spacing._2xl};
+  width: ${({ theme }) => theme.spacing['2xl']};
+  height: ${({ theme }) => theme.spacing['2xl']};
   background-color: ${({ theme }) => theme.colors.background.box.accent.primary};
   border-radius: 50%;
 `;

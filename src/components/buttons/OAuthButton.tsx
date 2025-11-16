@@ -1,21 +1,20 @@
 import styled from 'styled-components';
 import { API_URL } from 'config';
-import { Button } from '../../styles/common/Button';
-import { InputProps } from 'styles/common/Input';
-import { Text } from 'styles/common/Text';
+import { Button, ButtonProps } from './Button';
+import { Text } from '@components/Text';
 
-interface GoogleOAuthButtonProps extends InputProps {
+interface GoogleOAuthButtonProps extends ButtonProps {
   children: React.ReactNode;
 }
 
-export default function GoogleOAuthButton({ children, $size, $borderRadius }: GoogleOAuthButtonProps) {
+export default function GoogleOAuthButton({ children }: GoogleOAuthButtonProps) {
   const handleGooleOAuth = () => {
     window.location.assign(`${API_URL}/connect/google`);
   };
   return (
-    <GoogleOAuthButtonStyle type="button" onClick={handleGooleOAuth} $size={$size} $borderRadius={$borderRadius}>
+    <GoogleOAuthButtonStyle type="button" onClick={handleGooleOAuth}>
       <GoogleImage src="/imgs/GoogleLogo.svg" alt="google logo" width="24" />
-      <Text $size="base" $color="active">
+      <Text size="base" color="active">
         {children}
       </Text>
     </GoogleOAuthButtonStyle>
@@ -23,9 +22,9 @@ export default function GoogleOAuthButton({ children, $size, $borderRadius }: Go
 }
 
 const GoogleOAuthButtonStyle = styled(Button).attrs((props) => ({
-  $variant: 'secondary',
-  $size: props.$size,
-  $borderRadius: props.$borderRadius,
+  variant: 'secondary',
+  size: props.size,
+  borderRadius: props.borderRadius,
 }))`
   position: relative;
 `;

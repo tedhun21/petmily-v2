@@ -7,8 +7,8 @@ import { ChatMember } from 'types/chat.type';
 import ChatRoomDrawer from './ChatRoomDrawer';
 import { useChat } from '../contexts/ChatProvider';
 import BackButton from '@components/buttons/BackButton';
-import { Button } from 'styles/common/Button';
-import { Text } from 'styles/common/Text';
+import { Button } from '@components/buttons/Button';
+import { Text } from '@components/Text';
 
 export default function ChatHeader() {
   const {
@@ -24,8 +24,8 @@ export default function ChatHeader() {
   return (
     <Header>
       <BackButton />
-      <Text $size="xl">{otherMembers?.map((other: ChatMember) => other?.user?.nickname)?.join(', ')}</Text>
-      <Button type="button" onClick={handleDrawerToggle} $variant="icon" $borderRadius="circle">
+      <Text size="xl">{otherMembers?.map((other: ChatMember) => other?.user?.nickname)?.join(', ')}</Text>
+      <Button type="button" onClick={handleDrawerToggle} variant="icon" borderRadius="circle">
         <FiMenu size="28px" color="#279EFF" />
       </Button>
       <ChatRoomDrawer isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} />

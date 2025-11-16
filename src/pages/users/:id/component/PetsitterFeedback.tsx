@@ -1,7 +1,7 @@
-import ReadOnlyRating from '@components/ReadOnlyRating';
 import { MdOutlineRateReview } from 'react-icons/md';
-import styled from 'styled-components';
-import { Row } from 'styles/commonStyle';
+
+import ReadOnlyRating from '@components/ReadOnlyRating';
+import { Flex } from '@components/Flex';
 
 interface IProps {
   star: number | null;
@@ -11,28 +11,15 @@ interface IProps {
 export function PetsitterFeedback({ star, reviewCount }: IProps) {
   // 별점, 리뷰
   return (
-    <Wrapper>
-      <Item>
+    <Flex alignItems="center" gap="4xl">
+      <Flex direction="column" alignItems="center" gap="sm">
         <span>{star}</span>
         <ReadOnlyRating size="20px" value={star || 0} />
-      </Item>
-      <Item>
+      </Flex>
+      <Flex direction="column" alignItems="center" gap="sm">
         <span>{reviewCount}</span>
         <MdOutlineRateReview size="16px" />
-      </Item>
-    </Wrapper>
+      </Flex>
+    </Flex>
   );
 }
-
-const Wrapper = styled(Row)`
-  align-items: center;
-  width: 100%;
-  gap: 40px;
-`;
-
-const Item = styled.li`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.sm};
-  align-items: center;
-`;

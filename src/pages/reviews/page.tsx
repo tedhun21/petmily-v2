@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { Title } from 'styles/commonStyle';
 import PhotoReviews from './component/PhotoReviews';
-import NavHeader from '@components/headers/NavHeader';
+import NavHeader from '@components/headers/NavigationHeader';
 
 export default function ReviewsPage() {
   return (

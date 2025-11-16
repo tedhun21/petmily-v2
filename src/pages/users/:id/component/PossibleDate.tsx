@@ -7,13 +7,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 
-import { Row, Title } from 'styles/commonStyle';
+import { Title } from 'styles/commonStyle';
 import { reservationDisableDate, timeOptions } from 'utils/date';
 import { fetcher } from 'api';
 import { Petsitter } from 'types/user.type';
 import { DayOfWeekType } from 'types/common.type';
 import { Reservation } from 'types/reservation.type';
 import { Link } from 'react-router-dom';
+import Box from '@components/Box';
+import { Flex } from '@components/Flex';
 
 interface PossibleDateProps {
   petsitter?: Petsitter;
@@ -167,10 +169,10 @@ export default function PossibleDate({ petsitter }: PossibleDateProps) {
 
   return (
     <Section>
-      <TitleContainer>
+      <Flex justifyContent="space-between" alignItems="center">
         <Title>예약 가능 날짜</Title>
         {date && <button onClick={deleteDate}>날짜 지우기</button>}
-      </TitleContainer>
+      </Flex>
 
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <Controller
@@ -185,10 +187,10 @@ export default function PossibleDate({ petsitter }: PossibleDateProps) {
       <AnimatePresence>
         {date && (
           <div>
-            <TitleContainer>
+            <Flex justifyContent="space-between" alignItems="center">
               <Title>예약 가능 시간</Title>
               {(startTime || endTime) && <button onClick={deleteTime}>시간 지우기</button>}
-            </TitleContainer>
+            </Flex>
             <DropdownMenu
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
@@ -241,11 +243,6 @@ const Section = styled.section`
   width: 100%;
   height: 100%;
   gap: ${({ theme }) => theme.spacing.lg};
-`;
-
-const TitleContainer = styled(Row)`
-  justify-content: space-between;
-  align-items: center;
 `;
 
 const StyledDatePicker = styled(DatePicker)`
@@ -312,6 +309,7 @@ const TimeText = styled.span<{ disabled: boolean; $isBetween: boolean; $isSelect
   text-decoration: ${({ disabled }) => (disabled ? 'line-through' : 'none')};
 `;
 
+// TODO
 // const ButtonContainer = styled.div`
 //   flex: 1;
 //   display: flex;
@@ -319,27 +317,3 @@ const TimeText = styled.span<{ disabled: boolean; $isBetween: boolean; $isSelect
 //   padding: ${({ theme }) => theme.spacing.xl};
 //   background-color: ${({ theme }) => theme.colors.background.primary};
 // `;
-
-const StyledLink = styled(Link)<{ disabled: boolean }>`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  padding: ${({ theme }) => theme.spacing.md};
-  background-color: ${({ theme, disabled }) =>
-    disabled ? theme.colors.background.box.accent.disabled : theme.colors.background.box.accent.primary};
-  border-radius: ${({ theme }) => theme.radius.md};
-  color: ${({ theme }) => theme.colors.text.white};
-  pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.background.box.accent.hover};
-  }
-
-  &:active {
-    background-color: ${({ theme }) => theme.colors.background.box.accent.active};
-    box-shadow: ${({ theme }) => theme.shadow.inset};
-  }
-
-  ${({ theme }) => theme.typeScale.base};
-`;

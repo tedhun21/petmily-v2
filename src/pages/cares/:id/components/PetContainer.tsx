@@ -5,9 +5,9 @@ import 'swiper/css/pagination';
 
 import { Mousewheel, Pagination } from 'swiper/modules';
 import styled from 'styled-components';
-import { Column, ImageCentered, RoundedImageWrapper, Row } from 'styles/commonStyle';
-import { PetInfoCapsule, PetInfoContainer } from '@pages/cares/:id/page';
+import { ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
 import { Pet, PetSpecies } from 'types/pet.type';
+import { Flex } from '@components/Flex';
 
 interface PetContainerProps {
   pets: Pet[];
@@ -26,8 +26,8 @@ export default function PetContainer({ pets }: PetContainerProps) {
     >
       {pets?.map((pet: Pet) => (
         <SwiperSlide key={pet.id}>
-          <PetCard>
-            <PetImageName>
+          <Flex direction="column" justifyContent="space-between">
+            <Flex alignItems="center" gap="xs">
               <PetImage>
                 <ImageCentered
                   src={
@@ -43,15 +43,15 @@ export default function PetContainer({ pets }: PetContainerProps) {
                 />
               </PetImage>
               <span>{pet.name}</span>
-            </PetImageName>
-            <PetInfoContainer>
+            </Flex>
+            <Flex as="ul">
               <PetInfoCapsule>{pet.age}살</PetInfoCapsule>
               <PetInfoCapsule>{pet.gender}</PetInfoCapsule>
               <PetInfoCapsule>{pet.species}</PetInfoCapsule>
               <PetInfoCapsule>{pet.breed}</PetInfoCapsule>
               <PetInfoCapsule>{pet.weight}kg</PetInfoCapsule>
-            </PetInfoContainer>
-          </PetCard>
+            </Flex>
+          </Flex>
         </SwiperSlide>
       ))}
     </CustomSwiper>
@@ -66,19 +66,16 @@ const CustomSwiper = styled(Swiper)`
   box-shadow: ${({ theme }) => theme.shadow.dp03};
 `;
 
-const PetCard = styled(Column)`
-  justify-content: space-between;
-  height: 100%;
-  padding: ${({ theme }) => theme.spacing.xl};
-`;
-
-const PetImageName = styled(Row)`
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.xs};
-`;
-
 const PetImage = styled(RoundedImageWrapper)`
   width: 60px;
   height: 60px;
   border: 2px solid ${({ theme }) => theme.colors.line.box.highlight};
+`;
+
+const PetInfoCapsule = styled.li`
+  padding: 4px 8px;
+  background-color: ${({ theme }) => theme.colors.background.box.accent.primary};
+  border-radius: ${({ theme }) => theme.radius.lg};
+  color: ${({ theme }) => theme.colors.text.white};
+  ${({ theme }) => theme.typeScale.sm};
 `;

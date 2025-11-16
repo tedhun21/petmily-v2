@@ -9,8 +9,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import { PiCatBold, PiDogBold } from 'react-icons/pi';
 
-import { Column, Row } from 'styles/commonStyle';
-
 import useSWRMutation from 'swr/mutation';
 import Loading from '@components/Loading';
 import { toast } from 'react-toastify';
@@ -20,8 +18,10 @@ import BackHeader from '@components/headers/BackHeader';
 import EditableProfileImage from '@components/EditableProfileImage';
 import { PetGender, PetSpecies } from 'types/pet.type';
 import { poster } from 'api';
-import { Button } from 'styles/common/Button';
-import { Input } from 'styles/common/Input';
+import { Button } from '@components/buttons/Button';
+import { Input } from '@components/Input';
+import Box from '@components/Box';
+import { Flex } from '@components/Flex';
 
 const schema = yup.object().shape({
   species: yup.string().oneOf(['dog', 'cat'], '강아지인가요 고양이인가요?').required('이 항목은 필수입니다.'),
@@ -125,14 +125,14 @@ export default function CreatePetPage() {
           <InputWrapper>
             <InputLabel htmlFor="gender">성별</InputLabel>
             <RadioContainer>
-              <GenderWrapper>
+              <Flex alignItems="center" gap="sm">
                 <input type="radio" value={PetGender.MALE} {...register('gender')} />
                 <TbGenderMale size="32px" />
-              </GenderWrapper>
-              <GenderWrapper>
+              </Flex>
+              <Flex alignItems="center" gap="sm">
                 <input type="radio" value={PetGender.FEMALE} {...register('gender')} />
                 <TbGenderFemale size="32px" />
-              </GenderWrapper>
+              </Flex>
             </RadioContainer>
           </InputWrapper>
 
@@ -154,19 +154,19 @@ export default function CreatePetPage() {
           <InputWrapper>
             <InputLabel htmlFor="age">나이</InputLabel>
 
-            <RowWrapper>
+            <Flex alignItems="center" gap="sm">
               <Input type="number" {...register('age')} />
               <span>살</span>
-            </RowWrapper>
+            </Flex>
           </InputWrapper>
 
           {/* 몸무게 */}
           <InputWrapper>
             <InputLabel htmlFor="weight">몸무게</InputLabel>
-            <RowWrapper>
+            <Flex alignItems="center" gap="sm">
               <Input type="number" {...register('weight')} />
               <span>kg</span>
-            </RowWrapper>
+            </Flex>
           </InputWrapper>
 
           {/* 펫소개 */}
@@ -176,7 +176,7 @@ export default function CreatePetPage() {
           </InputWrapper>
         </InputContainer>
         <ButtonContainer>
-          <Button type="submit" disabled={isMutating} $variant="primary" $size="lg" $fullWidth>
+          <Button type="submit" disabled={isMutating} variant="primary" size="lg" fullWidth>
             {isMutating ? <Loading /> : <span>펫 등록하기</span>}
           </Button>
         </ButtonContainer>
@@ -199,7 +199,9 @@ export const Form = styled.form`
   height: 100%;
 `;
 
-export const InputContainer = styled(Column)`
+export const InputContainer = styled.div`
+  display: flex;
+  flex-direction: column;
   flex: auto;
   overflow-y: auto;
   height: 100%;
@@ -207,12 +209,14 @@ export const InputContainer = styled(Column)`
   gap: ${({ theme }) => theme.spacing.xl};
 `;
 
-export const InputWrapper = styled(Row)`
+export const InputWrapper = styled.div`
+  display: flex;
   align-items: center;
   width: 100%;
 `;
 
-export const PetSpeciesButtonContainer = styled(Row)`
+export const PetSpeciesButtonContainer = styled.div`
+  display: flex;
   overflow: hidden;
   width: 100%;
   border-radius: ${({ theme }) => theme.radius.md};
@@ -242,11 +246,14 @@ export const InputLabel = styled.label`
   width: 20%;
 `;
 
-const InputError = styled(Column)`
+const InputError = styled.div`
+  display: flex;
+  flex-direction: column;
   width: 100%;
 `;
 
-export const RadioContainer = styled(Row)`
+export const RadioContainer = styled.div`
+  display: flex;
   flex: auto;
   justify-content: space-around;
   gap: ${({ theme }) => theme.spacing.xs};
@@ -254,11 +261,6 @@ export const RadioContainer = styled(Row)`
 
 export const GenderRadioLabel = styled.label`
   ${({ theme }) => theme.typeScale.sm};
-`;
-
-export const GenderWrapper = styled(Row)`
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 export const PetTextarea = styled.textarea`
@@ -271,24 +273,8 @@ export const PetTextarea = styled.textarea`
   color: inherit;
 `;
 
-export const RowWrapper = styled(Row)`
-  align-items: center;
-  width: 100%;
-  gap: ${({ theme }) => theme.spacing.sm};
-`;
-
 export const ButtonContainer = styled.div`
   flex: 1;
   background-color: transparent;
   padding: ${({ theme }) => theme.spacing.xl};
 `;
-
-// export const SubmitButton = styled(BlueButton)`
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   width: 100%;
-//   padding: ${({ theme }) => theme.spacing.sm};
-//   border-radius: ${({ theme }) => theme.radius.md};
-//   ${({ theme }) => theme.typeScale.lg};
-// `;

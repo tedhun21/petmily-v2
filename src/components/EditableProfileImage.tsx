@@ -1,9 +1,11 @@
 import { useRef, ChangeEvent, useState } from 'react';
 
 import styled from 'styled-components';
-import { Column, ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
-import { Button } from '../styles/common/Button';
+import { ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
+import { Button } from './buttons/Button';
 import XButton from './buttons/XButton';
+import { flex } from '@components/Flex';
+import Box from './Box';
 
 interface IProps {
   setImageFile: (file: File | null) => void;
@@ -45,7 +47,7 @@ export default function EditableProfileImage({
   };
 
   return (
-    <ImageContainer>
+    <Container>
       <Relative>
         <UserImageWrapper>
           <ImageCentered src={previewUrl || serverImageUrl || defaultImage} alt="Profile Preview" />
@@ -61,14 +63,17 @@ export default function EditableProfileImage({
       <Button as="label" htmlFor="photoInput">
         프로필 사진 선택
       </Button>
-    </ImageContainer>
+    </Container>
   );
 }
 
-const ImageContainer = styled(Column)`
-  align-items: center;
-  padding: 40px;
-  gap: ${({ theme }) => theme.spacing.lg};
+const Container = styled(Box).attrs(() => ({
+  p: 40,
+}))`
+  ${flex({
+    alignItems: 'center',
+    gap: 'lg',
+  })}
 `;
 
 const Relative = styled.div`

@@ -6,7 +6,7 @@ interface LoadingProps {
 }
 
 export default function Loading({ size = '32px', color = 'white' }: LoadingProps) {
-  return <Spinner $size={size} $color={color} />;
+  return <Spinner size={size} $color={color} />;
 }
 
 const spin = keyframes`
@@ -18,9 +18,9 @@ const spin = keyframes`
   }
 `;
 
-const Spinner = styled.div<{ $size: string; $color: string }>`
-  width: ${(props) => props.$size};
-  height: ${(props) => props.$size};
+const Spinner = styled.div<{ size: string; $color: string }>`
+  width: ${(props) => props.size};
+  height: ${(props) => props.size};
   border: 4px solid rgb(0 0 0 / 10%); /* 배경 색상 */
   border-top: 4px solid ${(props) => props.$color}; /* 스피너 색상 */
   border-radius: 50%;

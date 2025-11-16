@@ -9,12 +9,13 @@ import { toast } from 'react-toastify';
 import { FaXmark } from 'react-icons/fa6';
 
 import Loading from '@components/Loading';
-import { BottomFixed, Center, Column, Float, Title } from 'styles/commonStyle';
+import { BottomFixed, Float, Title } from 'styles/commonStyle';
 import { fetcher, poster, updater } from 'api';
 import HoverRating from '@components/HoverRating';
-import { Button } from 'styles/common/Button';
+import { Button } from '@components/buttons/Button';
 import XButton from '@components/buttons/XButton';
-import { Text } from 'styles/common/Text';
+import { Text } from '@components/Text';
+import { Flex } from '@components/Flex';
 
 interface ReviewFormValues {
   star: number;
@@ -155,90 +156,83 @@ export default function ReviewPage() {
   }, [review]);
 
   return (
-    <Column as="main">
-      <Center>
-        <Title>{review ? '후기 수정' : '후기 작성'}</Title>
-      </Center>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Container>
-          <Column>
-            <Text $size="base">별점</Text>
-            <HoverRating value={watch('star')} setValue={setValue} />
-          </Column>
+    <main>
+      <Flex direction="column">
+        <Flex justifyContent="center" alignItems="center">
+          <Title>{review ? '후기 수정' : '후기 작성'}</Title>
+        </Flex>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Flex direction="column" gap="xl">
+            <Flex direction="column">
+              <Text size="base">별점</Text>
+              <HoverRating value={watch('star')} setValue={setValue} />
+            </Flex>
 
-          <TextSection>
-            <Text $size="base">후기 내용</Text>
-            <TextArea placeholder="케어는 어떠셨나요?" {...register('body')} />
-          </TextSection>
+            <Flex direction="column" gap="sm">
+              <Text size="base">후기 내용</Text>
+              <TextArea placeholder="케어는 어떠셨나요?" {...register('body')} />
+            </Flex>
 
-          <ImageSection>
-            <Text $size="base">사진 첨부</Text>
-            <input
-              type="file"
-              accept="image/png, image/jpg, image/jpeg"
-              multiple
-              ref={fileInputRef}
-              onChange={handleFileChange}
-              hidden
-            />
+            <Flex direction="column" gap="lg">
+              <Text size="base">사진 첨부</Text>
+              <input
+                type="file"
+                accept="image/png, image/jpg, image/jpeg"
+                multiple
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                hidden
+              />
 
-            <ImageSelectWrapper>
-              <Button type="button" onClick={openFileInput}>
-                파일 선택
+              <Flex alignItems="center" gap="xs">
+                <Button type="button" onClick={openFileInput}>
+                  파일 선택
+                </Button>
+                <Text size="sm">최대 5개의 이미지를 선택할 수 있습니다.</Text>
+              </Flex>
+
+              <ImagePreview>
+                {selectedFiles &&
+                  Array.from(selectedFiles as File[]).map((file: File, index: number) => (
+                    <ImagePreviewItem key={index}>
+                      <Img src={URL.createObjectURL(file)} alt={`selected_${index}`} />
+                      <Absolute>
+                        <XButton onClick={() => handleRemoveInputImage(index)} />
+                      </Absolute>
+                    </ImagePreviewItem>
+                  ))}
+                {Array.isArray(imageUrls) &&
+                  imageUrls.length > 0 &&
+                  imageUrls.map((url: string, index: number) => (
+                    <ImagePreviewItem key={index}>
+                      <Img src={`${url}`} alt={`review_server_image_${index}`} />
+                      <RemoveButton onClick={() => handleRemoveReviewImage(index)}>
+                        <FaXmark color="white" size="16px" />
+                      </RemoveButton>
+                    </ImagePreviewItem>
+                  ))}
+              </ImagePreview>
+            </Flex>
+          </Flex>
+
+          <BottomFixed>
+            <FloatButtonContainer>
+              <Button type="submit" disabled={isCreateMutating || isUpdateMutating} size="lg" fullWidth>
+                {isCreateMutating || isUpdateMutating ? (
+                  <Flex justifyContent="center" alignItems="center">
+                    <Loading />
+                  </Flex>
+                ) : (
+                  <span>{review ? '후기 수정' : '후기 등록'}</span>
+                )}
               </Button>
-              <Text $size="sm">최대 5개의 이미지를 선택할 수 있습니다.</Text>
-            </ImageSelectWrapper>
-
-            <ImagePreview>
-              {selectedFiles &&
-                Array.from(selectedFiles as File[]).map((file: File, index: number) => (
-                  <ImagePreviewItem key={index}>
-                    <Img src={URL.createObjectURL(file)} alt={`selected_${index}`} />
-                    <Absolute>
-                      <XButton onClick={() => handleRemoveInputImage(index)} />
-                    </Absolute>
-                  </ImagePreviewItem>
-                ))}
-              {Array.isArray(imageUrls) &&
-                imageUrls.length > 0 &&
-                imageUrls.map((url: string, index: number) => (
-                  <ImagePreviewItem key={index}>
-                    <Img src={`${url}`} alt={`review_server_image_${index}`} />
-                    <RemoveButton onClick={() => handleRemoveReviewImage(index)}>
-                      <FaXmark color="white" size="16px" />
-                    </RemoveButton>
-                  </ImagePreviewItem>
-                ))}
-            </ImagePreview>
-          </ImageSection>
-        </Container>
-
-        <BottomFixed>
-          <FloatButtonContainer>
-            <Button type="submit" disabled={isCreateMutating || isUpdateMutating} $size="lg" $fullWidth>
-              {isCreateMutating || isUpdateMutating ? (
-                <Center>
-                  <Loading />
-                </Center>
-              ) : (
-                <span>{review ? '후기 수정' : '후기 등록'}</span>
-              )}
-            </Button>
-          </FloatButtonContainer>
-        </BottomFixed>
-      </form>
-    </Column>
+            </FloatButtonContainer>
+          </BottomFixed>
+        </form>
+      </Flex>
+    </main>
   );
 }
-
-const Container = styled(Column)`
-  gap: ${({ theme }) => theme.spacing.xl};
-  padding: ${({ theme }) => theme.spacing.xl};
-`;
-
-const TextSection = styled(Column)`
-  gap: ${({ theme }) => theme.spacing.sm};
-`;
 
 const TextArea = styled.textarea`
   width: 100%;
@@ -251,20 +245,6 @@ const TextArea = styled.textarea`
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.background.input.hover};
-  }
-`;
-
-const ImageSection = styled(Column)`
-  gap: ${({ theme }) => theme.spacing.lg};
-`;
-
-const ImageSelectWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.xs};
-
-  > div {
-    ${({ theme }) => theme.typeScale.xs};
   }
 `;
 

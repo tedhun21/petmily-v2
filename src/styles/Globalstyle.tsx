@@ -9,11 +9,6 @@ const GlobalStyle = createGlobalStyle`
         box-sizing: border-box;
     }
 
-    #root{
-        display:flex;
-        justify-content: center;
-    }
-
     body {
         background-color: ${({ theme }) => theme.colors.background.secondary};
         font-family: 'Noto Sans KR', Roboto, sans-serif;

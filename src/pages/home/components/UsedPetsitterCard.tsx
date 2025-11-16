@@ -2,10 +2,11 @@ import styled from 'styled-components';
 import { PiStarFill } from 'react-icons/pi';
 
 import { timeRange, weekdays } from 'utils/date';
-import { Column, ImageCentered, RoundedImageWrapper, Row } from 'styles/commonStyle';
+import { ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
 import { Petsitter } from 'types/user.type';
 import { Link } from 'react-router-dom';
-import { Text } from 'styles/common/Text';
+import { Text } from '@components/Text';
+import { Flex } from '@components/Flex';
 
 interface IProps {
   petsitter: Petsitter;
@@ -15,7 +16,7 @@ export default function UsedPetsitterCard({ petsitter }: IProps) {
   const possibleTimeRange = timeRange(petsitter?.possibleStartTime ?? null, petsitter?.possibleEndTime ?? null);
 
   return (
-    <Card to={`/users/${petsitter.nickname}`}>
+    <Link to={`/users/${petsitter.nickname}`}>
       <ImageWrapper>
         <ImageCentered
           src={petsitter?.photo ? `${petsitter.photo}` : '/imgs/DefaultUserProfile.jpg'}
@@ -23,61 +24,40 @@ export default function UsedPetsitterCard({ petsitter }: IProps) {
         />
       </ImageWrapper>
 
-      <InfoContainer>
-        <Row>
+      <Flex direction="column" justifyContent="space-between" gap="sm">
+        <Flex>
           <span>{petsitter?.nickname}</span>
           <span>·</span>
           {petsitter.star && (
-            <StarWrapper>
+            <Flex alignItems="center" gap="xs">
               <PiStarFill size="16px" color="#279EFF" />
               <span>{petsitter?.star}</span>
-            </StarWrapper>
+            </Flex>
           )}
-        </Row>
-        <PossibleWrapper>
+        </Flex>
+        <Flex gap="xs">
           {petsitter?.possibleDays?.map((day: string, index: number) => {
             const matchedDay = weekdays.find((weekday) => weekday.value === day);
             return (
-              <Text $size="xs" $color="secondary" key={index}>
+              <Text size="xs" color="secondary" key={index}>
                 {matchedDay?.label}
               </Text>
             );
           })}
-        </PossibleWrapper>
-        <PossibleWrapper>
-          <Text $size="xs" $color="secondary">
+        </Flex>
+        <Flex gap="xs">
+          <Text size="xs" color="secondary">
             {possibleTimeRange}
           </Text>
-        </PossibleWrapper>
-      </InfoContainer>
-    </Card>
+        </Flex>
+      </Flex>
+    </Link>
   );
 }
-
-const Card = styled(Link)`
-  display: flex;
-  gap: ${({ theme }) => theme.spacing.sm};
-  padding: ${({ theme }) => theme.spacing.md};
-`;
 
 const ImageWrapper = styled(RoundedImageWrapper)`
   flex-shrink: 0;
   width: 60px;
   height: 60px;
   border: 2px solid ${({ theme }) => theme.colors.line.box.highlight};
-`;
-
-const InfoContainer = styled(Column)`
-  flex: 1;
-  justify-content: space-between;
-  gap: ${({ theme }) => theme.spacing.sm};
-`;
-
-const StarWrapper = styled(Row)`
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.xs};
-`;
-
-const PossibleWrapper = styled(Row)`
-  gap: ${({ theme }) => theme.spacing.xs};
 `;

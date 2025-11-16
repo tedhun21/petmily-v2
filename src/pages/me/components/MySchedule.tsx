@@ -4,9 +4,9 @@ import styled from 'styled-components';
 import { useInView } from 'framer-motion';
 import { useAuthSWRInfinite } from 'hooks/authSWR';
 
-import { Center } from 'styles/commonStyle';
 import { fetcher } from 'api';
 import Loading from '@components/Loading';
+import { Flex } from '@components/Flex';
 
 export default function MySchedule() {
   const ref = useRef(null);
@@ -31,17 +31,17 @@ export default function MySchedule() {
 
   if (isLoading) {
     return (
-      <Center>
+      <Flex justifyContent="center" alignItems="center">
         <Loading color="#279EFF" />
-      </Center>
+      </Flex>
     );
   }
 
   if (isEmpty) {
     return (
-      <Center>
+      <Flex justifyContent="center" alignItems="center">
         <span>No Schedule</span>
-      </Center>
+      </Flex>
     );
   }
 
@@ -52,9 +52,11 @@ export default function MySchedule() {
         data?.map((page) => page?.results.map((schedule: any) => <div key={schedule.id}>{schedule.id}</div>))}
 
       {!isEnd && (
-        <Center ref={ref}>
-          <Loading color="#279EFF" />
-        </Center>
+        <div ref={ref}>
+          <Flex justifyContent="center" alignItems="center">
+            <Loading color="#279EFF" />
+          </Flex>
+        </div>
       )}
     </ScheduleList>
   );

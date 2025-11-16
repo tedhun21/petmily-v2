@@ -4,8 +4,9 @@ import { RootState } from 'store';
 import { selectNewMessagesByChatRoom } from 'store/newMessageSlice';
 
 import styled from 'styled-components';
-import { Text } from 'styles/common/Text';
-import { Column, ImageCentered, RoundedImageWrapper, Row } from 'styles/commonStyle';
+import { Flex } from '@components/Flex';
+import { Text } from '@components/Text';
+import { ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
 import { ChatMember, ChatRoom } from 'types/chat.type';
 import { updatedAtAgo } from 'utils/date';
 
@@ -29,7 +30,7 @@ export default function ChatRoomItem({ chatRoom }: ChatRoomItemProps) {
 
   return (
     <ChatRoomLink to={`/chats/${chatRoom.id}`}>
-      <PhotoName>
+      <Flex alignItems="center" gap="xl">
         <Photo>
           {others?.map((other: ChatMember) => (
             <MemberPhoto key={other.id}>
@@ -37,23 +38,23 @@ export default function ChatRoomItem({ chatRoom }: ChatRoomItemProps) {
             </MemberPhoto>
           ))}
         </Photo>
-        <NameMessageWrapper>
+        <Flex direction="column" gap="sm">
           <div>
             {others?.map((other: ChatMember) => (
               <span key={other.id}>{other.user?.nickname ?? 'unknown'}</span>
             ))}
           </div>
-          <Text $size="xs">{lastMessage?.content}</Text>
-        </NameMessageWrapper>
-      </PhotoName>
-      <TimeUnreadCount>
-        <Text $size="xs">{updatedAtAgo(lastMessage?.createdAt)}</Text>
+          <Text size="xs">{lastMessage?.content}</Text>
+        </Flex>
+      </Flex>
+      <Flex direction="column" justifyContent="space-between" alignItems="center" gap="sm">
+        <Text size="xs">{updatedAtAgo(lastMessage?.createdAt)}</Text>
         {unreadCount > 0 && (
           <NewMessage>
-            <Text $size="xs">{unreadCount}</Text>
+            <Text size="xs">{unreadCount}</Text>
           </NewMessage>
         )}
-      </TimeUnreadCount>
+      </Flex>
     </ChatRoomLink>
   );
 }
@@ -62,11 +63,6 @@ const ChatRoomLink = styled(Link)`
   display: flex;
   justify-content: space-between;
   padding: ${({ theme }) => theme.spacing.xl};
-`;
-
-const PhotoName = styled(Row)`
-  gap: ${({ theme }) => theme.spacing.xl};
-  align-items: center;
 `;
 
 const Photo = styled.div`
@@ -78,17 +74,8 @@ const Photo = styled.div`
 
 const MemberPhoto = styled(RoundedImageWrapper)``;
 
-const NameMessageWrapper = styled(Column)`
-  gap: ${({ theme }) => theme.spacing.sm};
-`;
-
-const TimeUnreadCount = styled(Column)`
-  justify-content: space-between;
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.sm};
-`;
-
-const NewMessage = styled(Row)`
+const NewMessage = styled.div`
+  display: flex;
   justify-content: center;
   align-items: center;
   min-width: ${({ theme }) => theme.spacing.xl};

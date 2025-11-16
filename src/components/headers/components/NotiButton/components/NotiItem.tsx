@@ -1,8 +1,10 @@
 import styled from 'styled-components';
-import { Text } from 'styles/common/Text';
-import { Column, Row } from 'styles/commonStyle';
+import { Button } from '@components/buttons/Button';
+import { flex, Flex } from '@components/Flex';
+import { Text } from '@components/Text';
 import { Notification } from 'types/notification.type';
 import { dateAgo, dateFormat } from 'utils/date';
+import Box from '@components/Box';
 
 interface NotiItemProps {
   notification: Notification;
@@ -19,35 +21,32 @@ export default function NotiItem({ notification, onReadClick }: NotiItemProps) {
   };
 
   return (
-    <Item as="li" key={notification.id} onClick={handleClick} $isRead={isRead}>
-      <TopDiv>
-        <DayDiv>
-          <Text
-            $size="sm"
-            $weight="semibold"
-          >{`${dateFormat(notification.createdAt).year}.${dateFormat(notification.createdAt).month}.${dateFormat(notification.createdAt).day}`}</Text>
-          <Text $size="xs">{dateAgo(notification.createdAt)}</Text>
-        </DayDiv>
-        {!isRead && <IsUnread />}
-      </TopDiv>
-      {/* <Text $size="sm">{notification.message}</Text> */}
-    </Item>
+    <Button key={notification.id} onClick={handleClick}>
+      <Flex direction="column">
+        <TopDiv $isRead={isRead}>
+          <Flex alignItems="flex-end" gap="xs">
+            <Text
+              size="sm"
+              weight="semibold"
+            >{`${dateFormat(notification.createdAt).year}.${dateFormat(notification.createdAt).month}.${dateFormat(notification.createdAt).day}`}</Text>
+            <Text size="xs">{dateAgo(notification.createdAt)}</Text>
+          </Flex>
+          {!isRead && <IsUnread />}
+        </TopDiv>
+      </Flex>
+      {/* <Text size="sm">{notification.message}</Text> */}
+    </Button>
   );
 }
 
-const Item = styled(Column)<{ $isRead: boolean }>`
-  padding: ${({ theme }) => theme.spacing.xs};
+const TopDiv = styled(Box).attrs(() => ({
+  p: 'xs',
+}))<{ $isRead: boolean }>`
   cursor: ${({ $isRead }) => ($isRead ? 'default' : 'pointer')};
-`;
-
-const TopDiv = styled(Row)`
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const DayDiv = styled(Row)`
-  gap: ${({ theme }) => theme.spacing.xs};
-  align-items: flex-end;
+  ${flex({
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  })}
 `;
 
 const IsUnread = styled.div`

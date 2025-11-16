@@ -2,14 +2,14 @@ import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import { useMemo, useState } from 'react';
 import useMeasure from 'hooks/useMeasure';
-import { Center, Row } from 'styles/commonStyle';
 import useCoords from 'hooks/useCoords';
-import { FaXmark } from 'react-icons/fa6';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 import { TbCurrentLocation } from 'react-icons/tb';
 import { GrMapLocation } from 'react-icons/gr';
-import { Button } from 'styles/common/Button';
+import { Button } from '@components/buttons/Button';
 import XButton from '@components/buttons/XButton';
+import Box from '@components/Box';
+import { Flex } from '@components/Flex';
 
 interface MapsDrawerProps {
   address?: string;
@@ -116,13 +116,15 @@ export default function MapsDrawer({ address, map, geocode }: MapsDrawerProps) {
       dragElastic={0.2}
     >
       <div style={{ position: 'relative', width: '100%' }}>
-        <DrawerHeader>
-          <DrawerHandle />
-        </DrawerHeader>
+        <Box h="52px">
+          <Flex justifyContent="center" alignItems="center">
+            <DrawerHandle />
+          </Flex>
+        </Box>
         <div ref={contentRef}>
-          <Center>
+          <Flex justifyContent="center" alignItems="center">
             <span>{address}</span>
-          </Center>
+          </Flex>
           <ButtonWrapper>
             <Button onClick={handleMarkerCenter}>
               <HiOutlineLocationMarker size="24px" />
@@ -161,10 +163,6 @@ const StyledMotionDiv = styled(motion.div)`
   border-top-right-radius: ${({ theme }) => theme.radius.lg};
 `;
 
-const DrawerHeader = styled(Center)`
-  height: 52px;
-`;
-
 const DrawerHandle = styled.div`
   width: 52px;
   height: ${({ theme }) => theme.spacing.xs};
@@ -179,7 +177,9 @@ const Absolute = styled.div`
   right: 12px;
 `;
 
-const ButtonWrapper = styled(Row)`
+// TODO
+const ButtonWrapper = styled.div`
+  display: flex;
   padding: ${({ theme }) => theme.spacing.xl};
   gap: ${({ theme }) => theme.spacing.xs};
 

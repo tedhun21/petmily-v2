@@ -18,8 +18,6 @@ import { FaArrowUp, FaXmark } from 'react-icons/fa6';
 import { GoVerified } from 'react-icons/go';
 import { PiCatBold, PiDogBold } from 'react-icons/pi';
 
-import { Column, Row } from 'styles/commonStyle';
-
 import { removeCookie } from 'utils/cookie';
 import { TypeRadioLabel } from '../pet/register/page';
 
@@ -36,9 +34,11 @@ import BackHeader from '@components/headers/BackHeader';
 import EditableProfileImage from '../../../components/EditableProfileImage';
 import { UserRole } from 'types/user.type';
 import { PetSpecies } from 'types/pet.type';
-import { Button } from 'styles/common/Button';
-import { Input } from 'styles/common/Input';
-import { Text } from 'styles/common/Text';
+import { Button } from '@components/buttons/Button';
+import { Input } from '@components/Input';
+import { Text } from '@components/Text';
+import Box from '@components/Box';
+import { flex, Flex } from '@components/Flex';
 
 const schema = yup.object().shape({
   nickname: yup
@@ -245,7 +245,7 @@ export default function EditMePage() {
   return (
     <>
       <BackHeader title="회원 정보 수정" />
-      <Form as="form" onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <InputContainer>
           <EditableProfileImage
             setImageFile={setImageFile}
@@ -260,18 +260,18 @@ export default function EditMePage() {
           </InputWrapper>
           <InputWrapper>
             <InputLabel htmlFor="email">이메일</InputLabel>
-            <EmailWrapper>
+            <Flex justifyContent="space-between" alignItems="center">
               <span id="email">{me?.email}</span>
 
               {me?.verified ? <GoVerified color="#279EFF" size="20px" /> : <EmailCodeModalButton email={me?.email} />}
-            </EmailWrapper>
+            </Flex>
           </InputWrapper>
           <InputWrapper>
             <InputLabel htmlFor="nickname">닉네임</InputLabel>
             <InputError>
               <Input id="nickname" {...register('nickname')} />
               {errors.nickname && (
-                <Text $size="sm" $color="error">
+                <Text size="sm" color="error">
                   {errors.nickname.message}
                 </Text>
               )}
@@ -282,7 +282,7 @@ export default function EditMePage() {
             <InputError>
               <Input id="phone" {...register('phone')} />
               {errors.phone && (
-                <Text $size="sm" $color="error">
+                <Text size="sm" color="error">
                   {errors.phone.message}
                 </Text>
               )}
@@ -293,7 +293,7 @@ export default function EditMePage() {
             <InputError>
               <Input id="address" onClick={onToggleModal} onKeyDown={onToggleModal} {...register('address')} />
               {errors.address && (
-                <Text $size="sm" $color="error">
+                <Text size="sm" color="error">
                   {errors.address.message}
                 </Text>
               )}
@@ -314,7 +314,7 @@ export default function EditMePage() {
             <InputError>
               <Input id="detailAddress" {...register('detailAddress')} />
               {errors.detailAddress && (
-                <Text $size="sm" $color="error">
+                <Text size="sm" color="error">
                   {errors.detailAddress.message}
                 </Text>
               )}
@@ -355,17 +355,19 @@ export default function EditMePage() {
               </InputWrapper>
               <InputWrapper>
                 <InputLabel>케어가능지역</InputLabel>
-                <LocationInputWrapper>
-                  <LocationList>
+                <Flex direction="column" gap="xs">
+                  <Flex gap="xs">
                     {watch('possibleLocations')?.map((location: any) => (
                       <LocationItem key={location}>
-                        <Text $size="sm">{location}</Text>
-                        <Button type="button" onClick={() => handleDeleteLocation(location)} $variant="icon">
+                        <Text size="sm" color="white">
+                          {location}
+                        </Text>
+                        <Button type="button" onClick={() => handleDeleteLocation(location)} variant="icon">
                           <FaXmark size="16px" color="red" />
                         </Button>
                       </LocationItem>
                     ))}
-                  </LocationList>
+                  </Flex>
 
                   <LocationInputContainer>
                     <LocationInput
@@ -377,11 +379,11 @@ export default function EditMePage() {
                       <FaArrowUp size="16px" color="#279EFF" />
                     </AddLocationButton>
                   </LocationInputContainer>
-                </LocationInputWrapper>
+                </Flex>
               </InputWrapper>
               <InputWrapper>
                 <InputLabel>케어가능요일</InputLabel>
-                <WeekdaysWrapper>
+                <Flex justifyContent="space-between">
                   {weekdays.map((day: any) => (
                     <DayLabel key={day.id} $isSelected={watch('possibleDays')?.includes(day.value)}>
                       <input
@@ -394,11 +396,11 @@ export default function EditMePage() {
                       <span>{day.label}</span>
                     </DayLabel>
                   ))}
-                </WeekdaysWrapper>
+                </Flex>
               </InputWrapper>
               <InputWrapper>
                 <InputLabel>케어가능시간</InputLabel>
-                <TimePickerContainer>
+                <Flex gap="sm">
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DemoContainer components={['TimePicker']} sx={{ flex: 1 }}>
                       <Controller
@@ -443,84 +445,70 @@ export default function EditMePage() {
                       />
                     </DemoContainer>
                   </LocalizationProvider>
-                </TimePickerContainer>
+                </Flex>
               </InputWrapper>
             </>
           )}
         </InputContainer>
 
         <ButtonContainer>
-          <Button disabled={isMutating} type="submit" $variant="primary" $size="lg" $fullWidth>
+          <Button disabled={isMutating} type="submit" variant="primary" size="lg" fullWidth>
             {isLoading ? <Loading /> : <span>수정하기</span>}
           </Button>
-          <LinkContainer>
-            <Button type="button" onClick={handleLogout} $variant="secondary">
+          <Flex justifyContent="space-between">
+            <Button type="button" onClick={handleLogout} variant="secondary">
               로그아웃
             </Button>
-            <Button type="button" onClick={deleteAccount} $variant="secondary">
+            <Button type="button" onClick={deleteAccount} variant="secondary">
               회원 탈퇴
             </Button>
-          </LinkContainer>
+          </Flex>
         </ButtonContainer>
-      </Form>
+      </form>
     </>
   );
 }
 
-const Form = styled(Column)`
-  flex: auto;
-  overflow: hidden;
-  height: 100%;
+const InputContainer = styled(Box).attrs(() => ({
+  p: 'xl',
+  gap: 'xl',
+}))`
+  ${flex({ direction: 'column', gap: 'xl' })}
 `;
 
-const InputContainer = styled(Column)`
-  flex: auto;
-  overflow-y: auto;
-  height: 100%;
-  padding: ${({ theme }) => theme.spacing.xl};
-  gap: ${({ theme }) => theme.spacing.xl};
-`;
-
-const EmailWrapper = styled(Row)`
-  justify-content: space-between;
-  align-items: center;
-  width: 80%;
-`;
-
-export const InputWrapper = styled(Row)`
+export const InputWrapper = styled.div`
+  display: flex;
   align-items: center;
   width: 100%;
+
+  > label {
+    width: 20%;
+  }
+
+  > div {
+    width: 80%;
+  }
 `;
 
-const InputLabel = styled.label`
-  width: 20%;
+const InputLabel = styled.label``;
+
+const InputError = styled(Flex).attrs(() => ({
+  direction: 'column',
+}))``;
+
+const LocationItem = styled(Box).attrs(() => ({
+  p: 'xs',
+  bg: 'background.highlight',
+  br: 'md',
+}))`
+  ${flex({
+    alignItems: 'center',
+    gap: 'xs',
+  })}
 `;
 
-const InputError = styled(Column)`
-  width: 80%;
-`;
-
-const LocationInputWrapper = styled(Column)`
-  width: 80%;
-  gap: ${({ theme }) => theme.spacing.xs};
-`;
-
-const LocationList = styled.ul`
+const LocationInputContainer = styled.div`
   display: flex;
-  gap: ${({ theme }) => theme.spacing.xs};
-`;
-
-const LocationItem = styled.li`
-  display: flex;
-  align-items: center;
-  padding: ${({ theme }) => theme.spacing.xs};
-  background-color: ${({ theme }) => theme.colors.background.highlight};
-  border-radius: ${({ theme }) => theme.radius.md};
-  color: ${({ theme }) => theme.colors.text.white};
-  gap: ${({ theme }) => theme.spacing.xs};
-`;
-
-const LocationInputContainer = styled(Row)`
   position: relative;
   flex: auto;
   justify-content: space-between;
@@ -567,15 +555,11 @@ const TextArea = styled.textarea`
   }
 `;
 
-const PetSpeciesButtonContainer = styled(Row)`
+const PetSpeciesButtonContainer = styled.div`
+  display: flex;
   overflow: hidden;
   width: 80%;
   border-radius: ${({ theme }) => theme.radius.md};
-`;
-
-const WeekdaysWrapper = styled(Row)`
-  justify-content: space-between;
-  width: 80%;
 `;
 
 const DayLabel = styled.label<{ $isSelected?: boolean }>`
@@ -594,11 +578,6 @@ const DayLabel = styled.label<{ $isSelected?: boolean }>`
   &:hover {
     background-color: ${({ theme }) => theme.colors.background.box.accent.hover};
   }
-`;
-
-const TimePickerContainer = styled(Row)`
-  width: 80%;
-  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const StyledTimePicker = styled(TimePicker)`
@@ -620,13 +599,10 @@ const StyledTimePicker = styled(TimePicker)`
   }
 `;
 
-const ButtonContainer = styled(Column)`
+const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
   flex: 1;
   gap: ${({ theme }) => theme.spacing.md};
   padding: ${({ theme }) => theme.spacing.xl};
-`;
-
-const LinkContainer = styled(Row)`
-  justify-content: space-between;
-  width: 100%;
 `;

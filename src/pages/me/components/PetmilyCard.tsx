@@ -3,8 +3,9 @@ import styled from 'styled-components';
 import { TbGenderFemale, TbGenderMale } from 'react-icons/tb';
 
 import { Pet, PetGender, PetSpecies } from 'types/pet.type';
-import { Center, Column, ImageCentered, RoundedImageWrapper, Row } from 'styles/commonStyle';
-import { Text } from 'styles/common/Text';
+import { ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
+import { Text } from '@components/Text';
+import { Flex } from '@components/Flex';
 
 interface PetmilyCardProps {
   pet: Pet;
@@ -13,8 +14,8 @@ interface PetmilyCardProps {
 export default function PetmilyCard({ pet }: PetmilyCardProps) {
   return (
     <PetCard to={`/me/${pet?.id}/edit`}>
-      <UpperContainer>
-        <PetImageNameSpecies>
+      <Flex justifyContent="space-between">
+        <Flex alignItems="center" gap="sm">
           <PetImage>
             <ImageCentered
               src={
@@ -28,24 +29,24 @@ export default function PetmilyCard({ pet }: PetmilyCardProps) {
               }
             />
           </PetImage>
-          <PetNameSpecies>
+          <Flex direction="column" gap="xs">
             <span>{pet?.name}</span>
-            <Text $size="xs" color="inactive">
+            <Text size="xs" color="inverse">
               {pet?.species}
             </Text>
-          </PetNameSpecies>
-        </PetImageNameSpecies>
-      </UpperContainer>
+          </Flex>
+        </Flex>
+      </Flex>
 
       <LowerContainer>
         <PetPropWrapper>
-          <Center>
+          <Flex justifyContent="center" alignItems="center">
             {pet?.gender === PetGender.MALE ? (
               <TbGenderMale size="21px" color="white" />
             ) : pet?.gender === PetGender.FEMALE ? (
               <TbGenderFemale size="21px" color="white" />
             ) : null}
-          </Center>
+          </Flex>
         </PetPropWrapper>
 
         <PetPropWrapper>
@@ -83,20 +84,6 @@ const PetCard = styled(Link)`
   &:visited {
     color: inherit;
   }
-`;
-
-const UpperContainer = styled(Row)`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const PetImageNameSpecies = styled(Row)`
-  gap: ${({ theme }) => theme.spacing.sm};
-  align-items: center;
-`;
-
-const PetNameSpecies = styled(Column)`
-  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 const PetImage = styled(RoundedImageWrapper)`

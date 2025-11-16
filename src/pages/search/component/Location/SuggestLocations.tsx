@@ -1,45 +1,23 @@
 import { HiOutlineLocationMarker } from 'react-icons/hi';
-import styled from 'styled-components';
-import { Text } from 'styles/common/Text';
-import { Center, Column } from 'styles/commonStyle';
+import Box from '@components/Box';
+import { Button } from '@components/buttons/Button';
+import { Text } from '@components/Text';
+import { Flex } from '@components/Flex';
 
 export default function SuggestLocations({ data, handleLocationClick }: any) {
   return (
-    <List as="li">
+    <Flex as="li" direction="column">
       {data?.map((location: string, index: number) => (
-        <Item key={index} onClick={(e) => handleLocationClick(e, location)}>
-          <IconBox>
+        // TODO
+        <Button key={index} onClick={(e) => handleLocationClick(e, location)}>
+          <Box p="sm" bg="box.default.primary" br="md">
             <HiOutlineLocationMarker size="20px" />
-          </IconBox>
-          <Text $size="sm" $color="white">
+          </Box>
+          <Text size="sm" color="white">
             {location}
           </Text>
-        </Item>
+        </Button>
       ))}
-    </List>
+    </Flex>
   );
 }
-
-const List = styled(Column)`
-  width: 100%;
-`;
-
-const Item = styled.li`
-  display: flex;
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.sm};
-  width: 100%;
-  padding: ${({ theme }) => theme.spacing.sm};
-  border-radius: ${({ theme }) => theme.radius.md};
-  cursor: pointer;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.background.highlight};
-  }
-`;
-
-const IconBox = styled(Center)`
-  padding: ${({ theme }) => theme.spacing.sm};
-  background-color: ${({ theme }) => theme.colors.background.box.default.primary};
-  border-radius: ${({ theme }) => theme.radius.md};
-`;

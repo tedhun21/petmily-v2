@@ -6,14 +6,16 @@ import { useFormContext } from 'react-hook-form';
 
 import { fetcher } from 'api';
 import { useDebounceValue } from 'hooks/useDebounce';
-import { Center, Column, Divider, Row } from 'styles/commonStyle';
+import { Divider } from 'styles/commonStyle';
 import RecentSearches from './RecentSearches';
 import SuggestLocations from './SuggestLocations';
 import LocationCapsuleContainer from './LocationCapsuleContainer';
 import Loading from '@components/Loading';
 import { ModalLayOut, HalfModalLayOut, FormValues } from '@pages/search/component/SearchBox';
 import { getRecentSearches } from 'utils/localStorage';
-import { Text } from 'styles/common/Text';
+import { Text } from '@components/Text';
+import Box from '@components/Box';
+import { Flex } from '@components/Flex';
 
 interface LocationModalProps {
   handleSetValue: (field: keyof FormValues, value: any) => void;
@@ -57,20 +59,20 @@ export default function LocationModal({ handleSetValue }: LocationModalProps) {
       {shouldFetchSuggestions && debouncedInput?.length > 0 ? (
         <HalfModalLayOut>
           {isSuggestDataLoading ? (
-            <AlternativeContainer>
+            <Box>
               <Loading />
-            </AlternativeContainer>
+            </Box>
           ) : (
             <SuggestLocations data={suggestData} handleLocationClick={handleLocationClick} />
           )}
         </HalfModalLayOut>
       ) : (
         <ModalLayOut>
-          <Content>
+          <Flex gap="sm">
             {recentSearches?.length > 0 && (
               <RecentContainer>
                 <RecentWrapper>
-                  <Text $size="xs">최근 검색 내역</Text>
+                  <Text size="xs">최근 검색 내역</Text>
                   <RecentSearches data={recentSearches} setRecentSearches={setRecentSearches} />
                 </RecentWrapper>
                 <Divider $orientation="vertical" $thickness="1px" />
@@ -79,30 +81,24 @@ export default function LocationModal({ handleSetValue }: LocationModalProps) {
             {countLocations?.length > 0 && (
               <LocationCapsuleContainer data={countLocations} handleLocationClick={handleLocationClick} />
             )}
-          </Content>
+          </Flex>
         </ModalLayOut>
       )}
     </>
   );
 }
 
-const AlternativeContainer = styled(Center)`
-  width: 100%;
-  height: 300px;
-`;
-
-const Content = styled(Row)`
-  width: 100%;
-  gap: ${({ theme }) => theme.spacing.sm};
-`;
-
-const RecentContainer = styled(Row)`
+// TODO
+const RecentContainer = styled.div`
   display: flex;
   flex: 0 0 auto;
   gap: ${({ theme }) => theme.spacing.xs};
 `;
 
-const RecentWrapper = styled(Column)`
+// TODO
+const RecentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
   flex: 1;
   gap: ${({ theme }) => theme.spacing.xl};
 `;

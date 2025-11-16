@@ -10,7 +10,7 @@ import { RootState } from 'store';
 import useOutsideClickModal from 'hooks/useOutsideClickModal';
 import { closeModal, ModalType, openModal } from 'store/modalSlice';
 import NotiModal from './components/NotiModal';
-import { Button } from 'styles/common/Button';
+import { Button } from '@components/buttons/Button';
 
 export default function NotiButton() {
   const dispatch = useDispatch();
@@ -31,7 +31,7 @@ export default function NotiButton() {
 
   return (
     <NotiContaier id="noti-container">
-      <Button type="button" onClick={toggleNoti} $variant="icon" $borderRadius="circle">
+      <Button type="button" onClick={toggleNoti} variant="icon" borderRadius="circle">
         <IoNotificationsOutline size="24px" />
       </Button>
       {currentModal === ModalType.NOTIFICATION &&
@@ -52,7 +52,7 @@ const NotiContaier = styled.div`
 
 const Modal = styled.div`
   position: absolute;
-  top: ${({ theme }) => theme.spacing._2xl};
-  right: ${({ theme }) => theme.spacing._2xl};
+  top: ${({ theme }) => theme.spacing['2xl']};
+  right: ${({ theme }) => theme.spacing['2xl']};
   z-index: 20;
 `;

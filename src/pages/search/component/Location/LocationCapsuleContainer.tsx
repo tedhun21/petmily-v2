@@ -1,7 +1,6 @@
 import { useRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Text } from 'styles/common/Text';
-import { Column } from 'styles/commonStyle';
+import { Text } from '@components/Text';
 
 interface LocationCapsuleContainerProps {
   data: string[];
@@ -35,7 +34,7 @@ export default function LocationCapsuleContainer({ data, handleLocationClick }: 
 
   return (
     <Container ref={containerRef}>
-      <Text $size="xs">서울</Text>
+      <Text size="xs">서울</Text>
       <List $columnCount={columnCount}>
         {data.map((location: string) => (
           <Item key={location} onClick={(e) => handleLocationClick(e, location)}>
@@ -47,7 +46,9 @@ export default function LocationCapsuleContainer({ data, handleLocationClick }: 
   );
 }
 
-const Container = styled(Column)`
+// TODO
+const Container = styled.div`
+  display: flex;
   flex: 1 1 auto;
   gap: ${({ theme }) => theme.spacing.lg};
 `;

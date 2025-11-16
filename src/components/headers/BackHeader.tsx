@@ -1,8 +1,9 @@
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-
 import { Title } from 'styles/commonStyle';
 import BackButton from '@components/buttons/BackButton';
+
+import Box from '@components/Box';
+import styled from 'styled-components';
+import { flex } from '@components/Flex';
 
 interface IProps {
   title?: string;
@@ -11,18 +12,19 @@ interface IProps {
 
 export default function BackHeader({ title, link }: IProps) {
   return (
-    <Header>
+    <Container as="header">
       <BackButton link={link} />
       <Title>{title}</Title>
-    </Header>
+    </Container>
   );
 }
 
-const Header = styled.header`
-  display: flex;
-  align-items: center;
-  width: 100%;
-  height: 64px;
-  padding: ${({ theme }) => theme.spacing.xl};
-  gap: ${({ theme }) => theme.spacing.xl};
+const Container = styled(Box).attrs(() => ({
+  w: '100%',
+  p: 'xl',
+}))`
+  ${flex({
+    alignItems: 'center',
+    gap: 'xl',
+  })}
 `;

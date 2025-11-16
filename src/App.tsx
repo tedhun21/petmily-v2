@@ -65,9 +65,11 @@ import SocketProvider from '@components/contexts/SocketProvider';
 import ThemeProvider from '@components/contexts/ThemeProvider';
 import GlobalStyle from 'styles/Globalstyle';
 
+import Layout from '@components/Layout';
+
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/">
+    <Route path="/" element={<Layout />}>
       <Route path="" element={<HomePage />} />
       <Route path="reviews" element={<ReviewsPage />} />
       <Route path="search" element={<SearchPage />} />
@@ -105,32 +107,10 @@ export default function App() {
         <SocketProvider>
           <ThemeProvider>
             <GlobalStyle />
-            <Container>
-              <Wrapper>
-                <RouterProvider router={router} />
-              </Wrapper>
-            </Container>
+            <RouterProvider router={router} />
           </ThemeProvider>
         </SocketProvider>
       </AuthProvider>
     </SWRConfig>
   );
 }
-
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  min-height: 100vh;
-  background-color: ${({ theme }) => theme.colors.background.secondary};
-`;
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  max-width: 600px;
-  height: 100%;
-  background-color: ${({ theme }) => theme.colors.background.primary};
-  color: ${({ theme }) => theme.colors.text.active};
-`;

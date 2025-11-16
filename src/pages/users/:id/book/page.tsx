@@ -17,7 +17,7 @@ import { Modal, TextField } from '@mui/material';
 import { timeRange } from 'utils/date';
 import { fetcher, poster } from 'api';
 import SelectPets from './component/SelectPets';
-import { Column, Divider, Row, SubTitle } from 'styles/commonStyle';
+import { Divider, SubTitle } from 'styles/commonStyle';
 
 import Confirm from '@pages/users/:id/book/component/Confirm';
 
@@ -25,8 +25,10 @@ import Loading from '@components/Loading';
 import CustomDaumPostcode from '@components/CustomDaumPostcode';
 import SelectedPetsitter from './component/SelectedPetsitter';
 import BackHeader from '@components/headers/BackHeader';
-import { Button } from 'styles/common/Button';
-import { Text } from 'styles/common/Text';
+import { Button } from '@components/buttons/Button';
+import { Text } from '@components/Text';
+import Box from '@components/Box';
+import { Flex } from '@components/Flex';
 
 const schema = yup.object().shape({
   checkedPets: yup.array().min(1, '적도오 한 마리의 펫을 선택해야 합니다.'),
@@ -122,20 +124,20 @@ export default function BookPage() {
             <Reservation>
               <SubTitle>예약 정보</SubTitle>
 
-              <Column>
-                <ReservationWrapper>
-                  <Text $size="base" $weight="bold">
+              <Flex direction="column">
+                <Flex justifyContent="space-between" alignItems="center">
+                  <Text size="base" weight="bold">
                     예약 날짜
                   </Text>
-                  <Text $size="sm">{date}</Text>
-                </ReservationWrapper>
-                <ReservationWrapper>
-                  <Text $size="base" $weight="bold">
+                  <Text size="sm">{date}</Text>
+                </Flex>
+                <Flex justifyContent="space-between" alignItems="center">
+                  <Text size="base" weight="bold">
                     예약 시간
                   </Text>
-                  <Text $size="sm">{timeRange(startTime, endTime)}</Text>
-                </ReservationWrapper>
-              </Column>
+                  <Text size="sm">{timeRange(startTime, endTime)}</Text>
+                </Flex>
+              </Flex>
 
               <span></span>
             </Reservation>
@@ -146,7 +148,7 @@ export default function BookPage() {
 
                 <Divider />
 
-                <AddressSection as="section">
+                <Flex as="section" direction="column" gap="lg">
                   <SubTitle>어디로 방문할까요?</SubTitle>
                   <Controller
                     name="address"
@@ -173,11 +175,11 @@ export default function BookPage() {
                       <CustomDaumPostcode onComplete={handleComplete} />
                     </div>
                   </Modal>
-                </AddressSection>
+                </Flex>
 
                 <Divider />
 
-                <RequestSection as="section">
+                <Flex as="section" direction="column" gap="lg">
                   <SubTitle>요청사항</SubTitle>
                   <Controller
                     name="body"
@@ -189,7 +191,7 @@ export default function BookPage() {
                       />
                     )}
                   />
-                </RequestSection>
+                </Flex>
               </>
             ) : (
               <>
@@ -204,7 +206,7 @@ export default function BookPage() {
           <ButtonContainer>
             <Confirm isChecked={isChecked} setIsChecked={setIsChecked} />
 
-            <Button disabled={disabled} $size="lg" $borderRadius="lg" $fullWidth>
+            <Button disabled={disabled} size="lg" borderRadius="lg" fullWidth>
               {isMutating ? <Loading /> : <span>예약하기</span>}
             </Button>
           </ButtonContainer>
@@ -220,7 +222,10 @@ const Main = styled.main`
   height: 100vh;
 `;
 
-const Container = styled(Column)`
+// TODO
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
   flex: auto;
   overflow-y: auto;
   height: 100%;
@@ -228,22 +233,14 @@ const Container = styled(Column)`
   gap: ${({ theme }) => theme.spacing.xl};
 `;
 
+// TODO
 const Reservation = styled.section`
   display: flex;
   flex-direction: column;
-  padding: ${({ theme }) => theme.spacing._2xl};
+  padding: ${({ theme }) => theme.spacing['2xl']};
   background-color: ${({ theme }) => theme.colors.background.box.default.primary};
   border-radius: ${({ theme }) => theme.spacing.md};
   box-shadow: ${({ theme }) => theme.shadow.dp01};
-  gap: ${({ theme }) => theme.spacing.lg};
-`;
-
-const ReservationWrapper = styled(Row)`
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const AddressSection = styled(Column)`
   gap: ${({ theme }) => theme.spacing.lg};
 `;
 
@@ -276,11 +273,10 @@ const StyledTextField = styled(TextField)`
   }
 `;
 
-const RequestSection = styled(Column)`
-  gap: ${({ theme }) => theme.spacing.lg};
-`;
-
-const ButtonContainer = styled(Column)`
+// TODO
+const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
   flex: 1;
   justify-content: center;
   padding: ${({ theme }) => theme.spacing.xl};

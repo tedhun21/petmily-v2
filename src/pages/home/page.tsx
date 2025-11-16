@@ -1,55 +1,51 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
-import 'swiper/css';
-import 'swiper/css/pagination';
-
-import HomeAd from '@components/HomeAd';
-
+import HomeAd from '@pages/home/components/HomeAd';
 import RealTimeReviews from './components/RealTimeReviews';
 import UsedPetsitters from './components/UsedPetsitters';
-import NavHeader from '@components/headers/NavHeader';
-
+import NavigationHeader from '@components/headers/NavigationHeader';
 import EventSwiper from './components/EventSwiper';
 import AdSwiper from './components/AdSwiper';
 import SearchBox from '@pages/search/component/SearchBox';
-import { Link } from 'react-router-dom';
-import { Button } from 'styles/common/Button';
+import { Button } from '@components/buttons/Button';
+import Box from '@components/Box';
 
 export default function HomePage() {
   return (
     <>
-      <NavHeader />
-      <Main>
+      <NavigationHeader />
+      <main>
         <HomeAd />
 
         <NoticeWrapper>
-          <Button as={Link} to="/faq" $variant="secondary" $size="lg">
+          <Button as={Link} to="/faq" variant="secondary" size="lg">
             자주 묻는 질문
           </Button>
         </NoticeWrapper>
 
-        <EventSwiper />
-        <AdSwiper />
+        <Box p="md">
+          <EventSwiper />
+        </Box>
 
-        <SearchBox />
+        <Box p="md">
+          <AdSwiper />
+        </Box>
+
+        <Box p="md">
+          <SearchBox />
+        </Box>
 
         <UsedPetsitters />
 
         <RealTimeReviews />
-      </Main>
+      </main>
     </>
   );
 }
 
-const Main = styled.main`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  padding: ${({ theme }) => theme.spacing.md};
-  gap: ${({ theme }) => theme.spacing.xl};
-`;
-
 const NoticeWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
+  padding: 8px;
 `;

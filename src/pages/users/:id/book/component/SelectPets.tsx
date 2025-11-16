@@ -1,10 +1,10 @@
 import { fetcher } from 'api';
-import { Center, SubTitle } from 'styles/commonStyle';
-import styled from 'styled-components';
+import { SubTitle } from 'styles/commonStyle';
 import { useAuthSWRInfinite } from 'hooks/authSWR';
 import PetItem from './PetItem';
 import { Pet } from 'types/pet.type';
 import { FiMoreHorizontal } from 'react-icons/fi';
+import { Flex } from '@components/Flex';
 
 export default function SelectPets() {
   const pageSize = 6;
@@ -22,35 +22,21 @@ export default function SelectPets() {
 
   return (
     <>
+      <SubTitle>펫 선택</SubTitle>
       {data && data[0].results?.length > 0 && (
-        <Section>
-          <SubTitle>펫 선택</SubTitle>
-          <List>
-            {data &&
-              data[0].results?.length > 0 &&
-              data?.map((page: any) => page?.results.map((pet: Pet) => <PetItem key={pet.id} pet={pet} />))}
-            {!isEnd && (
-              <Center>
-                <button onClick={() => setSize(size + 1)}>
-                  <FiMoreHorizontal size="40px" color="#279EFF" />
-                </button>
-              </Center>
-            )}
-          </List>
-        </Section>
+        <Flex as="ul" direction="column" gap="lg">
+          {data &&
+            data[0].results?.length > 0 &&
+            data?.map((page: any) => page?.results.map((pet: Pet) => <PetItem key={pet.id} pet={pet} />))}
+          {!isEnd && (
+            <Flex justifyContent="center" alignItems="center">
+              <button onClick={() => setSize(size + 1)}>
+                <FiMoreHorizontal size="40px" color="#279EFF" />
+              </button>
+            </Flex>
+          )}
+        </Flex>
       )}
     </>
   );
 }
-
-const Section = styled.section`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.lg};
-`;
-
-const List = styled.ul`
-  display: flex;
-  flex-wrap: wrap;
-  gap: ${({ theme }) => theme.spacing.lg};
-`;

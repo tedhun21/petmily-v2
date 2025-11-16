@@ -8,13 +8,16 @@ import DateBox from './Date/DateBox';
 import LocationBox from './Location/LocationBox';
 import { saveToRecentSearch } from 'utils/localStorage';
 import StartEndTimeBox from './StartEndTime/StartEndTimeBox';
-import { Column, Divider, Row } from 'styles/commonStyle';
+import { Divider } from 'styles/commonStyle';
 
 import { useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
 import { closeModal, openModal } from 'store/modalSlice';
 import { isSearchModal } from 'utils/misc';
+import Box from '@components/Box';
+import { Button } from '@components/buttons/Button';
+import { Flex } from '@components/Flex';
 
 export type FormValues = {
   location: string | null;
@@ -87,7 +90,7 @@ export default function SearchBox() {
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onSubmit)}>
           <Container id="container" $isSelected={isSearchModal(currentModal)}>
-            <BoxWrapper>
+            <Flex alignItems="center" style={{ flex: 1 }}>
               <LocationBox handleSetValue={handleSetValue} />
 
               <Divider $orientation="vertical" $length="32px" />
@@ -97,13 +100,13 @@ export default function SearchBox() {
               <Divider $orientation="vertical" $length="32px" />
 
               <StartEndTimeBox />
-            </BoxWrapper>
+            </Flex>
 
-            <ButtonDiv>
-              <button type="submit">
+            <Box p="sm" style={{ flex: 0 }}>
+              <Button type="submit" variant="icon" borderRadius="circle" style={{ backgroundColor: '#279EFF' }}>
                 <FiSearch size="24px" color="white" />
-              </button>
-            </ButtonDiv>
+              </Button>
+            </Box>
           </Container>
         </form>
       </FormProvider>
@@ -119,7 +122,10 @@ const Sticky = styled.div`
   background-color: inherit;
 `;
 
-const Container = styled(Row)<{ $isSelected: boolean }>`
+// TODO
+const Container = styled.div<{ $isSelected: boolean }>`
+  display: flex;
+  width: 100%;
   position: relative;
   align-items: center;
   background-color: ${({ theme, $isSelected }) => $isSelected && theme.colors.background.box.default.active};
@@ -128,12 +134,9 @@ const Container = styled(Row)<{ $isSelected: boolean }>`
   box-shadow: ${({ theme }) => theme.shadow.dp02};
 `;
 
-const BoxWrapper = styled(Row)`
-  align-items: center;
-  width: 100%;
-`;
-
-export const InputDiv = styled(Row)<{ $isSelected: boolean }>`
+// TODO
+export const InputDiv = styled.div<{ $isSelected: boolean }>`
+  display: flex;
   flex: 1;
   justify-content: space-between;
   align-items: center;
@@ -148,7 +151,9 @@ export const InputDiv = styled(Row)<{ $isSelected: boolean }>`
   }
 `;
 
-export const Wrapper = styled(Column)`
+export const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
   gap: ${({ theme }) => theme.spacing.xs};
   align-items: flex-start;
 `;
@@ -194,26 +199,16 @@ export const Modal = styled.div`
   margin-top: ${({ theme }) => theme.spacing.lg};
 `;
 
-export const ModalLayOut = styled(Row)`
+// TODO
+export const ModalLayOut = styled.div`
+  display: flex;
   width: 100%;
   padding: ${({ theme }) => theme.spacing.xl};
   background-color: ${({ theme }) => theme.colors.background.primary};
-  border-radius: ${({ theme }) => theme.spacing._3xl};
+  border-radius: ${({ theme }) => theme.spacing['3xl']};
   box-shadow: ${({ theme }) => theme.shadow.dp02};
 `;
 
 export const HalfModalLayOut = styled(ModalLayOut)`
   width: 50%;
 `;
-
-const ButtonDiv = styled.div`
-  margin: ${({ theme }) => theme.spacing.sm};
-`;
-
-// const SearchButton = styled(BlueButton)`
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   padding: ${({ theme }) => theme.spacing.sm};
-//   border-radius: ${({ theme }) => theme.radius.circle};
-// `;

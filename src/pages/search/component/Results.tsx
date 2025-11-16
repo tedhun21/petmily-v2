@@ -1,12 +1,12 @@
 import useSWRInfinite from 'swr/infinite';
-import styled from 'styled-components';
 import { fetcher } from 'api';
 import Result from './Result';
-import { Center } from 'styles/commonStyle';
 import Loading from '@components/Loading';
 import { useEffect, useRef } from 'react';
 import { useInView } from 'framer-motion';
 import { useSearchParams } from 'react-router-dom';
+import Box from '@components/Box';
+import { Flex } from '@components/Flex';
 
 export default function Results() {
   const [searchParams] = useSearchParams();
@@ -33,54 +33,41 @@ export default function Results() {
 
   if (isEmpty) {
     return (
-      <AlternativeContainer>
+      <Flex justifyContent="center" alignItems="center">
         <span>펫시터를 찾을 수 없습니다</span>
-      </AlternativeContainer>
+      </Flex>
     );
   }
 
   if (isLoading) {
     return (
-      <AlternativeContainer>
+      <Flex justifyContent="center" alignItems="center">
         <Loading color="#279EFF" />
-      </AlternativeContainer>
+      </Flex>
     );
   }
 
   return (
-    <Main>
+    <Box h="100%" p="md">
       {data && (
         <section>
-          <ResultsList>
-            {data[0].results.length > 0 &&
-              Array.isArray(data[0].results) &&
-              data.map((page: any) =>
-                page?.results.map((petsitter: any) => <Result key={petsitter.id} petsitter={petsitter} />),
-              )}
-          </ResultsList>
+          <ul>
+            <Flex direction="column" gap="lg">
+              {data[0].results.length > 0 &&
+                Array.isArray(data[0].results) &&
+                data.map((page: any) =>
+                  page?.results.map((petsitter: any) => <Result key={petsitter.id} petsitter={petsitter} />),
+                )}
+            </Flex>
+          </ul>
         </section>
       )}
 
       {data && !isEnd && (
-        <Center ref={ref}>
+        <Flex justifyContent="center" alignItems="center">
           <Loading color="#279EFF" />
-        </Center>
+        </Flex>
       )}
-    </Main>
+    </Box>
   );
 }
-
-const Main = styled.main`
-  height: 100%;
-  padding: ${({ theme }) => theme.spacing.md};
-`;
-
-const AlternativeContainer = styled(Center)`
-  height: 100%;
-`;
-
-const ResultsList = styled.ul`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.lg};
-`;

@@ -1,35 +1,27 @@
 import styled, { keyframes } from 'styled-components';
-import { Column } from 'styles/commonStyle';
+import Box from '@components/Box';
+import { Flex } from '@components/Flex';
 
 export default function UsedPetsittersSkeleton() {
   const count = 3;
 
   return (
-    <SkeletonList>
+    <Flex as="ul" gap="sm">
       {Array.from({ length: count }).map((_, i) => (
-        <SkeletonItem key={i}>
-          <SkeletonImage />
-          <Div>
-            <Name />
-            <Name2 />
-            <Name3 />
-          </Div>
-        </SkeletonItem>
+        <Box key={i} w="220px">
+          <Flex gap="sm">
+            <SkeletonImage />
+            <Flex direction="column" justifyContent="space-between">
+              <Name />
+              <Name2 />
+              <Name3 />
+            </Flex>
+          </Flex>
+        </Box>
       ))}
-    </SkeletonList>
+    </Flex>
   );
 }
-
-const SkeletonList = styled.ul`
-  display: flex;
-  gap: ${({ theme }) => theme.spacing.sm};
-`;
-
-const SkeletonItem = styled.li`
-  display: flex;
-  width: 220px;
-  gap: ${({ theme }) => theme.spacing.sm};
-`;
 
 const pulse = keyframes`
     50% {
@@ -50,11 +42,6 @@ const SkeletonImage = styled(SkeletonElement)`
   height: 60px;
   background-color: ${({ theme }) => theme.colors.background.box.default.hover};
   border-radius: ${({ theme }) => theme.radius.circle};
-`;
-
-const Div = styled(Column)`
-  flex: 1;
-  justify-content: space-between;
 `;
 
 const Name = styled(SkeletonElement)`

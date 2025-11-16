@@ -15,7 +15,7 @@ import { clearAccessToken } from 'store/authSlice';
 import useOutsideClickModal from 'hooks/useOutsideClickModal';
 import { closeModal, ModalType, openModal } from 'store/modalSlice';
 import { ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
-import { Button } from 'styles/common/Button';
+import { Button } from '@components/buttons/Button';
 
 interface MeButtonProps {
   me?: User;
@@ -79,11 +79,11 @@ export default function MeButton({ me }: MeButtonProps) {
         createPortal(
           <LoginNavModal ref={modalRef}>
             <Nav>
-              <Button as={Link} to="/me" onClick={handleMenuClick} $variant="transparent" $borderRadius="sm">
+              <Button as={Link} to="/me" onClick={handleMenuClick} variant="transparent" borderRadius="sm">
                 내 정보
               </Button>
 
-              <Button type="button" onClick={handleLogout} $variant="transparent" $borderRadius="sm">
+              <Button type="button" onClick={handleLogout} variant="transparent" borderRadius="sm">
                 로그아웃
               </Button>
             </Nav>
@@ -114,8 +114,8 @@ const UserImage = styled(RoundedImageWrapper)`
 
 const LoginNavModal = styled.div`
   position: absolute;
-  top: ${({ theme }) => theme.spacing._2xl};
-  right: ${({ theme }) => theme.spacing._2xl};
+  top: ${({ theme }) => theme.spacing['2xl']};
+  right: ${({ theme }) => theme.spacing['2xl']};
   z-index: 20;
   justify-content: center;
   align-items: center;

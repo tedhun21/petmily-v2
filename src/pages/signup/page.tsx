@@ -15,10 +15,11 @@ import { poster } from 'api';
 import Loading from '@components/Loading';
 import BackHeader from '@components/headers/BackHeader';
 import CustomDaumPostcode from '@components/CustomDaumPostcode';
-import { Column, Row } from 'styles/commonStyle';
-import { Button } from 'styles/common/Button';
-import { Input } from 'styles/common/Input';
-import { Text } from 'styles/common/Text';
+import { Button } from '@components/buttons/Button';
+import { Input } from '@components/Input';
+import { Text } from '@components/Text';
+import Box from '@components/Box';
+import { flex, Flex } from '@components/Flex';
 
 const schema = yup.object().shape({
   username: yup
@@ -137,24 +138,21 @@ export default function SignupPage() {
     <>
       <BackHeader />
 
-      <Main>
-        <SignupContainer>
-          <TitleContainer>
-            <Text $size="xl">We&apos;re Petmily!</Text>
-            <Text>회원가입</Text>
-          </TitleContainer>
+      <main>
+        <Flex direction="column" alignItems="center" gap="xl">
+          <Text size="xl">We&apos;re Petmily!</Text>
 
           <form onSubmit={handleSubmit(onSubmit)}>
-            <InputContainer>
+            <Container style={{ minWidth: '400px' }}>
               <InputWrapper>
                 <Input
                   placeholder="이름"
                   type="text"
                   {...register('username', { required: true })}
-                  $error={errors.username ? true : undefined}
+                  error={errors.username ? true : undefined}
                 />
                 {errors.username?.message && (
-                  <Text $size="xs" $color="error">
+                  <Text size="xs" color="error">
                     {errors.username?.message}
                   </Text>
                 )}
@@ -163,10 +161,10 @@ export default function SignupPage() {
                 <Input
                   placeholder="연락처"
                   {...register('phone', { required: true })}
-                  $error={errors.phone ? true : undefined}
+                  error={errors.phone ? true : undefined}
                 />
                 {errors.phone?.message && (
-                  <Text $size="xs" $color="error">
+                  <Text size="xs" color="error">
                     {errors.phone?.message}
                   </Text>
                 )}
@@ -177,11 +175,11 @@ export default function SignupPage() {
                   {...register('address', { required: true })}
                   onClick={onToggleModal}
                   onKeyDown={onToggleModal}
-                  $error={errors.address ? true : undefined}
+                  error={errors.address ? true : undefined}
                   autoComplete="off"
                 />
                 {errors.address?.message && (
-                  <Text $size="xs" $color="error">
+                  <Text size="xs" color="error">
                     {errors.address?.message}
                   </Text>
                 )}
@@ -200,10 +198,10 @@ export default function SignupPage() {
                 <Input
                   placeholder="상세주소"
                   {...register('detailAddress', { required: true })}
-                  $error={errors.detailAddress ? true : undefined}
+                  error={errors.detailAddress ? true : undefined}
                 />
                 {errors.detailAddress?.message && (
-                  <Text $size="xs" $color="error">
+                  <Text size="xs" color="error">
                     {errors.detailAddress?.message}
                   </Text>
                 )}
@@ -213,10 +211,10 @@ export default function SignupPage() {
                   placeholder="이메일"
                   type="email"
                   {...register('email', { required: true })}
-                  $error={errors.email ? true : undefined}
+                  error={errors.email ? true : undefined}
                 />
                 {errors.email?.message && (
-                  <Text $size="xs" $color="error">
+                  <Text size="xs" color="error">
                     {errors.email?.message}
                   </Text>
                 )}
@@ -225,10 +223,10 @@ export default function SignupPage() {
                 <Input
                   placeholder="닉네임"
                   {...register('nickname', { required: true })}
-                  $error={errors.nickname ? true : undefined}
+                  error={errors.nickname ? true : undefined}
                 />
                 {errors.nickname?.message && (
-                  <Text $size="xs" $color="error">
+                  <Text size="xs" color="error">
                     {errors.nickname?.message}
                   </Text>
                 )}
@@ -238,10 +236,10 @@ export default function SignupPage() {
                   placeholder="비밀번호"
                   type="password"
                   {...register('password', { required: true })}
-                  $error={errors.password ? true : undefined}
+                  error={errors.password ? true : undefined}
                 />
                 {errors.password?.message && (
-                  <Text $size="xs" $color="error">
+                  <Text size="xs" color="error">
                     {errors.password?.message}
                   </Text>
                 )}
@@ -251,66 +249,40 @@ export default function SignupPage() {
                   placeholder="비밀번호 확인"
                   type="password"
                   {...register('passwordConfirm', { required: true })}
-                  $error={errors.passwordConfirm ? true : undefined}
+                  error={errors.passwordConfirm ? true : undefined}
                 />
                 {errors.passwordConfirm?.message && (
-                  <Text $size="xs" $color="error">
+                  <Text size="xs" color="error">
                     {errors.passwordConfirm?.message}
                   </Text>
                 )}
               </InputWrapper>
-              <CheckBoxWrapper>
-                <CheckBoxLabel htmlFor="isPetsitter">펫시터로 가입하기</CheckBoxLabel>
+              <Box>
+                <Text as="label" htmlFor="isPetsitter" size="sm" color="secondary">
+                  펫시터로 가입하기
+                </Text>
                 <input type="checkbox" id="isPetsitter" {...register('isPetsitter')} />
-              </CheckBoxWrapper>
-              <ButtonContainer>
-                <Button type="submit" disabled={isMutating} $variant="primary" $size="lg" $borderRadius="lg">
+              </Box>
+              <Flex direction="column" gap="lg">
+                <Button type="submit" disabled={isMutating} variant="primary" size="lg" borderRadius="lg">
                   {isMutating ? <Loading /> : '펫밀리 등록'}
                 </Button>
-                <GoogleOAuthButton $size="lg" $borderRadius="lg">
+                <GoogleOAuthButton size="lg" borderRadius="lg">
                   Sign up with Google
                 </GoogleOAuthButton>
-              </ButtonContainer>
-            </InputContainer>
+              </Flex>
+            </Container>
           </form>
-        </SignupContainer>
-      </Main>
+        </Flex>
+      </main>
     </>
   );
 }
 
-const Main = styled.main`
-  flex: 1;
+const Container = styled(Box).attrs(() => ({}))`
+  ${flex({ direction: 'column', gap: 'lg' })};
 `;
 
-const SignupContainer = styled.div`
+const InputWrapper = styled(Box)`
   width: 100%;
-  height: 100%;
-`;
-
-const TitleContainer = styled(Column)`
-  text-align: left;
-`;
-
-const InputContainer = styled(Column)`
-  padding: ${({ theme }) => theme.spacing._5xl};
-  gap: ${({ theme }) => theme.spacing.lg};
-`;
-
-const InputWrapper = styled(Column)`
-  gap: ${({ theme }) => theme.spacing.sm};
-`;
-
-const ButtonContainer = styled(Column)`
-  gap: ${({ theme }) => theme.spacing.lg};
-`;
-
-const CheckBoxWrapper = styled(Row)`
-  padding-left: ${({ theme }) => theme.spacing.xs};
-  gap: ${({ theme }) => theme.spacing.sm};
-`;
-
-const CheckBoxLabel = styled.label`
-  color: ${({ theme }) => theme.colors.text.secondary};
-  ${({ theme }) => theme.typeScale.sm};
 `;

@@ -16,7 +16,9 @@ import { UserRole } from 'types/user.type';
 import BackHeader from '@components/headers/BackHeader';
 import { SocketContext } from '@components/contexts/SocketProvider';
 import { ReservationStatus } from 'types/reservation.type';
-import { Column } from 'styles/commonStyle';
+
+import { Flex } from '@components/Flex';
+import { Text } from '@components/Text';
 
 export default function CarePage() {
   const { id } = useParams();
@@ -49,10 +51,12 @@ export default function CarePage() {
   return (
     <>
       <BackHeader />
-      <Section as="section">
-        <TitleStatus>
-          <span>{formatStatus(reservation?.status)}...</span>
-        </TitleStatus>
+      <Flex as="section" direction="column" gap="xl">
+        <Flex justifyContent="center">
+          <Text size="xl" weight="semibold" color="highlight">
+            {formatStatus(reservation?.status)}...
+          </Text>
+        </Flex>
         {me?.role === UserRole.PETSITTER ? (
           <ClientCard client={reservation?.client} />
         ) : me?.role === UserRole.CLIENT ? (
@@ -62,7 +66,7 @@ export default function CarePage() {
         <PetContainer pets={reservation?.pets} />
 
         <DetailReservation reservation={reservation} />
-      </Section>
+      </Flex>
 
       <ButtonContainer>
         <ProgressButton meRole={me?.role} reservation={reservation} />
@@ -71,32 +75,13 @@ export default function CarePage() {
   );
 }
 
-const Section = styled(Column)`
-  flex: auto;
-  overflow-y: auto;
-  height: 100%;
-  padding: ${({ theme }) => theme.spacing.xl};
-  gap: ${({ theme }) => theme.spacing.xl};
-`;
-
-const TitleStatus = styled.div`
-  display: flex;
-  justify-content: center;
-
-  span:first-child {
-    color: ${({ theme }) => theme.colors.text.highlight};
-    font-weight: ${({ theme }) => theme.fontWeight.semibold};
-    ${({ theme }) => theme.typeScale.xl}
-  }
-`;
-
-export const PetInfoContainer = styled.ul`
+const PetInfoContainer = styled.ul`
   display: flex;
   flex-wrap: wrap;
   gap: ${({ theme }) => theme.spacing.xs};
 `;
 
-export const PetInfoCapsule = styled.li`
+const PetInfoCapsule = styled.li`
   padding: 4px 8px;
   background-color: ${({ theme }) => theme.colors.background.box.accent.primary};
   border-radius: ${({ theme }) => theme.radius.lg};

@@ -1,11 +1,12 @@
 import styled from 'styled-components';
 
-import { Column, DefaultLink, ImageCentered, RoundedImageWrapper, Row } from 'styles/commonStyle';
+import { DefaultLink, ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
 import { formatStatus } from 'utils/misc';
 import { dayFormat, timeRange } from 'utils/date';
 import { Reservation } from 'types/reservation.type';
 import { Pet } from 'types/pet.type';
-import { Text } from 'styles/common/Text';
+import { Text } from '@components/Text';
+import { Flex } from '@components/Flex';
 
 interface CareCardProps {
   reservation: Reservation;
@@ -14,45 +15,45 @@ interface CareCardProps {
 export default function CareCard({ reservation }: CareCardProps) {
   return (
     <Card to={`/cares/${reservation?.id}`}>
-      <FirstContainer>
-        <PetsitterContainer>
+      <Flex justifyContent="space-between">
+        <Flex alignItems="center" gap="sm">
           <PetsitterImage>
             <ImageCentered
               src={reservation?.petsitter?.photo ? `${reservation?.petsitter.photo}` : '/imgs/DefaultUserProfile.jpg'}
             />
           </PetsitterImage>
-          <PetsitterName>
-            <Text $size="base">{reservation?.petsitter?.nickname}</Text>
-            <Text $size="sm">펫시터님</Text>
-          </PetsitterName>
-        </PetsitterContainer>
-        <Text $size="lg" $weight="semibold" $color="highlight">
+          <Flex alignItems="flex-end" gap="xs">
+            <Text size="base">{reservation?.petsitter?.nickname}</Text>
+            <Text size="sm">펫시터님</Text>
+          </Flex>
+        </Flex>
+        <Text size="lg" weight="semibold" color="highlight">
           {formatStatus(reservation?.status)}
         </Text>
-      </FirstContainer>
+      </Flex>
 
-      <ReservationContainer>
-        <Wrapper>
-          <Text $size="sm">일시:</Text>
-          <Text $size="xs">
+      <Flex>
+        <Flex alignItems="center" gap="xs">
+          <Text size="sm">일시:</Text>
+          <Text size="xs">
             {reservation?.date} ({dayFormat(reservation?.date)})
           </Text>
-        </Wrapper>
-        <Wrapper>
-          <Text $size="sm">시간:</Text>
-          <Text $size="xs">{timeRange(reservation?.startTime, reservation?.endTime)}</Text>
-        </Wrapper>
-        <Wrapper>
-          <Text $size="sm">맡기실 펫:</Text>
-          <PetWrapper>
+        </Flex>
+        <Flex alignItems="center" gap="xs">
+          <Text size="sm">시간:</Text>
+          <Text size="xs">{timeRange(reservation?.startTime, reservation?.endTime)}</Text>
+        </Flex>
+        <Flex alignItems="center" gap="xs">
+          <Text size="sm">맡기실 펫:</Text>
+          <Flex gap="xs">
             {reservation?.pets.map((pet: Pet) => (
-              <Text $size="xs" key={pet.id}>
+              <Text key={pet.id} size="xs" weight="bold">
                 {pet.name}
               </Text>
             ))}
-          </PetWrapper>
-        </Wrapper>
-      </ReservationContainer>
+          </Flex>
+        </Flex>
+      </Flex>
     </Card>
   );
 }
@@ -69,42 +70,8 @@ const Card = styled(DefaultLink)`
   }
 `;
 
-const FirstContainer = styled(Row)`
-  justify-content: space-between;
-  width: 100%;
-`;
-
-const PetsitterContainer = styled(Row)`
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.sm};
-`;
-
-const PetsitterName = styled(Row)`
-  gap: ${({ theme }) => theme.spacing.xs};
-  align-items: flex-end;
-`;
-
 const PetsitterImage = styled(RoundedImageWrapper)`
   width: 60px;
   height: 60px;
   border: 2px solid ${({ theme }) => theme.colors.line.box.highlight};
-`;
-
-const ReservationContainer = styled(Column)`
-  /* gap: ${({ theme }) => theme.spacing.xs}; */
-`;
-
-const Wrapper = styled(Row)`
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.xs};
-`;
-
-const PetWrapper = styled(Row)`
-  display: flex;
-  gap: ${({ theme }) => theme.spacing.xs};
-
-  > span {
-    font-weight: ${({ theme }) => theme.fontWeight.bold};
-    ${({ theme }) => theme.typeScale.xs};
-  }
 `;

@@ -1,46 +1,27 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Column, Row } from 'styles/commonStyle';
-import { Text } from 'styles/common/Text';
+import { Text } from '@components/Text';
+import { Flex } from '@components/Flex';
 
 export default function NotFoundPage() {
   return (
-    <Page>
-      <Container>
-        <IconContainer>
-          <Icon src="/imgs/NotFound.svg" alt="sorry" />
-        </IconContainer>
-        <Image src="/imgs/404.svg" alt="Page not found" />
-        <Text $size="xl" $color="inactive" $weight="bold">
-          요청하신 페이지를 찾을 수 없습니다.
-        </Text>
-        <Link to="/">
-          <span>홈으로 이동</span>
-        </Link>
-        <Link to="/">
-          <Logo src="/imgs/Petmily.svg" alt="Logo" />
-        </Link>
-      </Container>
-    </Page>
+    <Flex direction="column" justifyContent="center" alignItems="center">
+      <Flex justifyContent="flex-end">
+        <Icon src="/imgs/NotFound.svg" alt="sorry" />
+      </Flex>
+      <Image src="/imgs/404.svg" alt="Page not found" />
+      <Text size="xl" color="inverse" weight="bold">
+        요청하신 페이지를 찾을 수 없습니다.
+      </Text>
+      <Link to="/">
+        <span>홈으로 이동</span>
+      </Link>
+      <Link to="/">
+        <Logo src="/imgs/Petmily.svg" alt="Logo" />
+      </Link>
+    </Flex>
   );
 }
-
-const Page = styled(Row)`
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-`;
-
-const Container = styled(Column)`
-  justify-content: center;
-  align-items: center;
-`;
-
-const IconContainer = styled(Row)`
-  justify-content: flex-end;
-  width: 100%;
-`;
 
 const Icon = styled.img`
   width: 60px;
@@ -48,11 +29,11 @@ const Icon = styled.img`
 
 const Image = styled.img`
   width: 200px;
-  margin-bottom: ${({ theme }) => theme.spacing._3xl};
+  margin-bottom: ${({ theme }) => theme.spacing['3xl']};
 `;
 
 const Logo = styled.img`
   width: 100px;
-  margin-top: ${({ theme }) => theme.spacing._3xl};
-  margin-bottom: ${({ theme }) => theme.spacing._3xl};
+  margin-top: ${({ theme }) => theme.spacing['3xl']};
+  margin-bottom: ${({ theme }) => theme.spacing['3xl']};
 `;

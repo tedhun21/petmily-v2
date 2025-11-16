@@ -1,9 +1,10 @@
 import styled from 'styled-components';
-import { Row } from 'styles/commonStyle';
+
 import PawButton from './PawButton';
 import { FaRegPaperPlane } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
-import { Text } from 'styles/common/Text';
+import { Text } from '@components/Text';
+import { Flex } from '@components/Flex';
 
 interface IProps {
   userId: number | null;
@@ -11,20 +12,17 @@ interface IProps {
 
 export default function PawAndMessage({ userId }: IProps) {
   return (
-    <Wrapper>
+    <Flex gap="lg">
       <PawButton userId={userId} />
       <CustomLink to={`/chats/temp?opponentIds=${userId}`}>
-        <Text $size="lg">message</Text>
+        <Text size="lg">message</Text>
         <FaRegPaperPlane size="20px" />
       </CustomLink>
-    </Wrapper>
+    </Flex>
   );
 }
 
-const Wrapper = styled(Row)`
-  gap: ${({ theme }) => theme.spacing.lg};
-`;
-
+// TODO
 const CustomLink = styled(Link)`
   display: flex;
   justify-content: center;

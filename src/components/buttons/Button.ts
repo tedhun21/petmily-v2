@@ -1,10 +1,13 @@
 import styled, { css } from 'styled-components';
 
-type ButtonProps = {
-  $size?: 'sm' | 'md' | 'lg' | 'xl';
-  $variant?: 'primary' | 'secondary' | 'transparent' | 'icon';
-  $borderRadius?: 'sm' | 'md' | 'lg' | 'circle';
-  $fullWidth?: boolean;
+const styleProps = ['size', 'variant', 'borderRadius', 'fullWidth'];
+
+export type ButtonProps = {
+  children?: React.ReactNode;
+  size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+  variant?: 'primary' | 'secondary' | 'transparent' | 'icon';
+  borderRadius?: 'sm' | 'md' | 'lg' | 'circle';
+  fullWidth?: boolean;
 };
 
 const sizes = {
@@ -23,6 +26,10 @@ const sizes = {
   xl: css`
     padding: ${({ theme }) => `${theme.spacing.lg} ${theme.spacing.xl}`};
     ${({ theme }) => theme.typeScale.xl};
+  `,
+  ['2xl']: css`
+    padding: ${({ theme }) => `${theme.spacing.xl} ${theme.spacing['2xl']}`};
+    ${({ theme }) => theme.typeScale['2xl']}
   `,
 };
 
@@ -79,7 +86,7 @@ const variants = {
     border: none;
     background-color: transparent;
     color: ${({ theme }) => theme.colors.text.active};
-    padding: ${({ theme }) => theme.spacing.xs};
+    padding: ${({ theme }) => theme.spacing.sm};
 
     &:hover:not(:disabled) {
       background-color: ${({ theme }) => theme.colors.background.box.default.hover};
@@ -90,7 +97,9 @@ const variants = {
   `,
 };
 
-export const Button = styled.button<ButtonProps>`
+export const Button = styled.button.withConfig({
+  shouldForwardProp: (prop) => !styleProps.includes(prop),
+})<ButtonProps>`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -102,11 +111,11 @@ export const Button = styled.button<ButtonProps>`
     pointer-events: none;
   }
 
-  border-radius: ${({ theme, $borderRadius = 'md' }) => theme.radius[$borderRadius]};
-  ${({ $size = 'md' }) => sizes[$size]};
-  ${({ $variant = 'primary' }) => variants[$variant]};
-  ${({ $fullWidth }) =>
-    $fullWidth &&
+  border-radius: ${({ theme, borderRadius = 'md' }) => theme.radius[borderRadius]};
+  ${({ size = 'md' }) => sizes[size]};
+  ${({ variant = 'primary' }) => variants[variant]};
+  ${({ fullWidth }) =>
+    fullWidth &&
     css`
       width: 100%;
     `};

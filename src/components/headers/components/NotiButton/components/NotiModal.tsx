@@ -12,9 +12,10 @@ import { RootState } from 'store';
 import { fetcher, updater } from 'api';
 import Loading from '@components/Loading';
 import { ModalType } from 'store/modalSlice';
-import { Center } from 'styles/commonStyle';
 import { Notification } from 'types/notification.type';
 import { clearNewNotifications } from 'store/notificationSlice';
+import Box from '@components/Box';
+import { Flex } from '@components/Flex';
 
 export default function NotiModal() {
   const pageSize = 10;
@@ -113,9 +114,9 @@ export default function NotiModal() {
   if (isLoading) {
     return (
       <Background>
-        <Center>
+        <Flex justifyContent="center" alignItems="center">
           <Loading color="#279EFF" />
-        </Center>
+        </Flex>
       </Background>
     );
   }
@@ -123,26 +124,28 @@ export default function NotiModal() {
   if (isEmpty) {
     return (
       <Background>
-        <Center>
+        <Flex justifyContent="center" alignItems="center">
           <div>알림이 없습니다</div>
-        </Center>
+        </Flex>
       </Background>
     );
   }
 
   return (
     <Background>
-      <List ref={listRef}>
-        {notifications.map((notification: Notification) => (
-          <NotiItem key={notification.id} notification={notification} onReadClick={onReadClick} />
-        ))}
+      <ul ref={listRef}>
+        <Flex direction="column" gap="xs">
+          {notifications.map((notification: Notification) => (
+            <NotiItem key={notification.id} notification={notification} onReadClick={onReadClick} />
+          ))}
 
-        {!isEnd && (
-          <Center ref={moreLoadRef}>
-            <Loading color="#279EFF" />
-          </Center>
-        )}
-      </List>
+          {!isEnd && (
+            <Flex ref={moreLoadRef} justifyContent="center" alignItems="center">
+              <Loading color="#279EFF" />
+            </Flex>
+          )}
+        </Flex>
+      </ul>
     </Background>
   );
 }
@@ -155,10 +158,4 @@ const Background = styled.div`
   background-color: ${({ theme }) => theme.colors.background.box.default.primary};
   border-radius: ${({ theme }) => theme.radius.md};
   box-shadow: ${({ theme }) => theme.shadow.dp01};
-`;
-
-const List = styled.ul`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.xs};
 `;

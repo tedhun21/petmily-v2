@@ -1,7 +1,6 @@
 import { FaArrowLeft } from 'react-icons/fa6';
-import styled from 'styled-components';
 
-import { Button } from '../../styles/common/Button';
+import { Button } from './Button';
 import { useNavigate } from 'react-router-dom';
 
 interface IProps {
@@ -15,12 +14,8 @@ export default function BackButton({ link }: IProps) {
     return link ? navigate(link) : navigate(-1);
   };
   return (
-    <Button type="button" onClick={handleClick} $variant="icon" $borderRadius="circle">
-      <StyledBackArrow size="28px" />
+    <Button type="button" onClick={handleClick} variant="icon" borderRadius="circle" size="xl">
+      <FaArrowLeft />
     </Button>
   );
 }
-
-const StyledBackArrow = styled(FaArrowLeft)`
-  color: ${({ theme }) => theme.colors.text.highlight};
-`;

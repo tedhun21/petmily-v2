@@ -1,13 +1,15 @@
 import styled from 'styled-components';
 import { fetcher } from 'api';
-import { Column, ImageCentered, RoundedImageWrapper, Row, Title } from 'styles/commonStyle';
+import { ImageCentered, RoundedImageWrapper, Title } from 'styles/commonStyle';
 import ReadOnlyRating from '@components/ReadOnlyRating';
 
 import useSWR from 'swr';
 import { dateAgo } from 'utils/date';
 import { Review } from 'types/review.type';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Text } from 'styles/common/Text';
+import { Text } from '@components/Text';
+import Box from '@components/Box';
+import { flex, Flex } from '@components/Flex';
 
 interface ReviewsProps {
   nickname?: string;
@@ -17,19 +19,19 @@ export default function PetsitterReviews({ nickname }: ReviewsProps) {
   const { data } = useSWR(`/reviews/petsitter/${nickname}?page=1&pageSize=6`, fetcher);
 
   return (
-    <Section as="section">
-      <ReviewTitle>
+    <Container as="section">
+      <Flex alignItems="center" gap="sm">
         <Title>후기</Title>
         <span>{data?.pagination.total} 개</span>
-      </ReviewTitle>
+      </Flex>
 
       <StyledSwiper slidesPerView={1.2}>
         {data &&
           data.results.map((review: Review) => (
             <SwiperSlide key={review.id}>
-              <ReviewCard as="li">
+              <Wrapper as="li">
                 <div>
-                  <UserWrapper>
+                  <Flex alignItems="center" gap="sm">
                     <UserImage>
                       <ImageCentered
                         src={
@@ -40,58 +42,49 @@ export default function PetsitterReviews({ nickname }: ReviewsProps) {
                       />
                     </UserImage>
                     <span>{review.reservation.client.nickname}</span>
-                  </UserWrapper>
-                  <StarWrapper>
+                  </Flex>
+                  <Flex alignItems="center" gap="xs">
                     <ReadOnlyRating size="12px" value={review.star} />
                     <span>·</span>
-                    <Text $size="xs">{dateAgo(review.createdAt)}</Text>
-                  </StarWrapper>
+                    <Text size="xs">{dateAgo(review.createdAt)}</Text>
+                  </Flex>
                   <p>{review.body}</p>
                 </div>
 
                 <div style={{ width: '80px', height: '80px', overflow: 'hidden', position: 'relative' }}>
                   <ImageCentered src={review.photos?.[0]} alt="review_photos" />
                 </div>
-              </ReviewCard>
+              </Wrapper>
             </SwiperSlide>
           ))}
       </StyledSwiper>
-    </Section>
+    </Container>
   );
 }
 
-const Section = styled(Column)`
-  width: 100%;
-  gap: ${({ theme }) => theme.spacing.lg};
-`;
-
-const ReviewTitle = styled(Row)`
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.sm};
+const Container = styled(Box).attrs(() => ({
+  w: '100%',
+}))`
+  ${flex({
+    direction: 'column',
+  })}
 `;
 
 const StyledSwiper = styled(Swiper)`
   width: 100%;
 `;
 
-const ReviewCard = styled(Row)`
-  justify-content: space-between;
-  padding: ${({ theme }) => theme.spacing.lg};
-  background-color: ${({ theme }) => theme.colors.background.secondary};
-  border-radius: ${({ theme }) => theme.radius.md};
-`;
-
-const UserWrapper = styled(Row)`
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.sm};
+const Wrapper = styled(Box).attrs(() => ({
+  p: 'lg',
+  br: 'md',
+  bg: 'background.secondary',
+}))`
+  ${flex({
+    justifyContent: 'space-between',
+  })}
 `;
 
 const UserImage = styled(RoundedImageWrapper)`
   width: 40px;
   height: 40px;
-`;
-
-const StarWrapper = styled(Row)`
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.xs};
 `;

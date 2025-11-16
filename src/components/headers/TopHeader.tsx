@@ -1,5 +1,4 @@
 import { useContext } from 'react';
-import { Link } from 'react-router-dom';
 
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -11,11 +10,14 @@ import { MdNightlightRound } from 'react-icons/md';
 import { useAuthSWR } from 'hooks/authSWR';
 import { RootState } from 'store';
 import { fetcher } from 'api';
-import { Center, Row } from 'styles/commonStyle';
 import MeButton from './components/MeButton';
 import NotiButton from './components/NotiButton/NotiButton';
 import { ThemeContext } from '@components/contexts/ThemeProvider';
-import { Button } from 'styles/common/Button';
+import { Button } from '@components/buttons/Button';
+import { flex, Flex } from '@components/Flex';
+import { Text } from '@components/Text';
+import Link from '@components/Link';
+import Box from '@components/Box';
 
 export default function TopHeader() {
   const { isDarkMode, setIsDarkMode } = useContext(ThemeContext);
@@ -40,12 +42,12 @@ export default function TopHeader() {
 
   return (
     <Container>
-      <Link to="/">
-        <img src="/imgs/Logo.svg" alt="logo" />
+      <Link to="/" type="image">
+        <img src="/imgs/Logo.svg" alt="logo" width="100px" />
       </Link>
-      <MenuContainer>
-        <IconContainer>
-          <Button type="button" onClick={handleDarkMode} $variant="icon" $borderRadius="circle">
+      <Flex gap="sm">
+        <Flex alignItems="center" gap="xs">
+          <Button type="button" onClick={handleDarkMode} variant="icon" borderRadius="circle">
             {isDarkMode ? <FiSun size="24px" /> : <MdNightlightRound size="24px" />}
           </Button>
 
@@ -61,46 +63,43 @@ export default function TopHeader() {
               )} */}
 
               <div style={{ position: 'relative' }}>
-                <Button as={Link} to="/chats" $variant="icon" $borderRadius="circle">
+                <Link to="/chats" type="icon">
                   <FaRegPaperPlane size="24px" />
-                </Button>
+                </Link>
+
                 {unreadChatCount > 0 && (
                   <UnreadCountContainer>
                     <UnreadCount>
-                      <span>{unreadChatCount}</span>
+                      <Text size="xs" color="white">
+                        {unreadChatCount}
+                      </Text>
                     </UnreadCount>
                   </UnreadCountContainer>
                 )}
               </div>
             </>
           )}
-        </IconContainer>
+        </Flex>
 
         {me ? (
           <MeButton me={me} />
         ) : (
-          <Button as={Link} to="/login" $variant="primary" $size="sm" $borderRadius="sm">
+          <Link to="/login" type="text" size="sm">
             로그인/회원가입
-          </Button>
+          </Link>
         )}
-      </MenuContainer>
+      </Flex>
     </Container>
   );
 }
 
-const Container = styled(Row)`
-  flex: 1;
-  justify-content: space-between;
-  padding: ${({ theme }) => theme.spacing.md};
-`;
-
-const MenuContainer = styled(Row)`
-  gap: ${({ theme }) => theme.spacing.sm};
-`;
-
-const IconContainer = styled(Row)`
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.xs};
+const Container = styled(Box).attrs(() => ({
+  px: 'lg',
+  py: 'md',
+}))`
+  ${flex({
+    justifyContent: 'space-between',
+  })}
 `;
 
 const UnreadCountContainer = styled.div`
@@ -109,14 +108,13 @@ const UnreadCountContainer = styled.div`
   right: 0;
 `;
 
-const UnreadCount = styled(Center)`
+// TODO Box?
+const UnreadCount = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   min-width: ${({ theme }) => theme.spacing.lg};
   height: ${({ theme }) => theme.spacing.lg};
   background-color: ${({ theme }) => theme.colors.background.error};
   border-radius: ${({ theme }) => theme.radius.circle};
-
-  > span {
-    color: ${({ theme }) => theme.colors.text.white};
-    ${({ theme }) => theme.typeScale.xs};
-  }
 `;

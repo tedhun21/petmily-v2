@@ -1,9 +1,10 @@
 import { PiCatBold, PiDogBold } from 'react-icons/pi';
 import styled from 'styled-components';
-import { Text } from 'styles/common/Text';
-import { Center } from 'styles/commonStyle';
+import { Text } from '@components/Text';
 import { PetSpecies } from 'types/pet.type';
 import { timeRange, weekdays } from 'utils/date';
+import Box from '@components/Box';
+import { flex } from '@components/Flex';
 
 export default function MyPetsitterSettings({ petsitter }: any) {
   return (
@@ -30,7 +31,7 @@ export default function MyPetsitterSettings({ petsitter }: any) {
           <ItemWrapper>
             {petsitter.possibleLocations.map((location: string) => (
               <ItemLabel as="li" key={location}>
-                <Text $size="sm" $color="white">
+                <Text size="sm" color="white">
                   {location}
                 </Text>
               </ItemLabel>
@@ -46,7 +47,7 @@ export default function MyPetsitterSettings({ petsitter }: any) {
               const matchedDay = weekdays.find((weekday) => weekday.value === day);
               return (
                 <ItemLabel as="li" key={day}>
-                  <Text $size="sm" $color="white">
+                  <Text size="sm" color="white">
                     {matchedDay?.label}
                   </Text>
                 </ItemLabel>
@@ -59,7 +60,7 @@ export default function MyPetsitterSettings({ petsitter }: any) {
         <InfoItem>
           <span>케어 가능 시간</span>
           <ItemLabel as="li">
-            <Text $size="sm" $color="white">
+            <Text size="sm" color="white">
               {timeRange(petsitter?.possibleStartTime, petsitter?.possibleEndTime)}
             </Text>
           </ItemLabel>
@@ -71,18 +72,12 @@ export default function MyPetsitterSettings({ petsitter }: any) {
 
 const InfoList = styled.ul`
   display: grid;
-  flex: 1;
   grid-template-columns: repeat(2, 1fr);
   gap: ${({ theme }) => theme.spacing.sm};
 `;
 
-const InfoItem = styled.li`
-  display: flex;
-  flex-direction: column;
-  padding: ${({ theme }) => theme.spacing.sm};
-  gap: ${({ theme }) => theme.spacing.sm};
-  border: 2px solid ${({ theme }) => theme.colors.line.box.highlight};
-  border-radius: ${({ theme }) => theme.radius.sm};
+const InfoItem = styled(Box).attrs(() => ({ p: 'md', br: 'lg', bg: 'background.box.default.primary' }))`
+  ${flex({ direction: 'column', gap: 'sm' })}
 `;
 
 const ItemWrapper = styled.ul`
@@ -91,7 +86,11 @@ const ItemWrapper = styled.ul`
   gap: ${({ theme }) => theme.spacing.xs};
 `;
 
-const ItemLabel = styled(Center)`
+// TODO
+const ItemLabel = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 4px 8px;
   background-color: ${({ theme }) => theme.colors.text.highlight};
   border-radius: ${({ theme }) => theme.radius.md};

@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 
-import { Column, Divider, Row } from 'styles/commonStyle';
+import { Divider } from 'styles/commonStyle';
 import Collapse from '@components/Collapse';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa6';
 import BackHeader from '@components/headers/BackHeader';
+import { Flex } from '@components/Flex';
 
 export default function FaQPage() {
   const [open, setOpen] = useState<{ [key: string]: boolean }>({});
@@ -14,10 +15,10 @@ export default function FaQPage() {
   };
 
   return (
-    <Main>
+    <>
       <BackHeader title="자주 묻는 질문" />
-      <Section>
-        <div>
+      <main>
+        <section>
           <Question>1. 기본예절</Question>
 
           <Divider />
@@ -123,9 +124,9 @@ export default function FaQPage() {
               </Collapse>
             </Item>
           </List>
-        </div>
+        </section>
 
-        <div>
+        <section>
           <Question>2. 배변</Question>
 
           <Divider />
@@ -278,9 +279,9 @@ export default function FaQPage() {
               </Collapse>
             </Item>
           </List>
-        </div>
+        </section>
 
-        <div>
+        <section>
           <Question>3. 산책</Question>
           <Divider />
 
@@ -436,9 +437,9 @@ export default function FaQPage() {
               </Collapse>
             </Item>
           </List>
-        </div>
+        </section>
 
-        <div>
+        <section>
           <Question>4. 공격성</Question>
 
           <Divider />
@@ -702,26 +703,11 @@ export default function FaQPage() {
               </Collapse>
             </Item>
           </List>
-        </div>
-      </Section>
-    </Main>
+        </section>
+      </main>
+    </>
   );
 }
-
-const Main = styled.main`
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-`;
-
-const Section = styled.section`
-  display: flex;
-  flex: auto;
-  flex-direction: column;
-  overflow-y: auto;
-  height: 100%;
-  padding: ${({ theme }) => theme.spacing.xl};
-`;
 
 const Question = styled.h1`
   padding: ${({ theme }) => theme.spacing.sm};
@@ -749,7 +735,8 @@ const ListItemButton = styled.button`
   }
 `;
 
-const ListTitle = styled(Row)`
+const ListTitle = styled.div`
+  display: flex;
   gap: ${({ theme }) => theme.spacing.sm};
   ${({ theme }) => theme.typeScale.base};
 
@@ -758,7 +745,8 @@ const ListTitle = styled(Row)`
   }
 `;
 
-const Answer = styled(Row)`
+const Answer = styled.div`
+  display: flex;
   gap: ${({ theme }) => theme.spacing.sm};
   padding-left: ${({ theme }) => theme.spacing.sm};
 
@@ -768,7 +756,9 @@ const Answer = styled(Row)`
   }
 `;
 
-const ParagraphWrapper = styled(Column)`
+const ParagraphWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
   gap: ${({ theme }) => theme.spacing.sm};
   color: ${({ theme }) => theme.colors.text.secondary};
   ${({ theme }) => theme.typeScale.sm};

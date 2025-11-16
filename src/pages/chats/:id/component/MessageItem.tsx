@@ -5,7 +5,7 @@ import { useInView } from 'framer-motion';
 import styled, { css } from 'styled-components';
 import { FaXmark } from 'react-icons/fa6';
 
-import { Column, ImageCentered, RoundedImageWrapper, Row } from 'styles/commonStyle';
+import { ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
 import {
   formatToLocaleAMPM,
   shouldShowDateDivider,
@@ -16,8 +16,9 @@ import {
 import { ChatMessage, Message, PendingMessage } from 'types/chat.type';
 import { IoMdRefresh } from 'react-icons/io';
 import { useChat } from '../contexts/ChatProvider';
-import { Button } from 'styles/common/Button';
-import { Text } from 'styles/common/Text';
+import { Button } from '@components/buttons/Button';
+import { Text } from '@components/Text';
+import { Flex } from '@components/Flex';
 
 interface IProps {
   message: ChatMessage;
@@ -66,7 +67,7 @@ export default React.memo(function MessageItem({
     <li ref={ref}>
       {showDateDivider && (
         <DateDivider>
-          <Text $size="sm">{dayjs(message.createdAt).format('MMMM D[일], YYYY')}</Text>
+          <Text size="sm">{dayjs(message.createdAt).format('MMMM D[일], YYYY')}</Text>
         </DateDivider>
       )}
       <Item $isMyMessage={isMyMessage}>
@@ -77,47 +78,49 @@ export default React.memo(function MessageItem({
         ) : !isMyMessage ? (
           <EmptySpace />
         ) : null}
-        <Column style={{ gap: '4px', width: '100%' }}>
-          {showNickname && !isMyMessage && <Text $size="sm">{message.sender?.nickname}</Text>}
+        <Flex gap="xs">
+          {showNickname && !isMyMessage && <Text size="sm">{message.sender?.nickname}</Text>}
           <MessageContent $isMyMessage={isMyMessage}>
             {/* <Content $isMyMessage={isMyMessage}>{message.content}</Content> */}
-            {showTime && <Text $size="xs">{formatToLocaleAMPM(message.createdAt)}</Text>}
+            {showTime && <Text size="xs">{formatToLocaleAMPM(message.createdAt)}</Text>}
             {isPendingMessage(message)
               ? message.status === 'error' && (
                   <ErrorStatus>
                     <Button
                       onClick={() => sendMessage(message.content, message?.tempId)}
-                      $variant="icon"
-                      $size="sm"
-                      $borderRadius="circle"
+                      variant="icon"
+                      size="sm"
+                      borderRadius="circle"
                     >
                       <ReSendMark />
                     </Button>
-                    <Button onClick={deleteNewMessage} $variant="icon" $size="sm" $borderRadius="circle">
+                    <Button onClick={deleteNewMessage} variant="icon" size="sm" borderRadius="circle">
                       <XMark />
                     </Button>
                   </ErrorStatus>
                 )
               : unreadCount > 0 && (
-                  <Text $size="xs" $color="highlight" $weight="semibold">
+                  <Text size="xs" color="highlight" weight="semibold">
                     {unreadCount}
                   </Text>
                 )}
           </MessageContent>
-        </Column>
+        </Flex>
       </Item>
     </li>
   );
 });
 
-const DateDivider = styled(Row)`
+const DateDivider = styled.div`
+  display: flex;
   justify-content: center;
-  padding: ${({ theme }) => theme.spacing._2xl};
+  padding: ${({ theme }) => theme.spacing['2xl']};
   border-radius: ${({ theme }) => theme.radius.md};
   background-color: ${({ theme }) => theme.colors.background.box.default.active};
 `;
 
-const Item = styled(Row)<{ $isMyMessage: boolean }>`
+const Item = styled.div<{ $isMyMessage: boolean }>`
+  display: flex;
   gap: ${({ theme }) => theme.spacing.sm};
   width: 100%;
   ${({ $isMyMessage }) =>
@@ -163,7 +166,8 @@ const MessageContent = styled.div<{ $isMyMessage: boolean }>`
 //   word-wrap: break-word; /* 긴 단어가 있을 경우 줄 바꿈 처리 */
 // `;
 
-const ErrorStatus = styled(Row)`
+const ErrorStatus = styled.div`
+  display: flex;
   align-items: center;
   padding: ${({ theme }) => theme.spacing.xs};
   background-color: ${({ theme }) => theme.colors.background.box.default.primary};

@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 import { MdOutlineRateReview } from 'react-icons/md';
 import { PiCatBold, PiDogBold, PiStarFill } from 'react-icons/pi';
-import { Column, ImageCentered, RoundedImageWrapper, Row } from 'styles/commonStyle';
+import { ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
 import { Link } from 'react-router-dom';
 import { Petsitter } from 'types/user.type';
 import { PetSpecies } from 'types/pet.type';
+import { Flex } from '@components/Flex';
 
 interface ResultProps {
   petsitter: Petsitter;
@@ -19,32 +20,36 @@ export default function Result({ petsitter }: ResultProps) {
           alt="petsitter_photo"
         />
       </PetsitterImage>
-      <InfoWrapper>
+
+      <Flex direction="column" gap="sm">
         <span>{petsitter.nickname}</span>
 
-        <StarReviewWrapper>
-          <Wrapper>
+        <Flex gap="lg">
+          <Flex alignItems="center" gap="xs">
             <PiStarFill size="20px" color="#279EFF" />
             <span>{petsitter?.star}</span>
-          </Wrapper>
-          <Wrapper>
+          </Flex>
+          <Flex alignItems="center" gap="xs">
             <MdOutlineRateReview size="20px" />
             <span>{petsitter?.reviewCount}</span>
-          </Wrapper>
-        </StarReviewWrapper>
+          </Flex>
+        </Flex>
 
-        <PetList>
-          {(petsitter?.possiblePetSpecies ?? []).map((species: PetSpecies) => (
-            <PetCapsule key={species}>
-              {species === PetSpecies.DOG ? <PiDogBold /> : species === PetSpecies.CAT ? <PiCatBold /> : null}
-            </PetCapsule>
-          ))}
-        </PetList>
-      </InfoWrapper>
+        <li>
+          <Flex gap="xs">
+            {(petsitter?.possiblePetSpecies ?? []).map((species: PetSpecies) => (
+              <li key={species}>
+                {species === PetSpecies.DOG ? <PiDogBold /> : species === PetSpecies.CAT ? <PiCatBold /> : null}
+              </li>
+            ))}
+          </Flex>
+        </li>
+      </Flex>
     </Card>
   );
 }
 
+// TODO: 버튼 + shadow
 const Card = styled(Link)`
   display: flex;
   align-items: center;
@@ -58,23 +63,3 @@ const PetsitterImage = styled(RoundedImageWrapper)`
   width: 60px;
   height: 60px;
 `;
-
-const Wrapper = styled(Row)`
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.xs};
-`;
-
-const InfoWrapper = styled(Column)`
-  gap: ${({ theme }) => theme.spacing.sm};
-`;
-
-const StarReviewWrapper = styled(Row)`
-  gap: ${({ theme }) => theme.spacing.lg};
-`;
-
-const PetList = styled.ul`
-  display: flex;
-  gap: ${({ theme }) => theme.spacing.xs};
-`;
-
-const PetCapsule = styled.li``;

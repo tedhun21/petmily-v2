@@ -6,8 +6,9 @@ import { FaChevronRight } from 'react-icons/fa6';
 
 import { dateAgo, dayFormat, timeRange } from 'utils/date';
 import { Reservation } from 'types/reservation.type';
-import { Column, Row } from 'styles/commonStyle';
-import { Text } from 'styles/common/Text';
+import { Text } from '@components/Text';
+import { flex, Flex } from '@components/Flex';
+import Box from '@components/Box';
 
 interface DetailReservationProps {
   reservation: Reservation;
@@ -15,24 +16,24 @@ interface DetailReservationProps {
 
 export default function DetailReservation({ reservation }: DetailReservationProps) {
   return (
-    <Section as="section">
-      <Wrapper>
-        <Text $size="lg" $weight="semibold">
+    <Container>
+      <Flex justifyContent="space-between">
+        <Text size="lg" weight="semibold">
           예약 날짜
         </Text>
         <div>
           <span>{reservation?.date}</span>
           <span>({dayFormat(reservation?.date)})</span>
         </div>
-      </Wrapper>
-      <Wrapper>
-        <Text $size="lg" $weight="semibold">
+      </Flex>
+      <Flex justifyContent="space-between">
+        <Text size="lg" weight="semibold">
           예약 시간
         </Text>
         <span>{timeRange(reservation?.startTime, reservation?.endTime)}</span>
-      </Wrapper>
-      <Wrapper>
-        <Text $size="lg" $weight="semibold">
+      </Flex>
+      <Flex justifyContent="space-between">
+        <Text size="lg" weight="semibold">
           예약 장소
         </Text>
         <LocationLink to={`/cares/${reservation?.id}/maps?address=${reservation?.address}`}>
@@ -40,28 +41,27 @@ export default function DetailReservation({ reservation }: DetailReservationProp
           <span>{reservation?.address}</span>
           <CustomChevronRight />
         </LocationLink>
-      </Wrapper>
-      <RequestContaier>
-        <Text $size="lg" $weight="semibold">
+      </Flex>
+      <Flex direction="column" gap="sm">
+        <Text size="lg" weight="semibold">
           요청 사항
         </Text>
         <RequestParagraph>{reservation?.body}</RequestParagraph>
-      </RequestContaier>
+      </Flex>
 
-      <Text $size="sm">{dateAgo(reservation?.createdAt)}</Text>
-    </Section>
+      <Text size="sm">{dateAgo(reservation?.createdAt)}</Text>
+    </Container>
   );
 }
 
-const Section = styled(Column)`
-  gap: ${({ theme }) => theme.spacing.sm};
-  padding: ${({ theme }) => theme.spacing.xl};
-  border-radius: ${({ theme }) => theme.radius.lg};
-  box-shadow: ${({ theme }) => theme.shadow.dp03};
-`;
-
-const Wrapper = styled(Row)`
-  justify-content: space-between;
+const Container = styled(Box).attrs(() => ({
+  p: 'xl',
+  br: 'lg',
+  shadow: 'dp03',
+}))`
+  ${flex({
+    gap: 'sm',
+  })}
 `;
 
 const LocationLink = styled(Link)`
@@ -76,10 +76,6 @@ const CustomLocationMarker = styled(HiOutlineLocationMarker)`
 
 const CustomChevronRight = styled(FaChevronRight)`
   color: ${({ theme }) => theme.colors.text.highlight};
-`;
-
-const RequestContaier = styled(Column)`
-  gap: 8px;
 `;
 
 const RequestParagraph = styled.p`

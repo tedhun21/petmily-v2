@@ -1,13 +1,15 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import styled from 'styled-components';
 
-import { Column, ImageCentered, RoundedImageWrapper, Row, Title } from 'styles/commonStyle';
+import { ImageCentered, RoundedImageWrapper, Title } from 'styles/commonStyle';
 import { Link } from 'react-router-dom';
 import { FaXmark } from 'react-icons/fa6';
 import { ChatMember } from 'types/chat.type';
 import { useChat } from '../contexts/ChatProvider';
-import { Button } from 'styles/common/Button';
-import { Text } from 'styles/common/Text';
+import { Button } from '@components/buttons/Button';
+import { Text } from '@components/Text';
+import { flex, Flex } from '@components/Flex';
+import Box from '@components/Box';
 
 interface ChatRoomDrawerProps {
   isDrawerOpen: boolean;
@@ -37,45 +39,45 @@ export default function ChatRoomDrawer({ isDrawerOpen, setIsDrawerOpen }: ChatRo
             onClick={(e) => e.stopPropagation()}
           >
             <ContentWrapper>
-              <Row style={{ justifyContent: 'flex-end' }}>
-                <Button onClick={() => setIsDrawerOpen(false)} $variant="icon" $borderRadius="circle">
+              <Flex justifyContent="flex-end">
+                <Button onClick={() => setIsDrawerOpen(false)} variant="icon" borderRadius="circle">
                   <FaXmark size="24px" />
                 </Button>
-              </Row>
+              </Flex>
 
               <div>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
+                <Flex alignItems="center">
                   <Title>채팅 참여자</Title>
-                  <Text $size="base" $color="highlight">
+                  <Text size="base" color="highlight">
                     {(otherMembers?.length ?? 0) + 1}
                   </Text>
-                </div>
+                </Flex>
 
-                <MemberList as="ul">
+                <Wrapper as="ul">
                   <Link to={`/users/${meMember?.user.nickname}`}>
-                    <MemberItem as="li">
+                    <Flex as="li" alignItems="center">
                       <MemberImage>
                         <ImageCentered
                           src={meMember?.user.photo ? `${meMember?.user.photo}` : '/imgs/DefaultUserProfile.jpg'}
                         />
                       </MemberImage>
                       <span>{meMember?.user.nickname}</span>
-                    </MemberItem>
+                    </Flex>
                   </Link>
 
                   {otherMembers?.map((member: ChatMember) => (
                     <Link to={`/users/${member.user.nickname}`} key={member.user?.id}>
-                      <MemberItem as="li">
+                      <OtherWrapper as="li">
                         <MemberImage>
                           <ImageCentered
                             src={meMember?.user.photo ? `${meMember?.user.photo}` : '/imgs/DefaultUserProfile.jpg'}
                           />
                         </MemberImage>
                         <span>{member.user?.nickname}</span>
-                      </MemberItem>
+                      </OtherWrapper>
                     </Link>
                   ))}
-                </MemberList>
+                </Wrapper>
               </div>
 
               <div>
@@ -115,9 +117,12 @@ const StyledInMotionDiv = styled(motion.div)`
   border-bottom-left-radius: ${({ theme }) => theme.radius.lg};
 `;
 
-const ContentWrapper = styled(Column)`
+const ContentWrapper = styled.div`
   width: 100%;
   height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: ${({ theme }) => theme.spacing.xl};
 
   & > :nth-child(1) {
@@ -133,21 +138,21 @@ const ContentWrapper = styled(Column)`
   }
 `;
 
-const MemberList = styled(Column)`
-  gap: ${({ theme }) => theme.spacing.sm};
-  padding: ${({ theme }) => theme.spacing.sm};
+const Wrapper = styled(Box).attrs(() => ({
+  p: 'sm',
+}))`
+  ${flex({
+    gap: 'sm',
+  })}
 `;
 
-const MemberItem = styled(Row)`
-  align-items: center;
-  width: 100%;
-  gap: ${({ theme }) => theme.spacing.sm};
-  padding: ${({ theme }) => theme.spacing.xs};
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.background.box.default.primary};
-    border-radius: ${({ theme }) => theme.radius.lg};
-  }
+const OtherWrapper = styled(Box).attrs(() => ({
+  p: 'sm',
+}))`
+  ${flex({
+    alignItems: 'center',
+    gap: 'sm',
+  })}
 `;
 
 const MemberImage = styled(RoundedImageWrapper)`
