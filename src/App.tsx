@@ -1,7 +1,6 @@
 // import { Suspense, lazy } from 'react';
 
 import { createBrowserRouter, RouterProvider, Route, createRoutesFromElements } from 'react-router-dom';
-import { styled } from 'styled-components';
 
 // import LoadingFallback from '@components/LoadingFallback';
 
@@ -55,15 +54,13 @@ import ChatsPage from '@pages/chats/page';
 import ChatPage from '@pages/chats/:id/page';
 
 import NotFoundPage from '@pages/common/NotFound';
+import RedirectPage from '@pages/common/Redirect';
 
 import { SWRConfig } from 'swr';
-
-import RedirectPage from '@pages/common/Redirect';
 
 import AuthProvider from '@components/contexts/AuthProvider';
 import SocketProvider from '@components/contexts/SocketProvider';
 import ThemeProvider from '@components/contexts/ThemeProvider';
-import GlobalStyle from 'styles/Globalstyle';
 
 import Layout from '@components/Layout';
 
@@ -106,7 +103,6 @@ export default function App() {
       <AuthProvider>
         <SocketProvider>
           <ThemeProvider>
-            <GlobalStyle />
             <RouterProvider router={router} />
           </ThemeProvider>
         </SocketProvider>

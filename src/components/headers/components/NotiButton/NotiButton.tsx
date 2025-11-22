@@ -3,14 +3,14 @@ import { createPortal } from 'react-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { IoNotificationsOutline } from 'react-icons/io5';
 
-import { RootState } from 'store';
-import useOutsideClickModal from 'hooks/useOutsideClickModal';
-import { closeModal, ModalType, openModal } from 'store/modalSlice';
+import { RootState } from '@/store';
+import useOutsideClickModal from '@/hooks/useOutsideClickModal';
+import { closeModal, ModalType, openModal } from '@/store/modalSlice';
 import NotiModal from './components/NotiModal';
-import { Button } from '@components/buttons/Button';
+import { Button } from '@/components/styled/Button';
 
 export default function NotiButton() {
   const dispatch = useDispatch();

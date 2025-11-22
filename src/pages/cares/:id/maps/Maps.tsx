@@ -1,4 +1,4 @@
-import { fetcher } from 'api';
+import { fetcher } from '@/api';
 import { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import useSWR from 'swr';

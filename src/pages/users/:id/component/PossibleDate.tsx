@@ -2,20 +2,19 @@ import dayjs, { Dayjs } from 'dayjs';
 import { Controller, useForm } from 'react-hook-form';
 import useSWR from 'swr';
 
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 
-import { Title } from 'styles/commonStyle';
-import { reservationDisableDate, timeOptions } from 'utils/date';
-import { fetcher } from 'api';
-import { Petsitter } from 'types/user.type';
-import { DayOfWeekType } from 'types/common.type';
-import { Reservation } from 'types/reservation.type';
-import { Link } from 'react-router-dom';
-import Box from '@components/Box';
-import { Flex } from '@components/Flex';
+import { Title } from '@/styles/commonStyle';
+import { reservationDisableDate, timeOptions } from '@/utils/date';
+import { fetcher } from '@/api';
+import { Petsitter } from '@/types/user.type';
+import { DayOfWeekType } from '@/types/common.type';
+import { Reservation } from '@/types/reservation.type';
+import Box from '@components/styled/Box';
+import Flex from '@components/styled/Flex';
 
 interface PossibleDateProps {
   petsitter?: Petsitter;
@@ -237,6 +236,7 @@ export default function PossibleDate({ petsitter }: PossibleDateProps) {
   );
 }
 
+// TODO
 const Section = styled.section`
   display: flex;
   flex-direction: column;

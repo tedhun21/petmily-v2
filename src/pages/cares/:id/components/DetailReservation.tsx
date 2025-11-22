@@ -1,14 +1,14 @@
 import { Link } from 'react-router-dom';
 
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 import { FaChevronRight } from 'react-icons/fa6';
 
-import { dateAgo, dayFormat, timeRange } from 'utils/date';
-import { Reservation } from 'types/reservation.type';
-import { Text } from '@components/Text';
-import { flex, Flex } from '@components/Flex';
-import Box from '@components/Box';
+import { dateAgo, dayFormat, timeRange } from '@/utils/date';
+import { Reservation } from '@/types/reservation.type';
+import { Text } from '@components/styled/Text';
+import Flex from '@components/styled/Flex';
+import Box from '@components/styled/Box';
 
 interface DetailReservationProps {
   reservation: Reservation;
@@ -16,59 +16,47 @@ interface DetailReservationProps {
 
 export default function DetailReservation({ reservation }: DetailReservationProps) {
   return (
-    <Container>
-      <Flex justifyContent="space-between">
-        <Text size="lg" weight="semibold">
-          예약 날짜
-        </Text>
-        <div>
-          <span>{reservation?.date}</span>
-          <span>({dayFormat(reservation?.date)})</span>
-        </div>
-      </Flex>
-      <Flex justifyContent="space-between">
-        <Text size="lg" weight="semibold">
-          예약 시간
-        </Text>
-        <span>{timeRange(reservation?.startTime, reservation?.endTime)}</span>
-      </Flex>
-      <Flex justifyContent="space-between">
-        <Text size="lg" weight="semibold">
-          예약 장소
-        </Text>
-        <LocationLink to={`/cares/${reservation?.id}/maps?address=${reservation?.address}`}>
-          <CustomLocationMarker />
-          <span>{reservation?.address}</span>
-          <CustomChevronRight />
-        </LocationLink>
-      </Flex>
+    <Box p="xl" br="lg" shadow="dp03">
       <Flex direction="column" gap="sm">
-        <Text size="lg" weight="semibold">
-          요청 사항
-        </Text>
-        <RequestParagraph>{reservation?.body}</RequestParagraph>
-      </Flex>
+        <Flex justifyContent="space-between">
+          <Text size="lg" weight="semibold">
+            예약 날짜
+          </Text>
+          <div>
+            <span>{reservation?.date}</span>
+            <span>({dayFormat(reservation?.date)})</span>
+          </div>
+        </Flex>
+        <Flex justifyContent="space-between">
+          <Text size="lg" weight="semibold">
+            예약 시간
+          </Text>
+          <span>{timeRange(reservation?.startTime, reservation?.endTime)}</span>
+        </Flex>
+        <Flex justifyContent="space-between">
+          <Text size="lg" weight="semibold">
+            예약 장소
+          </Text>
+          <Link to={`/cares/${reservation?.id}/maps?address=${reservation?.address}`}>
+            <Flex alignItems="center" gap="xs">
+              <CustomLocationMarker />
+              <span>{reservation?.address}</span>
+              <CustomChevronRight />
+            </Flex>
+          </Link>
+        </Flex>
+        <Flex direction="column" gap="sm">
+          <Text size="lg" weight="semibold">
+            요청 사항
+          </Text>
+          <RequestParagraph>{reservation?.body}</RequestParagraph>
+        </Flex>
 
-      <Text size="sm">{dateAgo(reservation?.createdAt)}</Text>
-    </Container>
+        <Text size="sm">{dateAgo(reservation?.createdAt)}</Text>
+      </Flex>
+    </Box>
   );
 }
-
-const Container = styled(Box).attrs(() => ({
-  p: 'xl',
-  br: 'lg',
-  shadow: 'dp03',
-}))`
-  ${flex({
-    gap: 'sm',
-  })}
-`;
-
-const LocationLink = styled(Link)`
-  display: flex;
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.xs};
-`;
 
 const CustomLocationMarker = styled(HiOutlineLocationMarker)`
   color: ${({ theme }) => theme.colors.text.highlight};
@@ -79,6 +67,6 @@ const CustomChevronRight = styled(FaChevronRight)`
 `;
 
 const RequestParagraph = styled.p`
-  ${({ theme }) => theme.typeScale.sm};
   padding-left: ${({ theme }) => theme.spacing.sm};
+  ${({ theme }) => theme.typeScale.sm};
 `;

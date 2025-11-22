@@ -1,10 +1,10 @@
-import styled from 'styled-components';
-import { Button } from '@components/buttons/Button';
-import { flex, Flex } from '@components/Flex';
-import { Text } from '@components/Text';
-import { Notification } from 'types/notification.type';
-import { dateAgo, dateFormat } from 'utils/date';
-import Box from '@components/Box';
+import styled from '@emotion/styled';
+import { Button } from '@/components/styled/Button';
+import Flex from '@components/styled/Flex';
+import { Text } from '@components/styled/Text';
+import { Notification } from '@/types/notification.type';
+import { dateAgo, dateFormat } from '@/utils/date';
+import Box from '@components/styled/Box';
 
 interface NotiItemProps {
   notification: Notification;
@@ -23,15 +23,17 @@ export default function NotiItem({ notification, onReadClick }: NotiItemProps) {
   return (
     <Button key={notification.id} onClick={handleClick}>
       <Flex direction="column">
-        <TopDiv $isRead={isRead}>
-          <Flex alignItems="flex-end" gap="xs">
-            <Text
-              size="sm"
-              weight="semibold"
-            >{`${dateFormat(notification.createdAt).year}.${dateFormat(notification.createdAt).month}.${dateFormat(notification.createdAt).day}`}</Text>
-            <Text size="xs">{dateAgo(notification.createdAt)}</Text>
+        <TopDiv $isRead={isRead} p="xs">
+          <Flex justifyContent="space-between" alignItems="center">
+            <Flex alignItems="flex-end" gap="xs">
+              <Text
+                size="sm"
+                weight="semibold"
+              >{`${dateFormat(notification.createdAt).year}.${dateFormat(notification.createdAt).month}.${dateFormat(notification.createdAt).day}`}</Text>
+              <Text size="xs">{dateAgo(notification.createdAt)}</Text>
+            </Flex>
+            {!isRead && <IsUnread />}
           </Flex>
-          {!isRead && <IsUnread />}
         </TopDiv>
       </Flex>
       {/* <Text size="sm">{notification.message}</Text> */}
@@ -39,14 +41,8 @@ export default function NotiItem({ notification, onReadClick }: NotiItemProps) {
   );
 }
 
-const TopDiv = styled(Box).attrs(() => ({
-  p: 'xs',
-}))<{ $isRead: boolean }>`
+const TopDiv = styled(Box)<{ $isRead: boolean }>`
   cursor: ${({ $isRead }) => ($isRead ? 'default' : 'pointer')};
-  ${flex({
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  })}
 `;
 
 const IsUnread = styled.div`

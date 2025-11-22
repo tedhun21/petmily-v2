@@ -1,70 +1,70 @@
 import { PiCatBold, PiDogBold } from 'react-icons/pi';
-import styled from 'styled-components';
-import { Text } from '@components/Text';
-import { PetSpecies } from 'types/pet.type';
-import { timeRange, weekdays } from 'utils/date';
-import Box from '@components/Box';
-import { flex } from '@components/Flex';
+import styled from '@emotion/styled';
+import { Text } from '@components/styled/Text';
+import { PetSpecies } from '@/types/pet.type';
+import { timeRange, weekdays } from '@/utils/date';
+import Box from '@components/styled/Box';
+import { Label } from '@/components/styled/Label';
 
 export default function MyPetsitterSettings({ petsitter }: any) {
   return (
     <InfoList>
       {petsitter?.possiblePetSpecies && (
-        <InfoItem>
+        <Box p="md" br="lg" bg="background.box.default.primary">
           <span>케어 가능 동물</span>
           <ItemWrapper>
             {petsitter.possiblePetSpecies.map((species: PetSpecies) => (
-              <ItemLabel as="li" key={species}>
+              <Label key={species} size="sm" borderRadius="lg" color="blue">
                 {species === PetSpecies.DOG ? (
                   <PiDogBold size="20px" color="white" />
                 ) : species === PetSpecies.CAT ? (
                   <PiCatBold size="20px" color="white" />
                 ) : null}
-              </ItemLabel>
+              </Label>
             ))}
           </ItemWrapper>
-        </InfoItem>
+        </Box>
       )}
       {petsitter?.possibleLocations && (
-        <InfoItem>
+        <Box p="md" br="lg" bg="background.box.default.primary">
           <span>케어 가능 지역</span>
           <ItemWrapper>
             {petsitter.possibleLocations.map((location: string) => (
-              <ItemLabel as="li" key={location}>
+              <Label key={location} size="sm" borderRadius="lg" color="blue">
                 <Text size="sm" color="white">
                   {location}
                 </Text>
-              </ItemLabel>
+              </Label>
             ))}
           </ItemWrapper>
-        </InfoItem>
+        </Box>
       )}
       {petsitter?.possibleDays && (
-        <InfoItem>
+        <Box p="md" br="lg" bg="background.box.default.primary">
           <span>케어 가능 요일</span>
           <ItemWrapper>
             {petsitter.possibleDays.map((day: string) => {
               const matchedDay = weekdays.find((weekday) => weekday.value === day);
               return (
-                <ItemLabel as="li" key={day}>
+                <Label key={day} size="sm" borderRadius="lg" color="blue">
                   <Text size="sm" color="white">
                     {matchedDay?.label}
                   </Text>
-                </ItemLabel>
+                </Label>
               );
             })}
           </ItemWrapper>
-        </InfoItem>
+        </Box>
       )}
       {petsitter?.possibleStartTime && petsitter?.possibleEndTime && (
-        <InfoItem>
+        <Box p="md" br="lg" bg="background.box.default.primary">
           <span>케어 가능 시간</span>
-          <ItemLabel as="li">
+          <Label size="sm" borderRadius="lg" color="blue">
             <Text size="sm" color="white">
               {timeRange(petsitter?.possibleStartTime, petsitter?.possibleEndTime)}
             </Text>
-          </ItemLabel>
-        </InfoItem>
+          </Label>
+        </Box>
       )}
     </InfoList>
   );
@@ -76,22 +76,8 @@ const InfoList = styled.ul`
   gap: ${({ theme }) => theme.spacing.sm};
 `;
 
-const InfoItem = styled(Box).attrs(() => ({ p: 'md', br: 'lg', bg: 'background.box.default.primary' }))`
-  ${flex({ direction: 'column', gap: 'sm' })}
-`;
-
 const ItemWrapper = styled.ul`
   display: flex;
   flex-wrap: wrap;
   gap: ${({ theme }) => theme.spacing.xs};
-`;
-
-// TODO
-const ItemLabel = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 4px 8px;
-  background-color: ${({ theme }) => theme.colors.text.highlight};
-  border-radius: ${({ theme }) => theme.radius.md};
 `;

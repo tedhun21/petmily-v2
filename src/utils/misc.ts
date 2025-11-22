@@ -1,7 +1,6 @@
 import dayjs from 'dayjs';
 
-import { ModalType } from 'store/modalSlice';
-import { ChatMessage } from 'types/chat.type';
+import { ChatMessage } from '@/types/chat.type';
 
 export const formatStatus = (status: string) => {
   switch (status) {
@@ -14,10 +13,6 @@ export const formatStatus = (status: string) => {
     case 'completed':
       return '완료됨';
   }
-};
-
-export const isSearchModal = (modalType: ModalType | null): boolean => {
-  return modalType !== null && modalType.startsWith('search_');
 };
 
 /**

@@ -1,7 +1,8 @@
-import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Text } from '@components/Text';
-import { Flex } from '@components/Flex';
+import styled from '@emotion/styled';
+
+import { Text } from '@components/styled/Text';
+import Flex from '@components/styled/Flex';
 
 export default function NotFoundPage() {
   return (

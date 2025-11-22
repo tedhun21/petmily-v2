@@ -1,8 +1,8 @@
 import useSWR from 'swr';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
-import { fetcher, mapFetcher } from 'api';
-import { Reservation } from 'types/reservation.type';
+import { fetcher, mapFetcher } from '@/api';
+import { Reservation } from '@/types/reservation.type';
 
 interface MapsProps {
   reservation: Reservation;

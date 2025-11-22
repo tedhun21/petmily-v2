@@ -1,17 +1,17 @@
 import { useRef } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { FaChevronDown } from 'react-icons/fa6';
 
-import { ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
+import { ImageCentered, RoundedImageWrapper } from '@/styles/commonStyle';
 
 import MessageList from './MessageList';
 import Loading from '@components/Loading';
 import { useChat } from '../contexts/ChatProvider';
 import { useChatUIEffects } from '../hooks/useChatUIEffects';
-import { Button } from '@components/buttons/Button';
-import { Text } from '@components/Text';
-import Box from '@components/Box';
-import { flex, Flex } from '@components/Flex';
+import { Button } from '@/components/styled/Button';
+import { Text } from '@components/styled/Text';
+import Box from '@components/styled/Box';
+import Flex from '@components/styled/Flex';
 
 export default function ChatContainer() {
   const {
@@ -47,30 +47,45 @@ export default function ChatContainer() {
           <Sticky>
             {downButtonState.state === 'default' && (
               <AbsoluteBottomCenter>
-                <DownButton type="button" onClick={() => scrollToBottom({ behavior: 'smooth' })}>
+                <Button
+                  type="button"
+                  onClick={() => scrollToBottom({ behavior: 'smooth' })}
+                  variant="icon"
+                  borderRadius="circle"
+                >
                   <FaChevronDown size="16px" />
-                </DownButton>
+                </Button>
               </AbsoluteBottomCenter>
             )}
             {downButtonState.state === 'newMessage' && (
               <AbsolutBottom>
-                <Wrapper>
-                  <NewMessageButton type="button" onClick={() => scrollToBottom({ behavior: 'smooth' })}>
-                    <NewMessageUser>
-                      <NewMessageUserPhoto>
-                        <ImageCentered
-                          src={downButtonState.lastestNewMessages?.sender?.photo || '/imgs/DefaultUserProfile.jpg'}
-                        />
-                      </NewMessageUserPhoto>
-                      <span>{downButtonState.lastestNewMessages?.sender.nickname}</span>
-                      <Text size="sm" weight="semibold" style={{ textAlign: 'start' }}>
-                        {downButtonState.lastestNewMessages?.content}
-                      </Text>
-                    </NewMessageUser>
+                <Box p="md">
+                  <Flex>
+                    <Button
+                      type="button"
+                      onClick={() => scrollToBottom({ behavior: 'smooth' })}
+                      variant="secondary"
+                      size="md"
+                      borderRadius="lg"
+                      fullWidth
+                      style={{ opacity: 0.9 }}
+                    >
+                      <NewMessageUser>
+                        <NewMessageUserPhoto>
+                          <ImageCentered
+                            src={downButtonState.lastestNewMessages?.sender?.photo || '/imgs/DefaultUserProfile.jpg'}
+                          />
+                        </NewMessageUserPhoto>
+                        <span>{downButtonState.lastestNewMessages?.sender.nickname}</span>
+                        <Text size="sm" weight="semibold" style={{ textAlign: 'start' }}>
+                          {downButtonState.lastestNewMessages?.content}
+                        </Text>
+                      </NewMessageUser>
 
-                    <FaChevronDown size="16px" />
-                  </NewMessageButton>
-                </Wrapper>
+                      <FaChevronDown size="16px" />
+                    </Button>
+                  </Flex>
+                </Box>
               </AbsolutBottom>
             )}
           </Sticky>
@@ -104,18 +119,6 @@ const AbsolutBottom = styled.div`
   width: 100%;
 `;
 
-const Wrapper = styled(Box).attrs(() => ({
-  p: 'md',
-}))`
-  ${flex()}
-`;
-
-const NewMessageButton = styled(Button).attrs(() => ({ variant: 'secondary', size: 'md', borderRadius: 'lg' }))`
-  width: 100%;
-
-  opacity: 0.9;
-`;
-
 // TODO
 const NewMessageUser = styled.div`
   display: flex;
@@ -128,11 +131,4 @@ const NewMessageUser = styled.div`
 const NewMessageUserPhoto = styled(RoundedImageWrapper)`
   width: 32px;
   height: 32px;
-`;
-
-const DownButton = styled(Button).attrs(() => ({
-  variant: 'secondary',
-  borderRadius: 'circle',
-}))`
-  padding: ${({ theme }) => theme.spacing.sm};
 `;

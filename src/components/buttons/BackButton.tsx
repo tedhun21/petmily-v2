@@ -1,7 +1,7 @@
+import { useNavigate } from 'react-router-dom';
 import { FaArrowLeft } from 'react-icons/fa6';
 
-import { Button } from './Button';
-import { useNavigate } from 'react-router-dom';
+import { Button } from '../styled/Button';
 
 interface IProps {
   link?: string;

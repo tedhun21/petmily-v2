@@ -1,6 +1,6 @@
 import NavigationBarLink from '@components/headers/components/NavigationBarLink';
-import { Flex } from '@components/Flex';
-import Box from '@components/Box';
+import Flex from '@components/styled/Flex';
+import Box from '@components/styled/Box';
 
 export interface INavItem {
   id: number;

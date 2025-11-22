@@ -3,7 +3,7 @@ import { SWRConfiguration, SWRResponse } from 'swr/_internal';
 import useSWRMutation from 'swr/mutation';
 import useSWRInfinite from 'swr/infinite';
 import { useSelector } from 'react-redux';
-import { RootState } from 'store';
+import { RootState } from '@/store';
 
 export const useAuthSWR = <T>(
   key: string | null,

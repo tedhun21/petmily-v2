@@ -1,7 +1,7 @@
-import styled from 'styled-components';
-import { Flex, flex } from '@components/Flex';
-import { Text } from '@components/Text';
-import Box from '@components/Box';
+import styled from '@emotion/styled';
+import { Text } from '@components/styled/Text';
+import Box from '@components/styled/Box';
+import Flex from '@components/styled/Flex';
 
 export default function HomeAd() {
   return (
@@ -9,31 +9,23 @@ export default function HomeAd() {
       <Flex gap="sm">
         <GifContainer src="/imgs/HomeAd.gif" alt="ad" />
 
-        <Wrapper>
-          <Image src="/imgs/CatsAndDogs.png" alt="Image" />
+        <Box w="100%">
+          <Flex direction="column" justifyContent="space-around" alignItems="center">
+            <Image src="/imgs/CatsAndDogs.png" alt="Image" />
 
-          <Text size="sm" weight="bold" color="secondary">
-            딩동~
-          </Text>
-          <Text size="lg" weight="bold">
-            펫시터 방문 케어 서비스
-          </Text>
-          <Text>We&apos;re Petmily!</Text>
-        </Wrapper>
+            <Text size="sm" weight="bold" color="secondary">
+              딩동~
+            </Text>
+            <Text size="lg" weight="bold">
+              펫시터 방문 케어 서비스
+            </Text>
+            <Text>We&apos;re Petmily!</Text>
+          </Flex>
+        </Box>
       </Flex>
     </section>
   );
 }
-
-const Wrapper = styled(Box).attrs(() => ({
-  w: '100%',
-}))`
-  ${flex({
-    direction: 'column',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-  })}
-`;
 
 const Image = styled.img`
   width: 80px;

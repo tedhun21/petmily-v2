@@ -17,9 +17,14 @@
     "strict": true,
     "target": "ES6",
     "incremental": true, // 증분 컴파일을 활성화하여 컴파일 속도를 높임
-    "baseUrl": "src"
+    "jsxImportSource": "@emotion/react",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@pages/*": ["src/pages/*"],
+      "@components/*": ["src/components/*"]
+    }
   },
-  "extends": "./tsconfig.paths.json",
   "exclude": ["node_modules"], // 컴파일하지 않을 파일 또는 디렉토리를 지정
   "include": ["src/**/*"] // 컴파일 할 파일 또는 디렉토리를 지정
 }

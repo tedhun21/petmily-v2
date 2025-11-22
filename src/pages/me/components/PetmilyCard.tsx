@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { TbGenderFemale, TbGenderMale } from 'react-icons/tb';
 
-import { Pet, PetGender, PetSpecies } from 'types/pet.type';
-import { ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
-import { Text } from '@components/Text';
-import { Flex } from '@components/Flex';
+import { Pet, PetGender, PetSpecies } from '@/types/pet.type';
+import { ImageCentered, RoundedImageWrapper } from '@/styles/commonStyle';
+import { Text } from '@components/styled/Text';
+import Flex from '@components/styled/Flex';
 
 interface PetmilyCardProps {
   pet: Pet;
@@ -60,6 +60,7 @@ export default function PetmilyCard({ pet }: PetmilyCardProps) {
   );
 }
 
+// TODO: Link
 const PetCard = styled(Link)`
   display: flex;
   flex-direction: column;

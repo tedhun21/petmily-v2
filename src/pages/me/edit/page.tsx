@@ -1,8 +1,8 @@
 import { MouseEvent, useEffect, useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import { useAuthSWR, useAuthSWRMutation } from 'hooks/authSWR';
+import styled from '@emotion/styled';
+import { useAuthSWR, useAuthSWRMutation } from '@/hooks/authSWR';
 
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -18,27 +18,28 @@ import { FaArrowUp, FaXmark } from 'react-icons/fa6';
 import { GoVerified } from 'react-icons/go';
 import { PiCatBold, PiDogBold } from 'react-icons/pi';
 
-import { removeCookie } from 'utils/cookie';
+import { removeCookie } from '@/utils/cookie';
 import { TypeRadioLabel } from '../pet/register/page';
 
 import Loading from '@components/Loading';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { deleter, fetcher, updater } from 'api';
+import { deleter, fetcher, updater } from '@/api';
 import EmailCodeModalButton from './components/EmailCodeModal';
-import { weekdays } from 'utils/date';
+import { weekdays } from '@/utils/date';
 import dayjs from 'dayjs';
 
 import CustomDaumPostcode from '@components/CustomDaumPostcode';
 import BackHeader from '@components/headers/BackHeader';
 import EditableProfileImage from '../../../components/EditableProfileImage';
-import { UserRole } from 'types/user.type';
-import { PetSpecies } from 'types/pet.type';
-import { Button } from '@components/buttons/Button';
-import { Input } from '@components/Input';
-import { Text } from '@components/Text';
-import Box from '@components/Box';
-import { flex, Flex } from '@components/Flex';
+import { UserRole } from '@/types/user.type';
+import { PetSpecies } from '@/types/pet.type';
+import { Button } from '@/components/styled/Button';
+import { Input } from '@components/styled/Input';
+import { Text } from '@components/styled/Text';
+import Box from '@components/styled/Box';
+import Flex from '@components/styled/Flex';
+import { css } from '@emotion/react';
 
 const schema = yup.object().shape({
   nickname: yup
@@ -246,238 +247,247 @@ export default function EditMePage() {
     <>
       <BackHeader title="회원 정보 수정" />
       <form onSubmit={handleSubmit(onSubmit)}>
-        <InputContainer>
-          <EditableProfileImage
-            setImageFile={setImageFile}
-            serverImageUrl={serverImageUrl}
-            setServerImageUrl={setServerImageUrl}
-            setDeletePhoto={setDeletePhoto}
-            defaultImage="/imgs/DefaultUserProfile.jpg"
-          />
-          <InputWrapper>
-            <InputLabel htmlFor="username">이름</InputLabel>
-            <span id="username">{me?.username}</span>
-          </InputWrapper>
-          <InputWrapper>
-            <InputLabel htmlFor="email">이메일</InputLabel>
-            <Flex justifyContent="space-between" alignItems="center">
-              <span id="email">{me?.email}</span>
+        <Box p="xl">
+          <Flex direction="column" gap="xl">
+            <EditableProfileImage
+              setImageFile={setImageFile}
+              serverImageUrl={serverImageUrl}
+              setServerImageUrl={setServerImageUrl}
+              setDeletePhoto={setDeletePhoto}
+              defaultImage="/imgs/DefaultUserProfile.jpg"
+            />
+            <InputWrapper>
+              <label htmlFor="username">이름</label>
+              <span id="username">{me?.username}</span>
+            </InputWrapper>
+            <InputWrapper>
+              <label htmlFor="email">이메일</label>
+              <Flex justifyContent="space-between" alignItems="center">
+                <span id="email">{me?.email}</span>
 
-              {me?.verified ? <GoVerified color="#279EFF" size="20px" /> : <EmailCodeModalButton email={me?.email} />}
-            </Flex>
-          </InputWrapper>
-          <InputWrapper>
-            <InputLabel htmlFor="nickname">닉네임</InputLabel>
-            <InputError>
-              <Input id="nickname" {...register('nickname')} />
-              {errors.nickname && (
-                <Text size="sm" color="error">
-                  {errors.nickname.message}
-                </Text>
-              )}
-            </InputError>
-          </InputWrapper>
-          <InputWrapper>
-            <InputLabel htmlFor="phone">연락처</InputLabel>
-            <InputError>
-              <Input id="phone" {...register('phone')} />
-              {errors.phone && (
-                <Text size="sm" color="error">
-                  {errors.phone.message}
-                </Text>
-              )}
-            </InputError>
-          </InputWrapper>
-          <InputWrapper>
-            <InputLabel htmlFor="address">주소</InputLabel>
-            <InputError>
-              <Input id="address" onClick={onToggleModal} onKeyDown={onToggleModal} {...register('address')} />
-              {errors.address && (
-                <Text size="sm" color="error">
-                  {errors.address.message}
-                </Text>
-              )}
-            </InputError>
+                {me?.verified ? <GoVerified color="#279EFF" size="20px" /> : <EmailCodeModalButton email={me?.email} />}
+              </Flex>
+            </InputWrapper>
+            <InputWrapper>
+              <label htmlFor="nickname">닉네임</label>
+              <Flex direction="column">
+                <Input id="nickname" {...register('nickname')} />
+                {errors.nickname && (
+                  <Text size="sm" color="error">
+                    {errors.nickname.message}
+                  </Text>
+                )}
+              </Flex>
+            </InputWrapper>
+            <InputWrapper>
+              <label htmlFor="phone">연락처</label>
+              <Flex direction="column">
+                <Input id="phone" {...register('phone')} />
+                {errors.phone && (
+                  <Text size="sm" color="error">
+                    {errors.phone.message}
+                  </Text>
+                )}
+              </Flex>
+            </InputWrapper>
+            <InputWrapper>
+              <label htmlFor="address">주소</label>
+              <Flex direction="column">
+                <Input id="address" onClick={onToggleModal} onKeyDown={onToggleModal} {...register('address')} />
+                {errors.address && (
+                  <Text size="sm" color="error">
+                    {errors.address.message}
+                  </Text>
+                )}
+              </Flex>
 
-            <Modal
-              open={isModalOpen}
-              onClose={() => setIsModalOpen(false)}
-              sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-            >
-              <div style={{ width: '360px' }}>
-                <CustomDaumPostcode onComplete={handleComplete} />
-              </div>
-            </Modal>
-          </InputWrapper>
-          <InputWrapper>
-            <InputLabel htmlFor="detailAddress">상세 주소</InputLabel>
-            <InputError>
-              <Input id="detailAddress" {...register('detailAddress')} />
-              {errors.detailAddress && (
-                <Text size="sm" color="error">
-                  {errors.detailAddress.message}
-                </Text>
-              )}
-            </InputError>
-          </InputWrapper>
-          <InputWrapper>
-            <InputLabel htmlFor="body">나의 소개</InputLabel>
-            <TextArea id="body" {...register('body')} />
-          </InputWrapper>
+              <Modal
+                open={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              >
+                <div style={{ width: '360px' }}>
+                  <CustomDaumPostcode onComplete={handleComplete} />
+                </div>
+              </Modal>
+            </InputWrapper>
+            <InputWrapper>
+              <label htmlFor="detailAddress">상세 주소</label>
+              <Flex direction="column">
+                <Input id="detailAddress" {...register('detailAddress')} />
+                {errors.detailAddress && (
+                  <Text size="sm" color="error">
+                    {errors.detailAddress.message}
+                  </Text>
+                )}
+              </Flex>
+            </InputWrapper>
+            <InputWrapper>
+              <label htmlFor="body">나의 소개</label>
+              <TextArea id="body" {...register('body')} />
+            </InputWrapper>
 
-          {/* 펫시터 정보 */}
-          {me?.role === UserRole.PETSITTER && (
-            <>
-              <InputWrapper>
-                <InputLabel>케어가능동물</InputLabel>
-                <PetSpeciesButtonContainer>
-                  <TypeRadioLabel $isSelected={watch('possiblePetSpecies')?.includes(PetSpecies.DOG)}>
-                    <input
-                      type="checkbox"
-                      value={PetSpecies.DOG}
-                      {...register('possiblePetSpecies')}
-                      onClick={handlePetSpecies}
-                      hidden
-                    />
-                    <PiDogBold size="20px" color="white" />
-                  </TypeRadioLabel>
-                  <TypeRadioLabel $isSelected={watch('possiblePetSpecies')?.includes(PetSpecies.CAT)}>
-                    <input
-                      type="checkbox"
-                      value={PetSpecies.CAT}
-                      {...register('possiblePetSpecies')}
-                      onClick={handlePetSpecies}
-                      hidden
-                    />
-                    <PiCatBold size="20px" color="white" />
-                  </TypeRadioLabel>
-                </PetSpeciesButtonContainer>
-              </InputWrapper>
-              <InputWrapper>
-                <InputLabel>케어가능지역</InputLabel>
-                <Flex direction="column" gap="xs">
-                  <Flex gap="xs">
-                    {watch('possibleLocations')?.map((location: any) => (
-                      <LocationItem key={location}>
-                        <Text size="sm" color="white">
-                          {location}
-                        </Text>
-                        <Button type="button" onClick={() => handleDeleteLocation(location)} variant="icon">
-                          <FaXmark size="16px" color="red" />
-                        </Button>
-                      </LocationItem>
+            {/* 펫시터 정보 */}
+            {me?.role === UserRole.PETSITTER && (
+              <>
+                <InputWrapper>
+                  <label htmlFor="possible_pets">케어가능동물</label>
+                  <PetSpeciesButtonContainer>
+                    <TypeRadioLabel $isSelected={watch('possiblePetSpecies')?.includes(PetSpecies.DOG)}>
+                      <input
+                        id="possible_pets"
+                        type="checkbox"
+                        value={PetSpecies.DOG}
+                        {...register('possiblePetSpecies')}
+                        onClick={handlePetSpecies}
+                        hidden
+                      />
+                      <PiDogBold size="20px" color="white" />
+                    </TypeRadioLabel>
+                    <TypeRadioLabel $isSelected={watch('possiblePetSpecies')?.includes(PetSpecies.CAT)}>
+                      <input
+                        id="possible_pets"
+                        type="checkbox"
+                        value={PetSpecies.CAT}
+                        {...register('possiblePetSpecies')}
+                        onClick={handlePetSpecies}
+                        hidden
+                      />
+                      <PiCatBold size="20px" color="white" />
+                    </TypeRadioLabel>
+                  </PetSpeciesButtonContainer>
+                </InputWrapper>
+                <InputWrapper>
+                  <label htmlFor="newLocation">케어가능지역</label>
+                  <Flex direction="column" gap="xs">
+                    <Flex gap="xs">
+                      {watch('possibleLocations')?.map((location: any) => (
+                        <Box as="li" key={location} p="xs" br="md" bg="background.highlight">
+                          <Flex alignItems="center" gap="xs">
+                            <Text size="sm" color="white">
+                              {location}
+                            </Text>
+                            <Button type="button" onClick={() => handleDeleteLocation(location)} variant="icon">
+                              <FaXmark size="16px" color="red" />
+                            </Button>
+                          </Flex>
+                        </Box>
+                      ))}
+                    </Flex>
+
+                    <Box css={{ position: 'relative' }}>
+                      <Flex justifyContent="space-between">
+                        <Input
+                          id="newLocation"
+                          placeholder="예) 서울, 서울 용산구"
+                          value={newLocation}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewLocation(e.target.value)}
+                          css={{ width: '100%' }}
+                        />
+                        <AddLocationButton type="button" onClick={handleAddLocation}>
+                          <FaArrowUp size="16px" color="#279EFF" />
+                        </AddLocationButton>
+                      </Flex>
+                    </Box>
+                  </Flex>
+                </InputWrapper>
+                <InputWrapper>
+                  <label htmlFor="careable_days">케어가능요일</label>
+                  <Flex justifyContent="space-between">
+                    {weekdays.map((day: any) => (
+                      <DayLabel key={day.id} $isSelected={watch('possibleDays')?.includes(day.value)}>
+                        <input
+                          id="carable_days"
+                          hidden
+                          type="checkbox"
+                          value={day.value}
+                          {...register('possibleDays')}
+                          onClick={handlePossibleDays}
+                        />
+                        <span>{day.label}</span>
+                      </DayLabel>
                     ))}
                   </Flex>
-
-                  <LocationInputContainer>
-                    <LocationInput
-                      placeholder="예) 서울, 서울 용산구"
-                      value={newLocation}
-                      onChange={(e) => setNewLocation(e.target.value)}
-                    />
-                    <AddLocationButton type="button" onClick={handleAddLocation}>
-                      <FaArrowUp size="16px" color="#279EFF" />
-                    </AddLocationButton>
-                  </LocationInputContainer>
-                </Flex>
-              </InputWrapper>
-              <InputWrapper>
-                <InputLabel>케어가능요일</InputLabel>
-                <Flex justifyContent="space-between">
-                  {weekdays.map((day: any) => (
-                    <DayLabel key={day.id} $isSelected={watch('possibleDays')?.includes(day.value)}>
-                      <input
-                        hidden
-                        type="checkbox"
-                        value={day.value}
-                        {...register('possibleDays')}
-                        onClick={handlePossibleDays}
-                      />
-                      <span>{day.label}</span>
-                    </DayLabel>
-                  ))}
-                </Flex>
-              </InputWrapper>
-              <InputWrapper>
-                <InputLabel>케어가능시간</InputLabel>
-                <Flex gap="sm">
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DemoContainer components={['TimePicker']} sx={{ flex: 1 }}>
-                      <Controller
-                        name="possibleStartTime"
-                        control={control}
-                        render={({ field: { value, onChange } }) => (
-                          <StyledTimePicker
-                            label="시작"
-                            minutesStep={30}
-                            skipDisabled={true}
-                            minTime={dayjs(new Date(0, 0, 0, 8))}
-                            maxTime={dayjs(new Date(0, 0, 0, 21))}
-                            ampm={false}
-                            value={value || null}
-                            onChange={onChange}
-                            // shouldDisableTime={(value, view) => checkInDisableTime(value, view, watch('date'))}
-                            sx={{ minWidth: 'none' }}
-                          />
-                        )}
-                      />
-                    </DemoContainer>
-                  </LocalizationProvider>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DemoContainer components={['TimePicker']} sx={{ flex: 1 }}>
-                      <Controller
-                        name="possibleEndTime"
-                        control={control}
-                        render={({ field: { value, onChange } }) => (
-                          <StyledTimePicker
-                            label="끝"
-                            minutesStep={30}
-                            skipDisabled={true}
-                            minTime={dayjs(new Date(0, 0, 0, 8))}
-                            maxTime={dayjs(new Date(0, 0, 0, 21))}
-                            ampm={false}
-                            value={value || null}
-                            onChange={onChange}
-                            // shouldDisableTime={(value, view) => checkInDisableTime(value, view, watch('date'))}
-                            sx={{ minWidth: 'none' }}
-                          />
-                        )}
-                      />
-                    </DemoContainer>
-                  </LocalizationProvider>
-                </Flex>
-              </InputWrapper>
-            </>
-          )}
-        </InputContainer>
-
-        <ButtonContainer>
-          <Button disabled={isMutating} type="submit" variant="primary" size="lg" fullWidth>
-            {isLoading ? <Loading /> : <span>수정하기</span>}
-          </Button>
-          <Flex justifyContent="space-between">
-            <Button type="button" onClick={handleLogout} variant="secondary">
-              로그아웃
-            </Button>
-            <Button type="button" onClick={deleteAccount} variant="secondary">
-              회원 탈퇴
-            </Button>
+                </InputWrapper>
+                <InputWrapper>
+                  <label htmlFor="possible_time">케어가능시간</label>
+                  <Flex gap="sm">
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DemoContainer components={['TimePicker']} sx={{ flex: 1 }}>
+                        <Controller
+                          name="possibleStartTime"
+                          control={control}
+                          render={({ field: { value, onChange } }) => (
+                            <StyledTimePicker
+                              label="시작"
+                              minutesStep={30}
+                              skipDisabled={true}
+                              minTime={dayjs(new Date(0, 0, 0, 8))}
+                              maxTime={dayjs(new Date(0, 0, 0, 21))}
+                              ampm={false}
+                              value={value || null}
+                              onChange={onChange}
+                              // shouldDisableTime={(value, view) => checkInDisableTime(value, view, watch('date'))}
+                              sx={{ minWidth: 'none' }}
+                              slotProps={{ textField: { id: 'possible_time' } }}
+                            />
+                          )}
+                        />
+                      </DemoContainer>
+                    </LocalizationProvider>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DemoContainer components={['TimePicker']} sx={{ flex: 1 }}>
+                        <Controller
+                          name="possibleEndTime"
+                          control={control}
+                          render={({ field: { value, onChange } }) => (
+                            <StyledTimePicker
+                              label="끝"
+                              minutesStep={30}
+                              skipDisabled={true}
+                              minTime={dayjs(new Date(0, 0, 0, 8))}
+                              maxTime={dayjs(new Date(0, 0, 0, 21))}
+                              ampm={false}
+                              value={value || null}
+                              onChange={onChange}
+                              // shouldDisableTime={(value, view) => checkInDisableTime(value, view, watch('date'))}
+                              sx={{ minWidth: 'none' }}
+                              slotProps={{ textField: { id: 'possible_time' } }}
+                            />
+                          )}
+                        />
+                      </DemoContainer>
+                    </LocalizationProvider>
+                  </Flex>
+                </InputWrapper>
+              </>
+            )}
           </Flex>
-        </ButtonContainer>
+        </Box>
+
+        <Box p="xl">
+          <Flex direction="column" gap="md">
+            <Button disabled={isMutating} type="submit" variant="primary" size="lg" fullWidth>
+              {isLoading ? <Loading /> : <span>수정하기</span>}
+            </Button>
+            <Flex justifyContent="space-between">
+              <Button type="button" onClick={handleLogout} variant="secondary">
+                로그아웃
+              </Button>
+              <Button type="button" onClick={deleteAccount} variant="secondary">
+                회원 탈퇴
+              </Button>
+            </Flex>
+          </Flex>
+        </Box>
       </form>
     </>
   );
 }
 
-const InputContainer = styled(Box).attrs(() => ({
-  p: 'xl',
-  gap: 'xl',
-}))`
-  ${flex({ direction: 'column', gap: 'xl' })}
-`;
-
 export const InputWrapper = styled.div`
   display: flex;
+
   align-items: center;
   width: 100%;
 
@@ -487,46 +497,6 @@ export const InputWrapper = styled.div`
 
   > div {
     width: 80%;
-  }
-`;
-
-const InputLabel = styled.label``;
-
-const InputError = styled(Flex).attrs(() => ({
-  direction: 'column',
-}))``;
-
-const LocationItem = styled(Box).attrs(() => ({
-  p: 'xs',
-  bg: 'background.highlight',
-  br: 'md',
-}))`
-  ${flex({
-    alignItems: 'center',
-    gap: 'xs',
-  })}
-`;
-
-const LocationInputContainer = styled.div`
-  display: flex;
-  position: relative;
-  flex: auto;
-  justify-content: space-between;
-`;
-
-const LocationInput = styled(Input)`
-  width: 100%;
-  padding: ${({ theme }) => theme.spacing.sm};
-  background-color: ${({ theme }) => theme.colors.background.input.primary};
-  border-radius: ${({ theme }) => theme.radius.md};
-  ${({ theme }) => theme.typeScale.base};
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.background.input.hover};
-  }
-
-  &:focus {
-    border: 1px solid ${({ theme }) => theme.colors.line.input.focus};
   }
 `;
 
@@ -597,12 +567,4 @@ const StyledTimePicker = styled(TimePicker)`
       border-color: ${({ theme }) => theme.colors.line.input.error};
     }
   }
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  gap: ${({ theme }) => theme.spacing.md};
-  padding: ${({ theme }) => theme.spacing.xl};
 `;

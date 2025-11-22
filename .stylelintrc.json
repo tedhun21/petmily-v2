@@ -2,11 +2,9 @@
   "extends": [
     "stylelint-order",
     "stylelint-prettier",
-    "stylelint-config-standard",
-    "stylelint-config-styled-components"
+    "stylelint-config-standard"
   ],
   "plugins": ["stylelint-order"],
-  "overrides": [{ "files": ["**/*.{ts,tsx}"], "customSyntax": "postcss-styled-syntax" }],
   "rules": {
     "selector-class-pattern": null,
     "order/order": ["custom-properties", "declarations"],

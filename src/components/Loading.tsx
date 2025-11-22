@@ -1,4 +1,5 @@
-import styled, { keyframes } from 'styled-components';
+import { keyframes } from '@emotion/react';
+import styled from '@emotion/styled';
 
 interface LoadingProps {
   size?: string;

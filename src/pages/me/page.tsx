@@ -1,17 +1,17 @@
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
-import { useAuthSWR } from 'hooks/authSWR';
+import { useAuthSWR } from '@/hooks/authSWR';
 
-import { fetcher } from 'api';
+import { fetcher } from '@/api';
 import MyPetmily from '@pages/me/components/MyPetmily';
-import { ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
+import { ImageCentered, RoundedImageWrapper } from '@/styles/commonStyle';
 import MyPetsitterProfile from './components/MyPetsitterProfile';
 import BackHeader from '@components/headers/BackHeader';
-import { UserRole } from 'types/user.type';
-import { Text } from '@components/Text';
-import Box from '@components/Box';
-import { flex, Flex } from '@components/Flex';
-import Link from '@components/Link';
+import { UserRole } from '@/types/user.type';
+import { Text } from '@components/styled/Text';
+import Box from '@components/styled/Box';
+import Flex from '@components/styled/Flex';
+import Link from '@components/styled/Link';
 
 export default function MyPage() {
   const { data: me } = useAuthSWR('/users/me', fetcher);
@@ -20,28 +20,30 @@ export default function MyPage() {
     <>
       <BackHeader link="/" />
       <main>
-        <Container>
-          <Flex>
-            <MyImage>
-              <ImageCentered
-                src={me?.photo ? `${me?.photo}` : 'imgs/DefaultUserProfile.jpg'}
-                alt="user profile image"
-              />
-            </MyImage>
+        <Box p="md">
+          <Flex justifyContent="space-between" alignItems="center">
+            <Flex>
+              <MyImage>
+                <ImageCentered
+                  src={me?.photo ? `${me?.photo}` : 'imgs/DefaultUserProfile.jpg'}
+                  alt="user profile image"
+                />
+              </MyImage>
 
-            <Text size="base" weight="bold">
-              안녕하세요!
-            </Text>
-            {me?.nickname ? (
-              <Text size="base" weight="bold">{`${me?.nickname} 님`}</Text>
-            ) : (
-              <Text size="sm">닉네임을 설정해주세요</Text>
-            )}
+              <Text size="base" weight="bold">
+                안녕하세요!
+              </Text>
+              {me?.nickname ? (
+                <Text size="base" weight="bold">{`${me?.nickname} 님`}</Text>
+              ) : (
+                <Text size="sm">닉네임을 설정해주세요</Text>
+              )}
+            </Flex>
+            <Link to="/me/edit" type="text">
+              내 정보 수정
+            </Link>
           </Flex>
-          <Link to="/me/edit" type="text">
-            내 정보 수정
-          </Link>
-        </Container>
+        </Box>
 
         {me?.role === UserRole.CLIENT ? (
           <MyPetmily />
@@ -52,12 +54,6 @@ export default function MyPage() {
     </>
   );
 }
-
-const Container = styled(Box).attrs(() => ({
-  p: 'md',
-}))`
-  ${flex({ justifyContent: 'space-between', alignItems: 'center' })}
-`;
 
 const MyImage = styled(RoundedImageWrapper)`
   width: 60px;

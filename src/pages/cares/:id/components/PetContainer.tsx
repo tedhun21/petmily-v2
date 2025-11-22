@@ -4,10 +4,12 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 
 import { Mousewheel, Pagination } from 'swiper/modules';
-import styled from 'styled-components';
-import { ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
-import { Pet, PetSpecies } from 'types/pet.type';
-import { Flex } from '@components/Flex';
+import styled from '@emotion/styled';
+import { ImageCentered, RoundedImageWrapper } from '@/styles/commonStyle';
+import { Pet, PetSpecies } from '@/types/pet.type';
+import Flex from '@components/styled/Flex';
+import { Label } from '@/components/styled/Label';
+import Box from '@/components/styled/Box';
 
 interface PetContainerProps {
   pets: Pet[];
@@ -26,32 +28,34 @@ export default function PetContainer({ pets }: PetContainerProps) {
     >
       {pets?.map((pet: Pet) => (
         <SwiperSlide key={pet.id}>
-          <Flex direction="column" justifyContent="space-between">
-            <Flex alignItems="center" gap="xs">
-              <PetImage>
-                <ImageCentered
-                  src={
-                    pet.photo
-                      ? `${pet.photo}`
-                      : pet.species === PetSpecies.DOG
-                        ? '/imgs/DogProfile.png'
-                        : pet.species === PetSpecies.CAT
-                          ? '/imgs/CatProfile.png'
-                          : undefined
-                  }
-                  alt="pet_photo"
-                />
-              </PetImage>
-              <span>{pet.name}</span>
+          <Box w="100%" p="md" br="lg" shadow="dp03">
+            <Flex direction="column" gap="md">
+              <Flex alignItems="center" gap="sm">
+                <PetImage>
+                  <ImageCentered
+                    src={
+                      pet.photo
+                        ? `${pet.photo}`
+                        : pet.species === PetSpecies.DOG
+                          ? '/imgs/DogProfile.png'
+                          : pet.species === PetSpecies.CAT
+                            ? '/imgs/CatProfile.png'
+                            : undefined
+                    }
+                    alt="pet_photo"
+                  />
+                </PetImage>
+                <span>{pet.name}</span>
+              </Flex>
+              <Flex as="ul" gap="xs" css={{ flexWrap: 'wrap' }}>
+                <Label size="sm">{pet.age}살</Label>
+                <Label size="sm">{pet.gender}</Label>
+                <Label size="sm">{pet.species}</Label>
+                <Label size="sm">{pet.breed}</Label>
+                <Label size="sm">{pet.weight}kg</Label>
+              </Flex>
             </Flex>
-            <Flex as="ul">
-              <PetInfoCapsule>{pet.age}살</PetInfoCapsule>
-              <PetInfoCapsule>{pet.gender}</PetInfoCapsule>
-              <PetInfoCapsule>{pet.species}</PetInfoCapsule>
-              <PetInfoCapsule>{pet.breed}</PetInfoCapsule>
-              <PetInfoCapsule>{pet.weight}kg</PetInfoCapsule>
-            </Flex>
-          </Flex>
+          </Box>
         </SwiperSlide>
       ))}
     </CustomSwiper>
@@ -59,11 +63,7 @@ export default function PetContainer({ pets }: PetContainerProps) {
 }
 
 const CustomSwiper = styled(Swiper)`
-  flex-shrink: 0;
   width: 100%;
-  height: 140px;
-  border-radius: ${({ theme }) => theme.radius.lg};
-  box-shadow: ${({ theme }) => theme.shadow.dp03};
 `;
 
 const PetImage = styled(RoundedImageWrapper)`

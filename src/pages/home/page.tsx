@@ -1,5 +1,4 @@
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import styled from '@emotion/styled';
 
 import HomeAd from '@pages/home/components/HomeAd';
 import RealTimeReviews from './components/RealTimeReviews';
@@ -8,8 +7,8 @@ import NavigationHeader from '@components/headers/NavigationHeader';
 import EventSwiper from './components/EventSwiper';
 import AdSwiper from './components/AdSwiper';
 import SearchBox from '@pages/search/component/SearchBox';
-import { Button } from '@components/buttons/Button';
-import Box from '@components/Box';
+import Box from '@components/styled/Box';
+import Link from '@components/styled/Link';
 
 export default function HomePage() {
   return (
@@ -19,9 +18,9 @@ export default function HomePage() {
         <HomeAd />
 
         <NoticeWrapper>
-          <Button as={Link} to="/faq" variant="secondary" size="lg">
+          <Link to="/faq" type="icon">
             자주 묻는 질문
-          </Button>
+          </Link>
         </NoticeWrapper>
 
         <Box p="md">

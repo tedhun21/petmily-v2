@@ -1,8 +1,9 @@
 import { useLocation } from 'react-router-dom';
 
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { INavItem } from './NavigationBar';
-import Link from '@components/Link';
+import Link from '@components/styled/Link';
+import Flex from '@components/styled/Flex';
 
 interface IProps {
   item: INavItem;
@@ -14,27 +15,21 @@ export default function NavigationBarLink({ item }: IProps) {
   const isSelected = pathname === item.link;
 
   return (
-    <NavLi>
-      <CustomLink to={item.link} type="text" $isSelected={isSelected}>
+    <Flex as="li" justifyContent="center" alignItems="center" css={{ flex: 1 }}>
+      <CustomLink to={item.link} type="text" $selected={isSelected}>
         {item.label}
       </CustomLink>
-    </NavLi>
+    </Flex>
   );
 }
 
-const NavLi = styled.li`
-  flex: 1;
-`;
+const CustomLink = styled(Link)<{ $selected: boolean }>`
+  cursor: ${({ $selected }) => ($selected ? 'default' : 'pointer')};
 
-const CustomLink = styled(Link)<{ $isSelected: boolean }>`
-  cursor: ${({ $isSelected }) => ($isSelected ? 'default' : 'pointer')};
+  color: ${({ $selected, theme }) => ($selected ? theme.colors.text.active : theme.colors.text.inactive)};
+  font-weight: ${({ $selected, theme }) => ($selected ? theme.fontWeight.bold : theme.fontWeight.medium)};
 
-  span {
-    color: ${({ $isSelected, theme }) => ($isSelected ? theme.colors.text.active : theme.colors.text.inactive)};
-    font-weight: ${({ $isSelected, theme }) => ($isSelected ? theme.fontWeight.bold : theme.fontWeight.medium)};
-  }
-
-  &:hover span {
-    color: ${({ $isSelected, theme }) => ($isSelected ? theme.colors.text.active : theme.colors.text.highlight)};
+  &:hover:not(:disabled) {
+    color: ${({ $selected, theme }) => ($selected ? theme.colors.text.active : theme.colors.text.highlight)};
   }
 `;

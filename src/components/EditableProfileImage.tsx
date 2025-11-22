@@ -1,11 +1,12 @@
 import { useRef, ChangeEvent, useState } from 'react';
 
-import styled from 'styled-components';
-import { ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
-import { Button } from './buttons/Button';
+import styled from '@emotion/styled';
+import { ImageCentered, RoundedImageWrapper } from '@/styles/commonStyle';
+import { Button } from './styled/Button';
 import XButton from './buttons/XButton';
-import { flex } from '@components/Flex';
-import Box from './Box';
+import Box from './styled/Box';
+import Flex from './styled/Flex';
+import { Label } from './styled/Label';
 
 interface IProps {
   setImageFile: (file: File | null) => void;
@@ -24,6 +25,10 @@ export default function EditableProfileImage({
 }: IProps) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  const handleButtonClick = () => {
+    fileInputRef.current?.click();
+  };
 
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -47,34 +52,32 @@ export default function EditableProfileImage({
   };
 
   return (
-    <Container>
-      <Relative>
-        <UserImageWrapper>
-          <ImageCentered src={previewUrl || serverImageUrl || defaultImage} alt="Profile Preview" />
-          <input id="photoInput" type="file" accept="image/*" ref={fileInputRef} onChange={handleImageChange} hidden />
-        </UserImageWrapper>
-        {(previewUrl || serverImageUrl) && (
-          <Absolute>
-            <XButton onClick={handlePhotoDelete} />
-          </Absolute>
-        )}
-      </Relative>
+    <Box p={40}>
+      <Flex direction="column" alignItems="center" gap="lg">
+        <Relative>
+          <UserImageWrapper>
+            <ImageCentered src={previewUrl || serverImageUrl || defaultImage} alt="Profile Preview" />
+            <input
+              id="photoInput"
+              type="file"
+              accept="image/*"
+              ref={fileInputRef}
+              onChange={handleImageChange}
+              hidden
+            />
+          </UserImageWrapper>
+          {(previewUrl || serverImageUrl) && (
+            <Absolute>
+              <XButton onClick={handlePhotoDelete} />
+            </Absolute>
+          )}
+        </Relative>
 
-      <Button as="label" htmlFor="photoInput">
-        프로필 사진 선택
-      </Button>
-    </Container>
+        <Button onClick={handleButtonClick}>프로필 사진 선택</Button>
+      </Flex>
+    </Box>
   );
 }
-
-const Container = styled(Box).attrs(() => ({
-  p: 40,
-}))`
-  ${flex({
-    alignItems: 'center',
-    gap: 'lg',
-  })}
-`;
 
 const Relative = styled.div`
   position: relative;

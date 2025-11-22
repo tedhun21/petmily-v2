@@ -1,6 +1,6 @@
 import { Rating } from '@mui/material';
 import { PiStar, PiStarFill } from 'react-icons/pi';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 export default function ReadOnlyRating({ value, size }: { value: number; size: string }) {
   return (

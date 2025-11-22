@@ -1,5 +1,6 @@
-import styled, { keyframes } from 'styled-components';
-import { Flex } from '@components/Flex';
+import Flex from '@components/styled/Flex';
+import { keyframes } from '@emotion/react';
+import styled from '@emotion/styled';
 
 function SkeletonCard() {
   return (
@@ -42,6 +43,7 @@ const SkeletonElement = styled.div`
   animation: ${pulse} 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 `;
 
+// TODO
 const Container = styled.div`
   display: flex;
   justify-content: center;
@@ -55,6 +57,7 @@ const Container = styled.div`
   }
 `;
 
+// TODO
 const Card = styled.div`
   display: flex;
   flex-direction: column;

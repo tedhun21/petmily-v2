@@ -1,7 +1,7 @@
-import styled from 'styled-components';
-import { API_URL } from 'config';
-import { Button, ButtonProps } from './Button';
-import { Text } from '@components/Text';
+import styled from '@emotion/styled';
+import { API_URL } from '@/config';
+import { Button, ButtonProps } from '../styled/Button';
+import { Text } from '@components/styled/Text';
 
 interface GoogleOAuthButtonProps extends ButtonProps {
   children: React.ReactNode;
@@ -12,7 +12,7 @@ export default function GoogleOAuthButton({ children }: GoogleOAuthButtonProps) 
     window.location.assign(`${API_URL}/connect/google`);
   };
   return (
-    <GoogleOAuthButtonStyle type="button" onClick={handleGooleOAuth}>
+    <GoogleOAuthButtonStyle type="button" onClick={handleGooleOAuth} variant="secondary" fullWidth>
       <GoogleImage src="/imgs/GoogleLogo.svg" alt="google logo" width="24" />
       <Text size="base" color="active">
         {children}
@@ -21,11 +21,7 @@ export default function GoogleOAuthButton({ children }: GoogleOAuthButtonProps) 
   );
 }
 
-const GoogleOAuthButtonStyle = styled(Button).attrs((props) => ({
-  variant: 'secondary',
-  size: props.size,
-  borderRadius: props.borderRadius,
-}))`
+const GoogleOAuthButtonStyle = styled(Button)`
   position: relative;
 `;
 

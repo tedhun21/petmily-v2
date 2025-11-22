@@ -3,8 +3,8 @@ import { createContext, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import useSWRMutation from 'swr/mutation';
 
-import { poster } from 'api';
-import { setAccessToken } from 'store/authSlice';
+import { poster } from '@/api';
+import { setAccessToken } from '@/store/authSlice';
 
 interface ContextProps {
   refreshToken: () => Promise<null>;

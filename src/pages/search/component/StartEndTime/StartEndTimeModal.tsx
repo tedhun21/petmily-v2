@@ -1,14 +1,18 @@
-import styled from 'styled-components';
-import { ModalLayOut } from '../SearchBox';
-import { timeOptions } from 'utils/date';
+import styled from '@emotion/styled';
+import { FormValues, ModalLayOut } from '../SearchBox';
+import { timeOptions } from '@/utils/date';
 import { useFormContext } from 'react-hook-form';
 import dayjs from 'dayjs';
-import { RootState } from 'store';
+import { RootState } from '@/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { ModalType, openModal } from 'store/modalSlice';
-import { Flex } from '@components/Flex';
+import { ModalType, openModal } from '@/store/modalSlice';
+import Flex from '@components/styled/Flex';
 
-export default function StartEndTimeModal() {
+interface IProps {
+  handleSetValue: (field: keyof FormValues, value: any) => void;
+}
+
+export default function StartEndTimeModal({ handleSetValue }: IProps) {
   const dispatch = useDispatch();
   const { currentModal } = useSelector((state: RootState) => state.modal);
   const { setValue, watch } = useFormContext();
@@ -22,36 +26,17 @@ export default function StartEndTimeModal() {
 
     const selectedTime = dayjs(time, 'HH:mm');
 
-    if (currentModal === ModalType.SEARCH_START_TIME) {
-      // endTime이 먼저 있고, 선택한 시간이 endTime보다 더 이후일때
-      // endTime은 null로 설정
-      if (selectedTime.isAfter(dayjs(endTime, 'HH:mm'))) {
+    if (!startTime && !endTime) {
+      setValue('startTime', time);
+    } else if (startTime && !endTime) {
+      if (selectedTime.isBefore(dayjs(startTime, 'HH:mm')) || selectedTime.isSame(dayjs(startTime, 'HH:mm'))) {
         setValue('startTime', time);
-        setValue('endTime', null);
-      } else if (selectedTime.isSame(dayjs(startTime, 'HH:mm'))) {
-        setValue('startTime', null);
-      } else {
-        setValue('startTime', time);
-      }
-
-      dispatch(openModal(ModalType.SEARCH_END_TIME));
-    } else if (currentModal === ModalType.SEARCH_END_TIME) {
-      // startTime이 먼저 있고,
-      // 선택한 endTime이 startTime보다 더 이전일때
-      if (selectedTime.isBefore(dayjs(startTime, 'HH:mm'))) {
-        setValue('startTime', time);
-        setValue('endTime', null);
-      } else if (selectedTime.isSame(dayjs(endTime, 'HH:mm'))) {
-        setValue('endTime', null);
-      } else if (selectedTime.isSame(dayjs(startTime, 'HH:mm'))) {
         return;
-      } else {
-        setValue('endTime', time);
       }
-
-      if (!startTime) {
-        dispatch(openModal(ModalType.SEARCH_START_TIME));
-      }
+      setValue('endTime', time);
+    } else {
+      setValue('startTime', time);
+      setValue('endTime', null);
     }
   };
 
@@ -67,7 +52,7 @@ export default function StartEndTimeModal() {
   return (
     <ModalLayOut>
       <Flex direction="column" gap="lg">
-        <span>{currentModal === ModalType.SEARCH_START_TIME ? '체크인' : '체크아웃'} 시간 선택</span>
+        <span>{'체크인 & 체크아웃'} 시간 선택</span>
         <List>
           {timeOptions().map((time: string) => {
             const inTime = startTime === time;
@@ -101,6 +86,7 @@ const CapsuleWrapper = styled.div<{ $isBetween: boolean; $isStartTime: boolean; 
     $isStartTime ? '20px 0 0 20px' : $isEndTime ? '0 20px 20px 0' : null};
 `;
 
+// TODO
 const TimeCapsule = styled.li<{ $isSelected: boolean }>`
   display: flex;
   justify-content: center;

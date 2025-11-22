@@ -1,10 +1,10 @@
-import styled from 'styled-components';
-
-import { ChatMember } from 'types/chat.type';
-import MessageItem from './MessageItem';
-import { isMessageUnread } from 'utils/misc';
-import { useChat } from '../contexts/ChatProvider';
 import { useMemo } from 'react';
+import styled from '@emotion/styled';
+
+import { ChatMember } from '@/types/chat.type';
+import MessageItem from './MessageItem';
+import { isMessageUnread } from '@/utils/misc';
+import { useChat } from '../contexts/ChatProvider';
 
 export default function MessageList() {
   const {

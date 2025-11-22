@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 export const Title = styled.h1`
   color: ${({ theme }) => theme.colors.text.active};
@@ -62,7 +62,6 @@ export const Divider = styled.div<{
   $thickness?: string;
   $length?: string;
 }>`
-  flex-shrink: 0;
   background-color: ${({ theme }) => theme.colors.line.divider.primary};
 
   ${({ $orientation, $thickness, $length }) =>

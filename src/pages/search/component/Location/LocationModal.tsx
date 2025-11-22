@@ -1,21 +1,21 @@
 import { useEffect, useState } from 'react';
 
 import useSWR from 'swr';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { useFormContext } from 'react-hook-form';
 
-import { fetcher } from 'api';
-import { useDebounceValue } from 'hooks/useDebounce';
-import { Divider } from 'styles/commonStyle';
+import { fetcher } from '@/api';
+import { useDebounceValue } from '@/hooks/useDebounce';
+import { Divider } from '@/styles/commonStyle';
 import RecentSearches from './RecentSearches';
 import SuggestLocations from './SuggestLocations';
 import LocationCapsuleContainer from './LocationCapsuleContainer';
 import Loading from '@components/Loading';
 import { ModalLayOut, HalfModalLayOut, FormValues } from '@pages/search/component/SearchBox';
-import { getRecentSearches } from 'utils/localStorage';
-import { Text } from '@components/Text';
-import Box from '@components/Box';
-import { Flex } from '@components/Flex';
+import { getRecentSearches } from '@/utils/localStorage';
+import { Text } from '@components/styled/Text';
+import Box from '@components/styled/Box';
+import Flex from '@components/styled/Flex';
 
 interface LocationModalProps {
   handleSetValue: (field: keyof FormValues, value: any) => void;

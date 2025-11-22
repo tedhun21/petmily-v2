@@ -2,7 +2,7 @@ import { useCallback, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { SocketContext } from '@components/contexts/SocketProvider';
-import { ChatMember, ChatMessage, ChatRoom, Message, PendingMessage } from 'types/chat.type';
+import { ChatMember, ChatMessage, ChatRoom, Message, PendingMessage } from '@/types/chat.type';
 import { AuthContext } from '@components/contexts/AuthProvider';
 import { MessagePayload } from './useMessages';
 

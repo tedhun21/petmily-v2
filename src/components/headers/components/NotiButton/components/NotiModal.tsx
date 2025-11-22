@@ -3,19 +3,19 @@ import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import { useInView } from 'framer-motion';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { useSWRConfig } from 'swr';
-import { useAuthSWRInfinite, useAuthSWRMutation } from 'hooks/authSWR';
 
 import NotiItem from './NotiItem';
-import { RootState } from 'store';
-import { fetcher, updater } from 'api';
+
 import Loading from '@components/Loading';
-import { ModalType } from 'store/modalSlice';
-import { Notification } from 'types/notification.type';
-import { clearNewNotifications } from 'store/notificationSlice';
-import Box from '@components/Box';
-import { Flex } from '@components/Flex';
+import Flex from '@components/styled/Flex';
+import { RootState } from '@/store';
+import { ModalType } from '@/store/modalSlice';
+import { useAuthSWRInfinite, useAuthSWRMutation } from '@/hooks/authSWR';
+import { fetcher, updater } from '@/api';
+import { clearNewNotifications } from '@/store/notificationSlice';
+import { Notification } from '@/types/notification.type';
 
 export default function NotiModal() {
   const pageSize = 10;
@@ -140,9 +140,11 @@ export default function NotiModal() {
           ))}
 
           {!isEnd && (
-            <Flex ref={moreLoadRef} justifyContent="center" alignItems="center">
-              <Loading color="#279EFF" />
-            </Flex>
+            <div ref={moreLoadRef}>
+              <Flex justifyContent="center" alignItems="center">
+                <Loading color="#279EFF" />
+              </Flex>
+            </div>
           )}
         </Flex>
       </ul>

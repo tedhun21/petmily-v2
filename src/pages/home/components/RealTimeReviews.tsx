@@ -2,18 +2,16 @@ import useSWRInfinite from 'swr/infinite';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
-
-import { Title } from 'styles/commonStyle';
-
-import ReviewCard from './ReviewCard';
-import { fetcher } from 'api';
-
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import { Review } from 'types/review.type';
+
+import { fetcher } from '@/api';
+import Flex from '@components/styled/Flex';
+import ReviewCard from './ReviewCard';
+import { Title } from '@/styles/commonStyle';
+import { Review } from '@/types/review.type';
 import RealTimeReviewsSkeleton from './RealTimeReviewsSkeleton';
-import { Flex } from '@components/Flex';
 
 export default function RealTimeReviews() {
   const pageSize = 10;

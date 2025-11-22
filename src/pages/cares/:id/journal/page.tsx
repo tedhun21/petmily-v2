@@ -2,18 +2,18 @@ import { ChangeEvent, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { toast } from 'react-toastify';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { useForm } from 'react-hook-form';
-import { useAuthSWR, useAuthSWRMutation } from 'hooks/authSWR';
+import { useAuthSWR, useAuthSWRMutation } from '@/hooks/authSWR';
 import { FaXmark } from 'react-icons/fa6';
 
 import Loading from '@components/Loading';
-import { fetcher, poster, updater } from 'api';
-import { BottomFixed, Float, Title } from 'styles/commonStyle';
-import { Button } from '@components/buttons/Button';
-import { Text } from '@components/Text';
-import { Flex } from '@components/Flex';
-import Box from '@components/Box';
+import { fetcher, poster, updater } from '@/api';
+import { BottomFixed, Float, Title } from '@/styles/commonStyle';
+import { Button } from '@/components/styled/Button';
+import { Text } from '@components/styled/Text';
+import Flex from '@components/styled/Flex';
+import Box from '@components/styled/Box';
 
 interface JournalFormValue {
   body: string;
@@ -147,83 +147,75 @@ export default function JournalPage() {
   }, [journal]);
 
   return (
-    <main>
-      <Box p="xl">
-        <Flex justifyContent="center" alignItems="center">
-          <Title>{journal ? '케어일지 수정' : '케어일지 작성'}</Title>
-        </Flex>
+    <>
+      <Flex justifyContent="center" alignItems="center">
+        <Title>{journal ? '케어일지 수정' : '케어일지 작성'}</Title>
+      </Flex>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Flex>
-            <Flex gap="sm">
-              <Text size="base">케어일지 내용</Text>
-              <TextArea placeholder="케어 중 무슨 일이 있으셨나요?" {...register('body')} />
-            </Flex>
-
-            <Flex direction="column" gap="sm">
-              <Text size="base">사진 첨부</Text>
-              <input
-                type="file"
-                accept="image/png, image/jpg, image/jpeg"
-                multiple
-                ref={fileInputRef}
-                onChange={handleFileChange}
-                hidden
-              />
-              <Flex alignItems="center" gap="xs">
-                <Button type="button" onClick={openFileInput}>
-                  파일 선택
-                </Button>
-                <Text size="sm">최대 5개의 이미지를 선택할 수 있습니다.</Text>
-              </Flex>
-
-              <ImagePreview>
-                {selectedFiles &&
-                  selectedFiles.map((file: File, index: number) => (
-                    <ImagePreviewItem key={index}>
-                      <Img src={URL.createObjectURL(file)} alt={`selected_${index}`} />
-                      <RemoveButton type="button" onClick={() => handleRemoveInputImage(index)}>
-                        <FaXmark color="white" size="16px" />
-                      </RemoveButton>
-                    </ImagePreviewItem>
-                  ))}
-                {imageUrls &&
-                  Array.isArray(imageUrls) &&
-                  imageUrls.length > 0 &&
-                  imageUrls.map((url: string, index: number) => (
-                    <ImagePreviewItem key={index}>
-                      <Img src={`${url}`} alt={`review_server_image_${index}`} />
-                      <RemoveButton type="button" onClick={() => handleRemoveReviewImage(index)}>
-                        <FaXmark color="white" size="16px" />
-                      </RemoveButton>
-                    </ImagePreviewItem>
-                  ))}
-              </ImagePreview>
-            </Flex>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Flex direction="column">
+          <Flex direction="column" gap="sm">
+            <Text size="base">케어일지 내용</Text>
+            <TextArea placeholder="케어 중 무슨 일이 있으셨나요?" {...register('body')} />
           </Flex>
 
-          <BottomFixed>
-            <FloatButtonContainer>
-              <Button
-                type="submit"
-                disabled={isCreateMutating || isUpdateMutating}
-                size="lg"
-                borderRadius="lg"
-                fullWidth
-              >
-                {isCreateMutating || isUpdateMutating ? (
-                  <Flex justifyContent="center" alignItems="center">
-                    <Loading />
-                  </Flex>
-                ) : (
-                  <span>{journal ? '케어일지 수정' : '케어일지 등록'}</span>
-                )}
+          <Flex direction="column" gap="sm">
+            <Text size="base">사진 첨부</Text>
+            <input
+              type="file"
+              accept="image/png, image/jpg, image/jpeg"
+              multiple
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              hidden
+            />
+            <Flex alignItems="center" gap="xs">
+              <Button type="button" onClick={openFileInput}>
+                파일 선택
               </Button>
-            </FloatButtonContainer>
-          </BottomFixed>
-        </form>
-      </Box>
-    </main>
+              <Text size="sm">최대 5개의 이미지를 선택할 수 있습니다.</Text>
+            </Flex>
+
+            <ImagePreview>
+              {selectedFiles &&
+                selectedFiles.map((file: File, index: number) => (
+                  <ImagePreviewItem key={index}>
+                    <Img src={URL.createObjectURL(file)} alt={`selected_${index}`} />
+                    <RemoveButton type="button" onClick={() => handleRemoveInputImage(index)}>
+                      <FaXmark color="white" size="16px" />
+                    </RemoveButton>
+                  </ImagePreviewItem>
+                ))}
+              {imageUrls &&
+                Array.isArray(imageUrls) &&
+                imageUrls.length > 0 &&
+                imageUrls.map((url: string, index: number) => (
+                  <ImagePreviewItem key={index}>
+                    <Img src={`${url}`} alt={`review_server_image_${index}`} />
+                    <RemoveButton type="button" onClick={() => handleRemoveReviewImage(index)}>
+                      <FaXmark color="white" size="16px" />
+                    </RemoveButton>
+                  </ImagePreviewItem>
+                ))}
+            </ImagePreview>
+          </Flex>
+        </Flex>
+
+        <BottomFixed>
+          <FloatButtonContainer>
+            <Button type="submit" disabled={isCreateMutating || isUpdateMutating} size="lg" borderRadius="lg" fullWidth>
+              {isCreateMutating || isUpdateMutating ? (
+                <Flex justifyContent="center" alignItems="center">
+                  <Loading />
+                </Flex>
+              ) : (
+                <span>{journal ? '케어일지 수정' : '케어일지 등록'}</span>
+              )}
+            </Button>
+          </FloatButtonContainer>
+        </BottomFixed>
+      </form>
+    </>
   );
 }
 
@@ -276,5 +268,5 @@ const FloatButtonContainer = styled(Float)`
   left: 0;
   width: 100%;
   padding: ${({ theme }) => theme.spacing.xl};
-  background-color: ${({ theme }) => theme.colors.background.primary};
+  background-color: transparent;
 `;

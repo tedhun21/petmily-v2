@@ -3,12 +3,12 @@ import { useEffect, useRef } from 'react';
 import useSWRInfinite from 'swr/infinite';
 import { useInView } from 'framer-motion';
 
-import { fetcher } from 'api';
-import styled from 'styled-components';
+import { fetcher } from '@/api';
+import styled from '@emotion/styled';
 import Loading from '@components/Loading';
 import PhotoReviewCardSkeleton from './PhotoReviewCardSkeleton';
 import PhotoReviewCard from './PhotoReviewCard';
-import { Flex } from '@components/Flex';
+import Flex from '@components/styled/Flex';
 
 export default function PhotoReviews() {
   const ref = useRef(null);

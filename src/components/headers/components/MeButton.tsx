@@ -3,19 +3,19 @@ import { useRef } from 'react';
 import { toast } from 'react-toastify';
 import { createPortal } from 'react-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-import { useAuthSWRMutation } from 'hooks/authSWR';
-import styled from 'styled-components';
+import { useAuthSWRMutation } from '@/hooks/authSWR';
+import styled from '@emotion/styled';
 
-import { poster } from 'api';
-import { RootState } from 'store';
-import { User } from 'types/user.type';
-import { clearAccessToken } from 'store/authSlice';
-import useOutsideClickModal from 'hooks/useOutsideClickModal';
-import { closeModal, ModalType, openModal } from 'store/modalSlice';
-import { ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
-import { Button } from '@components/buttons/Button';
+import { poster } from '@/api';
+import { RootState } from '@/store';
+import { User } from '@/types/user.type';
+import { clearAccessToken } from '@/store/authSlice';
+import useOutsideClickModal from '@/hooks/useOutsideClickModal';
+import { closeModal, ModalType, openModal } from '@/store/modalSlice';
+import { ImageCentered, RoundedImageWrapper } from '@/styles/commonStyle';
+import { Button } from '@/components/styled/Button';
 
 interface MeButtonProps {
   me?: User;
@@ -66,7 +66,7 @@ export default function MeButton({ me }: MeButtonProps) {
   };
 
   return (
-    <UserContainer id="user-container">
+    <div id="user-container">
       <UserButton type="button" onClick={toggleMenu}>
         <UserImage>
           <ImageCentered src={me?.photo ? `${me?.photo}` : '/imgs/DefaultUserProfile.jpg'} alt="user_photo" />
@@ -79,10 +79,10 @@ export default function MeButton({ me }: MeButtonProps) {
         createPortal(
           <LoginNavModal ref={modalRef}>
             <Nav>
-              <Button as={Link} to="/me" onClick={handleMenuClick} variant="transparent" borderRadius="sm">
+              {/* TODO: Button style link? */}
+              <Link to="/me" onClick={handleMenuClick} type="text">
                 내 정보
-              </Button>
-
+              </Link>
               <Button type="button" onClick={handleLogout} variant="transparent" borderRadius="sm">
                 로그아웃
               </Button>
@@ -90,18 +90,13 @@ export default function MeButton({ me }: MeButtonProps) {
           </LoginNavModal>,
           userContainer,
         )}
-    </UserContainer>
+    </div>
   );
 }
 
-const UserContainer = styled.div`
-  position: relative;
-  display: flex;
-  gap: ${({ theme }) => theme.spacing.md};
-`;
-
 const UserButton = styled.button`
   position: relative;
+  padding: 2px;
   border: 2px solid ${({ theme }) => theme.colors.background.box.accent.primary};
   border-radius: ${({ theme }) => theme.radius.circle};
   cursor: pointer;

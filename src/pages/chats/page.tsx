@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import ChatRoomList from './components/ChatRoomList';
 import TopHeader from '@components/headers/TopHeader';
 

@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from 'react';
 import { FaXmark } from 'react-icons/fa6';
 import { FiSearch } from 'react-icons/fi';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 interface SearchInputProps {
   input: string;

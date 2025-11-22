@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react';
 
-import { fetcher } from 'api';
-import { useAuthSWR } from 'hooks/authSWR';
+import { fetcher } from '@/api';
+import { useAuthSWR } from '@/hooks/authSWR';
 import useChatRoom, { UseChatRoomReturn } from '../hooks/useChatRoom';
 import useChatSocket, { UseSocketReturn } from '../hooks/useChatSocket';
 import useMessages, { UseMessagesReturn } from '../hooks/useMessages';

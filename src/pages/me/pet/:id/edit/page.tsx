@@ -4,7 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useAuthSWR, useAuthSWRMutation } from 'hooks/authSWR';
+import { useAuthSWR, useAuthSWRMutation } from '@/hooks/authSWR';
 
 import { PiCatBold, PiDogBold } from 'react-icons/pi';
 
@@ -14,24 +14,23 @@ import {
   InputContainer,
   InputLabel,
   InputWrapper,
-  Main,
   PetSpeciesButtonContainer,
   PetTextarea,
   RadioContainer,
   TypeRadioLabel,
 } from '../../register/page';
 
-import { fetcher, updater, deleter } from 'api';
+import { fetcher, updater, deleter } from '@/api';
 import Loading from '@components/Loading';
 import { toast } from 'react-toastify';
 import { TbGenderFemale, TbGenderMale } from 'react-icons/tb';
 import BackHeader from '@components/headers/BackHeader';
 import { FaXmark } from 'react-icons/fa6';
 import EditableProfileImage from '@components/EditableProfileImage';
-import { PetGender, PetSpecies } from 'types/pet.type';
-import { Button } from '@components/buttons/Button';
-import { Input } from '@components/Input';
-import { Flex } from '@components/Flex';
+import { PetGender, PetSpecies } from '@/types/pet.type';
+import { Button } from '@/components/styled/Button';
+import { Input } from '@components/styled/Input';
+import Flex from '@components/styled/Flex';
 
 const schema = yup.object().shape({
   species: yup.string().oneOf(['dog', 'cat'], '강아지인가요 고양이인가요?').required('이 항목은 필수입니다.'),
@@ -145,7 +144,7 @@ export default function EditPetPage() {
   }, [pet]);
 
   return (
-    <Main>
+    <>
       <BackHeader title="나의 펫밀리 수정" />
       <Form onSubmit={handleSubmit(onSubmit)}>
         <InputContainer>
@@ -258,6 +257,6 @@ export default function EditPetPage() {
           </Button>
         </ButtonContainer>
       </Form>
-    </Main>
+    </>
   );
 }

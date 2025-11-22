@@ -1,9 +1,7 @@
-import { Title } from 'styles/commonStyle';
+import { Title } from '@/styles/commonStyle';
 import BackButton from '@components/buttons/BackButton';
-
-import Box from '@components/Box';
-import styled from 'styled-components';
-import { flex } from '@components/Flex';
+import Box from '@components/styled/Box';
+import Flex from '@components/styled/Flex';
 
 interface IProps {
   title?: string;
@@ -12,19 +10,11 @@ interface IProps {
 
 export default function BackHeader({ title, link }: IProps) {
   return (
-    <Container as="header">
-      <BackButton link={link} />
-      <Title>{title}</Title>
-    </Container>
+    <Box as="header" w="100%" p="xl">
+      <Flex alignItems="center" gap="xl">
+        <BackButton link={link} />
+        <Title>{title}</Title>
+      </Flex>
+    </Box>
   );
 }
-
-const Container = styled(Box).attrs(() => ({
-  w: '100%',
-  p: 'xl',
-}))`
-  ${flex({
-    alignItems: 'center',
-    gap: 'xl',
-  })}
-`;

@@ -6,8 +6,7 @@ export enum ModalType {
   NOTIFICATION = 'notification',
   SEARCH_LOCATION = 'search_location',
   SEARCH_DATE = 'search_date',
-  SEARCH_START_TIME = 'search_start_time',
-  SEARCH_END_TIME = 'search_end_time',
+  SEARCH_TIME = 'search_time',
 }
 
 export interface ModalState {

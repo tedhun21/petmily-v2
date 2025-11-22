@@ -1,24 +1,23 @@
 import { useParams } from 'react-router-dom';
 
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
-import { useAuthSWR } from 'hooks/authSWR';
-import { fetcher } from 'api';
-import { BlueLink, BottomFixed, Divider, Float } from 'styles/commonStyle';
+import { useAuthSWR } from '@/hooks/authSWR';
+import { fetcher } from '@/api';
+import { BlueLink, BottomFixed, Divider, Float } from '@/styles/commonStyle';
 
 import BackHeader from '@components/headers/BackHeader';
 import UserBasicInfo from './component/UserBasicInfo';
 import PetsitterCapabilities from './component/PetsitterCapabilities';
 import PawAndMessage from './component/PawAndMessage';
 import PetsitterReviews from './component/PetsitterReviews';
-import { UserRole } from 'types/user.type';
+import { UserRole } from '@/types/user.type';
 
 export default function ProfilePage() {
   const { nickname } = useParams();
 
   // 유저 정보 가져오기
   const { data: userData } = useAuthSWR(`/users?q=${nickname}`, fetcher);
-  console.log('🚀 ~ ProfilePage ~ userData:', userData);
 
   return (
     <div>

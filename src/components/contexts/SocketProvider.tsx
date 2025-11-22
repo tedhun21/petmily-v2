@@ -2,11 +2,11 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { io, Socket } from 'socket.io-client';
 
-import { addNewNotification } from 'store/notificationSlice';
-import { addNewMessage } from 'store/newMessageSlice';
+import { addNewNotification } from '@/store/notificationSlice';
+import { addNewMessage } from '@/store/newMessageSlice';
 
-import { RootState } from 'store';
-import { SOCKET_URL } from 'config';
+import { RootState } from '@/store';
+import { SOCKET_URL } from '@/config';
 import { AuthContext } from './AuthProvider';
 
 interface SocketProviderProps {

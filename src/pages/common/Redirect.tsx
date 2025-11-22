@@ -1,15 +1,14 @@
 import { useEffect } from 'react';
 
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
-import { useAuthSWR, useAuthSWRMutation } from 'hooks/authSWR';
-
 import { toast } from 'react-toastify';
 
-import { fetcher, updater } from 'api';
-import { UserRole } from 'types/user.type';
+import { useAuthSWR, useAuthSWRMutation } from '@/hooks/authSWR';
+import { fetcher, updater } from '@/api';
+import { UserRole } from '@/types/user.type';
 import Loading from '@components/Loading';
-import { Flex } from '@components/Flex';
+import Flex from '@components/styled/Flex';
 
 // 1. URL에서 액세스 토큰 파싱
 // 2. 액세스 토큰을 이용해 내 정보 가져오기

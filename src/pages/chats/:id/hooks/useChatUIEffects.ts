@@ -1,7 +1,7 @@
 import { RefObject, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 
-import { useScroll } from 'hooks/useScroll';
-import { ChatMember, ChatMessage } from 'types/chat.type';
+import { useScroll } from '@/hooks/useScroll';
+import { ChatMember, ChatMessage } from '@/types/chat.type';
 import dayjs from 'dayjs';
 
 interface UseChatUIEffectsOptions {

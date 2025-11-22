@@ -1,6 +1,6 @@
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
-import { Title } from 'styles/commonStyle';
+import { Title } from '@/styles/commonStyle';
 import PhotoReviews from './component/PhotoReviews';
 import NavHeader from '@components/headers/NavigationHeader';
 

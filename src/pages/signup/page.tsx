@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { useForm } from 'react-hook-form';
 import useSWRMutation from 'swr/mutation';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import GoogleOAuthButton from '@components/buttons/OAuthButton';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -11,15 +11,16 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Modal } from '@mui/material';
 import { toast } from 'react-toastify';
 
-import { poster } from 'api';
+import { poster } from '@/api';
 import Loading from '@components/Loading';
 import BackHeader from '@components/headers/BackHeader';
 import CustomDaumPostcode from '@components/CustomDaumPostcode';
-import { Button } from '@components/buttons/Button';
-import { Input } from '@components/Input';
-import { Text } from '@components/Text';
-import Box from '@components/Box';
-import { flex, Flex } from '@components/Flex';
+import { Button } from '@/components/styled/Button';
+import { Input } from '@components/styled/Input';
+import { Text } from '@components/styled/Text';
+import Box from '@components/styled/Box';
+import Flex from '@components/styled/Flex';
+import { Divider } from '@/styles/commonStyle';
 
 const schema = yup.object().shape({
   username: yup
@@ -142,136 +143,168 @@ export default function SignupPage() {
         <Flex direction="column" alignItems="center" gap="xl">
           <Text size="xl">We&apos;re Petmily!</Text>
 
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Container style={{ minWidth: '400px' }}>
-              <InputWrapper>
-                <Input
-                  placeholder="이름"
-                  type="text"
-                  {...register('username', { required: true })}
-                  error={errors.username ? true : undefined}
-                />
-                {errors.username?.message && (
-                  <Text size="xs" color="error">
-                    {errors.username?.message}
-                  </Text>
-                )}
-              </InputWrapper>
-              <InputWrapper>
-                <Input
-                  placeholder="연락처"
-                  {...register('phone', { required: true })}
-                  error={errors.phone ? true : undefined}
-                />
-                {errors.phone?.message && (
-                  <Text size="xs" color="error">
-                    {errors.phone?.message}
-                  </Text>
-                )}
-              </InputWrapper>
-              <InputWrapper>
-                <Input
-                  placeholder="주소"
-                  {...register('address', { required: true })}
-                  onClick={onToggleModal}
-                  onKeyDown={onToggleModal}
-                  error={errors.address ? true : undefined}
-                  autoComplete="off"
-                />
-                {errors.address?.message && (
-                  <Text size="xs" color="error">
-                    {errors.address?.message}
-                  </Text>
-                )}
-
-                <Modal
-                  open={isModalOpen}
-                  onClose={() => setIsModalOpen(false)}
-                  sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-                >
-                  <div style={{ width: '360px' }}>
-                    <CustomDaumPostcode onComplete={handleComplete} />
+          <form onSubmit={handleSubmit(onSubmit)} style={{ maxWidth: '360px', width: '100%' }}>
+            <Flex direction="column" gap="2xl">
+              <Flex direction="column" gap="xs">
+                <InputWrapper>
+                  <Input
+                    placeholder="이름"
+                    type="text"
+                    {...register('username', { required: true })}
+                    error={errors.username ? true : undefined}
+                    fullWidth
+                  />
+                  <div>
+                    {errors.username?.message && (
+                      <Text size="xs" color="error">
+                        {errors.username?.message}
+                      </Text>
+                    )}
                   </div>
-                </Modal>
-              </InputWrapper>
-              <InputWrapper>
-                <Input
-                  placeholder="상세주소"
-                  {...register('detailAddress', { required: true })}
-                  error={errors.detailAddress ? true : undefined}
-                />
-                {errors.detailAddress?.message && (
-                  <Text size="xs" color="error">
-                    {errors.detailAddress?.message}
-                  </Text>
-                )}
-              </InputWrapper>
-              <InputWrapper>
-                <Input
-                  placeholder="이메일"
-                  type="email"
-                  {...register('email', { required: true })}
-                  error={errors.email ? true : undefined}
-                />
-                {errors.email?.message && (
-                  <Text size="xs" color="error">
-                    {errors.email?.message}
-                  </Text>
-                )}
-              </InputWrapper>
-              <InputWrapper>
-                <Input
-                  placeholder="닉네임"
-                  {...register('nickname', { required: true })}
-                  error={errors.nickname ? true : undefined}
-                />
-                {errors.nickname?.message && (
-                  <Text size="xs" color="error">
-                    {errors.nickname?.message}
-                  </Text>
-                )}
-              </InputWrapper>
-              <InputWrapper>
-                <Input
-                  placeholder="비밀번호"
-                  type="password"
-                  {...register('password', { required: true })}
-                  error={errors.password ? true : undefined}
-                />
-                {errors.password?.message && (
-                  <Text size="xs" color="error">
-                    {errors.password?.message}
-                  </Text>
-                )}
-              </InputWrapper>
-              <InputWrapper>
-                <Input
-                  placeholder="비밀번호 확인"
-                  type="password"
-                  {...register('passwordConfirm', { required: true })}
-                  error={errors.passwordConfirm ? true : undefined}
-                />
-                {errors.passwordConfirm?.message && (
-                  <Text size="xs" color="error">
-                    {errors.passwordConfirm?.message}
-                  </Text>
-                )}
-              </InputWrapper>
-              <Box>
-                <Text as="label" htmlFor="isPetsitter" size="sm" color="secondary">
-                  펫시터로 가입하기
-                </Text>
-                <input type="checkbox" id="isPetsitter" {...register('isPetsitter')} />
-              </Box>
-              <Flex direction="column" gap="lg">
-                <Button type="submit" disabled={isMutating} variant="primary" size="lg" borderRadius="lg">
+                </InputWrapper>
+                <InputWrapper>
+                  <Input
+                    placeholder="연락처"
+                    {...register('phone', { required: true })}
+                    error={errors.phone ? true : undefined}
+                    fullWidth
+                  />
+                  <div>
+                    {errors.phone?.message && (
+                      <Text size="xs" color="error">
+                        {errors.phone?.message}
+                      </Text>
+                    )}
+                  </div>
+                </InputWrapper>
+                <InputWrapper>
+                  <Input
+                    placeholder="주소"
+                    {...register('address', { required: true })}
+                    onClick={onToggleModal}
+                    onKeyDown={onToggleModal}
+                    error={errors.address ? true : undefined}
+                    autoComplete="off"
+                    fullWidth
+                  />
+                  <div>
+                    {errors.address?.message && (
+                      <Text size="xs" color="error">
+                        {errors.address?.message}
+                      </Text>
+                    )}
+                  </div>
+
+                  <Modal
+                    open={isModalOpen}
+                    onClose={() => setIsModalOpen(false)}
+                    sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                  >
+                    <div style={{ width: '360px' }}>
+                      <CustomDaumPostcode onComplete={handleComplete} />
+                    </div>
+                  </Modal>
+                </InputWrapper>
+                <InputWrapper>
+                  <Input
+                    placeholder="상세주소"
+                    {...register('detailAddress', { required: true })}
+                    error={errors.detailAddress ? true : undefined}
+                    fullWidth
+                  />
+                  <div>
+                    {errors.detailAddress?.message && (
+                      <Text size="xs" color="error">
+                        {errors.detailAddress?.message}
+                      </Text>
+                    )}
+                  </div>
+                </InputWrapper>
+                <InputWrapper>
+                  <Input
+                    placeholder="이메일"
+                    type="email"
+                    {...register('email', { required: true })}
+                    error={errors.email ? true : undefined}
+                    fullWidth
+                  />
+                  <div>
+                    {errors.email?.message && (
+                      <Text size="xs" color="error">
+                        {errors.email?.message}
+                      </Text>
+                    )}
+                  </div>
+                </InputWrapper>
+                <InputWrapper>
+                  <Input
+                    placeholder="닉네임"
+                    {...register('nickname', { required: true })}
+                    error={errors.nickname ? true : undefined}
+                    fullWidth
+                  />
+                  <div>
+                    {errors.nickname?.message && (
+                      <Text size="xs" color="error">
+                        {errors.nickname?.message}
+                      </Text>
+                    )}
+                  </div>
+                </InputWrapper>
+                <InputWrapper>
+                  <Input
+                    placeholder="비밀번호"
+                    type="password"
+                    {...register('password', { required: true })}
+                    error={errors.password ? true : undefined}
+                    fullWidth
+                  />
+                  <div>
+                    {errors.password?.message && (
+                      <Text size="xs" color="error">
+                        {errors.password?.message}
+                      </Text>
+                    )}
+                  </div>
+                </InputWrapper>
+                <InputWrapper>
+                  <Input
+                    placeholder="비밀번호 확인"
+                    type="password"
+                    {...register('passwordConfirm', { required: true })}
+                    error={errors.passwordConfirm ? true : undefined}
+                    fullWidth
+                  />
+                  <div>
+                    {errors.passwordConfirm?.message && (
+                      <Text size="xs" color="error">
+                        {errors.passwordConfirm?.message}
+                      </Text>
+                    )}
+                  </div>
+                </InputWrapper>
+                <Box>
+                  <label htmlFor="isPetsitter">펫시터로 가입하기</label>
+                  <input type="checkbox" id="isPetsitter" {...register('isPetsitter')} />
+                </Box>
+              </Flex>
+
+              <Flex direction="column" gap="md">
+                <Button type="submit" disabled={isMutating} variant="primary" size="md">
                   {isMutating ? <Loading /> : '펫밀리 등록'}
                 </Button>
-                <GoogleOAuthButton size="lg" borderRadius="lg">
-                  Sign up with Google
-                </GoogleOAuthButton>
+
+                <Flex alignItems="center" gap="sm">
+                  <Divider />
+                  <span>OR</span>
+                  <Divider />
+                </Flex>
+
+                <div>
+                  <GoogleOAuthButton>Sign up with Google</GoogleOAuthButton>
+                </div>
               </Flex>
-            </Container>
+            </Flex>
           </form>
         </Flex>
       </main>
@@ -279,10 +312,9 @@ export default function SignupPage() {
   );
 }
 
-const Container = styled(Box).attrs(() => ({}))`
-  ${flex({ direction: 'column', gap: 'lg' })};
-`;
-
+// TODO
 const InputWrapper = styled(Box)`
-  width: 100%;
+  > div {
+    min-height: 18px;
+  }
 `;

@@ -1,5 +1,5 @@
 import { useParams, useSearchParams } from 'react-router-dom';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 import ChatSection from './component/ChatSection';
 import ChatProvider from './contexts/ChatProvider';

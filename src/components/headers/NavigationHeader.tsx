@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 import TopHeader from './TopHeader';
 import NavigationBar from './components/NavigationBar';

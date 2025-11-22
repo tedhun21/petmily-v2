@@ -1,6 +1,6 @@
 import { FaXmark } from 'react-icons/fa6';
-import styled from 'styled-components';
-import { deleteRecentSearch } from 'utils/localStorage';
+import styled from '@emotion/styled';
+import { deleteRecentSearch } from '@/utils/localStorage';
 
 export default function RecentSearches({ data, setRecentSearches }: any) {
   const handleDeleteRecent = async (e: React.MouseEvent, id: number) => {

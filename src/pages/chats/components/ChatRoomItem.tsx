@@ -1,14 +1,14 @@
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { RootState } from 'store';
-import { selectNewMessagesByChatRoom } from 'store/newMessageSlice';
+import { RootState } from '@/store';
+import { selectNewMessagesByChatRoom } from '@/store/newMessageSlice';
 
-import styled from 'styled-components';
-import { Flex } from '@components/Flex';
-import { Text } from '@components/Text';
-import { ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
-import { ChatMember, ChatRoom } from 'types/chat.type';
-import { updatedAtAgo } from 'utils/date';
+import styled from '@emotion/styled';
+import Flex from '@components/styled/Flex';
+import { Text } from '@components/styled/Text';
+import { ImageCentered, RoundedImageWrapper } from '@/styles/commonStyle';
+import { ChatMember, ChatRoom } from '@/types/chat.type';
+import { updatedAtAgo } from '@/utils/date';
 
 interface ChatRoomItemProps {
   chatRoom: ChatRoom;
@@ -59,6 +59,7 @@ export default function ChatRoomItem({ chatRoom }: ChatRoomItemProps) {
   );
 }
 
+// TODO: Link
 const ChatRoomLink = styled(Link)`
   display: flex;
   justify-content: space-between;

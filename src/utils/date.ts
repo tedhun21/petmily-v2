@@ -4,7 +4,7 @@ import 'dayjs/locale/ko';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import updateLocale from 'dayjs/plugin/updateLocale';
 import isBetween from 'dayjs/plugin/isBetween';
-import { ChatMessage } from 'types/chat.type';
+import { ChatMessage } from '@/types/chat.type';
 
 // Day.js 플러그인 확장 미 ㅊ로케일 설정
 dayjs.extend(relativeTime);

@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 
 import useSWRMutation from 'swr/mutation';
 
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { Modal } from '@mui/material';
 import { FaXmark } from 'react-icons/fa6';
 
-import { poster } from 'api';
+import { poster } from '@/api';
 
 export default function EmailCodeModalButton({ email }: { email: string }) {
   const [open, setOpen] = useState(false);

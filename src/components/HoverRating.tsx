@@ -1,7 +1,7 @@
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
-import { useState } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { PiStar, PiStarFill } from 'react-icons/pi';
 
 const labels: { [index: string]: string } = {

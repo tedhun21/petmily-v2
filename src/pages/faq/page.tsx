@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
-import { Divider } from 'styles/commonStyle';
+import { Divider } from '@/styles/commonStyle';
 import Collapse from '@components/Collapse';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa6';
 import BackHeader from '@components/headers/BackHeader';
-import { Flex } from '@components/Flex';
+import Flex from '@components/styled/Flex';
 
 export default function FaQPage() {
   const [open, setOpen] = useState<{ [key: string]: boolean }>({});
@@ -735,6 +735,7 @@ const ListItemButton = styled.button`
   }
 `;
 
+// TODO
 const ListTitle = styled.div`
   display: flex;
   gap: ${({ theme }) => theme.spacing.sm};
@@ -745,6 +746,7 @@ const ListTitle = styled.div`
   }
 `;
 
+// TODO
 const Answer = styled.div`
   display: flex;
   gap: ${({ theme }) => theme.spacing.sm};
@@ -756,6 +758,7 @@ const Answer = styled.div`
   }
 `;
 
+// TODO
 const ParagraphWrapper = styled.div`
   display: flex;
   flex-direction: column;

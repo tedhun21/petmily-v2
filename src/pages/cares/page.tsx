@@ -1,4 +1,3 @@
-import styled from 'styled-components';
 import CareContainer from './components/CareContainer';
 import NavHeader from '@components/headers/NavigationHeader';
 import CareFilter from '@pages/cares/components/CareFilter';
@@ -8,14 +7,8 @@ export default function CaresPage() {
     <>
       <NavHeader />
 
-      <Main>
-        <CareFilter />
-        <CareContainer />
-      </Main>
+      <CareFilter />
+      <CareContainer />
     </>
   );
 }
-
-const Main = styled.main`
-  height: 100%;
-`;

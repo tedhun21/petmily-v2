@@ -1,24 +1,26 @@
+/** @jsxImportSource @emotion/react */
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import useSWRMutation from 'swr/mutation';
-import styled from 'styled-components';
 import { toast } from 'react-toastify';
 
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { poster } from 'api';
+import { poster } from '@/api';
 import GoogleOAuthButton from '@components/buttons/OAuthButton';
 import Loading from '@components/Loading';
 
 import { AuthContext } from '@components/contexts/AuthProvider';
-import { Button } from '@components/buttons/Button';
-import { Input } from '@components/Input';
-import { Text } from '@components/Text';
-import { Flex } from '@components/Flex';
-import Link from '@components/Link';
+import { Button } from '@/components/styled/Button';
+import { Text } from '@components/styled/Text';
+import Flex from '@components/styled/Flex';
+import Link from '@components/styled/Link';
+import { Input } from '@components/styled/Input';
+import Box from '@components/styled/Box';
+import { Divider } from '@/styles/commonStyle';
 
 const schema = yup.object().shape({
   email: yup.string().email('이메일 형식을 지켜주세요.').required('ID는 필수입니다.'),
@@ -58,8 +60,6 @@ export default function LoginPage() {
     },
   });
 
-  // const [GuestLoginLoading, setGuestLoginLoading] = useState(false);
-
   const onSubmit = async (data: IFormLoginInputs) => {
     const { email, password } = data;
 
@@ -83,48 +83,66 @@ export default function LoginPage() {
   };
 
   return (
-    <main>
-      <Flex direction="column" alignItems="center" gap="5xl">
+    <Box as="main" pt="5xl">
+      <Flex direction="column" justifyContent="center" alignItems="center" gap="5xl">
         <img src="/imgs/Logo.svg" alt="logo" width="150px" height="48px" />
 
-        <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%', maxWidth: '400px' }}>
-          <Flex direction="column" gap="md">
-            <Flex direction="column" gap="xs">
-              <Input
-                type="email"
-                placeholder="아이디"
-                {...register('email', { required: true })}
-                fullWidth
-                size="md"
-                error={!!errors.email}
-              />
-              {errors?.email && (
-                <Text size="xs" color="error">
-                  {errors.email?.message}
-                </Text>
-              )}
-            </Flex>
-            <Flex direction="column" gap="xs">
-              <Input
-                type="password"
-                placeholder="비밀번호"
-                {...register('password', { required: true })}
-                fullWidth
-                size="md"
-                error={!!errors.password}
-              />
-              {errors?.password && (
-                <Text size="xs" color="error">
-                  {errors.password?.message}
-                </Text>
-              )}
+        <form onSubmit={handleSubmit(onSubmit)} style={{ maxWidth: '360px', width: '100%' }}>
+          <Flex direction="column" gap="2xl">
+            <Flex direction="column" gap="sm">
+              <div>
+                <Input
+                  type="email"
+                  placeholder="아이디"
+                  {...register('email', { required: true })}
+                  inputSize="md"
+                  error={!!errors.email}
+                  fullWidth
+                />
+
+                <div style={{ minHeight: 18 }}>
+                  {errors?.email && (
+                    <Text size="xs" color="error">
+                      {errors.email?.message}
+                    </Text>
+                  )}
+                </div>
+              </div>
+              <div>
+                <Input
+                  type="password"
+                  placeholder="비밀번호"
+                  {...register('password', { required: true })}
+                  fullWidth
+                  inputSize="md"
+                  error={!!errors.password}
+                />
+
+                <div style={{ minHeight: 18 }}>
+                  {errors?.password && (
+                    <Text size="xs" color="error">
+                      {errors.password?.message}
+                    </Text>
+                  )}
+                </div>
+              </div>
             </Flex>
 
-            <Button type="submit" disabled={isMutating} variant="primary" size="md" fullWidth>
-              {isMutating ? <Loading /> : '로 그 인'}
-            </Button>
+            <Flex direction="column" gap="md">
+              <Button type="submit" disabled={isMutating} variant="primary" size="md" fullWidth>
+                {isMutating ? <Loading /> : '로 그 인'}
+              </Button>
 
-            <GoogleOAuthButton>Log in with Google</GoogleOAuthButton>
+              <Flex alignItems="center" gap="sm">
+                <Divider />
+                <span>OR</span>
+                <Divider />
+              </Flex>
+
+              <div>
+                <GoogleOAuthButton>Log in with Google</GoogleOAuthButton>
+              </div>
+            </Flex>
           </Flex>
         </form>
 
@@ -143,6 +161,6 @@ export default function LoginPage() {
           </Flex>
         </div>
       </Flex>
-    </main>
+    </Box>
   );
 }

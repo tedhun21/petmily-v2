@@ -1,28 +1,28 @@
-import React from 'react';
-import styled, { css } from 'styled-components';
-import { Theme } from 'styles/theme';
+import { css } from '@emotion/react';
+import styled from '@emotion/styled';
+import { Theme } from '@/styles/theme';
 
-const styleProps = [
-  'bg',
-  'w',
-  'h',
-  'p',
-  'px',
-  'py',
-  'pl',
-  'pr',
-  'pt',
-  'pb',
-  'm',
-  'mx',
-  'my',
-  'ml',
-  'mr',
-  'mt',
-  'mb',
-  'br',
-  'shadow',
-];
+// const styleProps = [
+//   'bg',
+//   'w',
+//   'h',
+//   'p',
+//   'px',
+//   'py',
+//   'pl',
+//   'pr',
+//   'pt',
+//   'pb',
+//   'm',
+//   'mx',
+//   'my',
+//   'ml',
+//   'mr',
+//   'mt',
+//   'mb',
+//   'br',
+//   'shadow',
+// ];
 
 // ===== Helpers =====
 const getSize = (value?: string | number) => {
@@ -54,8 +54,7 @@ const getColor = (theme: Theme, value?: string) => {
 type SpacingValue = keyof Theme['spacing'] | number;
 type RadiusValue = keyof Theme['radius'] | number;
 
-interface BoxProps {
-  children?: React.ReactNode;
+type BoxProps = {
   bg?: string;
   w?: string;
   h?: string;
@@ -75,12 +74,10 @@ interface BoxProps {
   mb?: SpacingValue;
   br?: RadiusValue;
   shadow?: keyof Theme['shadow'];
-}
+} & { as?: React.ElementType };
 
-// ===== Styled Component =====
-const BoxStyle = styled.div.withConfig({
-  shouldForwardProp: (prop) => !styleProps.includes(prop),
-})<BoxProps>`
+// // ===== Styled Component =====
+const Box = styled('div')<BoxProps>`
   width: ${({ w }) => getSize(w)};
   height: ${({ h }) => getSize(h)};
   background-color: ${({ theme, bg }) => getColor(theme, bg)};
@@ -108,9 +105,4 @@ const BoxStyle = styled.div.withConfig({
   `}
 `;
 
-// ===== React Component =====
-type BoxContainerProps = React.HTMLAttributes<HTMLDivElement> & BoxProps & { as?: React.ElementType };
-
-export default function Box({ children, ...rest }: BoxContainerProps) {
-  return <BoxStyle {...rest}>{children}</BoxStyle>;
-}
+export default Box;

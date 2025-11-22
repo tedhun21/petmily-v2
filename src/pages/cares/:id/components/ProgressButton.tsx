@@ -1,13 +1,13 @@
 import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 import Loading from '@components/Loading';
-import { Reservation, ReservationStatus } from 'types/reservation.type';
-import { UserRole } from 'types/user.type';
+import { Reservation, ReservationStatus } from '@/types/reservation.type';
+import { UserRole } from '@/types/user.type';
 import { SocketContext } from '@components/contexts/SocketProvider';
-import { Button } from '@components/buttons/Button';
+import { Button } from '@/components/styled/Button';
 
 interface ProgressButtonProps {
   meRole: UserRole;

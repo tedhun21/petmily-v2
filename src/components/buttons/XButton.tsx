@@ -1,6 +1,6 @@
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { FaXmark } from 'react-icons/fa6';
-import { Button, ButtonProps } from './Button';
+import { Button, ButtonProps } from '../styled/Button';
 
 interface XButtonProps extends ButtonProps {
   onClick: () => void;
@@ -8,16 +8,13 @@ interface XButtonProps extends ButtonProps {
 
 export default function XButton({ onClick, size }: XButtonProps) {
   return (
-    <XButtonStyle type="button" onClick={onClick}>
+    <XButtonStyle type="button" onClick={onClick} variant="icon" borderRadius="circle">
       <FaXmark size={size} />
     </XButtonStyle>
   );
 }
 
-const XButtonStyle = styled(Button).attrs(() => ({
-  variant: 'icon',
-  borderRadius: 'circle',
-}))`
+const XButtonStyle = styled(Button)`
   color: ${({ theme }) => theme.colors.text.active};
   background-color: ${({ theme }) => theme.colors.background.box.error.primary};
 

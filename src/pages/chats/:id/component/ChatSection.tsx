@@ -1,16 +1,14 @@
-import styled from 'styled-components';
-
 import { useForm } from 'react-hook-form';
-
+import styled from '@emotion/styled';
 import { IoMdArrowRoundUp } from 'react-icons/io';
 
 import ChatHeader from './ChatHeader';
 import ChatContainer from './ChatContainer';
 import { useChat } from '../contexts/ChatProvider';
-import { Button } from '@components/buttons/Button';
-import { Input } from '@components/Input';
-import Box from '@components/Box';
-import { flex } from '@components/Flex';
+import { Button } from '@/components/styled/Button';
+import { Input } from '@components/styled/Input';
+import Box from '@components/styled/Box';
+import Flex from '@components/styled/Flex';
 
 interface MessageFormValues {
   message: string;
@@ -40,22 +38,26 @@ export default function ChatSection() {
 
       <footer>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Wrapper>
-            <Input
-              type="text"
-              placeholder="메시지 보내기"
-              autoComplete="off"
-              {...register('message')}
-              variant="default"
-              size="lg"
-              borderRadius="lg"
-              fullWidth
-            />
+          <Box p="md">
+            <Flex alignItems="center" gap="sm">
+              {/* TODO */}
+              <Input
+                as="input"
+                type="text"
+                placeholder="메시지 보내기"
+                autoComplete="off"
+                {...register('message')}
+                inputSize="lg"
+                variant="default"
+                borderRadius="lg"
+                fullWidth
+              />
 
-            <ChatSubmitButton type="submit">
-              <IoMdArrowRoundUp size="32px" color="white" />
-            </ChatSubmitButton>
-          </Wrapper>
+              <ChatSubmitButton type="submit" variant="icon" borderRadius="circle">
+                <IoMdArrowRoundUp size="32px" color="white" />
+              </ChatSubmitButton>
+            </Flex>
+          </Box>
         </form>
       </footer>
     </Section>
@@ -80,16 +82,8 @@ const Section = styled.section`
   }
 `;
 
-const Wrapper = styled(Box).attrs(() => ({
-  p: 'md',
-}))`
-  ${flex({ alignItems: 'center', gap: 'sm' })}
-`;
-
-const ChatSubmitButton = styled(Button).attrs(() => ({
-  variant: 'icon',
-  borderRadius: 'circle',
-}))`
+// TODO
+const ChatSubmitButton = styled(Button)`
   background-color: ${({ theme }) => theme.colors.background.box.accent.primary};
 
   &:hover:not(:disabled) {

@@ -9,15 +9,15 @@ import dayjs from 'dayjs';
 import { toast } from 'react-toastify';
 
 import useSWR from 'swr';
-import { useAuthSWR, useAuthSWRMutation } from 'hooks/authSWR';
+import { useAuthSWR, useAuthSWRMutation } from '@/hooks/authSWR';
 
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { Modal, TextField } from '@mui/material';
 
-import { timeRange } from 'utils/date';
-import { fetcher, poster } from 'api';
+import { timeRange } from '@/utils/date';
+import { fetcher, poster } from '@/api';
 import SelectPets from './component/SelectPets';
-import { Divider, SubTitle } from 'styles/commonStyle';
+import { Divider, SubTitle } from '@/styles/commonStyle';
 
 import Confirm from '@pages/users/:id/book/component/Confirm';
 
@@ -25,10 +25,10 @@ import Loading from '@components/Loading';
 import CustomDaumPostcode from '@components/CustomDaumPostcode';
 import SelectedPetsitter from './component/SelectedPetsitter';
 import BackHeader from '@components/headers/BackHeader';
-import { Button } from '@components/buttons/Button';
-import { Text } from '@components/Text';
-import Box from '@components/Box';
-import { Flex } from '@components/Flex';
+import { Button } from '@/components/styled/Button';
+import { Text } from '@components/styled/Text';
+import Box from '@components/styled/Box';
+import Flex from '@components/styled/Flex';
 
 const schema = yup.object().shape({
   checkedPets: yup.array().min(1, '적도오 한 마리의 펫을 선택해야 합니다.'),

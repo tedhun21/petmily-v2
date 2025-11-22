@@ -1,19 +1,19 @@
 import { useEffect, useRef, useState } from 'react';
 
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { Pagination } from 'swiper/modules';
 import { PiStarFill } from 'react-icons/pi';
 
-import { dateAgo } from 'utils/date';
-import { ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
-import { Review } from 'types/review.type';
-import { Text } from '@components/Text';
+import { dateAgo } from '@/utils/date';
+import { ImageCentered, RoundedImageWrapper } from '@/styles/commonStyle';
+import { Review } from '@/types/review.type';
+import { Text } from '@components/styled/Text';
 
-import { Flex } from '@components/Flex';
-import Link from '@components/Link';
+import Flex from '@components/styled/Flex';
+import Link from '@components/styled/Link';
 
 interface ReviewPhotoCardProps {
   review: Review;

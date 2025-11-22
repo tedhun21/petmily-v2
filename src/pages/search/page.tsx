@@ -8,6 +8,7 @@ export default function SearchPage() {
       <NavHeader />
 
       <SearchBox />
+
       <Results />
     </>
   );

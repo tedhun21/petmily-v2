@@ -1,12 +1,23 @@
 const path = require('path');
 
 module.exports = {
+  babel: {
+    presets: [
+      [
+        '@babel/preset-react',
+        {
+          runtime: 'automatic',
+          importSource: '@emotion/react',
+        },
+      ],
+    ],
+    plugins: ['@emotion/babel-plugin'],
+  },
   webpack: {
     alias: {
-      '@': path.resolve(__dirname, 'src/'),
-      '@components': path.resolve(__dirname, 'src/components/'),
-      '@headers': path.resolve(__dirname, 'src/components/headers/'),
-      '@pages': path.resolve(__dirname, 'src/pages/'),
+      '@': path.resolve(__dirname, 'src'),
+      '@components': path.resolve(__dirname, 'src/components'),
+      '@pages': path.resolve(__dirname, 'src/pages'),
     },
   },
 };

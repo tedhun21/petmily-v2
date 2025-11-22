@@ -1,7 +1,7 @@
 import { MouseEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -16,12 +16,11 @@ import { toast } from 'react-toastify';
 import { TbGenderFemale, TbGenderMale } from 'react-icons/tb';
 import BackHeader from '@components/headers/BackHeader';
 import EditableProfileImage from '@components/EditableProfileImage';
-import { PetGender, PetSpecies } from 'types/pet.type';
-import { poster } from 'api';
-import { Button } from '@components/buttons/Button';
-import { Input } from '@components/Input';
-import Box from '@components/Box';
-import { Flex } from '@components/Flex';
+import { PetGender, PetSpecies } from '@/types/pet.type';
+import { poster } from '@/api';
+import { Button } from '@/components/styled/Button';
+import { Input } from '@components/styled/Input';
+import Flex from '@components/styled/Flex';
 
 const schema = yup.object().shape({
   species: yup.string().oneOf(['dog', 'cat'], '강아지인가요 고양이인가요?').required('이 항목은 필수입니다.'),
@@ -93,7 +92,7 @@ export default function CreatePetPage() {
   };
 
   return (
-    <Main>
+    <>
       <BackHeader title="나의 펫밀리 등록" />
       <Form onSubmit={handleSubmit(onSubmit)}>
         <InputContainer>
@@ -181,15 +180,11 @@ export default function CreatePetPage() {
           </Button>
         </ButtonContainer>
       </Form>
-    </Main>
+    </>
   );
 }
 
-export const Main = styled.main`
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-`;
+// TODO: all
 
 export const Form = styled.form`
   display: flex;

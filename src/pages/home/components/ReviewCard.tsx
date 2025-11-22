@@ -1,11 +1,12 @@
-import Box from '@components/Box';
-import { ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
-import styled from 'styled-components';
+import Box from '@components/styled/Box';
+import styled from '@emotion/styled';
 import { PiStarFill } from 'react-icons/pi';
-import { dateAgo } from 'utils/date';
-import { Review } from 'types/review.type';
-import { Text } from '@components/Text';
-import { flex, Flex } from '@components/Flex';
+
+import Flex from '@components/styled/Flex';
+import { dateAgo } from '@/utils/date';
+import { Text } from '@components/styled/Text';
+import { Review } from '@/types/review.type';
+import { ImageCentered, RoundedImageWrapper } from '@/styles/commonStyle';
 
 interface ReviewCardProps {
   review: Review;
@@ -19,39 +20,33 @@ export default function ReviewCard({ review }: ReviewCardProps) {
   } = review;
 
   return (
-    <Container>
-      <Flex direction="row" justifyContent="space-between" alignItems="flex-start">
-        <Flex alignItems="center" gap="xs">
-          <ClientImage>
-            <ImageCentered src={client?.photo ? `${client?.photo}` : '/imgs/DefaultUserProfile.jpg'} alt="user_photo" />
-          </ClientImage>
-          <Text size="sm">{client?.nickname.slice(0, 2) + '*****'}</Text>
+    <Box p="lg" bg="background.box.default.primary" br="lg">
+      <Flex direction="column" gap="md">
+        <Flex direction="row" justifyContent="space-between" alignItems="flex-start">
+          <Flex alignItems="center" gap="xs">
+            <ClientImage>
+              <ImageCentered
+                src={client?.photo ? `${client?.photo}` : '/imgs/DefaultUserProfile.jpg'}
+                alt="user_photo"
+              />
+            </ClientImage>
+            <Text size="sm">{client?.nickname.slice(0, 2) + '*****'}</Text>
+          </Flex>
+          <Flex alignItems="center" gap="xs">
+            <PiStarFill size="20px" color="#279EFF" />
+            <span>{star}</span>
+          </Flex>
         </Flex>
-        <Flex alignItems="center" gap="xs">
-          <PiStarFill size="20px" color="#279EFF" />
-          <span>{star}</span>
+        <Flex direction="column" gap="2xl">
+          <ReviewText>{body}</ReviewText>
+          <div style={{ textAlign: 'right' }}>
+            <Text size="xs">{dateAgo(review.createdAt)}</Text>
+          </div>
         </Flex>
       </Flex>
-      <Flex direction="column" gap="2xl">
-        <ReviewText>{body}</ReviewText>
-        <div style={{ textAlign: 'right' }}>
-          <Text size="xs">{dateAgo(review.createdAt)}</Text>
-        </div>
-      </Flex>
-    </Container>
+    </Box>
   );
 }
-
-const Container = styled(Box).attrs(() => ({
-  p: 'lg',
-  bg: 'background.box.default.primary',
-  br: 'lg',
-}))`
-  ${flex({
-    direction: 'column',
-    gap: 'md',
-  })}
-`;
 
 const ClientImage = styled(RoundedImageWrapper)`
   width: 46px;

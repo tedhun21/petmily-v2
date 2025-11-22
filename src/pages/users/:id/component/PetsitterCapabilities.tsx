@@ -1,6 +1,6 @@
 import { PiCatBold, PiDogBold } from 'react-icons/pi';
-import styled from 'styled-components';
-import { timeRange, weekdays } from 'utils/date';
+import styled from '@emotion/styled';
+import { timeRange, weekdays } from '@/utils/date';
 
 interface IProps {
   possiblePetSpecies: string[] | null;

@@ -1,8 +1,8 @@
 import { HiOutlineLocationMarker } from 'react-icons/hi';
-import Box from '@components/Box';
-import { Button } from '@components/buttons/Button';
-import { Text } from '@components/Text';
-import { Flex } from '@components/Flex';
+import Box from '@components/styled/Box';
+import { Button } from '@/components/styled/Button';
+import { Text } from '@components/styled/Text';
+import Flex from '@components/styled/Flex';
 
 export default function SuggestLocations({ data, handleLocationClick }: any) {
   return (

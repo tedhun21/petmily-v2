@@ -1,11 +1,12 @@
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { MdOutlineRateReview } from 'react-icons/md';
 import { PiCatBold, PiDogBold, PiStarFill } from 'react-icons/pi';
-import { ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
+
+import { ImageCentered, RoundedImageWrapper } from '@/styles/commonStyle';
 import { Link } from 'react-router-dom';
-import { Petsitter } from 'types/user.type';
-import { PetSpecies } from 'types/pet.type';
-import { Flex } from '@components/Flex';
+import { Petsitter } from '@/types/user.type';
+import { PetSpecies } from '@/types/pet.type';
+import Flex from '@components/styled/Flex';
 
 interface ResultProps {
   petsitter: Petsitter;

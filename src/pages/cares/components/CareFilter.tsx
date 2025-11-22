@@ -1,15 +1,14 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useAuthSWR } from 'hooks/authSWR';
+import { useAuthSWR } from '@/hooks/authSWR';
 import dayjs from 'dayjs';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
-import { fetcher } from 'api';
-import { RootState } from 'store';
-import { setFilter, setMonth } from 'store/contextSlice';
-import { ReservationStatus } from 'types/reservation.type';
-import { Button } from '@components/buttons/Button';
-import Box from '@components/Box';
-import { Flex } from '@components/Flex';
+import { fetcher } from '@/api';
+import { RootState } from '@/store';
+import { setFilter, setMonth } from '@/store/contextSlice';
+import { ReservationStatus } from '@/types/reservation.type';
+import { Button } from '@/components/styled/Button';
+import Flex from '@components/styled/Flex';
 
 export type FilterType = {
   id: number;
@@ -33,7 +32,7 @@ export default function CareFilter() {
 
   const { data: monthData } = useAuthSWR('/reservations/month', fetcher);
 
-  const handleFilterClick = (e: React.MouseEvent<HTMLInputElement>) => {
+  const handleFilterClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     dispatch(setFilter(e.currentTarget.value));
   };
 
@@ -46,18 +45,17 @@ export default function CareFilter() {
       <Flex justifyContent="space-between" alignItems="center">
         <Flex gap="sm">
           {filters.map((el) => (
-            <FilterRadio key={el.id}>
-              <input type="radio" id={`filter-${el.id}`} value={el.value} onClick={handleFilterClick} />
-              <RadioButton
-                as="label"
-                htmlFor={`filter-${el.id}`}
-                $isSelected={filter === el.value}
-                variant={filter === el.value ? 'primary' : 'secondary'}
-                size="sm"
-              >
-                {el.label}
-              </RadioButton>
-            </FilterRadio>
+            <RadioButton
+              key={el.id}
+              value={el.value}
+              onClick={handleFilterClick}
+              $selected={filter === el.value}
+              variant={filter === el.value ? 'primary' : 'secondary'}
+              size="sm"
+              borderRadius="md"
+            >
+              {el.label}
+            </RadioButton>
           ))}
         </Flex>
 
@@ -87,36 +85,15 @@ const Sticky = styled.div`
   padding: ${({ theme }) => theme.spacing.sm};
 `;
 
-const FilterRadio = styled.div`
-  display: flex;
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.xs};
-
-  input {
-    display: none; /* Hide the default radio button */
-  }
+// TODO
+const RadioButton = styled(Button, { shouldForwardProp: (prop) => prop !== '$selected' })<{ $selected: boolean }>`
+  background-color: ${({ theme, $selected }) =>
+    $selected ? theme.colors.background.box.accent.primary : theme.colors.background.box.default.primary};
+  border: ${({ theme, $selected }) => ($selected ? 'none' : `1px solid ${theme.colors.line.box.primary}`)};
 `;
 
-// TODO
-const RadioButton = styled(Button)<{ $isSelected: boolean }>``;
-
-// const RadioButton = styled(Button)<{ $isSelected: boolean }>`
-//   padding: 4px ${({ theme }) => theme.spacing.sm};
-//   background-color: ${({ theme, $isSelected }) =>
-//     $isSelected ? theme.colors.background.box.accent.primary : theme.colors.background.box.default.primary};
-//   border: ${({ theme, $isSelected }) => ($isSelected ? 'none' : `1px solid ${theme.colors.line.box.primary}`)};
-//   border-radius: ${({ theme }) => theme.radius.md};
-//   color: ${({ $isSelected, theme }) => ($isSelected ? theme.colors.text.white : theme.colors.text.inactive)};
-//   transition:
-//     background-color 0.2s,
-//     color 0.2s;
-//   cursor: pointer;
-
-//   ${({ theme }) => theme.typeScale.sm};
-// `;
-
 const StyledSelect = styled.select`
-  padding: 6px ${({ theme }) => theme.spacing.sm};
+  padding: ${({ theme }) => theme.spacing.sm};
   background-color: ${({ theme }) => theme.colors.background.box.default.primary};
   border: 1px solid ${({ theme }) => theme.colors.line.input.primary};
   border-radius: ${({ theme }) => theme.radius.md};

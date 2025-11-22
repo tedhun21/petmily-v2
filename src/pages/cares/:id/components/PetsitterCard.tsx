@@ -1,16 +1,16 @@
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 import { PiStarFill } from 'react-icons/pi';
 import { MdOutlineRateReview } from 'react-icons/md';
 
-import { ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
-import { timeRange, weekdays } from 'utils/date';
-import { Petsitter } from 'types/user.type';
+import { ImageCentered, RoundedImageWrapper } from '@/styles/commonStyle';
+import { timeRange, weekdays } from '@/utils/date';
+import { Petsitter } from '@/types/user.type';
 
-import { Text } from '@components/Text';
-import { Flex } from '@components/Flex';
-import Box from '@components/Box';
-import Link from '@components/Link';
+import { Text } from '@components/styled/Text';
+import Flex from '@components/styled/Flex';
+import Box from '@components/styled/Box';
+import Link from '@components/styled/Link';
 
 interface PetsitterCardProps {
   petsitter: Petsitter;
@@ -61,11 +61,11 @@ export default function PetsitterCard({ petsitter }: PetsitterCardProps) {
             {petsitter?.possibleDays?.map((day: string, index: number) => {
               const matchedDay = weekdays.find((weekday) => weekday.value === day);
               return (
-                <PetInfoCapsule key={index}>
+                <Box as="li" key={index} px="sm" py="xs" bg="background.box.accent.primary" br="lg">
                   <Text size="sm" color="white">
                     {matchedDay?.label}
                   </Text>
-                </PetInfoCapsule>
+                </Box>
               );
             })}
           </Flex>
@@ -83,10 +83,4 @@ const PetsitterImage = styled(RoundedImageWrapper)`
   width: 100px;
   height: 100px;
   border: 2px solid ${({ theme }) => theme.colors.line.box.highlight};
-`;
-
-const PetInfoCapsule = styled.li`
-  padding: 4px 8px;
-  background-color: ${({ theme }) => theme.colors.background.box.accent.primary};
-  border-radius: ${({ theme }) => theme.radius.lg};
 `;

@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { FaRegCircleCheck, FaCircleCheck } from 'react-icons/fa6';
 import { Modal } from '@mui/material';
 
-import { SubTitle, Title } from 'styles/commonStyle';
-import { Text } from '@components/Text';
-import { Button } from '@components/buttons/Button';
-import { Flex } from '@components/Flex';
+import { SubTitle, Title } from '@/styles/commonStyle';
+import { Text } from '@components/styled/Text';
+import { Button } from '@/components/styled/Button';
+import Flex from '@components/styled/Flex';
 
 interface ConfirmProps {
   isChecked: boolean;
@@ -38,7 +38,7 @@ export default function Confirm({ isChecked, setIsChecked }: ConfirmProps) {
           <TextCenter style={{ textAlign: 'center' }}>
             <Title>안내사항</Title>
           </TextCenter>
-          <Container>
+          <Flex direction="column" gap="sm">
             <SubTitle>펫시터님께 미리 알려주세요!</SubTitle>
             <List>
               <Item>급식할 사료의 양</Item>
@@ -55,9 +55,11 @@ export default function Confirm({ isChecked, setIsChecked }: ConfirmProps) {
               <Item>고양이의 경우, 주로 숨어 있는 장소</Item>
               <Item>돌봄 시간에 고객님이 집에 계신 경우</Item>
             </List>
-          </Container>
-          <Container>
-            <RedSubTitle>필수 확인 사항</RedSubTitle>
+          </Flex>
+          <Flex direction="column" gap="sm">
+            <Text size="lg" weight="bold" color="error">
+              필수 확인 사항
+            </Text>
             <List>
               <Item>돌봄 외 특수 서비스는 요청 불가</Item>
               <Item>1. 목욕/미용 및 주사를 맞히는 의료 행위</Item>
@@ -74,18 +76,22 @@ export default function Confirm({ isChecked, setIsChecked }: ConfirmProps) {
               </Item>
               <Item>돌봄 외 특수 서비스는 요청 불가</Item>
             </List>
-          </Container>
-          <Container>
-            <RedSubTitle>돌봄이 불가한 경우</RedSubTitle>
+          </Flex>
+          <Flex direction="column" gap="sm">
+            <Text size="lg" weight="bold" color="error">
+              돌봄이 불가한 경우
+            </Text>
             <List>
               <Item>펫시터님을 무는 등의 심한 공격성을 보이는 경우</Item>
               <Item>링웜, 허피스 등 전염성이 강한 질병이 있는 반려동물</Item>
               <Item>등록하신 반려동물 프로필이 실제와 다른 경우</Item>
               <Item>소유자가 분명하지 않은 경우</Item>
             </List>
-          </Container>
-          <Container>
-            <RedSubTitle>산책이 불가한 경우</RedSubTitle>
+          </Flex>
+          <Flex direction="column" gap="sm">
+            <Text size="lg" weight="bold" color="error">
+              산책이 불가한 경우
+            </Text>
             <List>
               <Flex direction="column">
                 <Item>인식표 미지참 / 산택 줄 길이 2M 초과시</Item>
@@ -94,7 +100,7 @@ export default function Confirm({ isChecked, setIsChecked }: ConfirmProps) {
                 <SubItem>동물 보호 제 12조(안전조치) [시행 2022, 2. 11]</SubItem>
               </Flex>
             </List>
-          </Container>
+          </Flex>
           <Button type="button" onClick={handleCheck} variant="primary">
             확인했습니다
           </Button>
@@ -137,17 +143,7 @@ const TextCenter = styled.div`
   text-align: center;
 `;
 
-const Container = styled(Flex).attrs(() => ({
-  direction: 'column',
-  gap: 'sm',
-}))``;
-
-const RedSubTitle = styled(Text).attrs(() => ({
-  size: 'lg',
-  weight: 'bold',
-  color: 'error',
-}))``;
-
+// TODO
 const List = styled.ul`
   display: flex;
   flex-direction: column;

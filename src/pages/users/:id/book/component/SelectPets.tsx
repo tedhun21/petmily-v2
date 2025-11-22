@@ -1,10 +1,10 @@
-import { fetcher } from 'api';
-import { SubTitle } from 'styles/commonStyle';
-import { useAuthSWRInfinite } from 'hooks/authSWR';
+import { fetcher } from '@/api';
+import { SubTitle } from '@/styles/commonStyle';
+import { useAuthSWRInfinite } from '@/hooks/authSWR';
 import PetItem from './PetItem';
-import { Pet } from 'types/pet.type';
+import { Pet } from '@/types/pet.type';
 import { FiMoreHorizontal } from 'react-icons/fi';
-import { Flex } from '@components/Flex';
+import Flex from '@components/styled/Flex';
 
 export default function SelectPets() {
   const pageSize = 6;

@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { PiPawPrint, PiPawPrintFill } from 'react-icons/pi';
 
-import { useAuthSWR, useAuthSWRMutation } from 'hooks/authSWR';
-import { fetcher, updater } from 'api';
+import { useAuthSWR, useAuthSWRMutation } from '@/hooks/authSWR';
+import { fetcher, updater } from '@/api';
 import Loading from '@components/Loading';
-import { Text } from '@components/Text';
-import { Flex } from '@components/Flex';
+import { Text } from '@components/styled/Text';
+import Flex from '@components/styled/Flex';
 
 interface IProps {
   userId: number | null;
@@ -43,9 +43,7 @@ export default function PawButton({ userId }: IProps) {
     };
     try {
       await trigger(formData);
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
   };
 
   return (

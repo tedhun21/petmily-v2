@@ -1,12 +1,12 @@
 import { useEffect, useRef } from 'react';
 
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { useInView } from 'framer-motion';
 
 import useChatRooms from '@pages/chats/hooks/useChatRooms';
 import ChatRoomItem from './ChatRoomItem';
 import Loading from '@components/Loading';
-import { Flex } from '@components/Flex';
+import Flex from '@components/styled/Flex';
 
 export default function ChatRoomList() {
   const ref = useRef<HTMLDivElement | null>(null);

@@ -1,15 +1,15 @@
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 import { MdOutlineRateReview } from 'react-icons/md';
 import { PiStarFill } from 'react-icons/pi';
 
-import { weekdays } from 'utils/date';
-import { Divider, ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
-import { Petsitter } from 'types/user.type';
-import { DayOfWeekType } from 'types/common.type';
-import { Text } from '@components/Text';
-import Box from '@components/Box';
-import { Flex } from '@components/Flex';
+import { weekdays } from '@/utils/date';
+import { Divider, ImageCentered, RoundedImageWrapper } from '@/styles/commonStyle';
+import { Petsitter } from '@/types/user.type';
+import { DayOfWeekType } from '@/types/common.type';
+import { Text } from '@components/styled/Text';
+import Box from '@components/styled/Box';
+import Flex from '@components/styled/Flex';
 
 interface SelectedPetsitterProps {
   petsitter: Petsitter;

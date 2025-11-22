@@ -1,12 +1,14 @@
+import { useEffect, useRef } from 'react';
 import useSWRInfinite from 'swr/infinite';
-import { fetcher } from 'api';
+import { useSearchParams } from 'react-router-dom';
+
+import { useInView } from 'framer-motion';
+
+import { fetcher } from '@/api';
 import Result from './Result';
 import Loading from '@components/Loading';
-import { useEffect, useRef } from 'react';
-import { useInView } from 'framer-motion';
-import { useSearchParams } from 'react-router-dom';
-import Box from '@components/Box';
-import { Flex } from '@components/Flex';
+import Box from '@components/styled/Box';
+import Flex from '@components/styled/Flex';
 
 export default function Results() {
   const [searchParams] = useSearchParams();
@@ -48,7 +50,7 @@ export default function Results() {
   }
 
   return (
-    <Box h="100%" p="md">
+    <Box p="md">
       {data && (
         <section>
           <ul>

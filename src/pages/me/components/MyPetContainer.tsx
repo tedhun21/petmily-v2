@@ -1,15 +1,15 @@
 import { useEffect, useRef } from 'react';
 
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { useInView } from 'framer-motion';
 
-import { useAuthSWRInfinite } from 'hooks/authSWR';
+import { useAuthSWRInfinite } from '@/hooks/authSWR';
 import PetmilyCard from './PetmilyCard';
-import { fetcher } from 'api';
+import { fetcher } from '@/api';
 import Loading from '@components/Loading';
-import { Pet } from 'types/pet.type';
-import { Flex } from '@components/Flex';
-import Link from '@components/Link';
+import { Pet } from '@/types/pet.type';
+import Flex from '@components/styled/Flex';
+import Link from '@components/styled/Link';
 
 export default function MyPetContainer() {
   const ref = useRef(null);

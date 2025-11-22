@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { closeModal } from 'store/modalSlice';
+import { closeModal } from '@/store/modalSlice';
 
 export default function useOutsideClickModal(ref: React.RefObject<HTMLElement>) {
   const dispatch = useDispatch();

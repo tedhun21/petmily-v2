@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { Text } from '@components/Text';
+import styled from '@emotion/styled';
+import { Text } from '@components/styled/Text';
 
 interface LocationCapsuleContainerProps {
   data: string[];

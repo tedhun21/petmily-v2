@@ -2,23 +2,24 @@ import React, { useEffect, useRef } from 'react';
 
 import dayjs from 'dayjs';
 import { useInView } from 'framer-motion';
-import styled, { css } from 'styled-components';
 import { FaXmark } from 'react-icons/fa6';
 
-import { ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
+import { ImageCentered, RoundedImageWrapper } from '@/styles/commonStyle';
 import {
   formatToLocaleAMPM,
   shouldShowDateDivider,
   shouldShowNickname,
   shouldShowSenderPhoto,
   shouldShowTime,
-} from 'utils/date';
-import { ChatMessage, Message, PendingMessage } from 'types/chat.type';
+} from '@/utils/date';
+import { ChatMessage, Message, PendingMessage } from '@/types/chat.type';
 import { IoMdRefresh } from 'react-icons/io';
 import { useChat } from '../contexts/ChatProvider';
-import { Button } from '@components/buttons/Button';
-import { Text } from '@components/Text';
-import { Flex } from '@components/Flex';
+import { Button } from '@/components/styled/Button';
+import { Text } from '@components/styled/Text';
+import Flex from '@components/styled/Flex';
+import styled from '@emotion/styled';
+import { css } from '@emotion/react';
 
 interface IProps {
   message: ChatMessage;
@@ -111,6 +112,7 @@ export default React.memo(function MessageItem({
   );
 });
 
+// TODO
 const DateDivider = styled.div`
   display: flex;
   justify-content: center;
@@ -166,6 +168,7 @@ const MessageContent = styled.div<{ $isMyMessage: boolean }>`
 //   word-wrap: break-word; /* 긴 단어가 있을 경우 줄 바꿈 처리 */
 // `;
 
+// TODO
 const ErrorStatus = styled.div`
   display: flex;
   align-items: center;

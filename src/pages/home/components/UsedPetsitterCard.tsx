@@ -1,12 +1,12 @@
-import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import styled from '@emotion/styled';
 import { PiStarFill } from 'react-icons/pi';
 
-import { timeRange, weekdays } from 'utils/date';
-import { ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
-import { Petsitter } from 'types/user.type';
-import { Link } from 'react-router-dom';
-import { Text } from '@components/Text';
-import { Flex } from '@components/Flex';
+import { timeRange, weekdays } from '@/utils/date';
+import { ImageCentered, RoundedImageWrapper } from '@/styles/commonStyle';
+import { Petsitter } from '@/types/user.type';
+import { Text } from '@components/styled/Text';
+import Flex from '@components/styled/Flex';
 
 interface IProps {
   petsitter: Petsitter;

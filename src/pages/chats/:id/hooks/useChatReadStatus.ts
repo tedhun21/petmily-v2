@@ -1,8 +1,8 @@
 import { useCallback, useRef } from 'react';
 
 import dayjs from 'dayjs';
-import { useDebounce } from 'hooks/useDebounce';
-import { Message } from 'types/chat.type';
+import { useDebounce } from '@/hooks/useDebounce';
+import { Message } from '@/types/chat.type';
 
 interface IProps {
   markMessageAsRead: (messageId: number, messageCreatedAt: string) => void;

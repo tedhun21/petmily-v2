@@ -1,11 +1,11 @@
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
-import { User } from 'types/user.type';
-import { Text } from '@components/Text';
-import { ImageCentered, RoundedImageWrapper } from 'styles/commonStyle';
-import { flex, Flex } from '@components/Flex';
-import Box from '@components/Box';
-import Link from '@components/Link';
+import { User } from '@/types/user.type';
+import { Text } from '@components/styled/Text';
+import { ImageCentered, RoundedImageWrapper } from '@/styles/commonStyle';
+import Flex from '@components/styled/Flex';
+import Box from '@components/styled/Box';
+import Link from '@components/styled/Link';
 
 interface ClientCardProps {
   client: User;
@@ -19,32 +19,27 @@ export default function ClientCard({ client }: ClientCardProps) {
   }
 
   return (
-    <Container>
-      <Flex gap="sm">
-        <ClientImage>
-          <ImageCentered src={client?.photo ? `${client?.photo}` : '/imgs/DefaultUserProfile.jpg'} alt="client_photo" />
-        </ClientImage>
-        <Text size="lg" weight="semibold">
-          {client?.nickname} 님
-        </Text>
-      </Flex>
+    <Box p="xl" br="lg" shadow="dp03">
+      <Flex justifyContent="space-between">
+        <Flex gap="sm">
+          <ClientImage>
+            <ImageCentered
+              src={client?.photo ? `${client?.photo}` : '/imgs/DefaultUserProfile.jpg'}
+              alt="client_photo"
+            />
+          </ClientImage>
+          <Text size="lg" weight="semibold">
+            {client?.nickname} 님
+          </Text>
+        </Flex>
 
-      <Link to={`/chats/temp?${params.toString()}`} type="text">
-        채팅 하기
-      </Link>
-    </Container>
+        <Link to={`/chats/temp?${params.toString()}`} type="text">
+          채팅 하기
+        </Link>
+      </Flex>
+    </Box>
   );
 }
-
-const Container = styled(Box).attrs(() => ({
-  p: 'xl',
-  br: 'lg',
-  shaodw: 'dp03',
-}))`
-  ${flex({
-    justifyContent: 'space-between',
-  })}
-`;
 
 const ClientImage = styled(RoundedImageWrapper)`
   width: 80px;

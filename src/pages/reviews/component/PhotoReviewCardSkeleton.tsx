@@ -1,6 +1,6 @@
-import styled, { keyframes } from 'styled-components';
-
-import { Flex } from '@components/Flex';
+import Flex from '@components/styled/Flex';
+import { keyframes } from '@emotion/react';
+import styled from '@emotion/styled';
 
 export default function PhotoReviewCardSkeleton() {
   return (

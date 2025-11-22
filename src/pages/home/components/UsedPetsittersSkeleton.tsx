@@ -1,6 +1,7 @@
-import styled, { keyframes } from 'styled-components';
-import Box from '@components/Box';
-import { Flex } from '@components/Flex';
+import { keyframes } from '@emotion/react';
+import styled from '@emotion/styled';
+import Box from '@components/styled/Box';
+import Flex from '@components/styled/Flex';
 
 export default function UsedPetsittersSkeleton() {
   const count = 3;
@@ -32,7 +33,7 @@ const pulse = keyframes`
 const SkeletonElement = styled.div`
   background-color: ${({ theme }) => theme.colors.background.box.default.hover};
   border-radius: ${({ theme }) => theme.radius.md};
-  animation: ${pulse} 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; /* pulse 애니메이션 
+  animation: ${pulse} 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; /* pulse 애니메이션
        적용 */
 `;
 

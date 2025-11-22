@@ -1,15 +1,15 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
-import { ImageCentered, RoundedImageWrapper, Title } from 'styles/commonStyle';
+import { ImageCentered, RoundedImageWrapper, Title } from '@/styles/commonStyle';
 import { Link } from 'react-router-dom';
 import { FaXmark } from 'react-icons/fa6';
-import { ChatMember } from 'types/chat.type';
+import { ChatMember } from '@/types/chat.type';
 import { useChat } from '../contexts/ChatProvider';
-import { Button } from '@components/buttons/Button';
-import { Text } from '@components/Text';
-import { flex, Flex } from '@components/Flex';
-import Box from '@components/Box';
+import { Button } from '@/components/styled/Button';
+import { Text } from '@components/styled/Text';
+import Flex from '@components/styled/Flex';
+import Box from '@components/styled/Box';
 
 interface ChatRoomDrawerProps {
   isDrawerOpen: boolean;
@@ -53,31 +53,35 @@ export default function ChatRoomDrawer({ isDrawerOpen, setIsDrawerOpen }: ChatRo
                   </Text>
                 </Flex>
 
-                <Wrapper as="ul">
-                  <Link to={`/users/${meMember?.user.nickname}`}>
-                    <Flex as="li" alignItems="center">
-                      <MemberImage>
-                        <ImageCentered
-                          src={meMember?.user.photo ? `${meMember?.user.photo}` : '/imgs/DefaultUserProfile.jpg'}
-                        />
-                      </MemberImage>
-                      <span>{meMember?.user.nickname}</span>
-                    </Flex>
-                  </Link>
-
-                  {otherMembers?.map((member: ChatMember) => (
-                    <Link to={`/users/${member.user.nickname}`} key={member.user?.id}>
-                      <OtherWrapper as="li">
+                <Box as="ul" p="sm">
+                  <Flex gap="sm">
+                    <Link to={`/users/${meMember?.user.nickname}`}>
+                      <Flex as="li" alignItems="center">
                         <MemberImage>
                           <ImageCentered
                             src={meMember?.user.photo ? `${meMember?.user.photo}` : '/imgs/DefaultUserProfile.jpg'}
                           />
                         </MemberImage>
-                        <span>{member.user?.nickname}</span>
-                      </OtherWrapper>
+                        <span>{meMember?.user.nickname}</span>
+                      </Flex>
                     </Link>
-                  ))}
-                </Wrapper>
+
+                    {otherMembers?.map((member: ChatMember) => (
+                      <Link to={`/users/${member.user.nickname}`} key={member.user?.id}>
+                        <Box as="li" p="sm">
+                          <Flex>
+                            <MemberImage>
+                              <ImageCentered
+                                src={meMember?.user.photo ? `${meMember?.user.photo}` : '/imgs/DefaultUserProfile.jpg'}
+                              />
+                            </MemberImage>
+                            <span>{member.user?.nickname}</span>
+                          </Flex>
+                        </Box>
+                      </Link>
+                    ))}
+                  </Flex>
+                </Box>
               </div>
 
               <div>
@@ -136,23 +140,6 @@ const ContentWrapper = styled.div`
   & > :nth-child(3) {
     flex: 0;
   }
-`;
-
-const Wrapper = styled(Box).attrs(() => ({
-  p: 'sm',
-}))`
-  ${flex({
-    gap: 'sm',
-  })}
-`;
-
-const OtherWrapper = styled(Box).attrs(() => ({
-  p: 'sm',
-}))`
-  ${flex({
-    alignItems: 'center',
-    gap: 'sm',
-  })}
 `;
 
 const MemberImage = styled(RoundedImageWrapper)`

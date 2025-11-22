@@ -1,10 +1,10 @@
-import styled from 'styled-components';
+import styled from '@emotion/styled';
+import { Link } from 'react-router-dom';
+import { FaRegPaperPlane } from 'react-icons/fa6';
 
 import PawButton from './PawButton';
-import { FaRegPaperPlane } from 'react-icons/fa6';
-import { Link } from 'react-router-dom';
-import { Text } from '@components/Text';
-import { Flex } from '@components/Flex';
+import { Text } from '@components/styled/Text';
+import Flex from '@components/styled/Flex';
 
 interface IProps {
   userId: number | null;

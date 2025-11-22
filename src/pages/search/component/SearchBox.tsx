@@ -1,23 +1,19 @@
 import { useEffect } from 'react';
 
 import { FormProvider, useForm } from 'react-hook-form';
-import styled from 'styled-components';
-import { FiSearch } from 'react-icons/fi';
+import styled from '@emotion/styled';
+import { useSearchParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 import DateBox from './Date/DateBox';
 import LocationBox from './Location/LocationBox';
-import { saveToRecentSearch } from 'utils/localStorage';
 import StartEndTimeBox from './StartEndTime/StartEndTimeBox';
-import { Divider } from 'styles/commonStyle';
-
-import { useSearchParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from 'store';
-import { closeModal, openModal } from 'store/modalSlice';
-import { isSearchModal } from 'utils/misc';
-import Box from '@components/Box';
-import { Button } from '@components/buttons/Button';
-import { Flex } from '@components/Flex';
+import { RootState } from '@/store';
+import { closeModal, ModalType, openModal } from '@/store/modalSlice';
+import { saveToRecentSearch } from '@/utils/localStorage';
+import { Divider } from '@/styles/commonStyle';
+import Flex from '@components/styled/Flex';
+import Box from '@components/styled/Box';
 
 export type FormValues = {
   location: string | null;
@@ -34,6 +30,12 @@ export default function SearchBox() {
   const methods = useForm<FormValues>({
     defaultValues: { location: null, date: null, startTime: null, endTime: null },
   });
+
+  const handleBoxClick = (e: React.MouseEvent, modalType: ModalType) => {
+    e.stopPropagation();
+
+    dispatch(openModal(modalType));
+  };
 
   // null인 input으로 넘어가기
   const handleSetValue = (field: keyof FormValues, value: any) => {
@@ -58,6 +60,10 @@ export default function SearchBox() {
         dispatch(openModal(nextField));
       }
     }
+  };
+
+  const selected = (modalType: ModalType | null) => {
+    return modalType !== null && modalType.startsWith('search_');
   };
 
   const onSubmit = async (data: FormValues) => {
@@ -86,80 +92,45 @@ export default function SearchBox() {
   }, [searchParams]);
 
   return (
-    <Sticky>
-      <FormProvider {...methods}>
-        <form onSubmit={methods.handleSubmit(onSubmit)}>
-          <Container id="container" $isSelected={isSearchModal(currentModal)}>
-            <Flex alignItems="center" style={{ flex: 1 }}>
-              <LocationBox handleSetValue={handleSetValue} />
+    <FormProvider {...methods}>
+      <form onSubmit={methods.handleSubmit(onSubmit)}>
+        <Container id="container" $selected={selected(currentModal)} p="xs" br="lg" shadow="dp02">
+          <Flex>
+            <LocationBox handleBoxClick={handleBoxClick} handleSetValue={handleSetValue} />
 
-              <Divider $orientation="vertical" $length="32px" />
+            <Divider $orientation="vertical" />
 
-              <DateBox handleSetValue={handleSetValue} />
+            <DateBox handleBoxClick={handleBoxClick} handleSetValue={handleSetValue} />
 
-              <Divider $orientation="vertical" $length="32px" />
+            <Divider $orientation="vertical" />
 
-              <StartEndTimeBox />
-            </Flex>
-
-            <Box p="sm" style={{ flex: 0 }}>
-              <Button type="submit" variant="icon" borderRadius="circle" style={{ backgroundColor: '#279EFF' }}>
-                <FiSearch size="24px" color="white" />
-              </Button>
-            </Box>
-          </Container>
-        </form>
-      </FormProvider>
-    </Sticky>
+            <StartEndTimeBox handleBoxClick={handleBoxClick} handleSetValue={handleSetValue} />
+          </Flex>
+        </Container>
+      </form>
+    </FormProvider>
   );
 }
 
-const Sticky = styled.div`
-  position: sticky;
-  top: 100px;
-  z-index: 10;
-  padding: 8px 0;
-  background-color: inherit;
-`;
-
 // TODO
-const Container = styled.div<{ $isSelected: boolean }>`
-  display: flex;
-  width: 100%;
+const Container = styled(Box)<{ $selected: boolean }>`
   position: relative;
-  align-items: center;
-  background-color: ${({ theme, $isSelected }) => $isSelected && theme.colors.background.box.default.active};
+  background-color: ${({ theme, $selected }) => $selected && theme.colors.background.box.default.active};
   border: 1px solid ${({ theme }) => theme.colors.line.input.primary};
-  border-radius: 28px;
-  box-shadow: ${({ theme }) => theme.shadow.dp02};
 `;
 
 // TODO
-export const InputDiv = styled.div<{ $isSelected: boolean }>`
-  display: flex;
+export const InputBox = styled.div<{ $selected: boolean }>`
   flex: 1;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 12px;
-  background-color: ${({ $isSelected, theme }) => $isSelected && theme.colors.background.primary};
-  border-radius: 28px;
-  box-shadow: ${({ $isSelected, theme }) => $isSelected && theme.shadow.dp02};
+  padding: 8px;
+  background-color: ${({ $selected, theme }) => $selected && theme.colors.background.primary};
+  border-radius: 20px;
+  box-shadow: ${({ $selected, theme }) => $selected && theme.shadow.dp02};
   cursor: pointer;
 
   &:hover {
-    background-color: ${({ $isSelected, theme }) => !$isSelected && theme.colors.background.box.default.hover};
+    background-color: ${({ $selected, theme }) => !$selected && theme.colors.background.box.default.hover};
   }
-`;
-
-export const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.xs};
-  align-items: flex-start;
-`;
-
-export const Label = styled.label`
-  ${({ theme }) => theme.typeScale.xs};
 `;
 
 export const BoxInput = styled.input`

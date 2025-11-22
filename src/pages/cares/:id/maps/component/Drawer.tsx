@@ -1,15 +1,15 @@
 import { motion } from 'framer-motion';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { useMemo, useState } from 'react';
-import useMeasure from 'hooks/useMeasure';
-import useCoords from 'hooks/useCoords';
+import useMeasure from '@/hooks/useMeasure';
+import useCoords from '@/hooks/useCoords';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 import { TbCurrentLocation } from 'react-icons/tb';
 import { GrMapLocation } from 'react-icons/gr';
-import { Button } from '@components/buttons/Button';
+import { Button } from '@/components/styled/Button';
 import XButton from '@components/buttons/XButton';
-import Box from '@components/Box';
-import { Flex } from '@components/Flex';
+import Box from '@components/styled/Box';
+import Flex from '@components/styled/Flex';
 
 interface MapsDrawerProps {
   address?: string;

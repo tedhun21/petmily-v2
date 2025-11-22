@@ -1,94 +1,85 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { createPortal } from 'react-dom';
 
 import { useFormContext } from 'react-hook-form';
 
 import { FaXmark } from 'react-icons/fa6';
 
-import { Divider } from 'styles/commonStyle';
-import StartTimeOutModal from './StartEndTimeModal';
-import { AddText, InputDiv, Label, Modal, Wrapper, XButton } from '../SearchBox';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from 'store';
-import { closeModal, ModalType, openModal } from 'store/modalSlice';
-import Box from '@components/Box';
-import { Flex } from '@components/Flex';
+import StartEndTimeModal from './StartEndTimeModal';
+import { AddText, FormValues, InputBox, Modal, XButton } from '../SearchBox';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
+import { ModalType } from '@/store/modalSlice';
+import Box from '@components/styled/Box';
+import { Button } from '@/components/styled/Button';
+import { FiSearch } from 'react-icons/fi';
+import Flex from '@components/styled/Flex';
+import { Text } from '@components/styled/Text';
+import useOutsideClickModal from '@/hooks/useOutsideClickModal';
 
-export default function StartEndTimeBox() {
-  const dispatch = useDispatch();
+interface IProps {
+  handleBoxClick: (e: React.MouseEvent, modalType: ModalType) => void;
+  handleSetValue: (field: keyof FormValues, value: any) => void;
+}
+
+export default function StartEndTimeBox({ handleBoxClick, handleSetValue }: IProps) {
   const { currentModal } = useSelector((state: RootState) => state.modal);
   const container = document.getElementById('container');
   const modalRef = useRef<HTMLDivElement>(null);
+  useOutsideClickModal(modalRef);
 
   const { setValue, watch } = useFormContext();
 
   const startTime = watch('startTime');
   const endTime = watch('endTime');
 
-  const handlestartTimeBoxClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    dispatch(openModal(ModalType.SEARCH_START_TIME));
-  };
-
-  const handleendTimeBoxClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    dispatch(openModal(ModalType.SEARCH_END_TIME));
-  };
-
   const handleInputRemove = () => {
     setValue('startTime', null);
     setValue('endTime', null);
   };
 
-  useEffect(() => {
-    const handleOutsideClick = (e: MouseEvent) => {
-      const target = e.target as Node;
-
-      if (modalRef.current && !modalRef.current.contains(target)) {
-        dispatch(closeModal());
-      }
-    };
-
-    document.addEventListener('click', handleOutsideClick);
-
-    return () => document.removeEventListener('click', handleOutsideClick);
-  }, []);
+  const dateText = (startTime: string, endTime: string) => {
+    if (startTime && endTime) {
+      return `${startTime} - ${endTime}`;
+    }
+    if (startTime) {
+      return `${startTime}`;
+    }
+    return '시간 추가';
+  };
 
   return (
-    <Flex alignItems="center" style={{ flex: 2 }}>
-      <InputDiv onClick={(e) => handlestartTimeBoxClick(e)} $isSelected={currentModal === ModalType.SEARCH_START_TIME}>
-        <Wrapper>
-          <Label>체크인</Label>
-          <AddText $isClicked={startTime?.length > 0}>{startTime ?? '시간 추가'}</AddText>
-        </Wrapper>
-        {currentModal === ModalType.SEARCH_START_TIME && startTime?.length > 0 && (
-          <XButton type="button" onClick={handleInputRemove}>
-            <FaXmark size="12px" />
-          </XButton>
-        )}
-      </InputDiv>
+    <>
+      <InputBox
+        onClick={(e) => handleBoxClick(e, ModalType.SEARCH_TIME)}
+        $selected={currentModal === ModalType.SEARCH_TIME}
+      >
+        <Flex alignItems="center">
+          <Flex direction="column" gap="xs" css={{ flex: 1 }}>
+            <Text size="sm">시간</Text>
+            <AddText $isClicked={startTime?.length > 0}>{dateText(startTime, endTime)}</AddText>
+          </Flex>
+          {currentModal === ModalType.SEARCH_TIME && startTime?.length > 0 && (
+            <XButton type="button" onClick={handleInputRemove}>
+              <FaXmark size="12px" />
+            </XButton>
+          )}
+          <Box css={{ flex: 0 }}>
+            <Button type="submit" variant="icon" borderRadius="circle" style={{ backgroundColor: '#279EFF' }}>
+              <FiSearch size="24px" color="white" />
+            </Button>
+          </Box>
+        </Flex>
+      </InputBox>
 
-      <Divider $orientation="vertical" $length="32px" />
-
-      <InputDiv onClick={(e) => handleendTimeBoxClick(e)} $isSelected={currentModal === ModalType.SEARCH_END_TIME}>
-        <Wrapper>
-          <Label>체크아웃</Label>
-          <AddText $isClicked={endTime?.length > 0}>{endTime ?? '시간 추가'}</AddText>
-        </Wrapper>
-        {currentModal === ModalType.SEARCH_END_TIME && endTime?.length > 0 && (
-          <XButton type="button" onClick={handleInputRemove}>
-            <FaXmark size="12px" />
-          </XButton>
-        )}
-      </InputDiv>
-      {(currentModal === ModalType.SEARCH_START_TIME || currentModal === ModalType.SEARCH_END_TIME) &&
+      {currentModal === ModalType.SEARCH_TIME &&
         container &&
         createPortal(
           <Modal ref={modalRef}>
-            <StartTimeOutModal />
+            <StartEndTimeModal handleSetValue={handleSetValue} />
           </Modal>,
           container,
         )}
-    </Flex>
+    </>
   );
 }

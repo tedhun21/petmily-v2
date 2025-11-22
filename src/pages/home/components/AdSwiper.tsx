@@ -1,5 +1,5 @@
-import Box from '@components/Box';
-import styled from 'styled-components';
+import Box from '@components/styled/Box';
+import styled from '@emotion/styled';
 import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 

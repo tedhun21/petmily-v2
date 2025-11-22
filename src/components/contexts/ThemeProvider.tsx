@@ -1,8 +1,10 @@
 import { createContext, useEffect, useState } from 'react';
-import { ThemeProvider as StyledComponentsThemeProvider } from 'styled-components';
-import { createTheme, ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
-import { darkTheme, lightTheme } from 'styles/theme';
 import { ToastContainer } from 'react-toastify';
+import { ThemeProvider as EmotionThemeProvider, Global } from '@emotion/react';
+import { createTheme, ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
+
+import { darkTheme, lightTheme } from '@/styles/theme';
+import { globalStyles } from '@/styles/Globalstyle';
 
 interface ThemePropviderProps {
   children: React.ReactNode;
@@ -21,8 +23,6 @@ export const ThemeContext = createContext<ThemeContextType>({
 const muiLightTheme = createTheme({ palette: { mode: 'light' } });
 const muiDarkTheme = createTheme({ palette: { mode: 'dark' } });
 
-// 1. 초기값 가져오기
-// 2. 사용자가 변경할때
 export default function ThemeProvider({ children }: ThemePropviderProps) {
   const [isDarkMode, setIsDarkMode] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -40,8 +40,9 @@ export default function ThemeProvider({ children }: ThemePropviderProps) {
 
   return (
     <ThemeContext.Provider value={{ isDarkMode, setIsDarkMode }}>
-      <StyledComponentsThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
-        <MuiThemeProvider theme={isDarkMode ? muiDarkTheme : muiLightTheme}>
+      <MuiThemeProvider theme={isDarkMode ? muiDarkTheme : muiLightTheme}>
+        <EmotionThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+          <Global styles={globalStyles} />
           {children}
           <ToastContainer
             position="bottom-center"
@@ -51,8 +52,8 @@ export default function ThemeProvider({ children }: ThemePropviderProps) {
             closeOnClick={true}
             pauseOnFocusLoss={false}
           />
-        </MuiThemeProvider>
-      </StyledComponentsThemeProvider>
+        </EmotionThemeProvider>
+      </MuiThemeProvider>
     </ThemeContext.Provider>
   );
 }

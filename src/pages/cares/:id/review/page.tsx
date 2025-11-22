@@ -1,21 +1,21 @@
 import { ChangeEvent, useEffect, useRef } from 'react';
 
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useAuthSWR, useAuthSWRMutation } from 'hooks/authSWR';
+import { useAuthSWR, useAuthSWRMutation } from '@/hooks/authSWR';
 
 import { toast } from 'react-toastify';
 import { FaXmark } from 'react-icons/fa6';
 
 import Loading from '@components/Loading';
-import { BottomFixed, Float, Title } from 'styles/commonStyle';
-import { fetcher, poster, updater } from 'api';
+import { BottomFixed, Float, Title } from '@/styles/commonStyle';
+import { fetcher, poster, updater } from '@/api';
 import HoverRating from '@components/HoverRating';
-import { Button } from '@components/buttons/Button';
+import { Button } from '@/components/styled/Button';
 import XButton from '@components/buttons/XButton';
-import { Text } from '@components/Text';
-import { Flex } from '@components/Flex';
+import { Text } from '@components/styled/Text';
+import Flex from '@components/styled/Flex';
 
 interface ReviewFormValues {
   star: number;

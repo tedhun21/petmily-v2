@@ -1,37 +1,34 @@
-import { createGlobalStyle } from 'styled-components';
-import { reset } from 'styled-reset';
+import { css } from '@emotion/react';
+import emotionReset from 'emotion-reset';
 
-const GlobalStyle = createGlobalStyle`
-    ${reset}
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+export const globalStyles = css`
+  ${emotionReset};
 
-    body {
-        background-color: ${({ theme }) => theme.colors.background.secondary};
-        font-family: 'Noto Sans KR', Roboto, sans-serif;
-    }
+  * {
+    box-sizing: border-box;
+  }
 
-    a {
-        color: inherit;
-        text-decoration: none;
-    }
+  body {
+    font-family: 'Noto Sans KR', Roboto, sans-serif;
+  }
 
-    button {
-        background-color: transparent;
-        border: none;
-        color:inherit;
-        font-family: inherit;
-        cursor: pointer;
-    }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
 
-    input {
-        outline: none;
-        color:inherit;
-    }
+  li {
+    list-style-type: none;
+  }
 
+  button {
+    border: none;
+    color: inherit;
+    background: none;
+  }
+
+  input {
+    outline: none;
+    color: inherit;
+  }
 `;
-
-export default GlobalStyle;

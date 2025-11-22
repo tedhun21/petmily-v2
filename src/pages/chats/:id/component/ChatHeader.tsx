@@ -1,14 +1,14 @@
 import { useState } from 'react';
 
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { FiMenu } from 'react-icons/fi';
 
-import { ChatMember } from 'types/chat.type';
+import { ChatMember } from '@/types/chat.type';
 import ChatRoomDrawer from './ChatRoomDrawer';
 import { useChat } from '../contexts/ChatProvider';
 import BackButton from '@components/buttons/BackButton';
-import { Button } from '@components/buttons/Button';
-import { Text } from '@components/Text';
+import { Button } from '@/components/styled/Button';
+import { Text } from '@components/styled/Text';
 
 export default function ChatHeader() {
   const {
