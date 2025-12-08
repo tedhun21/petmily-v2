@@ -19,16 +19,16 @@ import { fetcher, poster } from '@/api';
 import SelectPets from './component/SelectPets';
 import { Divider, SubTitle } from '@/styles/commonStyle';
 
-import Confirm from '@pages/users/:id/book/component/Confirm';
+import Confirm from '@/pages/users/:id/book/component/Confirm';
 
-import Loading from '@components/Loading';
-import CustomDaumPostcode from '@components/CustomDaumPostcode';
+import Loading from '@/components/Loading';
+import CustomDaumPostcode from '@/components/CustomDaumPostcode';
 import SelectedPetsitter from './component/SelectedPetsitter';
-import BackHeader from '@components/headers/BackHeader';
+import BackHeader from '@/components/headers/BackHeader';
 import { Button } from '@/components/styled/Button';
-import { Text } from '@components/styled/Text';
-import Box from '@components/styled/Box';
-import Flex from '@components/styled/Flex';
+import { Text } from '@/components/styled/Text';
+import Box from '@/components/styled/Box';
+import Flex from '@/components/styled/Flex';
 
 const schema = yup.object().shape({
   checkedPets: yup.array().min(1, '적도오 한 마리의 펫을 선택해야 합니다.'),
@@ -54,7 +54,13 @@ export default function BookPage() {
 
   const methods = useForm({
     resolver: yupResolver(schema),
-    defaultValues: { checkedPets: [], zipcode: '', address: '', detailAddress: '', body: '' },
+    defaultValues: {
+      checkedPets: [],
+      zipcode: '',
+      address: '',
+      detailAddress: '',
+      body: '',
+    },
   });
 
   const { checkedPets, address, detailAddress } = methods.watch();
@@ -104,11 +110,11 @@ export default function BookPage() {
 
     trigger(formattedData, {
       onSuccess: () => {
-        toast.success('예약 요청을 보냈습니다');
+        toast.success('예약 요청을 보냈어요');
         navigate('/cares');
       },
       onError: () => {
-        toast.error('예약 요청에 실패했습니다');
+        toast.error('예약 요청을 실패했어요');
       },
     });
   };
@@ -169,10 +175,14 @@ export default function BookPage() {
                   <Modal
                     open={isModalOpen}
                     onClose={() => setIsModalOpen(false)}
-                    sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
                   >
                     <div style={{ width: '360px' }}>
-                      <CustomDaumPostcode onComplete={handleComplete} />
+                      <CustomDaumPostcode onComplete={handleComplete} style={{ width: '100%', height: '100%' }} />
                     </div>
                   </Modal>
                 </Flex>
@@ -229,19 +239,19 @@ const Container = styled.div`
   flex: auto;
   overflow-y: auto;
   height: 100%;
-  padding: ${({ theme }) => theme.spacing.xl};
-  gap: ${({ theme }) => theme.spacing.xl};
+  padding: ${({ theme }) => theme.space.xl};
+  gap: ${({ theme }) => theme.space.xl};
 `;
 
 // TODO
 const Reservation = styled.section`
   display: flex;
   flex-direction: column;
-  padding: ${({ theme }) => theme.spacing['2xl']};
+  padding: ${({ theme }) => theme.space['2xl']};
   background-color: ${({ theme }) => theme.colors.background.box.default.primary};
-  border-radius: ${({ theme }) => theme.spacing.md};
+  border-radius: ${({ theme }) => theme.space.md};
   box-shadow: ${({ theme }) => theme.shadow.dp01};
-  gap: ${({ theme }) => theme.spacing.lg};
+  gap: ${({ theme }) => theme.space.lg};
 `;
 
 const StyledTextField = styled(TextField)`
@@ -279,7 +289,7 @@ const ButtonContainer = styled.div`
   flex-direction: column;
   flex: 1;
   justify-content: center;
-  padding: ${({ theme }) => theme.spacing.xl};
+  padding: ${({ theme }) => theme.space.xl};
   background-color: ${({ theme }) => theme.colors.background.primary};
-  gap: ${({ theme }) => theme.spacing.sm};
+  gap: ${({ theme }) => theme.space.sm};
 `;

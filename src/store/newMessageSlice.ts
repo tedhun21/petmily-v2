@@ -1,6 +1,6 @@
-import { createSelector, createSlice } from '@reduxjs/toolkit';
-import { RootState } from '@/store';
-import { Message } from '@/types/chat.type';
+import { createSelector, createSlice } from "@reduxjs/toolkit";
+import type { RootState } from ".";
+import type { Message } from "@/types/chat.type";
 
 export interface NewMessageState {
   newMessages: Message[];
@@ -11,19 +11,22 @@ const initialState: NewMessageState = {
 };
 
 const newMessageSlice = createSlice({
-  name: 'newMessage',
+  name: "newMessage",
   initialState,
   reducers: {
     addNewMessage: (state, action) => {
       state.newMessages.unshift(action.payload);
     },
     removeMessagesByChatRoom: (state, action) => {
-      state.newMessages = state.newMessages.filter((msg) => msg.chatRoom.id !== action.payload);
+      state.newMessages = state.newMessages.filter(
+        (msg) => msg.chatRoom.id !== action.payload
+      );
     },
   },
 });
 
-export const { addNewMessage, removeMessagesByChatRoom } = newMessageSlice.actions;
+export const { addNewMessage, removeMessagesByChatRoom } =
+  newMessageSlice.actions;
 export default newMessageSlice.reducer;
 
 // RootState에서 newMessage slice의 상태를 가져오는 기본 선택자
@@ -34,5 +37,5 @@ export const selectNewMessagesByChatRoom = createSelector(
   [allNewMessages, (_, chatRoomId) => chatRoomId],
   (newMessages, chatRoomId) => {
     return newMessages.filter((message) => message.chatRoom.id === chatRoomId);
-  },
+  }
 );

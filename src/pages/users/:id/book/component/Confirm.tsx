@@ -4,9 +4,9 @@ import { FaRegCircleCheck, FaCircleCheck } from 'react-icons/fa6';
 import { Modal } from '@mui/material';
 
 import { SubTitle, Title } from '@/styles/commonStyle';
-import { Text } from '@components/styled/Text';
+import { Text } from '@/components/styled/Text';
 import { Button } from '@/components/styled/Button';
-import Flex from '@components/styled/Flex';
+import Flex from '@/components/styled/Flex';
 
 interface ConfirmProps {
   isChecked: boolean;
@@ -115,10 +115,10 @@ const ConfirmContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: ${({ theme }) => theme.spacing.sm};
+  padding: ${({ theme }) => theme.space.sm};
   border-top: 1px solid ${({ theme }) => theme.colors.text.inactive};
   border-bottom: 1px solid ${({ theme }) => theme.colors.text.inactive};
-  gap: ${({ theme }) => theme.spacing.sm};
+  gap: ${({ theme }) => theme.space.sm};
 `;
 
 // TODO
@@ -131,12 +131,12 @@ const TermsContainer = styled.div`
   height: 600px;
   display: flex;
   flex-direction: column;
-  padding: ${({ theme }) => theme.spacing['2xl']};
+  padding: ${({ theme }) => theme.space['2xl']};
   background-color: ${({ theme }) => theme.colors.background.box.default.primary};
   border-radius: ${({ theme }) => theme.radius.sm};
   color: ${({ theme }) => theme.colors.text.active};
   transform: translate(-50%, -50%);
-  gap: ${({ theme }) => theme.spacing.md};
+  gap: ${({ theme }) => theme.space.md};
 `;
 
 const TextCenter = styled.div`
@@ -147,7 +147,7 @@ const TextCenter = styled.div`
 const List = styled.ul`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.xs};
+  gap: ${({ theme }) => theme.space.xs};
   list-style-type: disc;
 `;
 
@@ -157,15 +157,15 @@ const Item = styled.li`
 `;
 
 const SubItem = styled.span`
-  padding-left: ${({ theme }) => theme.spacing.xl};
+  padding-left: ${({ theme }) => theme.space.xl};
   color: ${({ theme }) => theme.colors.text.inactive};
   ${({ theme }) => theme.typeScale.xs};
 `;
 
 const Check = styled.div`
   position: absolute;
-  top: ${({ theme }) => theme.spacing.xl};
-  left: ${({ theme }) => theme.spacing.sm};
+  top: ${({ theme }) => theme.space.xl};
+  left: ${({ theme }) => theme.space.sm};
 `;
 
 const ConfirmText = styled.span<{ $isChecked: boolean }>`

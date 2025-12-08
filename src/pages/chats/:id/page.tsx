@@ -1,5 +1,4 @@
 import { useParams, useSearchParams } from 'react-router-dom';
-import styled from '@emotion/styled';
 
 import ChatSection from './component/ChatSection';
 import ChatProvider from './contexts/ChatProvider';
@@ -14,17 +13,7 @@ export default function ChatPage() {
 
   return (
     <ChatProvider value={{ chatRoomId: isTemp, opponentIds }}>
-      <MainContainer>
-        <ChatSection />
-      </MainContainer>
+      <ChatSection />
     </ChatProvider>
   );
 }
-
-const MainContainer = styled.main`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100vh;
-`;

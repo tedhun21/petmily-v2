@@ -1,19 +1,19 @@
 import { useEffect, useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
+import { PiStarFill } from 'react-icons/pi';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
-import { Pagination } from 'swiper/modules';
-import { PiStarFill } from 'react-icons/pi';
 
 import { dateAgo } from '@/utils/date';
 import { ImageCentered, RoundedImageWrapper } from '@/styles/commonStyle';
-import { Review } from '@/types/review.type';
-import { Text } from '@components/styled/Text';
+import type { Review } from '@/types/review.type';
+import { Text } from '@/components/styled/Text';
 
-import Flex from '@components/styled/Flex';
-import Link from '@components/styled/Link';
+import Flex from '@/components/styled/Flex';
+import Link from '@/components/styled/Link';
 
 interface ReviewPhotoCardProps {
   review: Review;
@@ -134,10 +134,10 @@ const PetsitterContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: ${({ theme }) => theme.spacing.md};
+  padding: ${({ theme }) => theme.space.md};
   border: 2px solid ${({ theme }) => theme.colors.line.box.highlight};
   border-radius: ${({ theme }) => theme.radius.md};
-  gap: ${({ theme }) => theme.spacing.sm};
+  gap: ${({ theme }) => theme.space.sm};
 `;
 
 const PetsitterImage = styled(RoundedImageWrapper)`

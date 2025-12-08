@@ -1,31 +1,46 @@
 import styled from '@emotion/styled';
-import { Theme } from '@/styles/theme';
+import type { Theme } from '@/styles/theme';
 import { css } from '@emotion/react';
+import { colors } from '@/styles/colors';
 
+type Color = 'blue' | 'grey' | 'green' | 'red' | 'yellow';
 type Size = 'sm' | 'md' | 'lg';
 type BorderRadius = 'sm' | 'md' | 'lg' | 'circle';
 
 interface LabelProps {
-  color?: 'blue' | 'green' | 'red' | 'yellow';
+  color?: Color;
   size?: Size;
   borderRadius?: BorderRadius;
 }
+
+const getColor = (theme: Theme, color: Color) => {
+  switch (color) {
+    case 'blue':
+      return css`
+        ${theme.colors.background.highlight};
+      `;
+    case 'grey':
+      return css`
+        ${colors.grey800};
+      `;
+  }
+};
 
 const getSizeStyles = (theme: Theme, size: Size) => {
   switch (size) {
     case 'sm':
       return css`
-        padding: ${theme.spacing.xs} ${theme.spacing.sm};
+        padding: ${theme.space.xs} ${theme.space.sm};
         ${theme.typeScale.sm};
       `;
     case 'md':
       return css`
-        padding: ${theme.spacing.sm} ${theme.spacing.md};
+        padding: ${theme.space.sm} ${theme.space.md};
         ${theme.typeScale.base};
       `;
     case 'lg':
       return css`
-        padding: ${theme.spacing.md} ${theme.spacing.lg};
+        padding: ${theme.space.md} ${theme.space.lg};
         ${theme.typeScale.lg};
       `;
   }
@@ -36,7 +51,7 @@ export const Label = styled.label<LabelProps>`
   justify-content: center;
   align-items: center;
   color: ${({ theme }) => theme.colors.text.white};
-  background-color: ${({ theme }) => theme.colors.background.highlight};
+  background-color: ${({ theme, color = 'blue' }) => getColor(theme, color)};
   border-radius: ${({ theme, borderRadius = 'md' }) => theme.radius[borderRadius]};
 
   ${({ theme, size = 'md' }) => getSizeStyles(theme, size)};

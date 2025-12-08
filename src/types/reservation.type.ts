@@ -1,15 +1,16 @@
-import { CoreType } from './common.type';
-import { Journal } from './journal.type';
-import { Pet } from './pet.type';
-import { Review } from './review.type';
-import { Petsitter, User } from './user.type';
+import type { CoreType } from './common.type';
+import type { Journal } from './journal.type';
+import type { Pet } from './pet.type';
+import type { Review } from './review.type';
+import type { Petsitter, User } from './user.type';
 
-export enum ReservationStatus {
-  PENDING = 'pending',
-  CANCELED = 'canceled',
-  ACCEPTED = 'accepted',
-  COMPLETED = 'completed',
-}
+export const ReservationStatus = {
+  PENDING: 'pending',
+  CANCELED: 'canceled',
+  ACCEPTED: 'accepted',
+  COMPLETED: 'completed',
+} as const;
+export type ReservationStatusType = (typeof ReservationStatus)[keyof typeof ReservationStatus];
 
 export interface Reservation extends CoreType {
   date: string;
@@ -18,12 +19,11 @@ export interface Reservation extends CoreType {
   address: string;
   detailAddress: string;
   zipcode: string;
-  status: ReservationStatus;
+  status: ReservationStatusType;
   client: User;
   petsitter: Petsitter;
   body: string;
   pets: Pet[];
-
   review?: Review;
   journal?: Journal;
 }

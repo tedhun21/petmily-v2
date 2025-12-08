@@ -1,9 +1,9 @@
 import useSWR from 'swr';
-import { SWRConfiguration, SWRResponse } from 'swr/_internal';
+import type { SWRConfiguration, SWRResponse } from 'swr/_internal';
 import useSWRMutation from 'swr/mutation';
 import useSWRInfinite from 'swr/infinite';
 import { useSelector } from 'react-redux';
-import { RootState } from '@/store';
+import type { RootState } from '@/store';
 
 export const useAuthSWR = <T>(
   key: string | null,

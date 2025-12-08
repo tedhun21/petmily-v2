@@ -7,9 +7,9 @@ import { HiOutlineLocationMarker } from 'react-icons/hi';
 import { TbCurrentLocation } from 'react-icons/tb';
 import { GrMapLocation } from 'react-icons/gr';
 import { Button } from '@/components/styled/Button';
-import XButton from '@components/buttons/XButton';
-import Box from '@components/styled/Box';
-import Flex from '@components/styled/Flex';
+import XButton from '@/components/buttons/XButton';
+import Box from '@/components/styled/Box';
+import Flex from '@/components/styled/Flex';
 
 interface MapsDrawerProps {
   address?: string;
@@ -165,9 +165,9 @@ const StyledMotionDiv = styled(motion.div)`
 
 const DrawerHandle = styled.div`
   width: 52px;
-  height: ${({ theme }) => theme.spacing.xs};
+  height: ${({ theme }) => theme.space.xs};
   background-color: ${({ theme }) => theme.colors.background.highlight};
-  border-radius: ${({ theme }) => theme.spacing.xl};
+  border-radius: ${({ theme }) => theme.space.xl};
   cursor: grab;
 `;
 
@@ -180,8 +180,8 @@ const Absolute = styled.div`
 // TODO
 const ButtonWrapper = styled.div`
   display: flex;
-  padding: ${({ theme }) => theme.spacing.xl};
-  gap: ${({ theme }) => theme.spacing.xs};
+  padding: ${({ theme }) => theme.space.xl};
+  gap: ${({ theme }) => theme.space.xs};
 
   button {
     flex: 1;

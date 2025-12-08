@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import styled from '@emotion/styled';
 
-import { ChatMember } from '@/types/chat.type';
+import type { ChatMember } from '@/types/chat.type';
 import MessageItem from './MessageItem';
 import { isMessageUnread } from '@/utils/misc';
 import { useChat } from '../contexts/ChatProvider';
@@ -44,5 +44,5 @@ const List = styled.ul`
   display: flex;
   flex-direction: column-reverse;
   padding: 0 16px;
-  gap: ${({ theme }) => theme.spacing.sm};
+  gap: ${({ theme }) => theme.space.sm};
 `;

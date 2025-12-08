@@ -1,7 +1,7 @@
-import styled from '@emotion/styled';
-import { Text } from '@components/styled/Text';
-import Box from '@components/styled/Box';
-import Flex from '@components/styled/Flex';
+import styled from "@emotion/styled";
+import { Text } from "@/components/styled/Text";
+import Box from "@/components/styled/Box";
+import Flex from "@/components/styled/Flex";
 
 export default function HomeAd() {
   return (
@@ -10,7 +10,11 @@ export default function HomeAd() {
         <GifContainer src="/imgs/HomeAd.gif" alt="ad" />
 
         <Box w="100%">
-          <Flex direction="column" justifyContent="space-around" alignItems="center">
+          <Flex
+            direction="column"
+            justifyContent="space-around"
+            alignItems="center"
+          >
             <Image src="/imgs/CatsAndDogs.png" alt="Image" />
 
             <Text size="sm" weight="bold" color="secondary">

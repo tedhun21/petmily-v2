@@ -4,12 +4,13 @@ import { useSelector } from 'react-redux';
 import { useAuthSWRInfinite } from '@/hooks/authSWR';
 import { useInView } from 'framer-motion';
 
-import Loading from '@components/Loading';
-import Box from '@components/styled/Box';
-import Flex from '@components/styled/Flex';
+import Loading from '@/components/Loading';
+import Box from '@/components/styled/Box';
+import Flex from '@/components/styled/Flex';
 import CareCard from './CareCard';
-import { RootState } from '@/store';
+import type { RootState } from '@/store';
 import { fetcher } from '@/api';
+import type { Reservation } from '@/types/reservation.type';
 
 export default function CareContainer() {
   const ref = useRef(null);
@@ -59,7 +60,9 @@ export default function CareContainer() {
         {data &&
           data[0]?.results.length > 0 &&
           data?.map((page: any) =>
-            page?.results.map((reservation: any) => <CareCard key={reservation.id} reservation={reservation} />),
+            page?.results.map((reservation: Reservation) => (
+              <CareCard key={reservation.id} reservation={reservation} />
+            )),
           )}
 
         {data && !isEnd && (

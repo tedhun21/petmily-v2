@@ -1,5 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { Notification } from '@/types/notification.type';
+import { createSlice } from "@reduxjs/toolkit";
+import type { Notification } from "@/types/notification.type";
 
 export interface NotificationState {
   newNotifications: Notification[];
@@ -10,7 +10,7 @@ const initialState: NotificationState = {
 };
 
 const notificationSlice = createSlice({
-  name: 'notification',
+  name: "notification",
   initialState,
   reducers: {
     addNewNotification: (state, action) => {
@@ -19,7 +19,9 @@ const notificationSlice = createSlice({
     markAsRead: (state, action) => {
       // newNotifications에서 읽음 처리
       state.newNotifications = state.newNotifications.map((noti) =>
-        noti.id === action.payload ? { ...noti, readStatus: [{ ...noti.readStatus[0], isRead: true }] } : noti,
+        noti.id === action.payload
+          ? { ...noti, readStatus: [{ ...noti.readStatus[0], isRead: true }] }
+          : noti
       );
     },
     clearNewNotifications: (state) => {
@@ -28,5 +30,6 @@ const notificationSlice = createSlice({
   },
 });
 
-export const { addNewNotification, markAsRead, clearNewNotifications } = notificationSlice.actions;
+export const { addNewNotification, markAsRead, clearNewNotifications } =
+  notificationSlice.actions;
 export default notificationSlice.reducer;

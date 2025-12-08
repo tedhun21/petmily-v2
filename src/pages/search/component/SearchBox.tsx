@@ -8,12 +8,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import DateBox from './Date/DateBox';
 import LocationBox from './Location/LocationBox';
 import StartEndTimeBox from './StartEndTime/StartEndTimeBox';
-import { RootState } from '@/store';
+import type { RootState } from '@/store';
 import { closeModal, ModalType, openModal } from '@/store/modalSlice';
 import { saveToRecentSearch } from '@/utils/localStorage';
 import { Divider } from '@/styles/commonStyle';
-import Flex from '@components/styled/Flex';
-import Box from '@components/styled/Box';
+import Flex from '@/components/styled/Flex';
+import Box from '@/components/styled/Box';
 
 export type FormValues = {
   location: string | null;
@@ -28,7 +28,12 @@ export default function SearchBox() {
   const { currentModal } = useSelector((state: RootState) => state.modal);
 
   const methods = useForm<FormValues>({
-    defaultValues: { location: null, date: null, startTime: null, endTime: null },
+    defaultValues: {
+      location: null,
+      date: null,
+      startTime: null,
+      endTime: null,
+    },
   });
 
   const handleBoxClick = (e: React.MouseEvent, modalType: ModalType) => {
@@ -153,7 +158,7 @@ export const XButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: ${({ theme }) => theme.spacing.xs};
+  padding: ${({ theme }) => theme.space.xs};
   border-radius: 50%;
 
   &:hover {
@@ -167,16 +172,16 @@ export const Modal = styled.div`
   left: 0;
   z-index: 1;
   width: 100%;
-  margin-top: ${({ theme }) => theme.spacing.lg};
+  margin-top: ${({ theme }) => theme.space.lg};
 `;
 
 // TODO
 export const ModalLayOut = styled.div`
   display: flex;
   width: 100%;
-  padding: ${({ theme }) => theme.spacing.xl};
+  padding: ${({ theme }) => theme.space.xl};
   background-color: ${({ theme }) => theme.colors.background.primary};
-  border-radius: ${({ theme }) => theme.spacing['3xl']};
+  border-radius: ${({ theme }) => theme.space['3xl']};
   box-shadow: ${({ theme }) => theme.shadow.dp02};
 `;
 

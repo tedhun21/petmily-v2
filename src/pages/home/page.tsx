@@ -1,14 +1,13 @@
 import styled from '@emotion/styled';
 
-import HomeAd from '@pages/home/components/HomeAd';
+import HomeAd from '@/pages/home/components/HomeAd';
 import RealTimeReviews from './components/RealTimeReviews';
 import UsedPetsitters from './components/UsedPetsitters';
-import NavigationHeader from '@components/headers/NavigationHeader';
+import NavigationHeader from '@/components/headers/NavigationHeader';
 import EventSwiper from './components/EventSwiper';
 import AdSwiper from './components/AdSwiper';
-import SearchBox from '@pages/search/component/SearchBox';
-import Box from '@components/styled/Box';
-import Link from '@components/styled/Link';
+import Box from '@/components/styled/Box';
+import Link from '@/components/styled/Link';
 
 export default function HomePage() {
   return (
@@ -29,10 +28,6 @@ export default function HomePage() {
 
         <Box p="md">
           <AdSwiper />
-        </Box>
-
-        <Box p="md">
-          <SearchBox />
         </Box>
 
         <UsedPetsitters />

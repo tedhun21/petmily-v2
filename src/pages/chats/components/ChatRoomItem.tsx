@@ -1,14 +1,17 @@
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { RootState } from '@/store';
+
+import type { RootState } from '@/store';
 import { selectNewMessagesByChatRoom } from '@/store/newMessageSlice';
 
 import styled from '@emotion/styled';
-import Flex from '@components/styled/Flex';
-import { Text } from '@components/styled/Text';
+import Flex from '@/components/styled/Flex';
+import { Text } from '@/components/styled/Text';
 import { ImageCentered, RoundedImageWrapper } from '@/styles/commonStyle';
-import { ChatMember, ChatRoom } from '@/types/chat.type';
+import type { ChatMember, ChatRoom } from '@/types/chat.type';
 import { updatedAtAgo } from '@/utils/date';
+
+import Box from '@/components/styled/Box';
+import { Link } from 'react-router-dom';
 
 interface ChatRoomItemProps {
   chatRoom: ChatRoom;
@@ -29,42 +32,39 @@ export default function ChatRoomItem({ chatRoom }: ChatRoomItemProps) {
   const unreadCount = (chatRoom.chatMembers.meMember?.unreadCount || 0) + newMessages?.length;
 
   return (
-    <ChatRoomLink to={`/chats/${chatRoom.id}`}>
-      <Flex alignItems="center" gap="xl">
-        <Photo>
-          {others?.map((other: ChatMember) => (
-            <MemberPhoto key={other.id}>
-              <ImageCentered src={`${other.user?.photo ?? '/imgs/DefaultUserProfile.jpg'}`} />
-            </MemberPhoto>
-          ))}
-        </Photo>
-        <Flex direction="column" gap="sm">
-          <div>
-            {others?.map((other: ChatMember) => (
-              <span key={other.id}>{other.user?.nickname ?? 'unknown'}</span>
-            ))}
-          </div>
-          <Text size="xs">{lastMessage?.content}</Text>
+    <Link to={`/chats/${chatRoom.id}`}>
+      <Box p="xl" br="md">
+        <Flex justifyContent="space-between">
+          <Flex alignItems="center" gap="xl">
+            <Photo>
+              {others?.map((other: ChatMember) => (
+                <MemberPhoto key={other.id}>
+                  <ImageCentered src={`${other.user?.photo ?? '/imgs/DefaultUserProfile.jpg'}`} />
+                </MemberPhoto>
+              ))}
+            </Photo>
+            <Flex direction="column" gap="sm">
+              <div>
+                {others?.map((other: ChatMember) => (
+                  <span key={other.id}>{other.user?.nickname ?? 'unknown'}</span>
+                ))}
+              </div>
+              <Text size="xs">{lastMessage?.content}</Text>
+            </Flex>
+          </Flex>
+          <Flex direction="column" justifyContent="space-between" alignItems="center" gap="sm">
+            <Text size="xs">{updatedAtAgo(lastMessage?.createdAt)}</Text>
+            {unreadCount > 0 && (
+              <NewMessage>
+                <Text size="xs">{unreadCount}</Text>
+              </NewMessage>
+            )}
+          </Flex>
         </Flex>
-      </Flex>
-      <Flex direction="column" justifyContent="space-between" alignItems="center" gap="sm">
-        <Text size="xs">{updatedAtAgo(lastMessage?.createdAt)}</Text>
-        {unreadCount > 0 && (
-          <NewMessage>
-            <Text size="xs">{unreadCount}</Text>
-          </NewMessage>
-        )}
-      </Flex>
-    </ChatRoomLink>
+      </Box>
+    </Link>
   );
 }
-
-// TODO: Link
-const ChatRoomLink = styled(Link)`
-  display: flex;
-  justify-content: space-between;
-  padding: ${({ theme }) => theme.spacing.xl};
-`;
 
 const Photo = styled.div`
   display: grid;
@@ -79,9 +79,9 @@ const NewMessage = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  min-width: ${({ theme }) => theme.spacing.xl};
-  height: ${({ theme }) => theme.spacing.xl};
-  padding: ${({ theme }) => theme.spacing.xs};
+  min-width: ${({ theme }) => theme.space.xl};
+  height: ${({ theme }) => theme.space.xl};
+  padding: ${({ theme }) => theme.space.xs};
   background-color: ${({ theme }) => theme.colors.background.error};
   border-radius: ${({ theme }) => theme.radius.md};
   color: ${({ theme }) => theme.colors.text.white};

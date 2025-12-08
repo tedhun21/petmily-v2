@@ -2,7 +2,7 @@ import { Link as RouteLink } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import React from 'react';
-import { Theme } from '@/styles/theme';
+import type { Theme } from '@/styles/theme';
 
 type LinkSize = 'sm' | 'md' | 'lg' | 'xl';
 
@@ -17,27 +17,27 @@ const getTextSizeStyles = (theme: Theme, size: LinkSize) => {
   switch (size) {
     case 'sm':
       return css`
-        padding: ${theme.spacing.xs} ${theme.spacing.sm};
+        padding: ${theme.space.xs} ${theme.space.sm};
         ${theme.typeScale.sm};
       `;
     case 'md':
       return css`
-        padding: ${theme.spacing.sm} ${theme.spacing.md};
+        padding: ${theme.space.sm} ${theme.space.md};
         ${theme.typeScale.base};
       `;
     case 'lg':
       return css`
-        padding: ${theme.spacing.md} ${theme.spacing.lg};
+        padding: ${theme.space.md} ${theme.space.lg};
         ${theme.typeScale.lg};
       `;
     case 'xl':
       return css`
-        padding: ${theme.spacing.lg} ${theme.spacing['2xl']};
+        padding: ${theme.space.lg} ${theme.space['2xl']};
         ${theme.typeScale['2xl']};
       `;
     default:
       return css`
-        padding: ${theme.spacing.sm} ${theme.spacing.md};
+        padding: ${theme.space.sm} ${theme.space.md};
         ${theme.typeScale.base};
       `;
   }
@@ -61,7 +61,7 @@ export const Link = styled(RouteLink, {
       case 'icon': {
         return css`
           border-radius: ${theme.radius.circle};
-          padding: ${theme.spacing.sm};
+          padding: ${theme.space.sm};
           color: ${theme.colors.text.active};
 
           &:hover:not(:disabled) {

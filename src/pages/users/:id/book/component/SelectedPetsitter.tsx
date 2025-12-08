@@ -5,11 +5,11 @@ import { PiStarFill } from 'react-icons/pi';
 
 import { weekdays } from '@/utils/date';
 import { Divider, ImageCentered, RoundedImageWrapper } from '@/styles/commonStyle';
-import { Petsitter } from '@/types/user.type';
-import { DayOfWeekType } from '@/types/common.type';
-import { Text } from '@components/styled/Text';
-import Box from '@components/styled/Box';
-import Flex from '@components/styled/Flex';
+import type { Petsitter } from '@/types/user.type';
+import type { DayOfWeekType } from '@/types/common.type';
+import { Text } from '@/components/styled/Text';
+import Box from '@/components/styled/Box';
+import Flex from '@/components/styled/Flex';
 
 interface SelectedPetsitterProps {
   petsitter: Petsitter;
@@ -99,8 +99,8 @@ const CardTitleContainer = styled.div`
 
 const PetsitterImg = styled(RoundedImageWrapper)`
   position: absolute;
-  top: ${({ theme }) => theme.spacing['2xl']};
-  right: ${({ theme }) => theme.spacing['2xl']};
+  top: ${({ theme }) => theme.space['2xl']};
+  right: ${({ theme }) => theme.space['2xl']};
   width: 64px;
   height: 64px;
 `;
@@ -108,12 +108,12 @@ const PetsitterImg = styled(RoundedImageWrapper)`
 const CapsuleWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: ${({ theme }) => theme.spacing.xs};
+  gap: ${({ theme }) => theme.space.xs};
 `;
 
 // TODO
 const Capsule = styled.span`
-  padding: 4px ${({ theme }) => theme.spacing.sm};
+  padding: 4px ${({ theme }) => theme.space.sm};
   background-color: ${({ theme }) => theme.colors.background.highlight};
   border-radius: ${({ theme }) => theme.radius.sm};
   color: ${({ theme }) => theme.colors.text.white};

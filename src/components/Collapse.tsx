@@ -1,9 +1,14 @@
 import { m, LazyMotion, domAnimation, AnimatePresence } from 'framer-motion';
 
-export default function Collapse({ children, open, rest }: any) {
+interface IProps {
+  children: React.ReactNode;
+  open: boolean;
+}
+
+export default function Collapse({ children, open }: IProps) {
   return (
     <LazyMotion features={domAnimation}>
-      <div aria-expanded={open} {...rest}>
+      <div aria-expanded={open}>
         <AnimatePresence>
           {open && (
             <m.div

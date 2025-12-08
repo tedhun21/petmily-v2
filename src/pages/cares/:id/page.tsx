@@ -13,32 +13,40 @@ import DetailReservation from './components/DetailReservation';
 import ProgressButton from './components/ProgressButton';
 import ClientCard from './components/ClientCard';
 import { UserRole } from '@/types/user.type';
-import BackHeader from '@components/headers/BackHeader';
-import { SocketContext } from '@components/contexts/SocketProvider';
-import { ReservationStatus } from '@/types/reservation.type';
-import Flex from '@components/styled/Flex';
-import { Text } from '@components/styled/Text';
+import BackHeader from '@/components/headers/BackHeader';
+import { SocketContext } from '@/components/contexts/SocketContext';
+import type { ReservationStatusType } from '@/types/reservation.type';
+import Flex from '@/components/styled/Flex';
+import { Text } from '@/components/styled/Text';
 import { BottomFixed, Float } from '@/styles/commonStyle';
 
 export default function CarePage() {
   const { id } = useParams();
 
-  const { socket } = useContext(SocketContext);
+  const { socketRef } = useContext(SocketContext);
 
   const { data: me } = useAuthSWR('/users/me', fetcher);
   const { data: reservation, mutate } = useAuthSWR(`/reservations/${id}`, fetcher);
+  console.log('reservaiton', reservation);
 
   // 웹소켓: 예약 상태 변경
   useEffect(() => {
-    if (!me || !socket || !reservation?.id) return;
+    if (!me || !socketRef.current || !reservation?.id) return;
+    const socket = socketRef.current;
 
     const reservationId = reservation.id.toString();
 
     socket.emit('joinReservation', reservationId);
 
-    const handleStatusUpdate = (updatedStatus: { newStatus: ReservationStatus }) => {
+    const handleStatusUpdate = (updatedStatus: { newStatus: ReservationStatusType }) => {
       const { newStatus } = updatedStatus;
-      mutate((current: { status: ReservationStatus }) => ({ ...current, status: newStatus }), false);
+      mutate(
+        (current: { status: ReservationStatusType }) => ({
+          ...current,
+          status: newStatus,
+        }),
+        false,
+      );
     };
 
     socket.off('listenStatus').on('listenStatus', handleStatusUpdate);
@@ -46,7 +54,7 @@ export default function CarePage() {
     return () => {
       socket.off('listenStatus', handleStatusUpdate);
     };
-  }, [reservation?.id]);
+  }, [me, socketRef, reservation, mutate]);
 
   return (
     <>
@@ -81,6 +89,6 @@ const FloatButtonContainer = styled(Float)`
   bottom: 0;
   left: 0;
   width: 100%;
-  padding: ${({ theme }) => theme.spacing.xl};
+  padding: ${({ theme }) => theme.space.xl};
   background-color: transparent;
 `;

@@ -2,7 +2,7 @@ import { useCallback, useRef } from 'react';
 
 import dayjs from 'dayjs';
 import { useDebounce } from '@/hooks/useDebounce';
-import { Message } from '@/types/chat.type';
+import type { Message } from '@/types/chat.type';
 
 interface IProps {
   markMessageAsRead: (messageId: number, messageCreatedAt: string) => void;
@@ -18,7 +18,7 @@ export const useChatReadStatus = ({ markMessageAsRead }: IProps) => {
 
   //  읽음 처리 디바운스
   // 1초 내에 여러 번 호출되어도 마지막 호출만 실행되도록 지연
-  const { debouncedCallback: debouncedSendReadReceipt, flush } = useDebounce(markMessageAsRead, 1000);
+  const { debouncedCallback: debouncedSendReadReceipt } = useDebounce(markMessageAsRead, 1000);
 
   // 메시지 가시성 감지 및 읽음 처리 트리거 함수
   // 화면에 보인 메시지 중 가장 최신 메시지를 기준으로 읽음 처리를 수행

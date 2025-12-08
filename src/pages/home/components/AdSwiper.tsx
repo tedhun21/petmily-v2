@@ -1,7 +1,9 @@
-import Box from '@components/styled/Box';
+import Box from '@/components/styled/Box';
 import styled from '@emotion/styled';
 import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/pagination';
 
 const ads = ['/imgs/HomeTitleAd.svg', '/imgs/HomeTitleAd.svg', '/imgs/HomeTitleAd.svg'];
 

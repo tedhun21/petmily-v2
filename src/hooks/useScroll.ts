@@ -1,9 +1,9 @@
-import { RefObject, useCallback, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 
 type ThresholdOption = { value: number; unit: 'px' | '%' };
 
 interface UseScrollOptions {
-  ref: RefObject<HTMLElement>;
+  ref: React.RefObject<HTMLElement | null>;
   thresholds?: {
     nearTop?: ThresholdOption;
     nearBottom?: ThresholdOption;
@@ -25,12 +25,12 @@ export const useScroll = ({ ref, thresholds = {} }: UseScrollOptions) => {
 
   const scrollInfoRef = useRef({ x: 0, y: 0, yDirection: null as 'up' | 'down' | null });
 
-  const [isAtTop, setIsAtTop] = useState(true);
-  const [isAtBottom, setIsAtBottom] = useState(false);
-  const [isNearTop, setIsNearTop] = useState(true);
-  const [isNearBottom, setIsNearBottom] = useState(false);
-  const [isFarFromTop, setIsFarFromTop] = useState(false);
-  const [isFarFromBottom, setIsFarFromBottom] = useState(false);
+  const [isAtTop, setIsAtTop] = useState<boolean | null>(null); // 최상단인지
+  const [isAtBottom, setIsAtBottom] = useState<boolean | null>(null); // 최하단인지
+  const [isNearTop, setIsNearTop] = useState<boolean | null>(null); // 최상단 입계값 이내
+  const [isNearBottom, setIsNearBottom] = useState<boolean | null>(null); // 최하단 임계값 이내
+  const [isFarFromTop, setIsFarFromTop] = useState<boolean | null>(null); // 최상단 임계값 넘어
+  const [isFarFromBottom, setIsFarFromBottom] = useState<boolean | null>(null); // 최하단 임계값 넘어
 
   const lastY = useRef(0);
 
@@ -50,7 +50,6 @@ export const useScroll = ({ ref, thresholds = {} }: UseScrollOptions) => {
       yDirection: direction,
     };
 
-    // --- Conditional Calculations --- //
     const distanceFromBottom = scrollHeight - scrollTop - clientHeight;
 
     setIsAtTop(scrollTop === 0);

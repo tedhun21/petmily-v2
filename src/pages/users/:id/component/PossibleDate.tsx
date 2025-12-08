@@ -10,11 +10,11 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { Title } from '@/styles/commonStyle';
 import { reservationDisableDate, timeOptions } from '@/utils/date';
 import { fetcher } from '@/api';
-import { Petsitter } from '@/types/user.type';
-import { DayOfWeekType } from '@/types/common.type';
-import { Reservation } from '@/types/reservation.type';
-import Box from '@components/styled/Box';
-import Flex from '@components/styled/Flex';
+import type { Petsitter } from '@/types/user.type';
+import { DayOfWeek, type DayOfWeekType } from '@/types/common.type';
+import type { Reservation } from '@/types/reservation.type';
+import Box from '@/components/styled/Box';
+import Flex from '@/components/styled/Flex';
 
 interface PossibleDateProps {
   petsitter?: Petsitter;
@@ -152,13 +152,13 @@ export default function PossibleDate({ petsitter }: PossibleDateProps) {
 
     // 두번째 조건: 요일 조건 확인
     const dayIndexToEnum: DayOfWeekType[] = [
-      DayOfWeekType.SUN,
-      DayOfWeekType.MON,
-      DayOfWeekType.TUE,
-      DayOfWeekType.WED,
-      DayOfWeekType.THU,
-      DayOfWeekType.FRI,
-      DayOfWeekType.SAT,
+      DayOfWeek.SUN,
+      DayOfWeek.MON,
+      DayOfWeek.TUE,
+      DayOfWeek.WED,
+      DayOfWeek.THU,
+      DayOfWeek.FRI,
+      DayOfWeek.SAT,
     ];
     const dayOfWeek = dayIndexToEnum[day.day()]; // 날짜의 요일 ("Mon")
     const isNotAvailableDay = !(petsitter?.possibleDays?.includes(dayOfWeek) || false);
@@ -242,14 +242,14 @@ const Section = styled.section`
   flex-direction: column;
   width: 100%;
   height: 100%;
-  gap: ${({ theme }) => theme.spacing.lg};
+  gap: ${({ theme }) => theme.space.lg};
 `;
 
 const StyledDatePicker = styled(DatePicker)`
   font-family: inherit;
 
   .MuiInputBase-root {
-    border-radius: ${({ theme }) => theme.spacing.md};
+    border-radius: ${({ theme }) => theme.space.md};
   }
 `;
 
@@ -262,7 +262,7 @@ const DropdownMenu = styled(motion.div)`
 const ButtonContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  grid-gap: ${({ theme }) => theme.spacing.sm};
+  grid-gap: ${({ theme }) => theme.space.sm};
 `;
 
 const ButtonWrapper = styled.div<{ disabled: boolean }>`
@@ -280,12 +280,16 @@ const ButtonWrapper = styled.div<{ disabled: boolean }>`
   }
 `;
 
-const TimeButton = styled.button<{ disabled: boolean; $isSelected: boolean; $isBetween: boolean }>`
+const TimeButton = styled.button<{
+  disabled: boolean;
+  $isSelected: boolean;
+  $isBetween: boolean;
+}>`
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  padding: ${({ theme }) => theme.spacing.xl};
+  padding: ${({ theme }) => theme.space.xl};
   background-color: ${({ $isSelected, $isBetween, theme }) =>
     $isSelected
       ? theme.colors.background.box.accent.active
@@ -298,7 +302,11 @@ const TimeButton = styled.button<{ disabled: boolean; $isSelected: boolean; $isB
   pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
 `;
 
-const TimeText = styled.span<{ disabled: boolean; $isBetween: boolean; $isSelected: boolean }>`
+const TimeText = styled.span<{
+  disabled: boolean;
+  $isBetween: boolean;
+  $isSelected: boolean;
+}>`
   color: ${({ disabled, $isSelected, $isBetween, theme }) =>
     $isSelected || $isBetween
       ? theme.colors.text.white
@@ -314,6 +322,6 @@ const TimeText = styled.span<{ disabled: boolean; $isBetween: boolean; $isSelect
 //   flex: 1;
 //   display: flex;
 //   justify-content: center;
-//   padding: ${({ theme }) => theme.spacing.xl};
+//   padding: ${({ theme }) => theme.space.xl};
 //   background-color: ${({ theme }) => theme.colors.background.primary};
 // `;

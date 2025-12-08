@@ -6,7 +6,7 @@ import { useAuthSWR } from '@/hooks/authSWR';
 import { fetcher } from '@/api';
 import { BlueLink, BottomFixed, Divider, Float } from '@/styles/commonStyle';
 
-import BackHeader from '@components/headers/BackHeader';
+import BackHeader from '@/components/headers/BackHeader';
 import UserBasicInfo from './component/UserBasicInfo';
 import PetsitterCapabilities from './component/PetsitterCapabilities';
 import PawAndMessage from './component/PawAndMessage';
@@ -20,7 +20,7 @@ export default function ProfilePage() {
   const { data: userData } = useAuthSWR(`/users?q=${nickname}`, fetcher);
 
   return (
-    <div>
+    <>
       {/* 예약하러가기 */}
       <BackHeader title={nickname} />
 
@@ -61,15 +61,15 @@ export default function ProfilePage() {
           </FloatingContainer>
         </BottomFixed>
       )}
-    </div>
+    </>
   );
 }
 
 const Main = styled.main`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.xl};
-  padding: ${({ theme }) => theme.spacing.xl};
+  gap: ${({ theme }) => theme.space.xl};
+  padding: ${({ theme }) => theme.space.xl};
 `;
 
 const CustomLink = styled(BlueLink)`
@@ -77,7 +77,7 @@ const CustomLink = styled(BlueLink)`
   justify-content: center;
   align-items: center;
   width: 100%;
-  padding: ${({ theme }) => theme.spacing.xl};
+  padding: ${({ theme }) => theme.space.xl};
   background-color: ${({ theme }) => theme.colors.background.box.accent.primary};
   color: ${({ theme }) => theme.colors.text.white};
 
@@ -94,5 +94,5 @@ const CustomLink = styled(BlueLink)`
 const FloatingContainer = styled(Float)`
   bottom: 0;
   width: 100%;
-  padding: ${({ theme }) => theme.spacing.xl};
+  padding: ${({ theme }) => theme.space.xl};
 `;

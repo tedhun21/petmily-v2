@@ -2,7 +2,7 @@ import { useFormContext } from 'react-hook-form';
 import styled from '@emotion/styled';
 
 import { ImageCentered, RoundedImageWrapper } from '@/styles/commonStyle';
-import { Pet, PetSpecies } from '@/types/pet.type';
+import { type Pet, PetSpecies } from '@/types/pet.type';
 
 interface PetItemProps {
   pet: Pet;
@@ -51,7 +51,7 @@ const Item = styled.li`
   flex-direction: column;
   align-items: center;
   cursor: pointer;
-  gap: ${({ theme }) => theme.spacing.sm};
+  gap: ${({ theme }) => theme.space.sm};
 `;
 
 const PetImage = styled(RoundedImageWrapper)<{ $isChecked: boolean }>`
@@ -68,8 +68,8 @@ const Check = styled.div<{ $isChecked: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: ${({ theme }) => theme.spacing['2xl']};
-  height: ${({ theme }) => theme.spacing['2xl']};
+  width: ${({ theme }) => theme.space['2xl']};
+  height: ${({ theme }) => theme.space['2xl']};
   background-color: ${({ theme }) => theme.colors.background.highlight};
   border-radius: ${({ theme }) => theme.radius.circle};
   opacity: ${({ $isChecked }) => ($isChecked ? 1 : 0)};

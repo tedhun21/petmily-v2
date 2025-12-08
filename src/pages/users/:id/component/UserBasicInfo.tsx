@@ -2,9 +2,9 @@ import styled from '@emotion/styled';
 import { ImageCentered, RoundedImageWrapper } from '@/styles/commonStyle';
 import { UserRole } from '@/types/user.type';
 import { PetsitterFeedback } from './PetsitterFeedback';
-import { Text } from '@components/styled/Text';
-import Box from '@components/styled/Box';
-import Flex from '@components/styled/Flex';
+import { Text } from '@/components/styled/Text';
+import Box from '@/components/styled/Box';
+import Flex from '@/components/styled/Flex';
 
 interface IProps {
   role: UserRole;
@@ -44,7 +44,7 @@ const Div = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-  gap: ${({ theme }) => theme.spacing.lg};
+  gap: ${({ theme }) => theme.space.lg};
 `;
 
 const Body = styled.p`

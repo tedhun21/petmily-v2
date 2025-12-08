@@ -8,16 +8,17 @@ import { FiSun } from 'react-icons/fi';
 import { MdNightlightRound } from 'react-icons/md';
 
 import { useAuthSWR } from '@/hooks/authSWR';
-import { RootState } from '@/store';
+import type { RootState } from '@/store';
 import { fetcher } from '@/api';
 import MeButton from './components/MeButton';
 import NotiButton from './components/NotiButton/NotiButton';
-import { ThemeContext } from '@components/contexts/ThemeProvider';
+
 import { Button } from '@/components/styled/Button';
-import { Text } from '@components/styled/Text';
-import Box from '@components/styled/Box';
-import Flex from '@components/styled/Flex';
+import { Text } from '@/components/styled/Text';
+import Box from '@/components/styled/Box';
+import Flex from '@/components/styled/Flex';
 import Link from '../styled/Link';
+import { ThemeContext } from '../contexts/ThemeContext';
 
 export default function TopHeader() {
   const { isDarkMode, setIsDarkMode } = useContext(ThemeContext);
@@ -107,8 +108,8 @@ const UnreadCount = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  min-width: ${({ theme }) => theme.spacing.lg};
-  height: ${({ theme }) => theme.spacing.lg};
+  min-width: ${({ theme }) => theme.space.lg};
+  height: ${({ theme }) => theme.space.lg};
   background-color: ${({ theme }) => theme.colors.background.error};
   border-radius: ${({ theme }) => theme.radius.circle};
 `;

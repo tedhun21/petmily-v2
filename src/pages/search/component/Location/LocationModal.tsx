@@ -10,12 +10,12 @@ import { Divider } from '@/styles/commonStyle';
 import RecentSearches from './RecentSearches';
 import SuggestLocations from './SuggestLocations';
 import LocationCapsuleContainer from './LocationCapsuleContainer';
-import Loading from '@components/Loading';
-import { ModalLayOut, HalfModalLayOut, FormValues } from '@pages/search/component/SearchBox';
+import Loading from '@/components/Loading';
+import { ModalLayOut, HalfModalLayOut, type FormValues } from '@/pages/search/component/SearchBox';
 import { getRecentSearches } from '@/utils/localStorage';
-import { Text } from '@components/styled/Text';
-import Box from '@components/styled/Box';
-import Flex from '@components/styled/Flex';
+import { Text } from '@/components/styled/Text';
+import Box from '@/components/styled/Box';
+import Flex from '@/components/styled/Flex';
 
 interface LocationModalProps {
   handleSetValue: (field: keyof FormValues, value: any) => void;
@@ -92,7 +92,7 @@ export default function LocationModal({ handleSetValue }: LocationModalProps) {
 const RecentContainer = styled.div`
   display: flex;
   flex: 0 0 auto;
-  gap: ${({ theme }) => theme.spacing.xs};
+  gap: ${({ theme }) => theme.space.xs};
 `;
 
 // TODO
@@ -100,5 +100,5 @@ const RecentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-  gap: ${({ theme }) => theme.spacing.xl};
+  gap: ${({ theme }) => theme.space.xl};
 `;

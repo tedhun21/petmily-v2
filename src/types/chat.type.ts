@@ -1,6 +1,5 @@
-import { Message } from '@mui/icons-material';
-import { CoreType } from './common.type';
-import { User } from './user.type';
+import type { CoreType } from './common.type';
+import type { User } from './user.type';
 
 export type ChatUser = Pick<User, 'id' | 'nickname' | 'photo' | 'role'>;
 

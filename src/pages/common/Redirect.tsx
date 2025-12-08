@@ -1,25 +1,25 @@
 import { useEffect } from 'react';
-
-import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import styled from '@emotion/styled';
 import { toast } from 'react-toastify';
 
 import { useAuthSWR, useAuthSWRMutation } from '@/hooks/authSWR';
 import { fetcher, updater } from '@/api';
 import { UserRole } from '@/types/user.type';
-import Loading from '@components/Loading';
-import Flex from '@components/styled/Flex';
+import Loading from '@/components/Loading';
+import Flex from '@/components/styled/Flex';
+import type { RootState } from '@/store';
 
-// 1. URL에서 액세스 토큰 파싱
-// 2. 액세스 토큰을 이용해 내 정보 가져오기
-// 3. 내 정보에 대해 조건부 처리
 export default function RedirectPage() {
   const navigate = useNavigate();
 
-  const { data: me } = useAuthSWR('/users/me', fetcher);
+  const { accessToken } = useSelector((state: RootState) => state.auth);
+
+  const { data: me, error } = useAuthSWR(accessToken ? '/users/me' : null, fetcher, {});
 
   // 유저 role update
-  const { trigger: updateUserRole } = useAuthSWRMutation(me ? `/users/${me.id}` : null, updater, {});
+  const { trigger: updateUserRole } = useAuthSWRMutation(me ? `/users/${me.id}` : null, updater);
 
   const handleClientOAuth = async () => {
     const formData = new FormData();
@@ -40,9 +40,13 @@ export default function RedirectPage() {
   useEffect(() => {
     if (me && me.role !== UserRole.USER) {
       navigate('/', { replace: true });
-      toast.success('환영합니다!');
+      toast.success('환영해요!');
     }
   }, [me, navigate]);
+
+  if (!me && !error) {
+    return <Loading />;
+  }
 
   return (
     <Flex as="main" justifyContent="center" alignItems="center">
@@ -57,9 +61,7 @@ export default function RedirectPage() {
             <PetsitterSign>펫시터로 가입하기</PetsitterSign>
           </ImageButton>
         </Flex>
-      ) : (
-        <Loading />
-      )}
+      ) : null}
     </Flex>
   );
 }

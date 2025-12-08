@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-import { ChatMessage } from '@/types/chat.type';
+import type { ChatMessage } from '@/types/chat.type';
 
 export const formatStatus = (status: string) => {
   switch (status) {

@@ -1,17 +1,17 @@
 import React, { useRef } from 'react';
 import { createPortal } from 'react-dom';
 
-import { AddText, FormValues, InputBox, Modal, XButton } from '../SearchBox';
+import { AddText, type FormValues, InputBox, Modal, XButton } from '../SearchBox';
 import DateModal from './DateModal';
 import { useFormContext } from 'react-hook-form';
 import dayjs from 'dayjs';
 import { FaXmark } from 'react-icons/fa6';
 import { useSelector } from 'react-redux';
-import { RootState } from '@/store';
+import type { RootState } from '@/store';
 import { ModalType } from '@/store/modalSlice';
-import { Text } from '@components/styled/Text';
+import { Text } from '@/components/styled/Text';
 import useOutsideClickModal from '@/hooks/useOutsideClickModal';
-import Flex from '@components/styled/Flex';
+import Flex from '@/components/styled/Flex';
 
 interface DateBoxProps {
   handleBoxClick: (e: React.MouseEvent, modalType: ModalType) => void;

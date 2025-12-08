@@ -41,11 +41,11 @@ export default function SearchInput({ input, setInput }: SearchInputProps) {
 const InputSection = styled.section<{ $isFocused: boolean }>`
   display: flex;
   align-items: center;
-  padding: ${({ theme }) => theme.spacing.sm};
+  padding: ${({ theme }) => theme.space.sm};
   background-color: ${({ theme }) => theme.colors.background.box.default.primary};
   border: 2px solid ${({ theme }) => theme.colors.line.box.highlight};
   border-radius: ${({ theme }) => theme.radius.lg};
-  gap: ${({ theme }) => theme.spacing.sm};
+  gap: ${({ theme }) => theme.space.sm};
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.background.box.default.hover};

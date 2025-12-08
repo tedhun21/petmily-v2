@@ -9,8 +9,8 @@ import { useAuthSWRMutation } from '@/hooks/authSWR';
 import styled from '@emotion/styled';
 
 import { poster } from '@/api';
-import { RootState } from '@/store';
-import { User } from '@/types/user.type';
+import type { RootState } from '@/store';
+import type { User } from '@/types/user.type';
 import { clearAccessToken } from '@/store/authSlice';
 import useOutsideClickModal from '@/hooks/useOutsideClickModal';
 import { closeModal, ModalType, openModal } from '@/store/modalSlice';
@@ -34,12 +34,12 @@ export default function MeButton({ me }: MeButtonProps) {
   // 로그아웃
   const { trigger } = useAuthSWRMutation('/auth/logout', poster, {
     onSuccess: () => {
-      dispatch(clearAccessToken()); // Redux 스토어에서 액세스 토큰 제거
-      toast.success('로그아웃 되었습니다.');
-      navigate('/'); // 로그인 페이지 또는 홈으로 리다이렉션
+      dispatch(clearAccessToken());
+      toast.success('로그아웃 되었어요.');
+      navigate('/');
     },
     onError: () => {
-      toast.error('로그아웃에 실패했습니다. 다시 시도해주세요.');
+      toast.error('로그아웃에 실패했어요. 다시 시도해주세요.');
       dispatch(clearAccessToken());
       navigate('/');
     },
@@ -109,8 +109,8 @@ const UserImage = styled(RoundedImageWrapper)`
 
 const LoginNavModal = styled.div`
   position: absolute;
-  top: ${({ theme }) => theme.spacing['2xl']};
-  right: ${({ theme }) => theme.spacing['2xl']};
+  top: ${({ theme }) => theme.space['2xl']};
+  right: ${({ theme }) => theme.space['2xl']};
   z-index: 20;
   justify-content: center;
   align-items: center;
@@ -120,7 +120,7 @@ const Nav = styled.nav`
   display: flex;
   flex-direction: column;
   width: 120px;
-  padding: ${({ theme }) => theme.spacing.sm};
+  padding: ${({ theme }) => theme.space.sm};
   background-color: ${({ theme }) => theme.colors.background.box.default.primary};
   border-radius: ${({ theme }) => theme.radius.md};
   box-shadow: ${({ theme }) => theme.shadow.dp03};

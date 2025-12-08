@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
 import { Button } from '@/components/styled/Button';
-import Flex from '@components/styled/Flex';
-import { Text } from '@components/styled/Text';
-import { Notification } from '@/types/notification.type';
+import Flex from '@/components/styled/Flex';
+import { Text } from '@/components/styled/Text';
+import type { Notification } from '@/types/notification.type';
 import { dateAgo, dateFormat } from '@/utils/date';
-import Box from '@components/styled/Box';
+import Box from '@/components/styled/Box';
 
 interface NotiItemProps {
   notification: Notification;
@@ -26,10 +26,9 @@ export default function NotiItem({ notification, onReadClick }: NotiItemProps) {
         <TopDiv $isRead={isRead} p="xs">
           <Flex justifyContent="space-between" alignItems="center">
             <Flex alignItems="flex-end" gap="xs">
-              <Text
-                size="sm"
-                weight="semibold"
-              >{`${dateFormat(notification.createdAt).year}.${dateFormat(notification.createdAt).month}.${dateFormat(notification.createdAt).day}`}</Text>
+              <Text size="sm" weight="semibold">{`${
+                dateFormat(notification.createdAt).year
+              }.${dateFormat(notification.createdAt).month}.${dateFormat(notification.createdAt).day}`}</Text>
               <Text size="xs">{dateAgo(notification.createdAt)}</Text>
             </Flex>
             {!isRead && <IsUnread />}
@@ -46,7 +45,7 @@ const TopDiv = styled(Box)<{ $isRead: boolean }>`
 `;
 
 const IsUnread = styled.div`
-  padding: ${({ theme }) => theme.spacing.xs};
+  padding: ${({ theme }) => theme.space.xs};
   background-color: ${({ theme }) => theme.colors.background.error};
   border-radius: ${({ theme }) => theme.radius.circle};
 `;

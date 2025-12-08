@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { FaRegPaperPlane } from 'react-icons/fa6';
 
 import PawButton from './PawButton';
-import { Text } from '@components/styled/Text';
-import Flex from '@components/styled/Flex';
+import { Text } from '@/components/styled/Text';
+import Flex from '@/components/styled/Flex';
 
 interface IProps {
   userId: number | null;
@@ -28,10 +28,10 @@ const CustomLink = styled(Link)`
   justify-content: center;
   align-items: center;
   width: 100%;
-  padding: ${({ theme }) => theme.spacing.sm};
+  padding: ${({ theme }) => theme.space.sm};
   background-color: ${({ theme }) => theme.colors.background.box.default.primary};
   border-radius: ${({ theme }) => theme.radius.md};
-  gap: ${({ theme }) => theme.spacing.sm};
+  gap: ${({ theme }) => theme.space.sm};
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.background.box.default.hover};

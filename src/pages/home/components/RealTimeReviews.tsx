@@ -1,4 +1,4 @@
-import useSWRInfinite from 'swr/infinite';
+import useSWR from 'swr';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
@@ -7,32 +7,15 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
 import { fetcher } from '@/api';
-import Flex from '@components/styled/Flex';
 import ReviewCard from './ReviewCard';
 import { Title } from '@/styles/commonStyle';
-import { Review } from '@/types/review.type';
+import type { Review } from '@/types/review.type';
 import RealTimeReviewsSkeleton from './RealTimeReviewsSkeleton';
 
 export default function RealTimeReviews() {
   const pageSize = 10;
 
-  const getKey = (pageIndex: number, previousPageData: any) => {
-    if (previousPageData && !previousPageData.results.length) return null;
-    return `/reviews?page=${pageIndex + 1}&pageSize=${pageSize}`;
-  };
-
-  const { isLoading, data } = useSWRInfinite(getKey, fetcher);
-
-  const isEmpty = data?.[0]?.results?.length === 0;
-  const isEnd = data && data[data.length - 1]?.results?.length < pageSize;
-
-  if (isEmpty) {
-    return (
-      <Flex justifyContent="center" alignItems="center">
-        <span>조건에 맞는 펫시터가 없습니다</span>
-      </Flex>
-    );
-  }
+  const { isLoading, data } = useSWR(`/reviews?page=1&pageSize=${pageSize}`, fetcher);
 
   return (
     <section>
@@ -46,7 +29,7 @@ export default function RealTimeReviews() {
           centeredSlides={true}
           spaceBetween={16}
           grabCursor={true}
-          loop={!isEnd}
+          loop={false}
           pagination={{
             dynamicBullets: true,
             clickable: true,
@@ -59,14 +42,12 @@ export default function RealTimeReviews() {
           style={{ width: '100%' }}
         >
           {data &&
-            data[0]?.results.length > 0 &&
-            data?.map((page: any) =>
-              page?.results.map((review: Review) => (
-                <SwiperSlide key={review.id} style={{ width: '300px' }}>
-                  <ReviewCard review={review} />
-                </SwiperSlide>
-              )),
-            )}
+            data?.results.length > 0 &&
+            data?.results.map((review: Review) => (
+              <SwiperSlide key={review.id} style={{ width: '300px' }}>
+                <ReviewCard review={review} />
+              </SwiperSlide>
+            ))}
         </Swiper>
       )}
     </section>

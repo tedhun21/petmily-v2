@@ -1,13 +1,11 @@
-import { useState, useEffect, MouseEvent } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useAuthSWR, useAuthSWRMutation } from '@/hooks/authSWR';
-
 import { PiCatBold, PiDogBold } from 'react-icons/pi';
-
 import {
   ButtonContainer,
   Form,
@@ -21,16 +19,17 @@ import {
 } from '../../register/page';
 
 import { fetcher, updater, deleter } from '@/api';
-import Loading from '@components/Loading';
+import Loading from '@/components/Loading';
 import { toast } from 'react-toastify';
 import { TbGenderFemale, TbGenderMale } from 'react-icons/tb';
-import BackHeader from '@components/headers/BackHeader';
+import BackHeader from '@/components/headers/BackHeader';
 import { FaXmark } from 'react-icons/fa6';
-import EditableProfileImage from '@components/EditableProfileImage';
+import EditableProfileImage from '@/components/EditableProfileImage';
 import { PetGender, PetSpecies } from '@/types/pet.type';
+import type { PetSpeciesType } from '@/types/pet.type';
 import { Button } from '@/components/styled/Button';
-import { Input } from '@components/styled/Input';
-import Flex from '@components/styled/Flex';
+import { Input } from '@/components/styled/Input';
+import Flex from '@/components/styled/Flex';
 
 const schema = yup.object().shape({
   species: yup.string().oneOf(['dog', 'cat'], '강아지인가요 고양이인가요?').required('이 항목은 필수입니다.'),
@@ -79,25 +78,25 @@ export default function EditPetPage() {
   const { trigger: updateTrigger, isMutating } = useAuthSWRMutation(`/pets/${id}`, updater, {
     onSuccess: () => {
       navigate('/me');
-      toast.success('수정이 완료되었습니다!');
+      toast.success('수정 완료했어요');
     },
     onError: () => {
-      toast.error('수정 실패하였습니다. 다시 시도해 주세요.');
+      toast.error('수정 실패했어요. 다시 시도해 주세요.');
     },
   });
 
   const { trigger: deleteTrigger } = useAuthSWRMutation(`/pets/${id}`, deleter, {
     onSuccess: () => {
       navigate('/me');
-      toast.success('펫 정보가 삭제되었습니다!');
+      toast.success('펫 정보를 삭제 했어요');
     },
     onError: () => {
-      toast.error('펫 정보 삭제에 실패했습니다. 다시 시도해주세요.');
+      toast.error('펫 정보 삭제에 실패했어요. 다시 시도해주세요.');
     },
   });
 
-  const handlePetSpecies = (e: MouseEvent<HTMLInputElement>) => {
-    const value = (e.target as HTMLInputElement).value as PetSpecies; // 타입 캐스팅
+  const handlePetSpecies = (e: React.MouseEvent<HTMLInputElement>) => {
+    const value = (e.target as HTMLInputElement).value as PetSpeciesType;
     setValue('species', value);
   };
 

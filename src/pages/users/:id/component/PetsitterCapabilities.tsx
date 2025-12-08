@@ -73,43 +73,43 @@ export default function PetsitterCapabilities({
 const Wrapper = styled.ul`
   display: flex;
   flex-wrap: wrap;
-  gap: ${({ theme }) => theme.spacing.xs};
+  gap: ${({ theme }) => theme.space.xs};
 `;
 
 const Card = styled.li`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: ${({ theme }) => theme.spacing.md};
+  padding: ${({ theme }) => theme.space.md};
   border: 2px solid ${({ theme }) => theme.colors.line.box.highlight};
   border-radius: ${({ theme }) => theme.radius.lg};
-  gap: ${({ theme }) => theme.spacing.sm};
+  gap: ${({ theme }) => theme.space.sm};
 `;
 
 const PetList = styled.ul`
   display: flex;
-  gap: ${({ theme }) => theme.spacing.sm};
+  gap: ${({ theme }) => theme.space.sm};
 `;
 
 const PetItem = styled.li`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: ${({ theme }) => theme.spacing.sm};
+  padding: ${({ theme }) => theme.space.sm};
   background-color: ${({ theme }) => theme.colors.background.highlight};
   border-radius: ${({ theme }) => theme.radius.md};
 `;
 
 const DayList = styled.ul`
   display: flex;
-  gap: ${({ theme }) => theme.spacing.sm};
+  gap: ${({ theme }) => theme.space.sm};
 `;
 
 const DayItem = styled.li`
   display: flex;
   justify-content: center;
   align-items: cetner;
-  padding: ${({ theme }) => theme.spacing.sm};
+  padding: ${({ theme }) => theme.space.sm};
   background-color: ${({ theme }) => theme.colors.background.highlight};
   border-radius: ${({ theme }) => theme.radius.md};
   color: white;
@@ -118,7 +118,7 @@ const DayItem = styled.li`
 const LocationList = styled.ul``;
 
 const LocationItem = styled.li`
-  padding: ${({ theme }) => theme.spacing.sm};
+  padding: ${({ theme }) => theme.space.sm};
   background-color: ${({ theme }) => theme.colors.background.highlight};
   border-radius: ${({ theme }) => theme.radius.md};
 `;

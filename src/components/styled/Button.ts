@@ -5,7 +5,7 @@ const styleProps = ['size', 'variant', 'borderRadius', 'fullWidth'];
 
 export type ButtonProps = {
   size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl';
-  variant?: 'primary' | 'secondary' | 'transparent' | 'icon';
+  variant?: 'primary' | 'secondary' | 'transparent' | 'icon' | 'error';
   borderRadius?: 'sm' | 'md' | 'lg' | 'circle';
   fullWidth?: boolean;
 } & { as?: React.ElementType };
@@ -28,23 +28,23 @@ export const Button = styled('button', {
   ${({ theme, size = 'md' }) => css`
     ${{
       sm: css`
-        padding: ${theme.spacing.xs} ${theme.spacing.sm};
+        padding: ${theme.space.xs} ${theme.space.sm};
         ${theme.typeScale.sm};
       `,
       md: css`
-        padding: ${theme.spacing.sm} ${theme.spacing.md};
+        padding: ${theme.space.sm} ${theme.space.md};
         ${theme.typeScale.base};
       `,
       lg: css`
-        padding: ${theme.spacing.md} ${theme.spacing.lg};
+        padding: ${theme.space.md} ${theme.space.lg};
         ${theme.typeScale.lg};
       `,
       xl: css`
-        padding: ${theme.spacing.lg} ${theme.spacing.xl};
+        padding: ${theme.space.lg} ${theme.space.xl};
         ${theme.typeScale.xl};
       `,
       ['2xl']: css`
-        padding: ${theme.spacing.xl} ${theme.spacing['2xl']};
+        padding: ${theme.space.xl} ${theme.space['2xl']};
         ${theme.typeScale['2xl']};
       `,
     }[size]}
@@ -102,13 +102,24 @@ export const Button = styled('button', {
         border: none;
         background-color: transparent;
         color: ${theme.colors.text.active};
-        padding: ${theme.spacing.sm};
+        padding: ${theme.space.sm};
 
         &:hover:not(:disabled) {
           background-color: ${theme.colors.background.box.default.hover};
         }
         &:active:not(:disabled) {
           background-color: ${theme.colors.background.box.default.active};
+        }
+      `,
+      error: css`
+        background-color: ${theme.colors.background.box.error.primary};
+
+        &:hover:not(:disabled) {
+          background-color: ${theme.colors.background.box.error.hover};
+        }
+
+        &:hover:not(:disabled) {
+          background-color: ${theme.colors.background.box.error.active};
         }
       `,
     }[variant]}

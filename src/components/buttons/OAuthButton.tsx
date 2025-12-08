@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { API_URL } from '@/config';
-import { Button, ButtonProps } from '../styled/Button';
-import { Text } from '@components/styled/Text';
+import { Button, type ButtonProps } from '../styled/Button';
+import { Text } from '@/components/styled/Text';
 
 interface GoogleOAuthButtonProps extends ButtonProps {
   children: React.ReactNode;
@@ -28,6 +28,6 @@ const GoogleOAuthButtonStyle = styled(Button)`
 const GoogleImage = styled.img`
   position: absolute;
   top: 50%;
-  left: ${({ theme }) => theme.spacing.md};
+  left: ${({ theme }) => theme.space.md};
   transform: translateY(-50%);
 `;

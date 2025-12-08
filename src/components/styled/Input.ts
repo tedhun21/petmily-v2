@@ -2,9 +2,7 @@ import { css } from '@emotion/react';
 import type { Theme } from '@emotion/react';
 import styled from '@emotion/styled';
 
-const styleProps = ['size', 'variant', 'error', 'fullWidth', 'borderRadius'];
-
-const shouldForwardProp = (propName: string) => !styleProps.includes(propName);
+const styleProps = ['inputSize', 'variant', 'error', 'fullWidth', 'borderRadius'];
 
 type Size = 'sm' | 'md' | 'lg';
 type Variant = 'default' | 'search';
@@ -23,17 +21,17 @@ const getSizeStyles = (theme: Theme, size: Size) => {
   switch (size) {
     case 'sm':
       return css`
-        padding: ${theme.spacing.xs} ${theme.spacing.sm};
+        padding: ${theme.space.xs} ${theme.space.sm};
         ${theme.typeScale.sm};
       `;
     case 'md':
       return css`
-        padding: ${theme.spacing.sm} ${theme.spacing.md};
+        padding: ${theme.space.sm} ${theme.space.md};
         ${theme.typeScale.base};
       `;
     case 'lg':
       return css`
-        padding: ${theme.spacing.md} ${theme.spacing.lg};
+        padding: ${theme.space.md} ${theme.space.lg};
         ${theme.typeScale.lg};
       `;
   }
@@ -57,7 +55,9 @@ const getVariantStyles = (theme: Theme, variant: Variant, error?: boolean) => {
 };
 
 // ===== Styled Component =====
-export const Input = styled('input')<InputProps>`
+export const Input = styled('input', {
+  shouldForwardProp: (prop) => !styleProps.includes(prop) && prop[0] !== '$',
+})<InputProps>`
   font-weight: 500;
   transition: all 0.2s ease-in-out;
   outline: none;
@@ -66,6 +66,14 @@ export const Input = styled('input')<InputProps>`
 
   &::placeholder {
     color: ${({ theme }) => theme.colors.text.inactive};
+  }
+
+  &:hover:not(:disabled) {
+    background-color: ${({ theme }) => theme.colors.background.input.hover};
+  }
+
+  &:focus:not(:disabled) {
+    background-color: ${({ theme }) => theme.colors.background.input.focus};
   }
 
   &:disabled {

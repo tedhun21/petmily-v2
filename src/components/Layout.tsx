@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { Outlet } from 'react-router-dom';
 
-const Layout = () => {
+export function Layout() {
   return (
     <Container>
       <Wrapper>
@@ -9,20 +9,17 @@ const Layout = () => {
       </Wrapper>
     </Container>
   );
-};
-
-export default Layout;
+}
 
 const Container = styled.div`
   display: flex;
   justify-content: center;
-  min-height: 100vh;
-  background-color: ${({ theme }) => theme.colors.background.secondary};
+  height: 100vh;
 `;
 
 const Wrapper = styled.div`
+  flex: auto;
   width: 100%;
   max-width: 600px;
   background-color: ${({ theme }) => theme.colors.background.primary};
-  color: ${({ theme }) => theme.colors.text.active};
 `;

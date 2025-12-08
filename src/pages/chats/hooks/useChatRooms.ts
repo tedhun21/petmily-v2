@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 
 import { useAuthSWRInfinite } from '../../../hooks/authSWR';
 import { fetcher } from '@/api';
-import { ChatRoom } from '@/types/chat.type';
+import type { ChatRoom } from '@/types/chat.type';
 
 const PAGE_SIZE = 20;
 

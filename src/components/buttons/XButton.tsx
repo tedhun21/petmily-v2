@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { FaXmark } from 'react-icons/fa6';
-import { Button, ButtonProps } from '../styled/Button';
+import { Button, type ButtonProps } from '../styled/Button';
 
 interface XButtonProps extends ButtonProps {
   onClick: () => void;

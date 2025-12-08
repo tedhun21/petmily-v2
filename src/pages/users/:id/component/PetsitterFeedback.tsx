@@ -1,7 +1,7 @@
-import { MdOutlineRateReview } from 'react-icons/md';
+import { MdOutlineRateReview } from "react-icons/md";
 
-import ReadOnlyRating from '@components/ReadOnlyRating';
-import Flex from '@components/styled/Flex';
+import ReadOnlyRating from "@/components/ReadOnlyRating";
+import Flex from "@/components/styled/Flex";
 
 interface IProps {
   star: number | null;

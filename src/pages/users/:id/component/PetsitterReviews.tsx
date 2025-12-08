@@ -1,15 +1,16 @@
 import styled from '@emotion/styled';
 import { fetcher } from '@/api';
 import { ImageCentered, RoundedImageWrapper, Title } from '@/styles/commonStyle';
-import ReadOnlyRating from '@components/ReadOnlyRating';
+import ReadOnlyRating from '@/components/ReadOnlyRating';
 
 import useSWR from 'swr';
 import { dateAgo } from '@/utils/date';
-import { Review } from '@/types/review.type';
+import type { Review } from '@/types/review.type';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Text } from '@components/styled/Text';
-import Box from '@components/styled/Box';
-import Flex from '@components/styled/Flex';
+import 'swiper/css';
+import { Text } from '@/components/styled/Text';
+import Box from '@/components/styled/Box';
+import Flex from '@/components/styled/Flex';
 
 interface ReviewsProps {
   nickname?: string;
@@ -53,7 +54,14 @@ export default function PetsitterReviews({ nickname }: ReviewsProps) {
                       <p>{review.body}</p>
                     </div>
 
-                    <div style={{ width: '80px', height: '80px', overflow: 'hidden', position: 'relative' }}>
+                    <div
+                      style={{
+                        width: '80px',
+                        height: '80px',
+                        overflow: 'hidden',
+                        position: 'relative',
+                      }}
+                    >
                       <ImageCentered src={review.photos?.[0]} alt="review_photos" />
                     </div>
                   </Flex>

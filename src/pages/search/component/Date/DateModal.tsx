@@ -4,7 +4,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import styled from '@emotion/styled';
 import { ko } from 'date-fns/locale';
 
-import { FormValues, ModalLayOut } from '../SearchBox';
+import { type FormValues, ModalLayOut } from '../SearchBox';
 import dayjs from 'dayjs';
 
 interface DateModalProps {

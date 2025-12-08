@@ -4,16 +4,18 @@ import dayjs from 'dayjs';
 import styled from '@emotion/styled';
 
 import { fetcher } from '@/api';
-import { RootState } from '@/store';
+import type { RootState } from '@/store';
 import { setFilter, setMonth } from '@/store/contextSlice';
 import { ReservationStatus } from '@/types/reservation.type';
+import type { ReservationStatusType } from '@/types/reservation.type';
 import { Button } from '@/components/styled/Button';
-import Flex from '@components/styled/Flex';
+import Flex from '@/components/styled/Flex';
+import { useEffect } from 'react';
 
 export type FilterType = {
   id: number;
   label: '전체' | '대기' | '예정' | '완료' | '취소';
-  value: 'all' | ReservationStatus;
+  value: 'all' | ReservationStatusType;
 };
 
 const filters: FilterType[] = [
@@ -39,6 +41,12 @@ export default function CareFilter() {
   const handleMonthChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch(setMonth(e.target.value));
   };
+
+  useEffect(() => {
+    if (monthData && monthData.length > 0 && !month) {
+      dispatch(setMonth(monthData[0]));
+    }
+  }, [monthData, month, dispatch]);
 
   return (
     <Sticky>
@@ -82,18 +90,20 @@ const Sticky = styled.div`
   position: sticky;
   top: 100px;
   z-index: 10;
-  padding: ${({ theme }) => theme.spacing.sm};
+  padding: ${({ theme }) => theme.space.sm};
 `;
 
 // TODO
-const RadioButton = styled(Button, { shouldForwardProp: (prop) => prop !== '$selected' })<{ $selected: boolean }>`
+const RadioButton = styled(Button, {
+  shouldForwardProp: (prop) => prop !== '$selected',
+})<{ $selected: boolean }>`
   background-color: ${({ theme, $selected }) =>
     $selected ? theme.colors.background.box.accent.primary : theme.colors.background.box.default.primary};
   border: ${({ theme, $selected }) => ($selected ? 'none' : `1px solid ${theme.colors.line.box.primary}`)};
 `;
 
 const StyledSelect = styled.select`
-  padding: ${({ theme }) => theme.spacing.sm};
+  padding: ${({ theme }) => theme.space.sm};
   background-color: ${({ theme }) => theme.colors.background.box.default.primary};
   border: 1px solid ${({ theme }) => theme.colors.line.input.primary};
   border-radius: ${({ theme }) => theme.radius.md};

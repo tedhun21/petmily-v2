@@ -1,4 +1,4 @@
-import Flex from '@components/styled/Flex';
+import Flex from '@/components/styled/Flex';
 import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 
@@ -49,7 +49,7 @@ const Container = styled.div`
   justify-content: center;
   overflow-x: auto;
   width: 100%;
-  gap: ${({ theme }) => theme.spacing.lg};
+  gap: ${({ theme }) => theme.space.lg};
 
   /* 스크롤바 숨기기 */
   &::-webkit-scrollbar {
@@ -64,8 +64,8 @@ const Card = styled.div`
   flex-shrink: 0;
   width: 300px;
   height: 156px;
-  padding: ${({ theme }) => theme.spacing.lg};
+  padding: ${({ theme }) => theme.space.lg};
   background-color: ${({ theme }) => theme.colors.background.box.default.primary};
   border-radius: ${({ theme }) => theme.radius.lg};
-  gap: ${({ theme }) => theme.spacing.md};
+  gap: ${({ theme }) => theme.space.md};
 `;

@@ -1,7 +1,7 @@
-import { Title } from '@/styles/commonStyle';
-import BackButton from '@components/buttons/BackButton';
-import Box from '@components/styled/Box';
-import Flex from '@components/styled/Flex';
+import { Title } from "@/styles/commonStyle";
+import BackButton from "@/components/buttons/BackButton";
+import Box from "@/components/styled/Box";
+import Flex from "@/components/styled/Flex";
 
 interface IProps {
   title?: string;

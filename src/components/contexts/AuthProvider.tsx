@@ -1,39 +1,34 @@
-import { createContext, useEffect } from 'react';
-
+import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import useSWRMutation from 'swr/mutation';
 
-import { poster } from '@/api';
-import { setAccessToken } from '@/store/authSlice';
-
-interface ContextProps {
-  refreshToken: () => Promise<null>;
-}
-
-export const AuthContext = createContext<ContextProps>({
-  refreshToken: async () => null,
-});
+import { fetcher } from '@/api';
+import { AuthContext } from './AuthContext';
+import { clearAccessToken, setAccessToken } from '@/store/authSlice';
+import useSWR from 'swr';
 
 export default function AuthProvider({ children }: { children: React.ReactNode }) {
   const dispatch = useDispatch();
 
-  const { trigger } = useSWRMutation(`/auth/refresh`, poster);
+  const { data, error, mutate } = useSWR(`/auth/refresh`, fetcher, {});
 
-  const refreshToken = async () => {
+  const refreshToken = async (): Promise<string | null> => {
     try {
-      const { access_token } = await trigger();
+      const { access_token } = await mutate();
       dispatch(setAccessToken(access_token));
-
       return access_token;
     } catch {
-      dispatch(setAccessToken(null));
+      dispatch(clearAccessToken());
       return null;
     }
   };
 
   useEffect(() => {
-    refreshToken();
-  }, []);
+    if (data?.access_token) {
+      dispatch(setAccessToken(data.access_token));
+    } else if (error) {
+      dispatch(clearAccessToken());
+    }
+  }, [data, error, dispatch]);
 
   return <AuthContext.Provider value={{ refreshToken }}>{children}</AuthContext.Provider>;
 }

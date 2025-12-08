@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 
 import { Title } from '@/styles/commonStyle';
 import PhotoReviews from './component/PhotoReviews';
-import NavHeader from '@components/headers/NavigationHeader';
+import NavHeader from '@/components/headers/NavigationHeader';
 
 export default function ReviewsPage() {
   return (
@@ -19,6 +19,6 @@ export default function ReviewsPage() {
 const Main = styled.main`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.xl};
-  padding: ${({ theme }) => theme.spacing.xl};
+  gap: ${({ theme }) => theme.space.xl};
+  padding: ${({ theme }) => theme.space.xl};
 `;

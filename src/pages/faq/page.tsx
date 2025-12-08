@@ -2,10 +2,9 @@ import { useState } from 'react';
 import styled from '@emotion/styled';
 
 import { Divider } from '@/styles/commonStyle';
-import Collapse from '@components/Collapse';
+import Collapse from '@/components/Collapse';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa6';
-import BackHeader from '@components/headers/BackHeader';
-import Flex from '@components/styled/Flex';
+import BackHeader from '@/components/headers/BackHeader';
 
 export default function FaQPage() {
   const [open, setOpen] = useState<{ [key: string]: boolean }>({});
@@ -33,7 +32,7 @@ export default function FaQPage() {
 
                 {open['section1'] ? <FaAngleUp /> : <FaAngleDown />}
               </ListItemButton>
-              <Collapse open={open['section1-1']} timeout="auto" unmountOnExit>
+              <Collapse open={open['section1-1']}>
                 <Answer>
                   <img src="/favicon.ico" alt="logo" />
                   <ParagraphWrapper>
@@ -63,7 +62,7 @@ export default function FaQPage() {
 
                 {open['section2'] ? <FaAngleUp /> : <FaAngleDown />}
               </ListItemButton>
-              <Collapse open={open['section1-2']} timeout="auto" unmountOnExit>
+              <Collapse open={open['section1-2']}>
                 <Answer>
                   <img src="/favicon.ico" alt="logo" />
                   <ParagraphWrapper>
@@ -95,7 +94,7 @@ export default function FaQPage() {
 
                 {open['section1-3'] ? <FaAngleUp /> : <FaAngleDown />}
               </ListItemButton>
-              <Collapse open={open['section1-3']} timeout="auto" unmountOnExit>
+              <Collapse open={open['section1-3']}>
                 <Answer>
                   <img src="/favicon.ico" alt="logo" />
                   <ParagraphWrapper>
@@ -142,7 +141,7 @@ export default function FaQPage() {
                 {open['section2-1'] ? <FaAngleUp /> : <FaAngleDown />}
               </ListItemButton>
 
-              <Collapse open={open['section2-1']} timeout="auto" unmountOnExit>
+              <Collapse open={open['section2-1']}>
                 <Answer>
                   <img src="/favicon.ico" alt="logo" />
                   <ParagraphWrapper>
@@ -182,7 +181,7 @@ export default function FaQPage() {
                 {open['section2-2'] ? <FaAngleUp /> : <FaAngleDown />}
               </ListItemButton>
 
-              <Collapse open={open['section2-2']} timeout="auto" unmountOnExit>
+              <Collapse open={open['section2-2']}>
                 <Answer>
                   <img src="/favicon.ico" alt="logo" />
                   <ParagraphWrapper>
@@ -228,7 +227,7 @@ export default function FaQPage() {
                 {open['section2-3'] ? <FaAngleUp /> : <FaAngleDown />}
               </ListItemButton>
 
-              <Collapse open={open['section2-3']} timeout="auto" unmountOnExit>
+              <Collapse open={open['section2-3']}>
                 <Answer>
                   <img src="/favicon.ico" alt="logo" />
                   <ParagraphWrapper>
@@ -296,7 +295,7 @@ export default function FaQPage() {
                 {open['section3-1'] ? <FaAngleUp /> : <FaAngleDown />}
               </ListItemButton>
 
-              <Collapse open={open['section3-1']} timeout="auto" unmountOnExit>
+              <Collapse open={open['section3-1']}>
                 <Answer>
                   <img src="/favicon.ico" alt="logo" />
                   <ParagraphWrapper>
@@ -349,7 +348,7 @@ export default function FaQPage() {
                 {open['section3-2'] ? <FaAngleUp /> : <FaAngleDown />}
               </ListItemButton>
 
-              <Collapse open={open['section3-2']} timeout="auto" unmountOnExit>
+              <Collapse open={open['section3-2']}>
                 <Answer>
                   <img src="/favicon.ico" alt="logo" />
                   <ParagraphWrapper>
@@ -396,7 +395,7 @@ export default function FaQPage() {
                 {open['section3-3'] ? <FaAngleUp /> : <FaAngleDown />}
               </ListItemButton>
 
-              <Collapse open={open['section3-3']} timeout="auto" unmountOnExit>
+              <Collapse open={open['section3-3']}>
                 <Answer>
                   <img src="/favicon.ico" alt="logo" />
                   <ParagraphWrapper>
@@ -455,7 +454,7 @@ export default function FaQPage() {
                 {open['section4-1'] ? <FaAngleUp /> : <FaAngleDown />}
               </ListItemButton>
 
-              <Collapse open={open['section4-1']} timeout="auto" unmountOnExit>
+              <Collapse open={open['section4-1']}>
                 <Answer>
                   <img src="/favicon.ico" alt="logo" />
                   <ParagraphWrapper>
@@ -526,7 +525,7 @@ export default function FaQPage() {
                 {open['section4-2'] ? <FaAngleUp /> : <FaAngleDown />}
               </ListItemButton>
 
-              <Collapse open={open['section4-2']} timeout="auto" unmountOnExit>
+              <Collapse open={open['section4-2']}>
                 <Answer>
                   <img src="/favicon.ico" alt="logo" />
                   <ParagraphWrapper>
@@ -580,7 +579,7 @@ export default function FaQPage() {
                 {open['section4-3'] ? <FaAngleUp /> : <FaAngleDown />}
               </ListItemButton>
 
-              <Collapse open={open['section4-3']} timeout="auto" unmountOnExit>
+              <Collapse open={open['section4-3']}>
                 <Answer>
                   <img src="/favicon.ico" alt="logo" />
                   <ParagraphWrapper>
@@ -632,7 +631,7 @@ export default function FaQPage() {
                 {open['section4-4'] ? <FaAngleUp /> : <FaAngleDown />}
               </ListItemButton>
 
-              <Collapse open={open['section4-4']} timeout="auto" unmountOnExit>
+              <Collapse open={open['section4-4']}>
                 <Answer>
                   <img src="/favicon.ico" alt="logo" />
                   <ParagraphWrapper>
@@ -670,7 +669,7 @@ export default function FaQPage() {
                 {open['section4-5'] ? <FaAngleUp /> : <FaAngleDown />}
               </ListItemButton>
 
-              <Collapse open={open['section4-5']} timeout="auto" unmountOnExit>
+              <Collapse open={open['section4-5']}>
                 <Answer>
                   <img src="/favicon.ico" alt="logo" />
                   <ParagraphWrapper>
@@ -710,7 +709,7 @@ export default function FaQPage() {
 }
 
 const Question = styled.h1`
-  padding: ${({ theme }) => theme.spacing.sm};
+  padding: ${({ theme }) => theme.space.sm};
   color: ${({ theme }) => theme.colors.text.highlight};
   ${({ theme }) => theme.typeScale.lg};
 `;
@@ -718,7 +717,7 @@ const Question = styled.h1`
 const List = styled.ul`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.sm};
+  gap: ${({ theme }) => theme.space.sm};
 `;
 
 const Item = styled.li``;
@@ -728,7 +727,7 @@ const ListItemButton = styled.button`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: ${({ theme }) => theme.spacing.sm};
+  padding: ${({ theme }) => theme.space.sm};
 
   hover: {
     background-color: ${({ theme }) => theme.colors.background.box.default.hover};
@@ -738,7 +737,7 @@ const ListItemButton = styled.button`
 // TODO
 const ListTitle = styled.div`
   display: flex;
-  gap: ${({ theme }) => theme.spacing.sm};
+  gap: ${({ theme }) => theme.space.sm};
   ${({ theme }) => theme.typeScale.base};
 
   span:first-child {
@@ -749,8 +748,8 @@ const ListTitle = styled.div`
 // TODO
 const Answer = styled.div`
   display: flex;
-  gap: ${({ theme }) => theme.spacing.sm};
-  padding-left: ${({ theme }) => theme.spacing.sm};
+  gap: ${({ theme }) => theme.space.sm};
+  padding-left: ${({ theme }) => theme.space.sm};
 
   img {
     width: 16px;
@@ -762,11 +761,11 @@ const Answer = styled.div`
 const ParagraphWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.sm};
+  gap: ${({ theme }) => theme.space.sm};
   color: ${({ theme }) => theme.colors.text.secondary};
   ${({ theme }) => theme.typeScale.sm};
 
   p {
-    text-indent: ${({ theme }) => theme.spacing.xs};
+    text-indent: ${({ theme }) => theme.space.xs};
   }
 `;

@@ -5,10 +5,10 @@ import { HiOutlineLocationMarker } from 'react-icons/hi';
 import { FaChevronRight } from 'react-icons/fa6';
 
 import { dateAgo, dayFormat, timeRange } from '@/utils/date';
-import { Reservation } from '@/types/reservation.type';
-import { Text } from '@components/styled/Text';
-import Flex from '@components/styled/Flex';
-import Box from '@components/styled/Box';
+import type { Reservation } from '@/types/reservation.type';
+import { Text } from '@/components/styled/Text';
+import Flex from '@/components/styled/Flex';
+import Box from '@/components/styled/Box';
 
 interface DetailReservationProps {
   reservation: Reservation;
@@ -67,6 +67,6 @@ const CustomChevronRight = styled(FaChevronRight)`
 `;
 
 const RequestParagraph = styled.p`
-  padding-left: ${({ theme }) => theme.spacing.sm};
+  padding-left: ${({ theme }) => theme.space.sm};
   ${({ theme }) => theme.typeScale.sm};
 `;

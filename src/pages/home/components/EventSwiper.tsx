@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
 import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/pagination';
 
 const events = ['첫 만남\n 50% 할인 쿠폰', '내 반려동물 자랑대회', '펫 친구 초대 이벤트'];
 
@@ -19,11 +21,11 @@ export default function EventSwiper() {
 
 const CustomSwiper = styled(Swiper)`
   width: 100%;
-  border-radius: ${({ theme }) => theme.spacing.lg};
+  border-radius: ${({ theme }) => theme.space.lg};
   box-shadow: ${({ theme }) => theme.shadow.dp01};
 `;
 
 const EventCard = styled.div`
   height: 100px;
-  padding: ${({ theme }) => theme.spacing['2xl']};
+  padding: ${({ theme }) => theme.space['2xl']};
 `;

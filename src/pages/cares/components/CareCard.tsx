@@ -4,11 +4,11 @@ import styled from '@emotion/styled';
 import { ImageCentered, RoundedImageWrapper } from '@/styles/commonStyle';
 import { formatStatus } from '@/utils/misc';
 import { dayFormat, timeRange } from '@/utils/date';
-import { Reservation } from '@/types/reservation.type';
-import { Pet } from '@/types/pet.type';
-import { Text } from '@components/styled/Text';
-import Flex from '@components/styled/Flex';
-import Box from '@components/styled/Box';
+import type { Reservation } from '@/types/reservation.type';
+import type { Pet } from '@/types/pet.type';
+import { Text } from '@/components/styled/Text';
+import Flex from '@/components/styled/Flex';
+import Box from '@/components/styled/Box';
 
 interface CareCardProps {
   reservation: Reservation;

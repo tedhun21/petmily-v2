@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from '@emotion/styled';
 import { IoNotificationsOutline } from 'react-icons/io5';
 
-import { RootState } from '@/store';
+import type { RootState } from '@/store';
 import useOutsideClickModal from '@/hooks/useOutsideClickModal';
 import { closeModal, ModalType, openModal } from '@/store/modalSlice';
 import NotiModal from './components/NotiModal';
@@ -52,7 +52,7 @@ const NotiContaier = styled.div`
 
 const Modal = styled.div`
   position: absolute;
-  top: ${({ theme }) => theme.spacing['2xl']};
-  right: ${({ theme }) => theme.spacing['2xl']};
+  top: ${({ theme }) => theme.space['2xl']};
+  right: ${({ theme }) => theme.space['2xl']};
   z-index: 20;
 `;

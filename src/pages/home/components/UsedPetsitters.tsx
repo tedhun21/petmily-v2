@@ -3,11 +3,11 @@ import { Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
-import { useAuthSWR, useAuthSWRInfinite } from '@/hooks/authSWR';
+import { useAuthSWR } from '@/hooks/authSWR';
 
 import { fetcher } from '@/api';
 import { Title } from '@/styles/commonStyle';
-import { UserRole } from '@/types/user.type';
+import type { Petsitter } from '@/types/user.type';
 import UsedPetsitterCard from './UsedPetsitterCard';
 import UsedPetsittersSkeleton from './UsedPetsittersSkeleton';
 
@@ -16,22 +16,9 @@ export default function UsedPetsitters() {
 
   const { data: me } = useAuthSWR('/users/me', fetcher);
 
-  const getKey = (pageIndex: number, previousPageData: any) => {
-    if (!me || me.role === UserRole.PETSITTER) return null;
-    if (previousPageData && previousPageData.results?.length !== 0) return null;
-    return `/reservations/used-petsitters?page=${pageIndex + 1}&pageSize=${pageSize}`;
-  };
-
-  const { data, isLoading } = useAuthSWRInfinite(getKey, fetcher);
-
-  const isEmpty = !data || data[0]?.results?.length === 0;
-  const isEnd = data && data[data.length - 1]?.results?.length < pageSize;
+  const { data, isLoading } = useAuthSWR(`/reservations/used-petsitters?page=1&pageSize=${pageSize}`, fetcher);
 
   if (!me) return null;
-
-  if (isEmpty) {
-    <span>펫시터를 찜해보세요</span>;
-  }
 
   return (
     <section>
@@ -50,7 +37,7 @@ export default function UsedPetsitters() {
             {data &&
               data[0]?.results.length > 0 &&
               data.map((page: any) =>
-                page?.results?.map((petsitter: any) => (
+                page?.results?.map((petsitter: Petsitter) => (
                   <SwiperSlide key={petsitter.id} style={{ width: '220px' }}>
                     <UsedPetsitterCard petsitter={petsitter} />
                   </SwiperSlide>

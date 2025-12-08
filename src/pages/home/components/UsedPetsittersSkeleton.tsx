@@ -1,7 +1,7 @@
-import { keyframes } from '@emotion/react';
-import styled from '@emotion/styled';
-import Box from '@components/styled/Box';
-import Flex from '@components/styled/Flex';
+import { keyframes } from "@emotion/react";
+import styled from "@emotion/styled";
+import Box from "@/components/styled/Box";
+import Flex from "@/components/styled/Flex";
 
 export default function UsedPetsittersSkeleton() {
   const count = 3;

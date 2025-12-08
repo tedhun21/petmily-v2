@@ -1,9 +1,9 @@
 import { useLocation } from 'react-router-dom';
 
 import styled from '@emotion/styled';
-import { INavItem } from './NavigationBar';
-import Link from '@components/styled/Link';
-import Flex from '@components/styled/Flex';
+import type { INavItem } from './NavigationBar';
+import Link from '@/components/styled/Link';
+import Flex from '@/components/styled/Flex';
 
 interface IProps {
   item: INavItem;
@@ -27,7 +27,7 @@ const CustomLink = styled(Link)<{ $selected: boolean }>`
   cursor: ${({ $selected }) => ($selected ? 'default' : 'pointer')};
 
   color: ${({ $selected, theme }) => ($selected ? theme.colors.text.active : theme.colors.text.inactive)};
-  font-weight: ${({ $selected, theme }) => ($selected ? theme.fontWeight.bold : theme.fontWeight.medium)};
+  font-weight: ${({ $selected, theme }) => ($selected ? theme.fontWeight.medium : theme.fontWeight.normal)};
 
   &:hover:not(:disabled) {
     color: ${({ $selected, theme }) => ($selected ? theme.colors.text.active : theme.colors.text.highlight)};

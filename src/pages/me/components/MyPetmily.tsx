@@ -1,11 +1,11 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
-import { LuBadgePlus } from 'react-icons/lu';
+import { LuBadgePlus } from "react-icons/lu";
 
-import MyPetContainer from './MyPetContainer';
-import { Text } from '@components/styled/Text';
-import Flex from '@components/styled/Flex';
-import Link from '@components/styled/Link';
+import MyPetContainer from "./MyPetContainer";
+import { Text } from "@/components/styled/Text";
+import Flex from "@/components/styled/Flex";
+import Link from "@/components/styled/Link";
 
 export default function MyPetmily() {
   return (

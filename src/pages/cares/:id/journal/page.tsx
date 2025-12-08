@@ -7,13 +7,12 @@ import { useForm } from 'react-hook-form';
 import { useAuthSWR, useAuthSWRMutation } from '@/hooks/authSWR';
 import { FaXmark } from 'react-icons/fa6';
 
-import Loading from '@components/Loading';
+import Loading from '@/components/Loading';
 import { fetcher, poster, updater } from '@/api';
 import { BottomFixed, Float, Title } from '@/styles/commonStyle';
 import { Button } from '@/components/styled/Button';
-import { Text } from '@components/styled/Text';
-import Flex from '@components/styled/Flex';
-import Box from '@components/styled/Box';
+import { Text } from '@/components/styled/Text';
+import Flex from '@/components/styled/Flex';
 
 interface JournalFormValue {
   body: string;
@@ -40,7 +39,7 @@ export default function JournalPage() {
   // 케어일지 등록
   const { trigger: createTrigger, isMutating: isCreateMutating } = useAuthSWRMutation(`/journals`, poster, {
     onSuccess: () => {
-      toast.success('케어일지를 등록하였습니다!');
+      toast.success('케어일지를 등록했어요.');
       navigate(`/cares/${reservationId}`);
     },
   });
@@ -51,7 +50,7 @@ export default function JournalPage() {
     updater,
     {
       onSuccess: () => {
-        toast.success('케어일지를 수정하였습니다!');
+        toast.success('케어일지를 수정했어요.');
         navigate(`/cares/${reservationId}`);
       },
     },
@@ -77,7 +76,7 @@ export default function JournalPage() {
   const handleRemoveInputImage = (indexToRemove: number) => {
     setValue(
       'files',
-      selectedFiles.filter((_: any, index: number) => index !== indexToRemove),
+      selectedFiles.filter((_: unknown, index: number) => index !== indexToRemove),
     );
   };
 
@@ -89,7 +88,7 @@ export default function JournalPage() {
     // 서버에서 온 이미지 url 업데이트(프리뷰)
     setValue(
       'photos',
-      imageUrls.filter((_: any, index: number) => index !== indexToRemove),
+      imageUrls.filter((_: unknown, index: number) => index !== indexToRemove),
     );
 
     // 삭제할 이미지 url 업데이트
@@ -222,7 +221,7 @@ export default function JournalPage() {
 const TextArea = styled.textarea`
   width: 100%;
   height: 100px;
-  padding: ${({ theme }) => theme.spacing.sm};
+  padding: ${({ theme }) => theme.space.sm};
   background-color: ${({ theme }) => theme.colors.background.input.primary};
   border-radius: ${({ theme }) => theme.radius.md};
   color: ${({ theme }) => theme.colors.text.active};
@@ -242,7 +241,7 @@ const ImagePreview = styled.div`
 const ImagePreviewItem = styled.div`
   position: relative;
   margin: 2px;
-  padding: ${({ theme }) => theme.spacing.xs};
+  padding: ${({ theme }) => theme.space.xs};
 `;
 
 const Img = styled.img`
@@ -257,8 +256,8 @@ const RemoveButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: ${({ theme }) => theme.spacing['2xl']};
-  height: ${({ theme }) => theme.spacing['2xl']};
+  width: ${({ theme }) => theme.space['2xl']};
+  height: ${({ theme }) => theme.space['2xl']};
   background-color: ${({ theme }) => theme.colors.background.box.accent.primary};
   border-radius: 50%;
 `;
@@ -267,6 +266,6 @@ const FloatButtonContainer = styled(Float)`
   bottom: 0;
   left: 0;
   width: 100%;
-  padding: ${({ theme }) => theme.spacing.xl};
+  padding: ${({ theme }) => theme.space.xl};
   background-color: transparent;
 `;

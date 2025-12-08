@@ -6,10 +6,10 @@ import { useInView } from 'framer-motion';
 import { useAuthSWRInfinite } from '@/hooks/authSWR';
 import PetmilyCard from './PetmilyCard';
 import { fetcher } from '@/api';
-import Loading from '@components/Loading';
-import { Pet } from '@/types/pet.type';
-import Flex from '@components/styled/Flex';
-import Link from '@components/styled/Link';
+import Loading from '@/components/Loading';
+import type { Pet } from '@/types/pet.type';
+import Flex from '@/components/styled/Flex';
+import Link from '@/components/styled/Link';
 
 export default function MyPetContainer() {
   const ref = useRef(null);
@@ -72,6 +72,6 @@ export default function MyPetContainer() {
 const CardContainer = styled.ul`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-gap: ${({ theme }) => theme.spacing.md};
+  grid-gap: ${({ theme }) => theme.space.md};
   width: 100%;
 `;

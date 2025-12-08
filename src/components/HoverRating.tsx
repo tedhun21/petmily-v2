@@ -4,6 +4,11 @@ import Rating from '@mui/material/Rating';
 import styled from '@emotion/styled';
 import { PiStar, PiStarFill } from 'react-icons/pi';
 
+interface IProps {
+  value: number | null;
+  onChange: (value: number | null) => void;
+}
+
 const labels: { [index: string]: string } = {
   0.5: '0.5점',
   1: '1점',
@@ -21,7 +26,7 @@ function getLabelText(value: number) {
   return `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]}`;
 }
 
-export default function HoverRating({ value, setValue }: any) {
+export default function HoverRating({ value, onChange }: IProps) {
   const [hover, setHover] = useState(-1);
 
   return (
@@ -38,9 +43,7 @@ export default function HoverRating({ value, setValue }: any) {
         value={value}
         precision={1}
         getLabelText={getLabelText}
-        onChange={(_, newValue) => {
-          setValue('star', newValue);
-        }}
+        onChange={(_, newValue) => onChange(newValue)}
         onChangeActive={(_, newHover) => {
           setHover(newHover);
         }}

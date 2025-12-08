@@ -4,9 +4,9 @@ import { PiCatBold, PiDogBold, PiStarFill } from 'react-icons/pi';
 
 import { ImageCentered, RoundedImageWrapper } from '@/styles/commonStyle';
 import { Link } from 'react-router-dom';
-import { Petsitter } from '@/types/user.type';
-import { PetSpecies } from '@/types/pet.type';
-import Flex from '@components/styled/Flex';
+import type { Petsitter } from '@/types/user.type';
+import { PetSpecies, type PetSpeciesType } from '@/types/pet.type';
+import Flex from '@/components/styled/Flex';
 
 interface ResultProps {
   petsitter: Petsitter;
@@ -38,7 +38,7 @@ export default function Result({ petsitter }: ResultProps) {
 
         <li>
           <Flex gap="xs">
-            {(petsitter?.possiblePetSpecies ?? []).map((species: PetSpecies) => (
+            {(petsitter?.possiblePetSpecies ?? []).map((species: PetSpeciesType) => (
               <li key={species}>
                 {species === PetSpecies.DOG ? <PiDogBold /> : species === PetSpecies.CAT ? <PiCatBold /> : null}
               </li>
@@ -54,9 +54,9 @@ export default function Result({ petsitter }: ResultProps) {
 const Card = styled(Link)`
   display: flex;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing.lg};
-  padding: ${({ theme }) => theme.spacing.lg};
-  border-radius: ${({ theme }) => theme.spacing.xl};
+  gap: ${({ theme }) => theme.space.lg};
+  padding: ${({ theme }) => theme.space.lg};
+  border-radius: ${({ theme }) => theme.space.xl};
   box-shadow: ${({ theme }) => theme.shadow.dp01};
 `;
 

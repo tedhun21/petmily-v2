@@ -26,8 +26,11 @@ api.interceptors.request.use(
 
 /* --- 중복 리프레시 방지 큐 로직 --- */
 let isRefreshing = false;
-let failedQueue: { resolve: (value: unknown) => void; reject: (reason?: any) => void; config: AxiosRequestConfig }[] =
-  [];
+let failedQueue: {
+  resolve: (value: unknown) => void;
+  reject: (reason?: unknown) => void;
+  config: AxiosRequestConfig;
+}[] = [];
 
 const processQueue = (error: AxiosError | null, token: string | null) => {
   failedQueue.forEach(({ resolve, reject, config }) => {
@@ -46,7 +49,9 @@ const processQueue = (error: AxiosError | null, token: string | null) => {
 api.interceptors.response.use(
   (res) => res,
   async (error) => {
-    const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
+    const originalRequest = error.config as AxiosRequestConfig & {
+      _retry?: boolean;
+    };
 
     // 401에러
     // 무한 재시도 방지(_retry 플래그 사용)
@@ -63,7 +68,7 @@ api.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        const response = await axios.post(`${API_URL}/auth/refresh`, null, { withCredentials: true });
+        const response = await axios.get(`${API_URL}/auth/refresh`, { withCredentials: true });
         const newToken = response.data.access_token;
 
         store.dispatch(setAccessToken(newToken));
@@ -99,7 +104,7 @@ const handleApiError = (err: unknown, url: string, caller: string) => {
     console.error(`API Error in ${caller} (${url}):`, err);
   }
 
-  return undefined;
+  throw err;
 };
 
 // --- API 요청 함수들 (통합) ---

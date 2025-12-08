@@ -3,12 +3,12 @@ import { useState } from 'react';
 import styled from '@emotion/styled';
 import { FiMenu } from 'react-icons/fi';
 
-import { ChatMember } from '@/types/chat.type';
+import type { ChatMember } from '@/types/chat.type';
 import ChatRoomDrawer from './ChatRoomDrawer';
 import { useChat } from '../contexts/ChatProvider';
-import BackButton from '@components/buttons/BackButton';
+import BackButton from '@/components/buttons/BackButton';
 import { Button } from '@/components/styled/Button';
-import { Text } from '@components/styled/Text';
+import { Text } from '@/components/styled/Text';
 
 export default function ChatHeader() {
   const {
@@ -39,6 +39,6 @@ const Header = styled.header`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: ${({ theme }) => theme.spacing.xl};
+  padding: ${({ theme }) => theme.space.xl};
   box-shadow: ${({ theme }) => theme.shadow.dp01};
 `;

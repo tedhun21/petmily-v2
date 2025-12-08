@@ -11,12 +11,13 @@ export interface PaginationType {
   totalPages: number;
 }
 
-export enum DayOfWeekType {
-  MON = 'mon',
-  TUE = 'tue',
-  WED = 'wed',
-  THU = 'thu',
-  FRI = 'fri',
-  SAT = 'sat',
-  SUN = 'sun',
-}
+export const DayOfWeek = {
+  MON: 'mon',
+  TUE: 'tue',
+  WED: 'wed',
+  THU: 'thu',
+  FRI: 'fri',
+  SAT: 'sat',
+  SUN: 'sun',
+} as const;
+export type DayOfWeekType = (typeof DayOfWeek)[keyof typeof DayOfWeek];

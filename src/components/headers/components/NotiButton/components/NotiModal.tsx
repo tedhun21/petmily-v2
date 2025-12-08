@@ -8,14 +8,14 @@ import { useSWRConfig } from 'swr';
 
 import NotiItem from './NotiItem';
 
-import Loading from '@components/Loading';
-import Flex from '@components/styled/Flex';
-import { RootState } from '@/store';
+import Loading from '@/components/Loading';
+import Flex from '@/components/styled/Flex';
+import type { RootState } from '@/store';
 import { ModalType } from '@/store/modalSlice';
 import { useAuthSWRInfinite, useAuthSWRMutation } from '@/hooks/authSWR';
 import { fetcher, updater } from '@/api';
 import { clearNewNotifications } from '@/store/notificationSlice';
-import { Notification } from '@/types/notification.type';
+import type { Notification } from '@/types/notification.type';
 
 export default function NotiModal() {
   const pageSize = 10;

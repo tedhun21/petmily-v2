@@ -1,4 +1,4 @@
-import { MouseEvent, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import styled from '@emotion/styled';
@@ -10,17 +10,18 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { PiCatBold, PiDogBold } from 'react-icons/pi';
 
 import useSWRMutation from 'swr/mutation';
-import Loading from '@components/Loading';
+import Loading from '@/components/Loading';
 import { toast } from 'react-toastify';
 
 import { TbGenderFemale, TbGenderMale } from 'react-icons/tb';
-import BackHeader from '@components/headers/BackHeader';
-import EditableProfileImage from '@components/EditableProfileImage';
-import { PetGender, PetSpecies } from '@/types/pet.type';
+import BackHeader from '@/components/headers/BackHeader';
+import EditableProfileImage from '@/components/EditableProfileImage';
+import { PetGender, PetSpecies, type PetSpeciesType } from '@/types/pet.type';
+
 import { poster } from '@/api';
 import { Button } from '@/components/styled/Button';
-import { Input } from '@components/styled/Input';
-import Flex from '@components/styled/Flex';
+import { Input } from '@/components/styled/Input';
+import Flex from '@/components/styled/Flex';
 
 const schema = yup.object().shape({
   species: yup.string().oneOf(['dog', 'cat'], '강아지인가요 고양이인가요?').required('이 항목은 필수입니다.'),
@@ -66,15 +67,15 @@ export default function CreatePetPage() {
   const { trigger, isMutating } = useSWRMutation('/pets', poster, {
     onSuccess: () => {
       navigate('/me');
-      toast.success('펫밀리 등록이 완료되었습니다!');
+      toast.success('펫밀리 등록을 완료했어요');
     },
     onError: () => {
-      toast.error('펫밀리 등록에 실패했습니다. 다시 시도해주세요.');
+      toast.error('펫밀리 등록을 실패했어요. 다시 시도해주세요.');
     },
   });
 
-  const handlePetSpecies = (e: MouseEvent<HTMLInputElement>) => {
-    const value = (e.target as HTMLInputElement).value as PetSpecies; // 타입 캐스팅
+  const handlePetSpecies = (e: React.MouseEvent<HTMLInputElement>) => {
+    const value = (e.target as HTMLInputElement).value as PetSpeciesType;
     setValue('species', value);
   };
 
@@ -200,8 +201,8 @@ export const InputContainer = styled.div`
   flex: auto;
   overflow-y: auto;
   height: 100%;
-  padding: ${({ theme }) => theme.spacing.xl};
-  gap: ${({ theme }) => theme.spacing.xl};
+  padding: ${({ theme }) => theme.space.xl};
+  gap: ${({ theme }) => theme.space.xl};
 `;
 
 export const InputWrapper = styled.div`
@@ -222,7 +223,7 @@ export const TypeRadioLabel = styled.label<{ $isSelected?: boolean }>`
   flex: 1;
   justify-content: center;
   align-items: center;
-  padding: ${({ theme }) => theme.spacing.sm};
+  padding: ${({ theme }) => theme.space.sm};
   background-color: ${({ theme, $isSelected }) =>
     $isSelected ? theme.colors.background.highlight : theme.colors.text.inactive};
 
@@ -251,7 +252,7 @@ export const RadioContainer = styled.div`
   display: flex;
   flex: auto;
   justify-content: space-around;
-  gap: ${({ theme }) => theme.spacing.xs};
+  gap: ${({ theme }) => theme.space.xs};
 `;
 
 export const GenderRadioLabel = styled.label`
@@ -261,7 +262,7 @@ export const GenderRadioLabel = styled.label`
 export const PetTextarea = styled.textarea`
   flex: auto;
   width: 100%;
-  padding: ${({ theme }) => theme.spacing.sm};
+  padding: ${({ theme }) => theme.space.sm};
   background-color: ${({ theme }) => theme.colors.background.input.primary};
   border: 1px solid ${({ theme }) => theme.colors.line.input.primary};
   border-radius: ${({ theme }) => theme.radius.md};
@@ -271,5 +272,5 @@ export const PetTextarea = styled.textarea`
 export const ButtonContainer = styled.div`
   flex: 1;
   background-color: transparent;
-  padding: ${({ theme }) => theme.spacing.xl};
+  padding: ${({ theme }) => theme.space.xl};
 `;

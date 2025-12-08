@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { Theme } from '@/styles/theme';
+import type { Theme } from '@/styles/theme';
 
 // const styleProps = [
 //   'bg',
@@ -32,7 +32,7 @@ const getSize = (value?: string | number) => {
 
 const getSpacing = (theme: Theme, value?: keyof Theme['spacing'] | number) => {
   if (value === undefined) return undefined;
-  return typeof value === 'number' ? `${value}px` : theme.spacing[value];
+  return typeof value === 'number' ? `${value}px` : theme.space[value];
 };
 
 const getRadius = (theme: Theme, value?: keyof Theme['radius'] | number) => {

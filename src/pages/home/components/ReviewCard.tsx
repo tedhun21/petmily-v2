@@ -1,11 +1,11 @@
-import Box from '@components/styled/Box';
+import Box from '@/components/styled/Box';
 import styled from '@emotion/styled';
 import { PiStarFill } from 'react-icons/pi';
 
-import Flex from '@components/styled/Flex';
+import Flex from '@/components/styled/Flex';
 import { dateAgo } from '@/utils/date';
-import { Text } from '@components/styled/Text';
-import { Review } from '@/types/review.type';
+import { Text } from '@/components/styled/Text';
+import type { Review } from '@/types/review.type';
 import { ImageCentered, RoundedImageWrapper } from '@/styles/commonStyle';
 
 interface ReviewCardProps {

@@ -2,10 +2,10 @@ import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { TbGenderFemale, TbGenderMale } from 'react-icons/tb';
 
-import { Pet, PetGender, PetSpecies } from '@/types/pet.type';
+import { PetSpecies, type Pet, PetGender } from '@/types/pet.type';
 import { ImageCentered, RoundedImageWrapper } from '@/styles/commonStyle';
-import { Text } from '@components/styled/Text';
-import Flex from '@components/styled/Flex';
+import { Text } from '@/components/styled/Text';
+import Flex from '@/components/styled/Flex';
 
 interface PetmilyCardProps {
   pet: Pet;
@@ -66,11 +66,11 @@ const PetCard = styled(Link)`
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  padding: ${({ theme }) => theme.spacing.sm};
+  padding: ${({ theme }) => theme.space.sm};
   border: 2px solid ${({ theme }) => theme.colors.line.box.highlight};
   border-radius: ${({ theme }) => theme.radius.md};
   color: inherit;
-  gap: ${({ theme }) => theme.spacing.sm};
+  gap: ${({ theme }) => theme.space.sm};
   box-shadow: ${({ theme }) => theme.shadow.dp01};
   text-decoration: none;
 
@@ -95,7 +95,7 @@ const PetImage = styled(RoundedImageWrapper)`
 const LowerContainer = styled.ul`
   display: flex;
   flex-wrap: wrap;
-  gap: ${({ theme }) => theme.spacing.xs};
+  gap: ${({ theme }) => theme.space.xs};
   width: 100%;
 `;
 

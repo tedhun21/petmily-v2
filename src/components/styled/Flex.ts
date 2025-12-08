@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Theme } from '@/styles/theme';
+import type { Theme } from '@/styles/theme';
 
 const styleProps = ['direction', 'justifyContent', 'alignItems', 'gap'];
 
@@ -12,7 +12,7 @@ export type FlexProps = {
 
 const getGap = (gap?: number | keyof Theme['spacing'], theme?: Theme) => {
   if (typeof gap === 'number') return `${gap}px`;
-  if (theme && gap) return theme.spacing[gap];
+  if (theme && gap) return theme.space[gap];
   return undefined;
 };
 

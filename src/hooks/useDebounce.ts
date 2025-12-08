@@ -32,8 +32,8 @@ export const useDebounceValue = <T>(value: T, delay: number): T => {
  * 3-2. 이렇게 함으로써 debouncedCallback 함수의 참조는 delay가 변하지 않는 한 안정적으로 유지되면서도(1번 문제 해결),
  *  debouncedCallback 내부에서 callbackRef.current를 통해 호출되는 callback 함수는 항상 최신 클로저 상태를 반영하여 실행된다(2번 문제 해결)
  */
-export const useDebounce = <T extends any[]>(callback: (..._args: T) => void, delay: number) => {
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+export const useDebounce = <T extends unknown[]>(callback: (..._args: T) => void, delay: number) => {
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const callbackRef = useRef(callback);
   const latestArgsRef = useRef<T | null>(null); // flush 사용 시 필요한 마지막 인자를 저장
 

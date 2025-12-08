@@ -10,17 +10,18 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { poster } from '@/api';
-import GoogleOAuthButton from '@components/buttons/OAuthButton';
-import Loading from '@components/Loading';
+import GoogleOAuthButton from '@/components/buttons/OAuthButton';
+import Loading from '@/components/Loading';
 
-import { AuthContext } from '@components/contexts/AuthProvider';
 import { Button } from '@/components/styled/Button';
-import { Text } from '@components/styled/Text';
-import Flex from '@components/styled/Flex';
-import Link from '@components/styled/Link';
-import { Input } from '@components/styled/Input';
-import Box from '@components/styled/Box';
+import { Text } from '@/components/styled/Text';
+import Flex from '@/components/styled/Flex';
+import Link from '@/components/styled/Link';
+import Box from '@/components/styled/Box';
+import { Input } from '@/components/styled/Input';
+import { AuthContext } from '@/components/contexts/AuthContext';
 import { Divider } from '@/styles/commonStyle';
+import type { AxiosError } from 'axios';
 
 const schema = yup.object().shape({
   email: yup.string().email('이메일 형식을 지켜주세요.').required('ID는 필수입니다.'),
@@ -52,11 +53,11 @@ export default function LoginPage() {
       const access_token = await refreshToken();
       if (access_token) {
         navigate('/');
-        toast.success('환영합니다!');
+        toast.success('환영해요!');
       }
     },
     onError: () => {
-      toast.error('로그인에 실패헸습니다. 다시 시도해 주세요');
+      toast.error('로그인에 실패헸어요. 다시 시도해 주세요');
     },
   });
 
@@ -66,15 +67,22 @@ export default function LoginPage() {
     await trigger(
       { email, password },
       {
-        onError: (error: any) => {
+        onError: (error: AxiosError) => {
           if (error.response) {
+            const data = error.response.data as { statusCode: number; error: string; message: string };
             // not found
-            if (error.response.data.statusCode === 404) {
-              setError('email', { type: error.response.data.error, message: error.response.data.message });
+            if (data.statusCode === 404) {
+              setError('email', {
+                type: data.error,
+                message: data.message,
+              });
             }
             // unauthorized
-            if (error.response.data.statusCode === 401) {
-              setError('password', { type: error.response.data.error, message: error.response.data.message });
+            if (data.statusCode === 401) {
+              setError('password', {
+                type: data.error,
+                message: data.message,
+              });
             }
           }
         },
@@ -85,7 +93,9 @@ export default function LoginPage() {
   return (
     <Box as="main" pt="5xl">
       <Flex direction="column" justifyContent="center" alignItems="center" gap="5xl">
-        <img src="/imgs/Logo.svg" alt="logo" width="150px" height="48px" />
+        <Link to="/" type="image">
+          <img src="/imgs/Logo.svg" alt="logo" width="150px" height="48px" />
+        </Link>
 
         <form onSubmit={handleSubmit(onSubmit)} style={{ maxWidth: '360px', width: '100%' }}>
           <Flex direction="column" gap="2xl">

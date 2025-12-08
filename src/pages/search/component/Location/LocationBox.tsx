@@ -4,14 +4,14 @@ import { createPortal } from 'react-dom';
 
 import { FaXmark } from 'react-icons/fa6';
 
-import { BoxInput, FormValues, InputBox, Modal, XButton } from '../SearchBox';
+import { BoxInput, type FormValues, InputBox, Modal, XButton } from '../SearchBox';
 import LocationModal from './LocationModal';
 import { useSelector } from 'react-redux';
 import { ModalType } from '@/store/modalSlice';
-import { RootState } from '@/store';
-import Flex from '@components/styled/Flex';
+import type { RootState } from '@/store';
+import Flex from '@/components/styled/Flex';
 import useOutsideClickModal from '@/hooks/useOutsideClickModal';
-import { Text } from '@components/styled/Text';
+import { Text } from '@/components/styled/Text';
 
 interface LocationBoxProps {
   handleBoxClick: (e: React.MouseEvent, modalType: ModalType) => void;

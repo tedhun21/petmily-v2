@@ -12,14 +12,16 @@ import {
   shouldShowSenderPhoto,
   shouldShowTime,
 } from '@/utils/date';
-import { ChatMessage, Message, PendingMessage } from '@/types/chat.type';
+import type { ChatMessage, Message, PendingMessage } from '@/types/chat.type';
 import { IoMdRefresh } from 'react-icons/io';
 import { useChat } from '../contexts/ChatProvider';
 import { Button } from '@/components/styled/Button';
-import { Text } from '@components/styled/Text';
-import Flex from '@components/styled/Flex';
+import { Text } from '@/components/styled/Text';
+import Flex from '@/components/styled/Flex';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
+import { Label } from '@/components/styled/Label';
+import Box from '@/components/styled/Box';
 
 interface IProps {
   message: ChatMessage;
@@ -47,7 +49,7 @@ export default React.memo(function MessageItem({
   const showSenderPhoto = shouldShowSenderPhoto(message, previousMessage);
   const showTime = shouldShowTime(message, previousMessage, nextMessage);
   const showDateDivider = shouldShowDateDivider(message, previousMessage);
-  const showNickname = shouldShowNickname(message, previousMessage, nextMessage);
+  const showNickname = shouldShowNickname(message, previousMessage);
 
   // type narrowing (리턴값이 true일 때 msg는 PendingMessage 타입
   const isPendingMessage = (msg: ChatMessage): msg is PendingMessage => {
@@ -67,9 +69,11 @@ export default React.memo(function MessageItem({
   return (
     <li ref={ref}>
       {showDateDivider && (
-        <DateDivider>
-          <Text size="sm">{dayjs(message.createdAt).format('MMMM D[일], YYYY')}</Text>
-        </DateDivider>
+        <Flex justifyContent="center" alignItems="center">
+          <Label size="sm" color="grey">
+            {dayjs(message.createdAt).format('MMMM D[일], YYYY')}
+          </Label>
+        </Flex>
       )}
       <Item $isMyMessage={isMyMessage}>
         {!isMyMessage && showSenderPhoto ? (
@@ -79,52 +83,46 @@ export default React.memo(function MessageItem({
         ) : !isMyMessage ? (
           <EmptySpace />
         ) : null}
-        <Flex gap="xs">
-          {showNickname && !isMyMessage && <Text size="sm">{message.sender?.nickname}</Text>}
-          <MessageContent $isMyMessage={isMyMessage}>
-            {/* <Content $isMyMessage={isMyMessage}>{message.content}</Content> */}
-            {showTime && <Text size="xs">{formatToLocaleAMPM(message.createdAt)}</Text>}
-            {isPendingMessage(message)
-              ? message.status === 'error' && (
-                  <ErrorStatus>
-                    <Button
-                      onClick={() => sendMessage(message.content, message?.tempId)}
-                      variant="icon"
-                      size="sm"
-                      borderRadius="circle"
-                    >
-                      <ReSendMark />
-                    </Button>
-                    <Button onClick={deleteNewMessage} variant="icon" size="sm" borderRadius="circle">
-                      <XMark />
-                    </Button>
-                  </ErrorStatus>
-                )
-              : unreadCount > 0 && (
-                  <Text size="xs" color="highlight" weight="semibold">
-                    {unreadCount}
-                  </Text>
-                )}
-          </MessageContent>
-        </Flex>
+        <Box w="50%">
+          <Flex direction="column" gap="xs">
+            {showNickname && !isMyMessage && <Text size="sm">{message.sender?.nickname}</Text>}
+            <MessageWrapper $isMyMessage={isMyMessage}>
+              <Bubble $isMyMessage={isMyMessage}>
+                <span>{message.content}</span>
+              </Bubble>
+              {showTime && <Text size="xs">{formatToLocaleAMPM(message.createdAt)}</Text>}
+              {isPendingMessage(message)
+                ? message.status === 'error' && (
+                    <ErrorStatus>
+                      <Button
+                        onClick={() => sendMessage(message.content, message?.tempId)}
+                        variant="icon"
+                        size="sm"
+                        borderRadius="circle"
+                      >
+                        <ReSendMark />
+                      </Button>
+                      <Button onClick={deleteNewMessage} variant="icon" size="sm" borderRadius="circle">
+                        <XMark />
+                      </Button>
+                    </ErrorStatus>
+                  )
+                : unreadCount > 0 && (
+                    <Text size="xs" color="highlight" weight="semibold">
+                      {unreadCount}
+                    </Text>
+                  )}
+            </MessageWrapper>
+          </Flex>
+        </Box>
       </Item>
     </li>
   );
 });
 
-// TODO
-const DateDivider = styled.div`
-  display: flex;
-  justify-content: center;
-  padding: ${({ theme }) => theme.spacing['2xl']};
-  border-radius: ${({ theme }) => theme.radius.md};
-  background-color: ${({ theme }) => theme.colors.background.box.default.active};
-`;
-
 const Item = styled.div<{ $isMyMessage: boolean }>`
   display: flex;
-  gap: ${({ theme }) => theme.spacing.sm};
-  width: 100%;
+  gap: ${({ theme }) => theme.space.sm};
   ${({ $isMyMessage }) =>
     $isMyMessage
       ? css`
@@ -138,41 +136,44 @@ const Item = styled.div<{ $isMyMessage: boolean }>`
 `;
 
 const SenderPhoto = styled(RoundedImageWrapper)`
-  flex: 0 0 auto;
-  width: 40px;
-  height: 40px;
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
 `;
 
 const EmptySpace = styled.div`
-  flex: 0 0 auto;
-  width: 40px;
-  height: 40px;
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
 `;
 
-const MessageContent = styled.div<{ $isMyMessage: boolean }>`
+const MessageWrapper = styled.div<{ $isMyMessage: boolean }>`
   display: flex;
-  flex: auto;
+  flex-grow: 1;
   flex-direction: ${({ $isMyMessage }) => ($isMyMessage ? 'row-reverse' : 'row')};
   align-items: flex-end;
-  gap: ${({ theme }) => theme.spacing.sm};
+  gap: ${({ theme }) => theme.space.sm};
 `;
 
-// const Content = styled(Texts16h24)<{ $isMyMessage: boolean }>`
-//   display: inline-block;
-//   max-width: 70%; /* 최대 너비를 설정하여 상대방 영역 침범 방지 */
-//   padding: ${({ theme }) => theme.spacing.sm};
-//   background-color: ${({ theme, $isMyMessage }) =>
-//     $isMyMessage ? theme.colors.background.box.accent.primary : theme.colors.background.box.accent.hover};
-//   border-radius: ${({ theme }) => theme.radius.md};
-//   color: white;
-//   word-wrap: break-word; /* 긴 단어가 있을 경우 줄 바꿈 처리 */
-// `;
+const Bubble = styled.div<{ $isMyMessage: boolean }>`
+  padding: ${({ theme }) => theme.space.md};
+  background-color: ${({ theme, $isMyMessage }) =>
+    $isMyMessage ? theme.colors.background.box.accent.primary : theme.colors.background.box.accent.hover};
+  border-radius: ${({ theme }) => theme.radius.md}; /* 기존 라운드 값 유지 */
+  position: relative;
+  max-width: 100%;
+
+  > span {
+    color: white;
+    word-wrap: break-word;
+  }
+`;
 
 // TODO
 const ErrorStatus = styled.div`
   display: flex;
   align-items: center;
-  padding: ${({ theme }) => theme.spacing.xs};
+  padding: ${({ theme }) => theme.space.xs};
   background-color: ${({ theme }) => theme.colors.background.box.default.primary};
   border-radius: ${({ theme }) => theme.radius.md};
 `;

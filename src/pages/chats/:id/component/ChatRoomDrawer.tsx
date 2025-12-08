@@ -4,12 +4,12 @@ import styled from '@emotion/styled';
 import { ImageCentered, RoundedImageWrapper, Title } from '@/styles/commonStyle';
 import { Link } from 'react-router-dom';
 import { FaXmark } from 'react-icons/fa6';
-import { ChatMember } from '@/types/chat.type';
+import type { ChatMember } from '@/types/chat.type';
 import { useChat } from '../contexts/ChatProvider';
 import { Button } from '@/components/styled/Button';
-import { Text } from '@components/styled/Text';
-import Flex from '@components/styled/Flex';
-import Box from '@components/styled/Box';
+import { Text } from '@/components/styled/Text';
+import Flex from '@/components/styled/Flex';
+import Box from '@/components/styled/Box';
 
 interface ChatRoomDrawerProps {
   isDrawerOpen: boolean;
@@ -125,9 +125,8 @@ const ContentWrapper = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: ${({ theme }) => theme.spacing.xl};
+  flex-direction: column;
+  padding: ${({ theme }) => theme.space.xl};
 
   & > :nth-child(1) {
     flex: 0;

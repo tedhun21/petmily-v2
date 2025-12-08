@@ -1,10 +1,11 @@
 import { useCallback, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { SocketContext } from '@components/contexts/SocketProvider';
-import { ChatMember, ChatMessage, ChatRoom, Message, PendingMessage } from '@/types/chat.type';
-import { AuthContext } from '@components/contexts/AuthProvider';
-import { MessagePayload } from './useMessages';
+import type { ChatMember, ChatMessage, ChatRoom, Message, PendingMessage } from '@/types/chat.type';
+
+import { AuthContext } from '@/components/contexts/AuthContext';
+import { SocketContext } from '@/components/contexts/SocketContext';
+import type { MessagePayload } from './useMessages';
 
 export type UseSocketReturn = {
   sendMessage: (message: string, retryTempId?: string) => void;
@@ -60,7 +61,11 @@ export default function useChatSocket({ opponentIds, chatRoomValues, setNewMessa
       const payload: MessagePayload =
         chatRoom.id !== -1
           ? { content: message, chatRoomId: chatRoom.id, tempMessageId }
-          : { content: message, opponentIds: opponentIds ?? null, tempMessageId };
+          : {
+              content: message,
+              opponentIds: opponentIds ?? null,
+              tempMessageId,
+            };
 
       socket.emit('chat:message:new', payload, async (ack: any) => {
         const handleSuccess = (ackData: any) => {

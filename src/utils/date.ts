@@ -4,13 +4,16 @@ import 'dayjs/locale/ko';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import updateLocale from 'dayjs/plugin/updateLocale';
 import isBetween from 'dayjs/plugin/isBetween';
-import { ChatMessage } from '@/types/chat.type';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 
-// Day.js 플러그인 확장 미 ㅊ로케일 설정
+import type { ChatMessage } from '@/types/chat.type';
+
+// Day.js 플러그인 확장 로케일 설정
 dayjs.extend(relativeTime);
 dayjs.extend(updateLocale);
 dayjs.extend(isBetween);
 dayjs.locale('ko');
+dayjs.extend(customParseFormat);
 
 // 오전/오후 한글 표기
 dayjs.updateLocale('ko', {
@@ -36,8 +39,9 @@ export const timeRange = (start: string | null, end: string | null) => {
     return null;
   }
 
-  const parseFormat = (time: string) => (time.includes(':') && time.split(':').length === 3 ? 'HH:mm:ss' : 'HH:mm');
+  const parseFormat = (time: string) => (time.split(':').length === 3 ? 'HH:mm:ss' : 'HH:mm');
 
+  // dayjs(문자열, 형식)으로 파싱
   const formattedStart = dayjs(start, parseFormat(start)).format('HH:mm');
   const formattedEnd = dayjs(end, parseFormat(end)).format('HH:mm');
 
@@ -127,7 +131,7 @@ export const shouldShowSenderPhoto = (current: ChatMessage, previous?: ChatMessa
 };
 
 /** 닉네임 표시 여부 */
-export const shouldShowNickname = (current: ChatMessage, previous?: ChatMessage, next?: ChatMessage) => {
+export const shouldShowNickname = (current: ChatMessage, previous?: ChatMessage) => {
   // 이전 메세지가 없을 경우
   if (!previous) return true;
 
@@ -145,14 +149,14 @@ export const shouldShowNickname = (current: ChatMessage, previous?: ChatMessage,
 
 /** 시간 표시 여부 */
 export const shouldShowTime = (current: ChatMessage, previous?: ChatMessage, next?: ChatMessage) => {
-  // 이전 '분' 같으면 O
+  // previous 메시지와 '분' 같으면 O
   const isSameMinutePrev = previous && dayjs(current.createdAt).isSame(previous.createdAt, 'minute');
-  // 이전 '유저' 같으면 X
+  // previous 메시지와 '유저' 같으면 X
   const isSameSenderPrev = previous && current.sender?.id === previous.sender?.id;
 
-  // 다음 '분'과 같으면 X
-  const isSameMinuteNext = next && dayjs(current.createdAt).isSame(previous?.createdAt, 'minute');
-  // 다음 유저와 같으면 X
+  // next 메시지와 '분'과 같으면 X
+  const isSameMinuteNext = next && dayjs(current.createdAt).isSame(next?.createdAt, 'minute');
+  // next 메시지와 유저와 같으면 X
   const isSameSenderNext = next && current.sender?.id === next.sender?.id;
 
   // 이전 메시지와 분은 같지만, 발신자가 다르면 => 시간 표시

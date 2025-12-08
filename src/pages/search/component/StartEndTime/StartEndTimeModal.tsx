@@ -1,12 +1,12 @@
 import styled from '@emotion/styled';
-import { FormValues, ModalLayOut } from '../SearchBox';
+import { type FormValues, ModalLayOut } from '../SearchBox';
 import { timeOptions } from '@/utils/date';
 import { useFormContext } from 'react-hook-form';
 import dayjs from 'dayjs';
-import { RootState } from '@/store';
+import type { RootState } from '@/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { ModalType, openModal } from '@/store/modalSlice';
-import Flex from '@components/styled/Flex';
+import Flex from '@/components/styled/Flex';
 
 interface IProps {
   handleSetValue: (field: keyof FormValues, value: any) => void;
@@ -80,7 +80,11 @@ const List = styled.ul`
   justify-content: center;
 `;
 
-const CapsuleWrapper = styled.div<{ $isBetween: boolean; $isStartTime: boolean; $isEndTime: boolean }>`
+const CapsuleWrapper = styled.div<{
+  $isBetween: boolean;
+  $isStartTime: boolean;
+  $isEndTime: boolean;
+}>`
   background-color: ${({ $isBetween, theme }) => ($isBetween ? theme.colors.background.box.default.hover : null)};
   border-radius: ${({ $isStartTime, $isEndTime }) =>
     $isStartTime ? '20px 0 0 20px' : $isEndTime ? '0 20px 20px 0' : null};
@@ -91,10 +95,10 @@ const TimeCapsule = styled.li<{ $isSelected: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 12px ${({ theme }) => theme.spacing.lg};
+  padding: 12px ${({ theme }) => theme.space.lg};
   background-color: ${({ theme, $isSelected }) => $isSelected && theme.colors.background.box.default.inverse};
   border: 1px solid transparent;
-  border-radius: ${({ theme }) => theme.spacing.xl};
+  border-radius: ${({ theme }) => theme.space.xl};
   color: ${({ $isSelected, theme }) => $isSelected && theme.colors.text.inverse};
   font-weight: ${({ theme }) => theme.fontWeight.light};
   cursor: pointer;

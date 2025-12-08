@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { fetcher } from '@/api';
 import { useAuthSWRInfinite } from '@/hooks/authSWR';
-import { ChatMessage, ChatRoom, Message } from '@/types/chat.type';
+import type { ChatMessage, ChatRoom, Message } from '@/types/chat.type';
 
 interface UseMessagesOptions {
   chatRoom: ChatRoom | null;

@@ -3,15 +3,15 @@ import styled from '@emotion/styled';
 import { useAuthSWR } from '@/hooks/authSWR';
 
 import { fetcher } from '@/api';
-import MyPetmily from '@pages/me/components/MyPetmily';
+import MyPetmily from '@/pages/me/components/MyPetmily';
 import { ImageCentered, RoundedImageWrapper } from '@/styles/commonStyle';
 import MyPetsitterProfile from './components/MyPetsitterProfile';
-import BackHeader from '@components/headers/BackHeader';
+import BackHeader from '@/components/headers/BackHeader';
 import { UserRole } from '@/types/user.type';
-import { Text } from '@components/styled/Text';
-import Box from '@components/styled/Box';
-import Flex from '@components/styled/Flex';
-import Link from '@components/styled/Link';
+import { Text } from '@/components/styled/Text';
+import Box from '@/components/styled/Box';
+import Flex from '@/components/styled/Flex';
+import Link from '@/components/styled/Link';
 
 export default function MyPage() {
   const { data: me } = useAuthSWR('/users/me', fetcher);
@@ -22,7 +22,7 @@ export default function MyPage() {
       <main>
         <Box p="md">
           <Flex justifyContent="space-between" alignItems="center">
-            <Flex>
+            <Flex gap="lg">
               <MyImage>
                 <ImageCentered
                   src={me?.photo ? `${me?.photo}` : 'imgs/DefaultUserProfile.jpg'}
@@ -30,14 +30,16 @@ export default function MyPage() {
                 />
               </MyImage>
 
-              <Text size="base" weight="bold">
-                안녕하세요!
-              </Text>
-              {me?.nickname ? (
-                <Text size="base" weight="bold">{`${me?.nickname} 님`}</Text>
-              ) : (
-                <Text size="sm">닉네임을 설정해주세요</Text>
-              )}
+              <Flex direction="column">
+                <Text size="base" weight="bold">
+                  안녕하세요!
+                </Text>
+                {me?.nickname ? (
+                  <Text size="base" weight="bold">{`${me?.nickname} 님`}</Text>
+                ) : (
+                  <Text size="sm">닉네임을 설정해주세요</Text>
+                )}
+              </Flex>
             </Flex>
             <Link to="/me/edit" type="text">
               내 정보 수정

@@ -2,10 +2,10 @@ import { createContext, useContext } from 'react';
 
 import { fetcher } from '@/api';
 import { useAuthSWR } from '@/hooks/authSWR';
-import useChatRoom, { UseChatRoomReturn } from '../hooks/useChatRoom';
-import useChatSocket, { UseSocketReturn } from '../hooks/useChatSocket';
-import useMessages, { UseMessagesReturn } from '../hooks/useMessages';
-import { UseChatReadStatus, useChatReadStatus } from '../hooks/useChatReadStatus';
+import useChatRoom, { type UseChatRoomReturn } from '../hooks/useChatRoom';
+import useChatSocket, { type UseSocketReturn } from '../hooks/useChatSocket';
+import useMessages, { type UseMessagesReturn } from '../hooks/useMessages';
+import { type UseChatReadStatus, useChatReadStatus } from '../hooks/useChatReadStatus';
 
 interface ChatProviderOptions {
   children: React.ReactNode;

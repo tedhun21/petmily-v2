@@ -6,15 +6,15 @@ import { useFormContext } from 'react-hook-form';
 import { FaXmark } from 'react-icons/fa6';
 
 import StartEndTimeModal from './StartEndTimeModal';
-import { AddText, FormValues, InputBox, Modal, XButton } from '../SearchBox';
+import { AddText, type FormValues, InputBox, Modal, XButton } from '../SearchBox';
 import { useSelector } from 'react-redux';
-import { RootState } from '@/store';
+import type { RootState } from '@/store';
 import { ModalType } from '@/store/modalSlice';
-import Box from '@components/styled/Box';
+import Box from '@/components/styled/Box';
 import { Button } from '@/components/styled/Button';
 import { FiSearch } from 'react-icons/fi';
-import Flex from '@components/styled/Flex';
-import { Text } from '@components/styled/Text';
+import Flex from '@/components/styled/Flex';
+import { Text } from '@/components/styled/Text';
 import useOutsideClickModal from '@/hooks/useOutsideClickModal';
 
 interface IProps {

@@ -1,29 +1,16 @@
-import { createContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { ThemeProvider as EmotionThemeProvider, Global } from '@emotion/react';
 import { createTheme, ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 
 import { darkTheme, lightTheme } from '@/styles/theme';
 import { globalStyles } from '@/styles/Globalstyle';
-
-interface ThemePropviderProps {
-  children: React.ReactNode;
-}
-
-interface ThemeContextType {
-  isDarkMode: boolean;
-  setIsDarkMode: (value: boolean) => void;
-}
-
-export const ThemeContext = createContext<ThemeContextType>({
-  isDarkMode: false,
-  setIsDarkMode: () => null,
-});
+import { ThemeContext } from './ThemeContext';
 
 const muiLightTheme = createTheme({ palette: { mode: 'light' } });
 const muiDarkTheme = createTheme({ palette: { mode: 'dark' } });
 
-export default function ThemeProvider({ children }: ThemePropviderProps) {
+export default function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [isDarkMode, setIsDarkMode] = useState(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('theme');

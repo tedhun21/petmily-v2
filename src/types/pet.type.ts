@@ -1,20 +1,22 @@
-import { CoreType } from './common.type';
+import type { CoreType } from './common.type';
 
-export enum PetGender {
-  MALE = 'male',
-  FEMALE = 'female',
-}
+export const PetGender = {
+  MALE: 'male',
+  FEMALE: 'female',
+} as const;
+export type PetGenderType = (typeof PetGender)[keyof typeof PetGender];
 
-export enum PetSpecies {
-  DOG = 'dog',
-  CAT = 'cat',
-}
+export const PetSpecies = {
+  DOG: 'dog',
+  CAT: 'cat',
+} as const;
+export type PetSpeciesType = (typeof PetSpecies)[keyof typeof PetSpecies];
 
 export interface Pet extends CoreType {
   id: number;
   name: string;
-  gender: PetGender;
-  species: PetSpecies;
+  gender: PetGenderType;
+  species: PetSpeciesType;
   breed: string;
   age: number;
   weight: number;

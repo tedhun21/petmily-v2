@@ -6,9 +6,10 @@ import { useInView } from 'framer-motion';
 
 import { fetcher } from '@/api';
 import Result from './Result';
-import Loading from '@components/Loading';
-import Box from '@components/styled/Box';
-import Flex from '@components/styled/Flex';
+import Loading from '@/components/Loading';
+import Box from '@/components/styled/Box';
+import Flex from '@/components/styled/Flex';
+import type { Petsitter } from '@/types/user.type';
 
 export default function Results() {
   const [searchParams] = useSearchParams();
@@ -50,7 +51,7 @@ export default function Results() {
   }
 
   return (
-    <Box p="md">
+    <Box>
       {data && (
         <section>
           <ul>
@@ -58,7 +59,7 @@ export default function Results() {
               {data[0].results.length > 0 &&
                 Array.isArray(data[0].results) &&
                 data.map((page: any) =>
-                  page?.results.map((petsitter: any) => <Result key={petsitter.id} petsitter={petsitter} />),
+                  page?.results.map((petsitter: Petsitter) => <Result key={petsitter.id} petsitter={petsitter} />),
                 )}
             </Flex>
           </ul>

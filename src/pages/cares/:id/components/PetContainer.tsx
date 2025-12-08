@@ -1,13 +1,14 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
-
+import { Mousewheel, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
-import { Mousewheel, Pagination } from 'swiper/modules';
 import styled from '@emotion/styled';
 import { ImageCentered, RoundedImageWrapper } from '@/styles/commonStyle';
-import { Pet, PetSpecies } from '@/types/pet.type';
-import Flex from '@components/styled/Flex';
+import { PetSpecies } from '@/types/pet.type';
+import type { Pet } from '@/types/pet.type';
+
+import Flex from '@/components/styled/Flex';
 import { Label } from '@/components/styled/Label';
 import Box from '@/components/styled/Box';
 
@@ -70,12 +71,4 @@ const PetImage = styled(RoundedImageWrapper)`
   width: 60px;
   height: 60px;
   border: 2px solid ${({ theme }) => theme.colors.line.box.highlight};
-`;
-
-const PetInfoCapsule = styled.li`
-  padding: 4px 8px;
-  background-color: ${({ theme }) => theme.colors.background.box.accent.primary};
-  border-radius: ${({ theme }) => theme.radius.lg};
-  color: ${({ theme }) => theme.colors.text.white};
-  ${({ theme }) => theme.typeScale.sm};
 `;

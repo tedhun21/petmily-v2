@@ -26,14 +26,14 @@ export default function RecentSearches({ data, setRecentSearches }: any) {
 const List = styled.ul`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.sm};
+  gap: ${({ theme }) => theme.space.sm};
 `;
 
 const Item = styled.li`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 4px ${({ theme }) => theme.spacing.sm};
+  padding: 4px ${({ theme }) => theme.space.sm};
   border-radius: ${({ theme }) => theme.radius.md};
   ${({ theme }) => theme.typeScale.sm};
 

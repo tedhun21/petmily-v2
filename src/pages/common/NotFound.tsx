@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 
-import { Text } from '@components/styled/Text';
-import Flex from '@components/styled/Flex';
+import { Text } from '@/components/styled/Text';
+import Flex from '@/components/styled/Flex';
 
 export default function NotFoundPage() {
   return (
@@ -30,11 +30,11 @@ const Icon = styled.img`
 
 const Image = styled.img`
   width: 200px;
-  margin-bottom: ${({ theme }) => theme.spacing['3xl']};
+  margin-bottom: ${({ theme }) => theme.space['3xl']};
 `;
 
 const Logo = styled.img`
   width: 100px;
-  margin-top: ${({ theme }) => theme.spacing['3xl']};
-  margin-bottom: ${({ theme }) => theme.spacing['3xl']};
+  margin-top: ${({ theme }) => theme.space['3xl']};
+  margin-bottom: ${({ theme }) => theme.space['3xl']};
 `;

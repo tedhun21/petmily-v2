@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { Text } from '@components/styled/Text';
+import { Text } from '@/components/styled/Text';
 
 interface LocationCapsuleContainerProps {
   data: string[];
@@ -50,13 +50,13 @@ export default function LocationCapsuleContainer({ data, handleLocationClick }: 
 const Container = styled.div`
   display: flex;
   flex: 1 1 auto;
-  gap: ${({ theme }) => theme.spacing.lg};
+  gap: ${({ theme }) => theme.space.lg};
 `;
 
 const List = styled.ul<{ $columnCount: number }>`
   display: grid;
   grid-template-columns: repeat(${({ $columnCount }) => $columnCount}, 1fr);
-  gap: ${({ theme }) => theme.spacing.sm};
+  gap: ${({ theme }) => theme.space.sm};
   width: 100%;
 `;
 
@@ -64,7 +64,7 @@ const Item = styled.li`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: ${({ theme }) => theme.spacing.sm};
+  padding: ${({ theme }) => theme.space.sm};
   border: 2px solid ${({ theme }) => theme.colors.line.box.primary};
   border-radius: ${({ theme }) => theme.radius.lg};
   font-weight: ${({ theme }) => theme.fontWeight.light};

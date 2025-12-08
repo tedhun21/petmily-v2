@@ -1,18 +1,18 @@
-import { DayOfWeekType } from './common.type';
-import { Pet, PetSpecies } from './pet.type';
+import type { CoreType, DayOfWeekType } from './common.type';
+import type { Pet, PetSpeciesType } from './pet.type';
 
-export enum UserRole {
-  USER = 'user',
-  CLIENT = 'client',
-  PETSITTER = 'petsitter',
-}
+export const UserRole = {
+  USER: 'user',
+  CLIENT: 'client',
+  PETSITTER: 'petsitter',
+} as const;
+export type UserRoleType = (typeof UserRole)[keyof typeof UserRole];
 
-export interface User {
-  id: number;
+export interface User extends CoreType {
   username: string;
   nickname: string;
   email: string;
-  role: UserRole;
+  role: UserRoleType;
   address: string;
   detailAddress: string;
   phone: string;
@@ -25,7 +25,7 @@ export interface Petsitter extends User {
   possibleEndTime?: string;
   possibleDays?: DayOfWeekType[];
   possibleLocations?: string[];
-  possiblePetSpecies?: PetSpecies[];
+  possiblePetSpecies?: PetSpeciesType[];
   star?: number;
   reviewCount?: number;
 }

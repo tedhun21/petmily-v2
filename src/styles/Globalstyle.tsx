@@ -1,7 +1,8 @@
 import { css } from '@emotion/react';
 import emotionReset from 'emotion-reset';
+import type { Theme } from './theme';
 
-export const globalStyles = css`
+export const globalStyles = (theme: Theme) => css`
   ${emotionReset};
 
   * {
@@ -10,6 +11,8 @@ export const globalStyles = css`
 
   body {
     font-family: 'Noto Sans KR', Roboto, sans-serif;
+    background-color: ${theme.colors.background.secondary};
+    color: ${theme.colors.text.active};
   }
 
   a {

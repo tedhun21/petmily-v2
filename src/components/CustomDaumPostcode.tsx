@@ -1,69 +1,152 @@
 import { useContext, useEffect, useRef } from 'react';
-import { ThemeContext } from './contexts/ThemeProvider';
+import { ThemeContext } from './contexts/ThemeContext';
 
-interface IProps {
-  onComplete: (data: any) => void;
-  style?: { width?: string; height?: string };
+// -------------------------------------------------------------------
+// 1. Daum Postcode API가 반환하는 주소 데이터 타입 정의
+// -------------------------------------------------------------------
+export interface PostcodeData {
+  address: string;
+  addressType: 'R' | 'J';
+  bname: string;
+  buildingName: string;
+  roadAddress: string;
+  zonecode: string;
+  [key: string]: unknown;
 }
 
-const lightThemeObj = {
-  bgColor: '#ECECEC', //바탕 배경색
-  searchBgColor: '#FFFFFF', //검색창 배경색
-  contentBgColor: '#FFFFFF', //본문 배경색(검색결과,결과없음,첫화면,검색서제스트)
-  pageBgColor: '#FAFAFA', //페이지 배경색
-  textColor: '#333333', //기본 글자색
-  queryTextColor: '#222222', //검색창 글자색
-  postcodeTextColor: '#FA4256', //우편번호 글자색
-  emphTextColor: '#008BD3', //강조 글자색
-  outlineColor: '#E0E0E0', //테두리
+// -------------------------------------------------------------------
+// 2. Window 객체에 추가되는 Daum Postcode 객체 타입 정의
+// -------------------------------------------------------------------
+interface PostcodeTheme {
+  bgColor: string;
+  searchBgColor: string;
+  contentBgColor: string;
+  pageBgColor: string;
+  textColor: string;
+  queryTextColor: string;
+  postcodeTextColor: string;
+  emphTextColor: string;
+  outlineColor: string;
+}
+
+interface PostcodeOptions {
+  width: string;
+  height: string;
+  theme: PostcodeTheme;
+  oncomplete: (data: PostcodeData) => void;
+  onresize?: (size: { width: number; height: number }) => void;
+}
+
+interface DaumPostcodeInstance {
+  embed: (container: HTMLElement) => void;
+}
+
+interface DaumPostcode {
+  new (options: PostcodeOptions): DaumPostcodeInstance;
+}
+
+declare global {
+  interface Window {
+    daum?: {
+      Postcode?: DaumPostcode;
+    };
+  }
+}
+// -------------------------------------------------------------------
+
+interface IProps {
+  width?: string;
+  height?: string;
+  maxHeight?: number;
+  onComplete: (data: PostcodeData) => void;
+}
+
+const lightThemeObj: PostcodeTheme = {
+  bgColor: '#ECECEC',
+  searchBgColor: '#FFFFFF',
+  contentBgColor: '#FFFFFF',
+  pageBgColor: '#FAFAFA',
+  textColor: '#333333',
+  queryTextColor: '#222222',
+  postcodeTextColor: '#FA4256',
+  emphTextColor: '#008BD3',
+  outlineColor: '#E0E0E0',
 };
 
-const darkThemeObj = {
-  bgColor: '#162525', //바탕 배경색
-  searchBgColor: '#162525', //검색창 배경색
-  contentBgColor: '#162525', //본문 배경색(검색결과,결과없음,첫화면,검색서제스트)
-  pageBgColor: '#162525', //페이지 배경색
-  textColor: '#FFFFFF', //기본 글자색
-  queryTextColor: '#FFFFFF', //검색창 글자색
-  postcodeTextColor: '#FA4256', //우편번호 글자색
-  emphTextColor: '#008BD3', //강조 글자색
-  outlineColor: '#444444', //테두리
+const darkThemeObj: PostcodeTheme = {
+  bgColor: '#162525',
+  searchBgColor: '#162525',
+  contentBgColor: '#162525',
+  pageBgColor: '#162525',
+  textColor: '#FFFFFF',
+  queryTextColor: '#FFFFFF',
+  postcodeTextColor: '#FA4256',
+  emphTextColor: '#008BD3',
+  outlineColor: '#444444',
 };
 
-export default function CustomDaumPostcode({ onComplete, style }: IProps) {
+export default function CustomDaumPostcode({ width = '100%', height = 'auto', maxHeight = 600, onComplete }: IProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const { isDarkMode } = useContext(ThemeContext);
 
   useEffect(() => {
-    // Daum Postcode API 스크립트 로드
+    const currentContainer = containerRef.current;
+
     const script = document.createElement('script');
     script.src = '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
     script.async = true;
     document.body.appendChild(script);
 
-    script.onload = () => {
-      const { daum } = window as any;
-      if (daum && daum.Postcode) {
-        // 주소 검색 UI를 body에 직접 삽입
+    const onLoad = () => {
+      const daum = window.daum;
+      if (daum && daum.Postcode && currentContainer) {
         const postcode = new daum.Postcode({
-          width: style?.width || '100%',
-          height: style?.height || 'auto',
+          width,
+          height,
           theme: isDarkMode ? darkThemeObj : lightThemeObj,
-          oncomplete: (data: any) => {
+          oncomplete: (data) => {
             onComplete(data);
+          },
+          onresize: (size) => {
+            if (currentContainer) {
+              const nextHeight = size.height;
+
+              // 내가 정한 높이까지만 늘리기
+              currentContainer.style.height = nextHeight > maxHeight ? `${maxHeight}px` : `${nextHeight}px`;
+
+              // 초과하는 경우 내부가 스크롤되도록
+              currentContainer.style.overflow = 'auto';
+            }
           },
         });
 
-        if (containerRef.current) {
-          postcode.embed(containerRef.current);
+        if (currentContainer) {
+          postcode.embed(currentContainer);
         }
       }
     };
 
+    script.addEventListener('load', onLoad);
+
     return () => {
       document.body.removeChild(script);
-    };
-  }, []);
+      script.removeEventListener('load', onLoad);
 
-  return <div ref={containerRef} />;
+      if (currentContainer) {
+        currentContainer.innerHTML = '';
+      }
+    };
+  }, [isDarkMode, width, height, maxHeight, onComplete]);
+
+  return (
+    <div
+      ref={containerRef}
+      style={{
+        width: width ? `${width}px` : '100%',
+        height: 'auto',
+        maxHeight,
+        overflow: 'auto', // 내부 스크롤
+      }}
+    />
+  );
 }

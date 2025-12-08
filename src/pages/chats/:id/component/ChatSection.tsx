@@ -6,9 +6,9 @@ import ChatHeader from './ChatHeader';
 import ChatContainer from './ChatContainer';
 import { useChat } from '../contexts/ChatProvider';
 import { Button } from '@/components/styled/Button';
-import { Input } from '@components/styled/Input';
-import Box from '@components/styled/Box';
-import Flex from '@components/styled/Flex';
+import { Input } from '@/components/styled/Input';
+import Box from '@/components/styled/Box';
+import Flex from '@/components/styled/Flex';
 
 interface MessageFormValues {
   message: string;
@@ -67,18 +67,19 @@ export default function ChatSection() {
 const Section = styled.section`
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 100vh;
 
   > header {
-    flex: 0 0 auto;
+    flex-shrink: 0; /* 높이가 줄어들지 않도록 고정 */
   }
 
   > div {
-    flex: 1 1 auto;
+    flex-grow: 1; /* 남은 공간을 모두 차지 */
+    overflow-y: auto; /* 내용이 넘칠 경우 스크롤 생성 */
   }
 
   > footer {
-    flex: 0 0 auto;
+    flex-shrink: 0;
   }
 `;
 

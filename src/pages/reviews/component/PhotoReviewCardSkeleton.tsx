@@ -1,4 +1,4 @@
-import Flex from '@components/styled/Flex';
+import Flex from '@/components/styled/Flex';
 import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 
@@ -25,7 +25,7 @@ const ReviewCard = styled.article`
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: ${({ theme }) => theme.spacing.lg};
+  gap: ${({ theme }) => theme.space.lg};
 `;
 
 const pulse = keyframes`
@@ -49,13 +49,13 @@ const SkeletonImage = styled(SkeletonElement)`
 
 const TitleContainer = styled(SkeletonElement)`
   width: 20%;
-  height: ${({ theme }) => theme.spacing['2xl']};
-  padding: ${({ theme }) => theme.spacing.sm};
+  height: ${({ theme }) => theme.space['2xl']};
+  padding: ${({ theme }) => theme.space.sm};
 `;
 
 const ReviewText = styled(SkeletonElement)`
   width: 50%;
-  height: ${({ theme }) => theme.spacing.xl};
+  height: ${({ theme }) => theme.space.xl};
 `;
 
 const PetsitterContainer = styled(SkeletonElement)`

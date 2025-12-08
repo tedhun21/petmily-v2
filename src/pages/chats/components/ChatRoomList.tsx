@@ -1,12 +1,11 @@
 import { useEffect, useRef } from 'react';
 
-import styled from '@emotion/styled';
 import { useInView } from 'framer-motion';
 
-import useChatRooms from '@pages/chats/hooks/useChatRooms';
+import useChatRooms from '@/pages/chats/hooks/useChatRooms';
 import ChatRoomItem from './ChatRoomItem';
-import Loading from '@components/Loading';
-import Flex from '@components/styled/Flex';
+import Loading from '@/components/Loading';
+import Flex from '@/components/styled/Flex';
 
 export default function ChatRoomList() {
   const ref = useRef<HTMLDivElement | null>(null);
@@ -36,7 +35,7 @@ export default function ChatRoomList() {
   }
 
   return (
-    <Main>
+    <>
       <ul>
         {chatRooms.map((chatRoom) => (
           <ChatRoomItem key={chatRoom.id} chatRoom={chatRoom} />
@@ -49,10 +48,6 @@ export default function ChatRoomList() {
           </Flex>
         </div>
       )}
-    </Main>
+    </>
   );
 }
-
-const Main = styled.main`
-  height: 100%;
-`;

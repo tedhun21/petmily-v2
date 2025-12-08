@@ -3,27 +3,30 @@ import { useNavigate } from 'react-router-dom';
 
 import styled from '@emotion/styled';
 
-import Loading from '@components/Loading';
-import { Reservation, ReservationStatus } from '@/types/reservation.type';
-import { UserRole } from '@/types/user.type';
-import { SocketContext } from '@components/contexts/SocketProvider';
+import Loading from '@/components/Loading';
+import { ReservationStatus, type Reservation } from '@/types/reservation.type';
+import { UserRole, type UserRoleType } from '@/types/user.type';
+import { SocketContext } from '@/components/contexts/SocketContext';
 import { Button } from '@/components/styled/Button';
 
 interface ProgressButtonProps {
-  meRole: UserRole;
+  meRole: UserRoleType;
   reservation: Reservation;
 }
 
 export default function ProgressButton({ meRole, reservation }: ProgressButtonProps) {
   const navigate = useNavigate();
-  const { socket } = useContext(SocketContext);
+  const { socketRef } = useContext(SocketContext);
   const [isLoading, setIsLoading] = useState(false);
 
   // 예약 수락
   const handleAccept = () => {
     setIsLoading(true);
-    if (reservation && socket) {
-      socket.emit('updateStatus', { reservationId: reservation.id, newStatus: ReservationStatus.ACCEPTED });
+    if (reservation && socketRef.current) {
+      socketRef.current.emit('updateStatus', {
+        reservationId: reservation.id,
+        newStatus: ReservationStatus.ACCEPTED,
+      });
     }
     setIsLoading(false);
   };
@@ -31,8 +34,11 @@ export default function ProgressButton({ meRole, reservation }: ProgressButtonPr
   // 예약 취소
   const handleCancel = () => {
     setIsLoading(true);
-    if (reservation && socket) {
-      socket.emit('updateStatus', { reservationId: reservation.id, newStatus: ReservationStatus.CANCELED });
+    if (reservation && socketRef.current) {
+      socketRef.current.emit('updateStatus', {
+        reservationId: reservation.id,
+        newStatus: ReservationStatus.CANCELED,
+      });
     }
 
     setIsLoading(false);
@@ -128,7 +134,7 @@ export default function ProgressButton({ meRole, reservation }: ProgressButtonPr
 const ButtonContainer = styled.div`
   width: 100%;
   display: flex;
-  gap: ${({ theme }) => theme.spacing.sm};
+  gap: ${({ theme }) => theme.space.sm};
 
   & > button {
     flex: 1;
@@ -152,7 +158,7 @@ const ButtonContainer = styled.div`
 //   justify-content: center;
 //   align-items: center;
 //   width: 100%;
-//   padding: ${({ theme }) => theme.spacing.sm};
+//   padding: ${({ theme }) => theme.space.sm};
 //   background-color: ${({ theme, disabled }) =>
 //     disabled ? theme.colors.background.box.accent.disabled : theme.colors.background.box.accent.primary};
 //   border-radius: ${({ theme }) => theme.radius.md};

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Theme } from '@/styles/theme';
+import type { Theme } from '@/styles/theme';
 
 type TextProps = {
   size?: keyof Theme['typeScale'];

@@ -5,8 +5,8 @@ import { useInView } from 'framer-motion';
 import { useAuthSWRInfinite } from '@/hooks/authSWR';
 
 import { fetcher } from '@/api';
-import Loading from '@components/Loading';
-import Flex from '@components/styled/Flex';
+import Loading from '@/components/Loading';
+import Flex from '@/components/styled/Flex';
 
 export default function MySchedule() {
   const ref = useRef(null);
@@ -65,5 +65,5 @@ export default function MySchedule() {
 const ScheduleList = styled.ul`
   display: flex;
   flex-wrap: wrap;
-  gap: ${({ theme }) => theme.spacing.sm};
+  gap: ${({ theme }) => theme.space.sm};
 `;

@@ -6,9 +6,9 @@ import { useDispatch } from 'react-redux';
 import { fetcher } from '@/api';
 import { useAuthSWR } from '@/hooks/authSWR';
 import { makeOpponentQuery } from '@/utils/misc';
-import { ChatMember, ChatRoom } from '@/types/chat.type';
+import type { ChatMember, ChatRoom } from '@/types/chat.type';
 import { removeMessagesByChatRoom } from '@/store/newMessageSlice';
-import { User } from '@/types/user.type';
+import type { User } from '@/types/user.type';
 
 interface UseChatRoomOptions {
   opponentIds?: string[] | null;
