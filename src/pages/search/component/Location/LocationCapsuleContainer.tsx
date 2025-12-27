@@ -1,10 +1,11 @@
 import { useRef, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { Text } from '@/components/styled/Text';
+import Text from '@/components/styled/Text';
+import Button from '@/components/styled/Button';
 
 interface LocationCapsuleContainerProps {
   data: string[];
-  handleLocationClick: (e: React.MouseEvent, searchName: string) => void;
+  handleLocationClick: (searchName: string) => void;
 }
 
 export default function LocationCapsuleContainer({ data, handleLocationClick }: LocationCapsuleContainerProps) {
@@ -37,16 +38,15 @@ export default function LocationCapsuleContainer({ data, handleLocationClick }: 
       <Text size="xs">서울</Text>
       <List $columnCount={columnCount}>
         {data.map((location: string) => (
-          <Item key={location} onClick={(e) => handleLocationClick(e, location)}>
+          <Button key={location} onClick={() => handleLocationClick(location)}>
             {location}
-          </Item>
+          </Button>
         ))}
       </List>
     </Container>
   );
 }
 
-// TODO
 const Container = styled.div`
   display: flex;
   flex: 1 1 auto;
@@ -58,25 +58,4 @@ const List = styled.ul<{ $columnCount: number }>`
   grid-template-columns: repeat(${({ $columnCount }) => $columnCount}, 1fr);
   gap: ${({ theme }) => theme.space.sm};
   width: 100%;
-`;
-
-const Item = styled.li`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: ${({ theme }) => theme.space.sm};
-  border: 2px solid ${({ theme }) => theme.colors.line.box.primary};
-  border-radius: ${({ theme }) => theme.radius.lg};
-  font-weight: ${({ theme }) => theme.fontWeight.light};
-  cursor: pointer;
-  ${({ theme }) => theme.typeScale.sm};
-
-  &:hover {
-    border: 2px solid ${({ theme }) => theme.colors.line.box.highlight};
-  }
-
-  :active {
-    transform: scale(0.95);
-    transition: transform 0.1s ease-out;
-  }
 `;

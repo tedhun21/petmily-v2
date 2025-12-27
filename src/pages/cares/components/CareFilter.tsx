@@ -8,7 +8,7 @@ import type { RootState } from '@/store';
 import { setFilter, setMonth } from '@/store/contextSlice';
 import { ReservationStatus } from '@/types/reservation.type';
 import type { ReservationStatusType } from '@/types/reservation.type';
-import { Button } from '@/components/styled/Button';
+import Button from '@/components/styled/Button';
 import Flex from '@/components/styled/Flex';
 import { useEffect } from 'react';
 
@@ -93,10 +93,7 @@ const Sticky = styled.div`
   padding: ${({ theme }) => theme.space.sm};
 `;
 
-// TODO
-const RadioButton = styled(Button, {
-  shouldForwardProp: (prop) => prop !== '$selected',
-})<{ $selected: boolean }>`
+const RadioButton = styled(Button)<{ $selected: boolean }>`
   background-color: ${({ theme, $selected }) =>
     $selected ? theme.colors.background.box.accent.primary : theme.colors.background.box.default.primary};
   border: ${({ theme, $selected }) => ($selected ? 'none' : `1px solid ${theme.colors.line.box.primary}`)};

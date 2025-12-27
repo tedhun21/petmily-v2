@@ -6,7 +6,7 @@ import { FaChevronRight } from 'react-icons/fa6';
 
 import { dateAgo, dayFormat, timeRange } from '@/utils/date';
 import type { Reservation } from '@/types/reservation.type';
-import { Text } from '@/components/styled/Text';
+import Text from '@/components/styled/Text';
 import Flex from '@/components/styled/Flex';
 import Box from '@/components/styled/Box';
 
@@ -59,11 +59,11 @@ export default function DetailReservation({ reservation }: DetailReservationProp
 }
 
 const CustomLocationMarker = styled(HiOutlineLocationMarker)`
-  color: ${({ theme }) => theme.colors.text.highlight};
+  color: ${({ theme }) => theme.colors.text.accent};
 `;
 
 const CustomChevronRight = styled(FaChevronRight)`
-  color: ${({ theme }) => theme.colors.text.highlight};
+  color: ${({ theme }) => theme.colors.text.accent};
 `;
 
 const RequestParagraph = styled.p`

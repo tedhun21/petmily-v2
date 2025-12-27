@@ -7,7 +7,7 @@ import { ImageCentered, RoundedImageWrapper } from '@/styles/commonStyle';
 import { timeRange, weekdays } from '@/utils/date';
 import type { Petsitter } from '@/types/user.type';
 
-import { Text } from '@/components/styled/Text';
+import Text from '@/components/styled/Text';
 import Flex from '@/components/styled/Flex';
 import Box from '@/components/styled/Box';
 import Link from '@/components/styled/Link';

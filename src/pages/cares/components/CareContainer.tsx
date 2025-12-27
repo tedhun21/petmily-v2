@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { useAuthSWRInfinite } from '@/hooks/authSWR';
 import { useInView } from 'framer-motion';
 
-import Loading from '@/components/Loading';
+import Spinner from '@/components/Spinner';
 import Box from '@/components/styled/Box';
 import Flex from '@/components/styled/Flex';
 import CareCard from './CareCard';
@@ -41,7 +41,7 @@ export default function CareContainer() {
   if (isLoading) {
     return (
       <Flex justifyContent="center" alignItems="center">
-        <Loading color="#279EFF" />
+        <Spinner color="#279EFF" />
       </Flex>
     );
   }
@@ -68,7 +68,7 @@ export default function CareContainer() {
         {data && !isEnd && (
           <div ref={ref}>
             <Flex justifyContent="center" alignItems="center">
-              <Loading color="#279EFF" />
+              <Spinner color="#279EFF" />
             </Flex>
           </div>
         )}

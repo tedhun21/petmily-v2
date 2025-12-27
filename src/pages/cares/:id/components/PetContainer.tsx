@@ -48,7 +48,7 @@ export default function PetContainer({ pets }: PetContainerProps) {
                 </PetImage>
                 <span>{pet.name}</span>
               </Flex>
-              <Flex as="ul" gap="xs" css={{ flexWrap: 'wrap' }}>
+              <Flex as="ul" gap="xs" flexWrap="wrap">
                 <Label size="sm">{pet.age}살</Label>
                 <Label size="sm">{pet.gender}</Label>
                 <Label size="sm">{pet.species}</Label>
@@ -70,5 +70,5 @@ const CustomSwiper = styled(Swiper)`
 const PetImage = styled(RoundedImageWrapper)`
   width: 60px;
   height: 60px;
-  border: 2px solid ${({ theme }) => theme.colors.line.box.highlight};
+  border: 2px solid ${({ theme }) => theme.colors.line.box.active};
 `;

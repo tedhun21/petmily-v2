@@ -15,8 +15,8 @@ import {
 import type { ChatMessage, Message, PendingMessage } from '@/types/chat.type';
 import { IoMdRefresh } from 'react-icons/io';
 import { useChat } from '../contexts/ChatProvider';
-import { Button } from '@/components/styled/Button';
-import { Text } from '@/components/styled/Text';
+import Button from '@/components/styled/Button';
+import Text from '@/components/styled/Text';
 import Flex from '@/components/styled/Flex';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
@@ -179,7 +179,7 @@ const ErrorStatus = styled.div`
 `;
 
 const ReSendMark = styled(IoMdRefresh)`
-  color: ${({ theme }) => theme.colors.text.highlight};
+  color: ${({ theme }) => theme.colors.text.accent};
 `;
 
 const XMark = styled(FaXmark)`

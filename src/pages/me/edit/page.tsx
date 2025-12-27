@@ -18,9 +18,9 @@ import { GoVerified } from 'react-icons/go';
 import { PiCatBold, PiDogBold } from 'react-icons/pi';
 
 import { removeCookie } from '@/utils/cookie';
-import { TypeRadioLabel } from '../pet/register/page';
+import { TypeRadioLabel } from '../pets/register/page';
 
-import Loading from '@/components/Loading';
+import Spinner from '@/components/Spinner';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { deleter, fetcher, updater } from '@/api';
@@ -29,17 +29,22 @@ import { weekdays } from '@/utils/date';
 import dayjs, { Dayjs } from 'dayjs';
 
 import CustomDaumPostcode, { type PostcodeData } from '@/components/CustomDaumPostcode';
-import BackHeader from '@/components/headers/BackHeader';
 import { UserRole } from '@/types/user.type';
 import { PetSpecies } from '@/types/pet.type';
-import { Button } from '@/components/styled/Button';
+import Button from '@/components/styled/Button';
 import { Input } from '@/components/styled/Input';
-import { Text } from '@/components/styled/Text';
+import Text from '@/components/styled/Text';
 import Box from '@/components/styled/Box';
 import Flex from '@/components/styled/Flex';
-import { ImageCentered, RoundedImageWrapper } from '@/styles/commonStyle';
-import XButton from '@/components/buttons/XButton';
+import { ImageCentered } from '@/styles/commonStyle';
 import CustomPortalModal from '@/components/CustomPortalModal';
+import { IconButton } from '@/components/styled/IconButtonAndLink';
+import { colors } from '@/styles/colors';
+import FixedBottom from '@/components/FixedBottom';
+import Header from '@/components/headers/Header';
+import BackButton from '@/components/buttons/BackButton';
+import { FiTrash2 } from 'react-icons/fi';
+import ConfirmModal from '@/components/ConfirmModal';
 
 const schema = yup.object({
   nickname: yup
@@ -54,11 +59,11 @@ const schema = yup.object({
   address: yup.string().required('주소는 필수입니다.'),
   detailAddress: yup.string().required('상세 주소는 필수입니다.'),
   zipcode: yup.string().required('우편번호는 필수입니다.'),
-  body: yup.string(),
+  body: yup.string().max(1000, '소개는 최대 1000자를 초과할 수 없습니다.'),
   photo: yup.mixed<File | string>().nullable(),
-  possiblePetSpecies: yup.array(yup.string().required()),
-  possibleDays: yup.array(yup.string().required()),
-  possibleLocations: yup.array(yup.string().required()),
+  possiblePetSpecies: yup.array(yup.string().required('이 항목은 필수입니다.')),
+  possibleDays: yup.array(yup.string().required('이 항목은 필수입니다.')),
+  possibleLocations: yup.array(yup.string().required('이 항목은 필수입니다.')),
   possibleStartTime: yup.mixed<Dayjs>(),
   possibleEndTime: yup.mixed<Dayjs>(),
   deletePhoto: yup.string(),
@@ -83,10 +88,10 @@ type FormValues = {
 export default function EditMePage() {
   const navigate = useNavigate();
 
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [newLocation, setNewLocation] = useState<string>('');
-
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
+  const [isPostCodeModalOpen, setPostCodeModalOpen] = useState<boolean>(false);
+  const [newLocation, setNewLocation] = useState<string>('');
 
   const {
     register,
@@ -170,14 +175,18 @@ export default function EditMePage() {
     return typeof photo === 'string' ? photo : null;
   }, [photo, deletePhoto]);
 
-  const handleButtonClick = () => {
+  const onConfirmDelete = async () => {
+    await deleteTrigger();
+  };
+
+  const handleUploadButtonClick = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
   };
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
 
     if (file) {
       // 새 파일을 선택하면, 삭제 의도를 취소하고 새 파일을 photo 필드에 설정
@@ -203,7 +212,7 @@ export default function EditMePage() {
   };
 
   const onToggleModal = () => {
-    setIsModalOpen(true);
+    setPostCodeModalOpen(true);
   };
 
   const handleComplete = (data: PostcodeData) => {
@@ -216,7 +225,7 @@ export default function EditMePage() {
     setValue('address', address);
     setValue('zipcode', zonecode);
 
-    setIsModalOpen(false);
+    setPostCodeModalOpen(false);
   };
 
   const handlePetSpecies = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -289,28 +298,10 @@ export default function EditMePage() {
 
     // photo (File 인스턴스)는 별도로 formData에 추가
     if (photo && photo instanceof File) {
-      console.log('deletePhoto', deletePhoto);
-      console.log(photo);
       formData.append('file', photo);
     }
 
-    console.log(formattedData);
-
     await updateTrigger(formData);
-  };
-
-  const handleLogout = () => {
-    removeCookie('access_token');
-    removeCookie('refresh_token');
-    toast.success('로그아웃 했어요');
-    navigate('/');
-  };
-
-  const deleteAccount = async () => {
-    const isConfirmed = window.confirm('정말 탈퇴하시겠습니까?');
-    if (!isConfirmed) return;
-
-    await deleteTrigger();
   };
 
   useEffect(() => {
@@ -340,37 +331,57 @@ export default function EditMePage() {
 
   return (
     <>
-      <BackHeader title="회원 정보 수정" />
+      <Header
+        left={<BackButton />}
+        center={<Text size="lg">회원 정보 수정</Text>}
+        right={
+          <IconButton type="button" onClick={() => setDeleteModalOpen(true)}>
+            <FiTrash2 size="20px" />
+          </IconButton>
+        }
+      />
+
+      <ConfirmModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        onConfirm={onConfirmDelete}
+        title="아이디 삭제"
+      >
+        정말로 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.
+      </ConfirmModal>
+
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Box p="xl">
+        <Box p={40}>
+          <Flex direction="column" alignItems="center" gap="lg">
+            <div css={{ position: 'relative' }}>
+              <UserImageWrapper>
+                <ImageCentered src={previewURL || '/imgs/DefaultUserProfile.jpg'} alt="user_photo" />
+                <input
+                  id="photoInput"
+                  type="file"
+                  accept="image/*"
+                  ref={fileInputRef}
+                  onChange={handleImageChange}
+                  hidden
+                />
+              </UserImageWrapper>
+              {previewURL && (
+                <Absolute>
+                  <IconButton onClick={handleDeletePhoto} variant="fill" size="sm" bgColor={colors.red400}>
+                    <FaXmark size="16px" />
+                  </IconButton>
+                </Absolute>
+              )}
+            </div>
+
+            <Button type="button" onClick={handleUploadButtonClick}>
+              프로필 사진 선택
+            </Button>
+          </Flex>
+        </Box>
+
+        <Box p="lg">
           <Flex direction="column" gap="xl">
-            <Box p={40}>
-              <Flex direction="column" alignItems="center" gap="lg">
-                <Relative>
-                  <UserImageWrapper>
-                    <ImageCentered src={previewURL || '/imgs/DefaultUserProfile.jpg'} alt="Profile Preview" />
-                    <input
-                      id="photoInput"
-                      type="file"
-                      accept="image/*"
-                      ref={fileInputRef}
-                      onChange={handleImageChange}
-                      hidden
-                    />
-                  </UserImageWrapper>
-                  {previewURL && (
-                    <Absolute>
-                      <XButton onClick={handleDeletePhoto} />
-                    </Absolute>
-                  )}
-                </Relative>
-
-                <Button type="button" onClick={handleButtonClick}>
-                  프로필 사진 선택
-                </Button>
-              </Flex>
-            </Box>
-
             <InputWrapper>
               <label htmlFor="username">이름</label>
               <span id="username">{me?.username}</span>
@@ -416,8 +427,8 @@ export default function EditMePage() {
                 )}
               </Flex>
 
-              {isModalOpen && (
-                <CustomPortalModal onClose={() => setIsModalOpen(false)} style={{ width: '400px' }}>
+              {isPostCodeModalOpen && (
+                <CustomPortalModal onClose={() => setPostCodeModalOpen(false)} style={{ width: '400px' }}>
                   <CustomDaumPostcode width="100%" maxHeight={600} onComplete={handleComplete} />
                 </CustomPortalModal>
               )}
@@ -477,9 +488,14 @@ export default function EditMePage() {
                             <Text size="sm" color="white">
                               {location}
                             </Text>
-                            <Button type="button" onClick={() => handleDeleteLocation(location)} variant="icon">
-                              <FaXmark size="16px" color="red" />
-                            </Button>
+                            <IconButton
+                              type="button"
+                              onClick={() => handleDeleteLocation(location)}
+                              bgColor={colors.red500}
+                              shape="circle"
+                            >
+                              <FaXmark size="16px" />
+                            </IconButton>
                           </Flex>
                         </Box>
                       ))}
@@ -575,44 +591,36 @@ export default function EditMePage() {
           </Flex>
         </Box>
 
-        <Box p="xl">
-          <Flex direction="column" gap="md">
-            <Button disabled={isMutating} type="submit" variant="primary" size="lg" fullWidth>
-              {isLoading ? <Loading /> : <span>수정하기</span>}
-            </Button>
-            <Flex justifyContent="space-between">
-              <Button type="button" onClick={handleLogout} variant="secondary">
-                로그아웃
-              </Button>
-              <Button type="button" onClick={deleteAccount} variant="secondary">
-                회원 탈퇴
+        <FixedBottom hasSafeAreaPadding={true}>
+          <Box p="xl">
+            <Flex direction="column" gap="md">
+              <Button disabled={isMutating} type="submit" variant="primary" size="lg" fullWidth>
+                {isLoading ? <Spinner /> : <span>수정하기</span>}
               </Button>
             </Flex>
-          </Flex>
-        </Box>
+          </Box>
+        </FixedBottom>
       </form>
     </>
   );
 }
 
-const Relative = styled.div`
+const UserImageWrapper = styled.div`
   position: relative;
-`;
-
-const UserImageWrapper = styled(RoundedImageWrapper)`
-  width: 100px;
-  height: 100px;
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+  border-radius: ${({ theme }) => theme.radius.md};
 `;
 
 const Absolute = styled.div`
   position: absolute;
-  top: 0;
-  right: 0;
+  top: -12px;
+  right: -12px;
 `;
 
 export const InputWrapper = styled.div`
   display: flex;
-
   align-items: center;
   width: 100%;
 
@@ -637,7 +645,7 @@ const TextArea = styled.textarea`
   background-color: ${({ theme }) => theme.colors.background.input.primary};
   border: 1px solid ${({ theme }) => theme.colors.line.input.primary};
   border-radius: ${({ theme }) => theme.radius.md};
-  color: ${({ theme }) => theme.colors.text.active};
+  color: ${({ theme }) => theme.colors.text.primary};
   ${({ theme }) => theme.typeScale.base};
 
   &:hover {

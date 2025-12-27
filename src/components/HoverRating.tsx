@@ -67,5 +67,5 @@ const StyledRating = styled(Rating)`
 `;
 
 const StyledPiStar = styled(PiStar)`
-  color: ${({ theme }) => theme.colors.text.inactive};
+  color: ${({ theme }) => theme.colors.text.secondary};
 `;

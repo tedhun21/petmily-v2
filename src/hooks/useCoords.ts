@@ -7,12 +7,15 @@ export default function useCoords() {
 
   useEffect(() => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        setLatitude(position.coords.latitude);
-        setLongitude(position.coords.longitude);
-      });
-    } else {
-      setError('Geolocation is not supported by this browser.');
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setLatitude(position.coords.latitude);
+          setLongitude(position.coords.longitude);
+        },
+        (geoError) => {
+          setError(geoError.message);
+        },
+      );
     }
   }, []);
 

@@ -8,7 +8,7 @@ import { dateAgo } from '@/utils/date';
 import type { Review } from '@/types/review.type';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
-import { Text } from '@/components/styled/Text';
+import Text from '@/components/styled/Text';
 import Box from '@/components/styled/Box';
 import Flex from '@/components/styled/Flex';
 

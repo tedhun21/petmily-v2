@@ -5,7 +5,7 @@ import { selectNewMessagesByChatRoom } from '@/store/newMessageSlice';
 
 import styled from '@emotion/styled';
 import Flex from '@/components/styled/Flex';
-import { Text } from '@/components/styled/Text';
+import Text from '@/components/styled/Text';
 import { ImageCentered, RoundedImageWrapper } from '@/styles/commonStyle';
 import type { ChatMember, ChatRoom } from '@/types/chat.type';
 import { updatedAtAgo } from '@/utils/date';

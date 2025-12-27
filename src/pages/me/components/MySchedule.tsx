@@ -5,7 +5,7 @@ import { useInView } from 'framer-motion';
 import { useAuthSWRInfinite } from '@/hooks/authSWR';
 
 import { fetcher } from '@/api';
-import Loading from '@/components/Loading';
+import Spinner from '@/components/Spinner';
 import Flex from '@/components/styled/Flex';
 
 export default function MySchedule() {
@@ -32,7 +32,7 @@ export default function MySchedule() {
   if (isLoading) {
     return (
       <Flex justifyContent="center" alignItems="center">
-        <Loading color="#279EFF" />
+        <Spinner color="#279EFF" />
       </Flex>
     );
   }
@@ -54,7 +54,7 @@ export default function MySchedule() {
       {!isEnd && (
         <div ref={ref}>
           <Flex justifyContent="center" alignItems="center">
-            <Loading color="#279EFF" />
+            <Spinner color="#279EFF" />
           </Flex>
         </div>
       )}

@@ -20,7 +20,7 @@ export default function ReadOnlyRating({ value, size }: { value: number; size: s
 
 const StyledRating = styled(Rating)`
   & .MuiRating-iconFilled {
-    color: ${({ theme }) => theme.colors.text.highlight};
+    color: ${({ theme }) => theme.colors.text.accent};
   }
 
   & .MuiRating-decimal {
@@ -30,5 +30,5 @@ const StyledRating = styled(Rating)`
 `;
 
 const EmptyStarIcon = styled(PiStar)`
-  color: ${({ theme }) => theme.colors.text.inactive};
+  color: ${({ theme }) => theme.colors.text.secondary};
 `;

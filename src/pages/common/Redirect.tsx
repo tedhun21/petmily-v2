@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import { useAuthSWR, useAuthSWRMutation } from '@/hooks/authSWR';
 import { fetcher, updater } from '@/api';
 import { UserRole } from '@/types/user.type';
-import Loading from '@/components/Loading';
+import Spinner from '@/components/Spinner';
 import Flex from '@/components/styled/Flex';
 import type { RootState } from '@/store';
 
@@ -45,7 +45,7 @@ export default function RedirectPage() {
   }, [me, navigate]);
 
   if (!me && !error) {
-    return <Loading />;
+    return <Spinner />;
   }
 
   return (
@@ -77,7 +77,7 @@ const ImageButton = styled.button`
     transform: scale(1.01);
 
     & > div {
-      color: ${({ theme }) => theme.colors.text.highlight};
+      color: ${({ theme }) => theme.colors.text.accent};
       font-family: inherit;
       transition: all 0.2s linear;
       ${({ theme }) => theme.typeScale.xl};

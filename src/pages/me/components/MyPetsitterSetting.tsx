@@ -1,6 +1,6 @@
 import { PiCatBold, PiDogBold } from 'react-icons/pi';
 import styled from '@emotion/styled';
-import { Text } from '@/components/styled/Text';
+import Text from '@/components/styled/Text';
 import { PetSpecies } from '@/types/pet.type';
 import type { PetSpeciesType } from '@/types/pet.type';
 import { timeRange, weekdays } from '@/utils/date';

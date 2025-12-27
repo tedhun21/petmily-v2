@@ -30,7 +30,7 @@ export default function Maps({ reservation }: MapsProps) {
 
   // 로딩 상태 처리
   if (!geocode || !staticMaps) {
-    return <div>Loading...</div>;
+    return <div>Spinner...</div>;
   }
 
   const blobUrl = URL.createObjectURL(new Blob([staticMaps], { type: 'image/jpg,jpeg' }));

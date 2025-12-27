@@ -2,20 +2,22 @@ import { useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { createPortal } from 'react-dom';
 
-import { FaXmark } from 'react-icons/fa6';
-
-import { BoxInput, type FormValues, InputBox, Modal, XButton } from '../SearchBox';
-import LocationModal from './LocationModal';
 import { useSelector } from 'react-redux';
 import { ModalType } from '@/store/modalSlice';
 import type { RootState } from '@/store';
+
+import { FaXmark } from 'react-icons/fa6';
+
+import { BoxInput, type FormValues, InputBox, Modal } from '../SearchBox';
+import LocationModal from './LocationModal';
 import Flex from '@/components/styled/Flex';
 import useOutsideClickModal from '@/hooks/useOutsideClickModal';
-import { Text } from '@/components/styled/Text';
+import Text from '@/components/styled/Text';
+import { IconButton } from '@/components/styled/IconButtonAndLink';
 
 interface LocationBoxProps {
   handleBoxClick: (e: React.MouseEvent, modalType: ModalType) => void;
-  handleSetValue: (field: keyof FormValues, value: any) => void;
+  handleSetValue: (field: keyof FormValues, value: string) => void;
 }
 
 export default function LocationBox({ handleBoxClick, handleSetValue }: LocationBoxProps) {
@@ -46,9 +48,9 @@ export default function LocationBox({ handleBoxClick, handleSetValue }: Location
             <BoxInput id="location" placeholder="장소 추가" {...register('location')} autoComplete="off" />
           </Flex>
           {currentModal === ModalType.SEARCH_LOCATION && input?.length > 0 && (
-            <XButton type="button" onClick={handleInputRemove} css={{ flex: 0 }}>
+            <IconButton type="button" onClick={handleInputRemove}>
               <FaXmark size="12px" />
-            </XButton>
+            </IconButton>
           )}
         </Flex>
       </InputBox>

@@ -1,17 +1,17 @@
 import styled from '@emotion/styled';
-import { Button } from '@/components/styled/Button';
 import Flex from '@/components/styled/Flex';
-import { Text } from '@/components/styled/Text';
+import Text from '@/components/styled/Text';
 import type { Notification } from '@/types/notification.type';
 import { dateAgo, dateFormat } from '@/utils/date';
 import Box from '@/components/styled/Box';
+import Button from '@/components/styled/Button';
 
-interface NotiItemProps {
+interface IProps {
   notification: Notification;
   onReadClick: (id: number) => void;
 }
 
-export default function NotiItem({ notification, onReadClick }: NotiItemProps) {
+export default function NotiItem({ notification, onReadClick }: IProps) {
   const isRead = notification.readStatus[0].isRead;
 
   const handleClick = () => {

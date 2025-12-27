@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { toast } from 'react-toastify';
@@ -7,12 +7,13 @@ import { useForm } from 'react-hook-form';
 import { useAuthSWR, useAuthSWRMutation } from '@/hooks/authSWR';
 import { FaXmark } from 'react-icons/fa6';
 
-import Loading from '@/components/Loading';
+import Spinner from '@/components/Spinner';
 import { fetcher, poster, updater } from '@/api';
-import { BottomFixed, Float, Title } from '@/styles/commonStyle';
-import { Button } from '@/components/styled/Button';
-import { Text } from '@/components/styled/Text';
+import { Title } from '@/styles/commonStyle';
+import Text from '@/components/styled/Text';
 import Flex from '@/components/styled/Flex';
+import FixedBottom from '@/components/FixedBottom';
+import Button from '@/components/styled/Button';
 
 interface JournalFormValue {
   body: string;
@@ -62,7 +63,7 @@ export default function JournalPage() {
     }
   };
 
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newFiles = event.target.files ? Array.from(event.target.files) : [];
     const totalFiles = selectedFiles.length + newFiles.length;
 
@@ -200,19 +201,17 @@ export default function JournalPage() {
           </Flex>
         </Flex>
 
-        <BottomFixed>
-          <FloatButtonContainer>
-            <Button type="submit" disabled={isCreateMutating || isUpdateMutating} size="lg" borderRadius="lg" fullWidth>
-              {isCreateMutating || isUpdateMutating ? (
-                <Flex justifyContent="center" alignItems="center">
-                  <Loading />
-                </Flex>
-              ) : (
-                <span>{journal ? '케어일지 수정' : '케어일지 등록'}</span>
-              )}
-            </Button>
-          </FloatButtonContainer>
-        </BottomFixed>
+        <FixedBottom>
+          <Button type="submit" disabled={isCreateMutating || isUpdateMutating} size="lg" borderRadius="lg" fullWidth>
+            {isCreateMutating || isUpdateMutating ? (
+              <Flex justifyContent="center" alignItems="center">
+                <Spinner />
+              </Flex>
+            ) : (
+              <span>{journal ? '케어일지 수정' : '케어일지 등록'}</span>
+            )}
+          </Button>
+        </FixedBottom>
       </form>
     </>
   );
@@ -224,7 +223,7 @@ const TextArea = styled.textarea`
   padding: ${({ theme }) => theme.space.sm};
   background-color: ${({ theme }) => theme.colors.background.input.primary};
   border-radius: ${({ theme }) => theme.radius.md};
-  color: ${({ theme }) => theme.colors.text.active};
+  color: ${({ theme }) => theme.colors.text.primary};
   ${({ theme }) => theme.typeScale.sm};
 
   &:hover {
@@ -260,12 +259,4 @@ const RemoveButton = styled.button`
   height: ${({ theme }) => theme.space['2xl']};
   background-color: ${({ theme }) => theme.colors.background.box.accent.primary};
   border-radius: 50%;
-`;
-
-const FloatButtonContainer = styled(Float)`
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  padding: ${({ theme }) => theme.space.xl};
-  background-color: transparent;
 `;

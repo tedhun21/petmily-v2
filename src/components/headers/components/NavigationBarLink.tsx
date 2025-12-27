@@ -26,10 +26,10 @@ export default function NavigationBarLink({ item }: IProps) {
 const CustomLink = styled(Link)<{ $selected: boolean }>`
   cursor: ${({ $selected }) => ($selected ? 'default' : 'pointer')};
 
-  color: ${({ $selected, theme }) => ($selected ? theme.colors.text.active : theme.colors.text.inactive)};
+  color: ${({ $selected, theme }) => ($selected ? theme.colors.text.primary : theme.colors.text.secondary)};
   font-weight: ${({ $selected, theme }) => ($selected ? theme.fontWeight.medium : theme.fontWeight.normal)};
 
   &:hover:not(:disabled) {
-    color: ${({ $selected, theme }) => ($selected ? theme.colors.text.active : theme.colors.text.highlight)};
+    color: ${({ $selected, theme }) => ($selected ? theme.colors.text.primary : theme.colors.text.accent)};
   }
 `;

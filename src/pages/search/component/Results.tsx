@@ -6,7 +6,7 @@ import { useInView } from 'framer-motion';
 
 import { fetcher } from '@/api';
 import Result from './Result';
-import Loading from '@/components/Loading';
+import Spinner from '@/components/Spinner';
 import Box from '@/components/styled/Box';
 import Flex from '@/components/styled/Flex';
 import type { Petsitter } from '@/types/user.type';
@@ -45,7 +45,7 @@ export default function Results() {
   if (isLoading) {
     return (
       <Flex justifyContent="center" alignItems="center">
-        <Loading color="#279EFF" />
+        <Spinner color="#279EFF" />
       </Flex>
     );
   }
@@ -68,7 +68,7 @@ export default function Results() {
 
       {data && !isEnd && (
         <Flex justifyContent="center" alignItems="center">
-          <Loading color="#279EFF" />
+          <Spinner color="#279EFF" />
         </Flex>
       )}
     </Box>

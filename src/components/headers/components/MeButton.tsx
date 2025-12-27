@@ -3,7 +3,7 @@ import { useRef } from 'react';
 import { toast } from 'react-toastify';
 import { createPortal } from 'react-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { useAuthSWRMutation } from '@/hooks/authSWR';
 import styled from '@emotion/styled';
@@ -15,13 +15,14 @@ import { clearAccessToken } from '@/store/authSlice';
 import useOutsideClickModal from '@/hooks/useOutsideClickModal';
 import { closeModal, ModalType, openModal } from '@/store/modalSlice';
 import { ImageCentered, RoundedImageWrapper } from '@/styles/commonStyle';
-import { Button } from '@/components/styled/Button';
+import Button from '@/components/styled/Button';
+import Link from '@/components/styled/Link';
 
-interface MeButtonProps {
+interface IProps {
   me?: User;
 }
 
-export default function MeButton({ me }: MeButtonProps) {
+export default function MeButton({ me }: IProps) {
   const userContainer = document.getElementById('user-container');
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -31,7 +32,6 @@ export default function MeButton({ me }: MeButtonProps) {
   const modalRef = useRef<HTMLDivElement | null>(null);
   useOutsideClickModal(modalRef);
 
-  // 로그아웃
   const { trigger } = useAuthSWRMutation('/auth/logout', poster, {
     onSuccess: () => {
       dispatch(clearAccessToken());
@@ -46,7 +46,7 @@ export default function MeButton({ me }: MeButtonProps) {
   });
 
   const toggleMenu = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation(); // 이벤트 전파를 막음
+    e.stopPropagation();
 
     if (currentModal === ModalType.ME_BUTTON) {
       dispatch(closeModal());
@@ -79,8 +79,7 @@ export default function MeButton({ me }: MeButtonProps) {
         createPortal(
           <LoginNavModal ref={modalRef}>
             <Nav>
-              {/* TODO: Button style link? */}
-              <Link to="/me" onClick={handleMenuClick} type="text">
+              <Link to="/me" onClick={handleMenuClick} variant="button" btnVariant="transparent" borderRadius="sm">
                 내 정보
               </Link>
               <Button type="button" onClick={handleLogout} variant="transparent" borderRadius="sm">

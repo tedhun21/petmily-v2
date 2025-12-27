@@ -1,17 +1,17 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import dayjs from 'dayjs';
 import styled from '@emotion/styled';
 import { ko } from 'date-fns/locale';
 
 import { type FormValues, ModalLayOut } from '../SearchBox';
-import dayjs from 'dayjs';
 
-interface DateModalProps {
-  handleSetValue: (field: keyof FormValues, value: any) => void;
+interface IProps {
+  handleSetValue: (field: keyof FormValues, value: string) => void;
 }
 
-export default function DateModal({ handleSetValue }: DateModalProps) {
+export default function DateModal({ handleSetValue }: IProps) {
   const { watch, control } = useFormContext();
   const selectedDate = watch('date');
 
@@ -27,8 +27,8 @@ export default function DateModal({ handleSetValue }: DateModalProps) {
               dateFormatCalendar="yyyy년 MM월"
               selected={selectedDate ? new Date(selectedDate) : null}
               onChange={(date: Date | null) => {
-                field.onChange(date ? dayjs(date) : null);
-                handleSetValue('date', dayjs(date));
+                field.onChange(date ? dayjs(date).format('YYYY-MM-DD') : null);
+                handleSetValue('date', dayjs(date).format('YYYY-MM-DD'));
               }}
               minDate={new Date()}
               maxDate={new Date(new Date().setMonth(new Date().getMonth() + 2))}
@@ -65,15 +65,15 @@ const DatepickerWrapper = styled.div`
           color: inherit;
           ${({ theme }) => theme.typeScale.base};
         }
+      }
 
-        .react-datepicker__day-names {
-          display: flex;
-          justify-content: center;
+      .react-datepicker__day-names {
+        display: flex;
+        justify-content: center;
 
-          > div {
-            width: 46px;
-            color: inherit;
-          }
+        > div {
+          width: 46px;
+          color: white;
         }
       }
 
@@ -94,7 +94,7 @@ const DatepickerWrapper = styled.div`
           .react-datepicker__day--selected,
           .react-datepicker__day--in-range {
             /* 선택된 날짜 */
-            background-color: ${({ theme }) => theme.colors.background.highlight} !important;
+            background-color: ${({ theme }) => theme.colors.background.accent} !important;
             border-radius: 50%;
             color: ${({ theme }) => theme.colors.text.white};
           }
@@ -106,7 +106,7 @@ const DatepickerWrapper = styled.div`
 
           .react-datepicker__day--disabled {
             /* 비활성화된 날짜 */
-            color: ${({ theme }) => theme.colors.text.inactive};
+            color: ${({ theme }) => theme.colors.text.secondary};
             text-decoration: line-through;
             cursor: default;
           }

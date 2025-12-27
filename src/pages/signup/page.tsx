@@ -5,21 +5,23 @@ import { useForm } from 'react-hook-form';
 import useSWRMutation from 'swr/mutation';
 import styled from '@emotion/styled';
 import GoogleOAuthButton from '@/components/buttons/OAuthButton';
+import { toast } from 'react-toastify';
+
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import CustomPortalModal from '@/components/CustomPortalModal';
 import CustomDaumPostcode, { type PostcodeData } from '@/components/CustomDaumPostcode';
-import { Button } from '@/components/styled/Button';
+import Button from '@/components/styled/Button';
 import { Input } from '@/components/styled/Input';
-import { Text } from '@/components/styled/Text';
+import Text from '@/components/styled/Text';
 import Box from '@/components/styled/Box';
 import Flex from '@/components/styled/Flex';
 import { Divider } from '@/styles/commonStyle';
 import { poster } from '@/api';
-import { toast } from 'react-toastify';
-import BackHeader from '@/components/headers/BackHeader';
-import Loading from '@/components/Loading';
+
+import Spinner from '@/components/Spinner';
+import Header from '@/components/headers/Header';
 
 const schema = yup.object().shape({
   username: yup
@@ -164,7 +166,7 @@ export default function SignupPage() {
 
   return (
     <>
-      <BackHeader />
+      <Header />
 
       <main>
         <Flex direction="column" alignItems="center" gap="xl">
@@ -314,7 +316,7 @@ export default function SignupPage() {
 
               <Flex direction="column" gap="md">
                 <Button type="submit" disabled={isMutating} variant="primary" size="md">
-                  {isMutating ? <Loading /> : '펫밀리 등록'}
+                  {isMutating ? <Spinner /> : '펫밀리 등록'}
                 </Button>
 
                 <Flex alignItems="center" gap="sm">

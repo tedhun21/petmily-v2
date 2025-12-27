@@ -6,7 +6,7 @@ import { formatStatus } from '@/utils/misc';
 import { dayFormat, timeRange } from '@/utils/date';
 import type { Reservation } from '@/types/reservation.type';
 import type { Pet } from '@/types/pet.type';
-import { Text } from '@/components/styled/Text';
+import Text from '@/components/styled/Text';
 import Flex from '@/components/styled/Flex';
 import Box from '@/components/styled/Box';
 

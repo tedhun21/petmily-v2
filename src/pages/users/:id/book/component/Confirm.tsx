@@ -4,8 +4,8 @@ import { FaRegCircleCheck, FaCircleCheck } from 'react-icons/fa6';
 import { Modal } from '@mui/material';
 
 import { SubTitle, Title } from '@/styles/commonStyle';
-import { Text } from '@/components/styled/Text';
-import { Button } from '@/components/styled/Button';
+import Text from '@/components/styled/Text';
+import Button from '@/components/styled/Button';
 import Flex from '@/components/styled/Flex';
 
 interface ConfirmProps {
@@ -116,8 +116,8 @@ const ConfirmContainer = styled.div`
   justify-content: center;
   align-items: center;
   padding: ${({ theme }) => theme.space.sm};
-  border-top: 1px solid ${({ theme }) => theme.colors.text.inactive};
-  border-bottom: 1px solid ${({ theme }) => theme.colors.text.inactive};
+  border-top: 1px solid ${({ theme }) => theme.colors.text.secondary};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.text.secondary};
   gap: ${({ theme }) => theme.space.sm};
 `;
 
@@ -134,7 +134,7 @@ const TermsContainer = styled.div`
   padding: ${({ theme }) => theme.space['2xl']};
   background-color: ${({ theme }) => theme.colors.background.box.default.primary};
   border-radius: ${({ theme }) => theme.radius.sm};
-  color: ${({ theme }) => theme.colors.text.active};
+  color: ${({ theme }) => theme.colors.text.primary};
   transform: translate(-50%, -50%);
   gap: ${({ theme }) => theme.space.md};
 `;
@@ -158,7 +158,7 @@ const Item = styled.li`
 
 const SubItem = styled.span`
   padding-left: ${({ theme }) => theme.space.xl};
-  color: ${({ theme }) => theme.colors.text.inactive};
+  color: ${({ theme }) => theme.colors.text.secondary};
   ${({ theme }) => theme.typeScale.xs};
 `;
 
@@ -169,7 +169,7 @@ const Check = styled.div`
 `;
 
 const ConfirmText = styled.span<{ $isChecked: boolean }>`
-  color: ${({ $isChecked, theme }) => ($isChecked ? theme.colors.text.highlight : theme.colors.text.inactive)};
+  color: ${({ $isChecked, theme }) => ($isChecked ? theme.colors.text.accent : theme.colors.text.secondary)};
   ${({ theme }) => theme.typeScale.base};
 `;
 

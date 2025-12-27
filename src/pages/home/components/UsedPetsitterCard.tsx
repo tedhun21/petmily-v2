@@ -5,7 +5,7 @@ import { PiStarFill } from 'react-icons/pi';
 import { timeRange, weekdays } from '@/utils/date';
 import { ImageCentered, RoundedImageWrapper } from '@/styles/commonStyle';
 import type { Petsitter } from '@/types/user.type';
-import { Text } from '@/components/styled/Text';
+import Text from '@/components/styled/Text';
 import Flex from '@/components/styled/Flex';
 
 interface IProps {

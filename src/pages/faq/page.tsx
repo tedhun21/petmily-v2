@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import { Divider } from '@/styles/commonStyle';
 import Collapse from '@/components/Collapse';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa6';
-import BackHeader from '@/components/headers/BackHeader';
+import Header from '@/components/headers/Header';
 
 export default function FaQPage() {
   const [open, setOpen] = useState<{ [key: string]: boolean }>({});
@@ -15,7 +15,7 @@ export default function FaQPage() {
 
   return (
     <>
-      <BackHeader title="자주 묻는 질문" />
+      <Header center="자주 묻는 질문" />
       <main>
         <section>
           <Question>1. 기본예절</Question>
@@ -710,7 +710,7 @@ export default function FaQPage() {
 
 const Question = styled.h1`
   padding: ${({ theme }) => theme.space.sm};
-  color: ${({ theme }) => theme.colors.text.highlight};
+  color: ${({ theme }) => theme.colors.text.accent};
   ${({ theme }) => theme.typeScale.lg};
 `;
 
@@ -741,7 +741,7 @@ const ListTitle = styled.div`
   ${({ theme }) => theme.typeScale.base};
 
   span:first-child {
-    color: ${({ theme }) => theme.colors.text.highlight};
+    color: ${({ theme }) => theme.colors.text.accent};
   }
 `;
 

@@ -3,11 +3,11 @@ import { useNavigate } from 'react-router-dom';
 
 import styled from '@emotion/styled';
 
-import Loading from '@/components/Loading';
+import Spinner from '@/components/Spinner';
 import { ReservationStatus, type Reservation } from '@/types/reservation.type';
 import { UserRole, type UserRoleType } from '@/types/user.type';
 import { SocketContext } from '@/components/contexts/SocketContext';
-import { Button } from '@/components/styled/Button';
+import Button from '@/components/styled/Button';
 
 interface ProgressButtonProps {
   meRole: UserRoleType;
@@ -59,14 +59,14 @@ export default function ProgressButton({ meRole, reservation }: ProgressButtonPr
         case ReservationStatus.PENDING:
           return (
             <Button type="button" disabled={isLoading} onClick={handleAccept} size="lg">
-              {isLoading ? <Loading /> : '수락'}
+              {isLoading ? <Spinner /> : '수락'}
             </Button>
           );
         case ReservationStatus.ACCEPTED:
           // CONFIRMED => "FINISHED"
           return (
             <Button type="button" disabled={isLoading} onClick={handleCancel} size="lg">
-              {isLoading ? <Loading /> : '취소'}
+              {isLoading ? <Spinner /> : '취소'}
             </Button>
           );
         case ReservationStatus.CANCELED:
@@ -96,13 +96,13 @@ export default function ProgressButton({ meRole, reservation }: ProgressButtonPr
           // "PENDING" => "CANCELED"
           return (
             <Button type="button" disabled={isLoading} onClick={handleCancel} variant="primary" size="lg">
-              {isLoading ? <Loading /> : '취소'}
+              {isLoading ? <Spinner /> : '취소'}
             </Button>
           );
         case ReservationStatus.ACCEPTED:
           return (
             <Button type="button" disabled onClick={handleCancel} size="lg">
-              {isLoading ? <Loading /> : '진행중'}
+              {isLoading ? <Spinner /> : '진행중'}
             </Button>
           );
         case ReservationStatus.CANCELED:

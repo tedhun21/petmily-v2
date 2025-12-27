@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { FaRegPaperPlane } from 'react-icons/fa6';
 
 import PawButton from './PawButton';
-import { Text } from '@/components/styled/Text';
+import Text from '@/components/styled/Text';
 import Flex from '@/components/styled/Flex';
 
 interface IProps {

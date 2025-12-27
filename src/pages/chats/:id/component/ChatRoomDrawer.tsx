@@ -6,8 +6,8 @@ import { Link } from 'react-router-dom';
 import { FaXmark } from 'react-icons/fa6';
 import type { ChatMember } from '@/types/chat.type';
 import { useChat } from '../contexts/ChatProvider';
-import { Button } from '@/components/styled/Button';
-import { Text } from '@/components/styled/Text';
+import Button from '@/components/styled/Button';
+import Text from '@/components/styled/Text';
 import Flex from '@/components/styled/Flex';
 import Box from '@/components/styled/Box';
 

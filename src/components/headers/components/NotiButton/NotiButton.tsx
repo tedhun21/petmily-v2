@@ -10,7 +10,7 @@ import type { RootState } from '@/store';
 import useOutsideClickModal from '@/hooks/useOutsideClickModal';
 import { closeModal, ModalType, openModal } from '@/store/modalSlice';
 import NotiModal from './components/NotiModal';
-import { Button } from '@/components/styled/Button';
+import { IconButton } from '@/components/styled/IconButtonAndLink';
 
 export default function NotiButton() {
   const dispatch = useDispatch();
@@ -20,7 +20,7 @@ export default function NotiButton() {
 
   const { currentModal } = useSelector((state: RootState) => state.modal);
 
-  const toggleNoti = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const toggleNoti = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (currentModal === ModalType.NOTIFICATION) {
       dispatch(closeModal());
@@ -31,9 +31,9 @@ export default function NotiButton() {
 
   return (
     <NotiContaier id="noti-container">
-      <Button type="button" onClick={toggleNoti} variant="icon" borderRadius="circle">
+      <IconButton type="button" onClick={toggleNoti}>
         <IoNotificationsOutline size="24px" />
-      </Button>
+      </IconButton>
       {currentModal === ModalType.NOTIFICATION &&
         notiContainer &&
         createPortal(

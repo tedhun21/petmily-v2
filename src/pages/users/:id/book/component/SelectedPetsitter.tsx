@@ -7,7 +7,7 @@ import { weekdays } from '@/utils/date';
 import { Divider, ImageCentered, RoundedImageWrapper } from '@/styles/commonStyle';
 import type { Petsitter } from '@/types/user.type';
 import type { DayOfWeekType } from '@/types/common.type';
-import { Text } from '@/components/styled/Text';
+import Text from '@/components/styled/Text';
 import Box from '@/components/styled/Box';
 import Flex from '@/components/styled/Flex';
 

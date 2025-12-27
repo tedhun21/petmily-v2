@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
 import { API_URL } from '@/config';
-import { Button, type ButtonProps } from '../styled/Button';
-import { Text } from '@/components/styled/Text';
+import Text from '@/components/styled/Text';
+import Button from '../styled/Button';
 
-interface GoogleOAuthButtonProps extends ButtonProps {
+interface GoogleOAuthButtonProps {
   children: React.ReactNode;
 }
 
@@ -14,7 +14,7 @@ export default function GoogleOAuthButton({ children }: GoogleOAuthButtonProps) 
   return (
     <GoogleOAuthButtonStyle type="button" onClick={handleGooleOAuth} variant="secondary" fullWidth>
       <GoogleImage src="/imgs/GoogleLogo.svg" alt="google logo" width="24" />
-      <Text size="base" color="active">
+      <Text size="base" color="primary">
         {children}
       </Text>
     </GoogleOAuthButtonStyle>

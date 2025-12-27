@@ -5,13 +5,14 @@ import { FaChevronDown } from 'react-icons/fa6';
 import { ImageCentered, RoundedImageWrapper } from '@/styles/commonStyle';
 
 import MessageList from './MessageList';
-import Loading from '@/components/Loading';
+import Spinner from '@/components/Spinner';
 import { useChat } from '../contexts/ChatProvider';
 import { useChatUIEffects } from '../hooks/useChatUIEffects';
-import { Button } from '@/components/styled/Button';
-import { Text } from '@/components/styled/Text';
+import Button from '@/components/styled/Button';
+import Text from '@/components/styled/Text';
 import Box from '@/components/styled/Box';
 import Flex from '@/components/styled/Flex';
+import { IconButton } from '@/components/styled/IconButtonAndLink';
 
 export default function ChatContainer() {
   const {
@@ -39,7 +40,7 @@ export default function ChatContainer() {
     <div ref={chatRef}>
       {isLoading && messages.length === 0 ? (
         <Flex justifyContent="center" alignItems="center">
-          <Loading />
+          <Spinner />
         </Flex>
       ) : !isLoading && messages.length > 0 ? (
         <>
@@ -49,14 +50,9 @@ export default function ChatContainer() {
               {downButtonState.state === 'default' && (
                 <Box pb="sm">
                   <Flex justifyContent="center" alignItems="center">
-                    <Button
-                      type="button"
-                      onClick={() => scrollToBottom({ behavior: 'smooth' })}
-                      variant="icon"
-                      borderRadius="circle"
-                    >
+                    <IconButton onClick={() => scrollToBottom({ behavior: 'smooth' })} variant="clear">
                       <FaChevronDown size="20px" />
-                    </Button>
+                    </IconButton>
                   </Flex>
                 </Box>
               )}

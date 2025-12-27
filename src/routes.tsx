@@ -16,8 +16,8 @@ import ReviewPage from '@/pages/cares/:id/review/page';
 import JournalPage from '@/pages/cares/:id/journal/page';
 import MyPage from '@/pages/me/page';
 import EditMePage from '@/pages/me/edit/page';
-import CreatePetPage from '@/pages/me/pet/register/page';
-import EditPetPage from '@/pages/me/pet/:id/edit/page';
+import CreatePetPage from '@/pages/me/pets/register/page';
+import EditPetPage from '@/pages/me/pets/:id/edit/page';
 import ProfilePage from '@/pages/users/:id/page';
 import BookPage from '@/pages/users/:id/book/page';
 
@@ -44,8 +44,8 @@ export const routes = [
       { path: 'cares/:id/maps', element: <MapsPage /> },
       { path: 'me', element: <MyPage /> },
       { path: 'me/edit', element: <EditMePage /> },
-      { path: 'me/pet/register', element: <CreatePetPage /> },
-      { path: 'me/pet/:id/edit', element: <EditPetPage /> },
+      { path: 'me/pets/register', element: <CreatePetPage /> },
+      { path: 'me/pets/:id/edit', element: <EditPetPage /> },
       { path: 'users/:id', element: <ProfilePage /> },
       { path: 'users/:id/book', element: <BookPage /> },
       { path: 'auth/connect/google/callback', element: <RedirectPage /> },

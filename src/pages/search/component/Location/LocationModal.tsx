@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import useSWR from 'swr';
-import styled from '@emotion/styled';
 import { useFormContext } from 'react-hook-form';
 
 import { fetcher } from '@/api';
@@ -10,27 +9,26 @@ import { Divider } from '@/styles/commonStyle';
 import RecentSearches from './RecentSearches';
 import SuggestLocations from './SuggestLocations';
 import LocationCapsuleContainer from './LocationCapsuleContainer';
-import Loading from '@/components/Loading';
+import Spinner from '@/components/Spinner';
 import { ModalLayOut, HalfModalLayOut, type FormValues } from '@/pages/search/component/SearchBox';
 import { getRecentSearches } from '@/utils/localStorage';
-import { Text } from '@/components/styled/Text';
+import Text from '@/components/styled/Text';
 import Box from '@/components/styled/Box';
 import Flex from '@/components/styled/Flex';
 
 interface LocationModalProps {
-  handleSetValue: (field: keyof FormValues, value: any) => void;
+  handleSetValue: (field: keyof FormValues, value: string) => void;
 }
 
 export default function LocationModal({ handleSetValue }: LocationModalProps) {
   const { getValues, watch } = useFormContext();
-  // 입력값을 가져오고 디바운스 처리 (빈 문자열이면 '')
   const inputValue = watch('location') || '';
   const debouncedInput = useDebounceValue(inputValue, 500);
 
   // 이전에 선택했던 위치 (예: URL에서 가져온 값 혹은 이전 입력값)
   const [selectedLocation, setSelectedLocation] = useState(getValues('location') || '');
-  // 최근 검색어 localStorage에서 불러오기
-  const [recentSearches, setRecentSearches] = useState([]);
+
+  const [recentSearches, setRecentSearches] = useState(getRecentSearches('recentSearches'));
 
   // debouncedInput과 선택된 위치가 다르면, 검색을 수행해야 한다.
   const shouldFetchSuggestions = debouncedInput !== selectedLocation;
@@ -43,16 +41,11 @@ export default function LocationModal({ handleSetValue }: LocationModalProps) {
 
   const { data: countLocations } = useSWR('/search/location-count?size=12', fetcher);
 
-  const handleLocationClick = (e: React.MouseEvent, searchName: string) => {
-    e.stopPropagation();
+  const handleLocationClick = (searchName: string) => {
     setSelectedLocation(searchName);
     // 선택하면 입력값과 달라진 상태를 초기화해 불필요한 재검색을 막음
     handleSetValue('location', searchName);
   };
-
-  useEffect(() => {
-    setRecentSearches(getRecentSearches('recentSearches'));
-  }, []);
 
   return (
     <>
@@ -60,7 +53,7 @@ export default function LocationModal({ handleSetValue }: LocationModalProps) {
         <HalfModalLayOut>
           {isSuggestDataLoading ? (
             <Box>
-              <Loading />
+              <Spinner />
             </Box>
           ) : (
             <SuggestLocations data={suggestData} handleLocationClick={handleLocationClick} />
@@ -70,13 +63,17 @@ export default function LocationModal({ handleSetValue }: LocationModalProps) {
         <ModalLayOut>
           <Flex gap="sm">
             {recentSearches?.length > 0 && (
-              <RecentContainer>
-                <RecentWrapper>
+              <Flex gap="xs">
+                <Flex direction="column" gap="xl">
                   <Text size="xs">최근 검색 내역</Text>
-                  <RecentSearches data={recentSearches} setRecentSearches={setRecentSearches} />
-                </RecentWrapper>
+                  <RecentSearches
+                    data={recentSearches}
+                    handleLocationClick={handleLocationClick}
+                    setRecentSearches={setRecentSearches}
+                  />
+                </Flex>
                 <Divider $orientation="vertical" $thickness="1px" />
-              </RecentContainer>
+              </Flex>
             )}
             {countLocations?.length > 0 && (
               <LocationCapsuleContainer data={countLocations} handleLocationClick={handleLocationClick} />
@@ -87,18 +84,3 @@ export default function LocationModal({ handleSetValue }: LocationModalProps) {
     </>
   );
 }
-
-// TODO
-const RecentContainer = styled.div`
-  display: flex;
-  flex: 0 0 auto;
-  gap: ${({ theme }) => theme.space.xs};
-`;
-
-// TODO
-const RecentWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  gap: ${({ theme }) => theme.space.xl};
-`;

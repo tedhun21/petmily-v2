@@ -1,5 +1,5 @@
 import dayjs, { Dayjs } from 'dayjs';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useForm, useWatch } from 'react-hook-form';
 import useSWR from 'swr';
 
 import styled from '@emotion/styled';
@@ -8,15 +8,14 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 
 import { Title } from '@/styles/commonStyle';
-import { reservationDisableDate, timeOptions } from '@/utils/date';
+import { isTimeBetween, reservationDisableDate, timeOptions } from '@/utils/date';
 import { fetcher } from '@/api';
 import type { Petsitter } from '@/types/user.type';
 import { DayOfWeek, type DayOfWeekType } from '@/types/common.type';
 import type { Reservation } from '@/types/reservation.type';
-import Box from '@/components/styled/Box';
 import Flex from '@/components/styled/Flex';
 
-interface PossibleDateProps {
+interface IProps {
   petsitter?: Petsitter;
 }
 
@@ -26,8 +25,8 @@ interface IDateForm {
   endTime: string | null;
 }
 
-export default function PossibleDate({ petsitter }: PossibleDateProps) {
-  const { watch, setValue, control } = useForm<IDateForm>({
+export default function PossibleDate({ petsitter }: IProps) {
+  const { setValue, control } = useForm<IDateForm>({
     defaultValues: {
       date: null,
       startTime: null,
@@ -38,9 +37,9 @@ export default function PossibleDate({ petsitter }: PossibleDateProps) {
   const possibleStartTimeDayjs = petsitter?.possibleStartTime ? dayjs(petsitter.possibleStartTime, 'HH:mm:ss') : null;
   const possibleEndTimeDayjs = petsitter?.possibleEndTime ? dayjs(petsitter.possibleEndTime, 'HH:mm:ss') : null;
 
-  const date = watch('date');
-  const startTime = watch('startTime');
-  const endTime = watch('endTime');
+  const date = useWatch({ control, name: 'date', defaultValue: null });
+  const startTime = useWatch({ control, name: 'startTime', defaultValue: null });
+  const endTime = useWatch({ control, name: 'endTime', defaultValue: null });
 
   const { data } = useSWR(
     date ? `/reservations/petsitter/${petsitter?.id}?date=${dayjs(date).format('YYYY-MM-DD')}` : null,
@@ -133,17 +132,6 @@ export default function PossibleDate({ petsitter }: PossibleDateProps) {
     return false; // 위 조건에 해당하지 않으면 활성화
   };
 
-  const isTimeBetween = (time: string) => {
-    if (!startTime || !endTime) return false;
-
-    const startTimeDayjs = dayjs(startTime, 'HH:mm');
-    const endTimeDayjs = dayjs(endTime, 'HH:mm');
-    const timeDayjs = dayjs(time, 'HH:mm');
-
-    // 선택된 시간 범위 내에 포함되는지 확인
-    return timeDayjs.isBetween(startTimeDayjs, endTimeDayjs, 'minute', '[]');
-  };
-
   const isDateDisabled = (day: Dayjs | null): boolean => {
     if (!day) return false;
 
@@ -178,7 +166,7 @@ export default function PossibleDate({ petsitter }: PossibleDateProps) {
           name="date"
           control={control}
           render={({ field }) => (
-            <StyledDatePicker {...field} shouldDisableDate={(value) => isDateDisabled(value as Dayjs)} />
+            <StyledDatePicker {...field} shouldDisableDate={(value: Dayjs) => isDateDisabled(value)} />
           )}
         />
       </LocalizationProvider>
@@ -200,7 +188,7 @@ export default function PossibleDate({ petsitter }: PossibleDateProps) {
                 {timeOptions().map((time: string) => {
                   const isSelected = startTime === time || endTime === time;
                   const disabled = isTimeDisabled(time);
-                  const isBetween = isTimeBetween(time);
+                  const isBetween = isTimeBetween(time, startTime, endTime, 'minute', '()');
 
                   return (
                     <ButtonWrapper key={time} disabled={disabled}>
@@ -272,7 +260,7 @@ const ButtonWrapper = styled.div<{ disabled: boolean }>`
   border-radius: ${({ theme }) => theme.radius.sm};
 
   &:hover {
-    border: 1px solid ${({ theme, disabled }) => (disabled ? 'none' : theme.colors.line.box.highlight)};
+    border: 1px solid ${({ theme, disabled }) => (disabled ? 'none' : theme.colors.line.box.active)};
   }
 
   &:hover div {
@@ -311,8 +299,8 @@ const TimeText = styled.span<{
     $isSelected || $isBetween
       ? theme.colors.text.white
       : disabled
-        ? theme.colors.text.inactive
-        : theme.colors.text.active};
+        ? theme.colors.text.secondary
+        : theme.colors.text.primary};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
   text-decoration: ${({ disabled }) => (disabled ? 'line-through' : 'none')};
 `;

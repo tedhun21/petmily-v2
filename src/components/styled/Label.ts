@@ -8,16 +8,17 @@ type Size = 'sm' | 'md' | 'lg';
 type BorderRadius = 'sm' | 'md' | 'lg' | 'circle';
 
 interface LabelProps {
+  variant?: 'clear';
   color?: Color;
   size?: Size;
   borderRadius?: BorderRadius;
 }
 
-const getColor = (theme: Theme, color: Color) => {
+const colorStyles = (theme: Theme, color: Color) => {
   switch (color) {
     case 'blue':
       return css`
-        ${theme.colors.background.highlight};
+        ${theme.colors.background.accent};
       `;
     case 'grey':
       return css`
@@ -26,7 +27,7 @@ const getColor = (theme: Theme, color: Color) => {
   }
 };
 
-const getSizeStyles = (theme: Theme, size: Size) => {
+const sizeStyles = (theme: Theme, size: Size) => {
   switch (size) {
     case 'sm':
       return css`
@@ -51,8 +52,8 @@ export const Label = styled.label<LabelProps>`
   justify-content: center;
   align-items: center;
   color: ${({ theme }) => theme.colors.text.white};
-  background-color: ${({ theme, color = 'blue' }) => getColor(theme, color)};
+  background-color: ${({ theme, color = 'blue' }) => colorStyles(theme, color)};
   border-radius: ${({ theme, borderRadius = 'md' }) => theme.radius[borderRadius]};
 
-  ${({ theme, size = 'md' }) => getSizeStyles(theme, size)};
+  ${({ theme, size = 'md' }) => sizeStyles(theme, size)};
 `;

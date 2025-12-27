@@ -43,7 +43,7 @@ export default function SearchBox() {
   };
 
   // null인 input으로 넘어가기
-  const handleSetValue = (field: keyof FormValues, value: any) => {
+  const handleSetValue = (field: keyof FormValues, value: string) => {
     methods.setValue(field, value);
 
     // 현재 폼의 모든 값 가져오기
@@ -94,7 +94,7 @@ export default function SearchBox() {
       startTime: searchParams.get('startTime'),
       endTime: searchParams.get('endTime'),
     });
-  }, [searchParams]);
+  }, [searchParams, methods]);
 
   return (
     <FormProvider {...methods}>
@@ -117,18 +117,16 @@ export default function SearchBox() {
   );
 }
 
-// TODO
 const Container = styled(Box)<{ $selected: boolean }>`
   position: relative;
   background-color: ${({ theme, $selected }) => $selected && theme.colors.background.box.default.active};
   border: 1px solid ${({ theme }) => theme.colors.line.input.primary};
 `;
 
-// TODO
 export const InputBox = styled.div<{ $selected: boolean }>`
   flex: 1;
   padding: 8px;
-  background-color: ${({ $selected, theme }) => $selected && theme.colors.background.primary};
+  background-color: ${({ $selected, theme }) => $selected && theme.colors.background.box.default.primary};
   border-radius: 20px;
   box-shadow: ${({ $selected, theme }) => $selected && theme.shadow.dp02};
   cursor: pointer;
@@ -145,25 +143,13 @@ export const BoxInput = styled.input`
   ${({ theme }) => theme.typeScale.sm};
 
   &::placeholder {
-    color: ${({ theme }) => theme.colors.text.inactive};
+    color: ${({ theme }) => theme.colors.text.secondary};
   }
 `;
 
 export const AddText = styled.span<{ $isClicked?: boolean }>`
-  color: ${({ theme, $isClicked }) => ($isClicked ? theme.colors.text.active : theme.colors.text.inactive)};
-  ${({ theme }) => theme.typeScale.sm}
-`;
-
-export const XButton = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: ${({ theme }) => theme.space.xs};
-  border-radius: 50%;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.background.box.default.active};
-  }
+  color: ${({ theme, $isClicked }) => ($isClicked ? theme.colors.text.primary : theme.colors.text.secondary)};
+  ${({ theme }) => theme.typeScale.sm};
 `;
 
 export const Modal = styled.div`
@@ -175,12 +161,11 @@ export const Modal = styled.div`
   margin-top: ${({ theme }) => theme.space.lg};
 `;
 
-// TODO
 export const ModalLayOut = styled.div`
   display: flex;
   width: 100%;
   padding: ${({ theme }) => theme.space.xl};
-  background-color: ${({ theme }) => theme.colors.background.primary};
+  background-color: ${({ theme }) => theme.colors.background.box.default.primary};
   border-radius: ${({ theme }) => theme.space['3xl']};
   box-shadow: ${({ theme }) => theme.shadow.dp02};
 `;

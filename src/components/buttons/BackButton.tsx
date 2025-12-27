@@ -1,21 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import { FaArrowLeft } from 'react-icons/fa6';
+import { IconButton } from '../styled/IconButtonAndLink';
 
-import { Button } from '../styled/Button';
-
-interface IProps {
-  link?: string;
-}
-
-export default function BackButton({ link }: IProps) {
+export default function BackButton() {
   const navigate = useNavigate();
-
-  const handleClick = () => {
-    return link ? navigate(link) : navigate(-1);
-  };
   return (
-    <Button type="button" onClick={handleClick} variant="icon" borderRadius="circle" size="xl">
-      <FaArrowLeft />
-    </Button>
+    <IconButton type="button" onClick={() => navigate(-1)}>
+      <FaArrowLeft size="20px" />
+    </IconButton>
   );
 }

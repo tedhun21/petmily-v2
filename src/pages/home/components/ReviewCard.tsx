@@ -4,7 +4,7 @@ import { PiStarFill } from 'react-icons/pi';
 
 import Flex from '@/components/styled/Flex';
 import { dateAgo } from '@/utils/date';
-import { Text } from '@/components/styled/Text';
+import Text from '@/components/styled/Text';
 import type { Review } from '@/types/review.type';
 import { ImageCentered, RoundedImageWrapper } from '@/styles/commonStyle';
 

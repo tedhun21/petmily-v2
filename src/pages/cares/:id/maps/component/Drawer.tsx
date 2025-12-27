@@ -6,10 +6,11 @@ import useCoords from '@/hooks/useCoords';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 import { TbCurrentLocation } from 'react-icons/tb';
 import { GrMapLocation } from 'react-icons/gr';
-import { Button } from '@/components/styled/Button';
-import XButton from '@/components/buttons/XButton';
+import Button from '@/components/styled/Button';
 import Box from '@/components/styled/Box';
 import Flex from '@/components/styled/Flex';
+import { IconButton } from '@/components/styled/IconButtonAndLink';
+import { FaXmark } from 'react-icons/fa6';
 
 interface MapsDrawerProps {
   address?: string;
@@ -143,7 +144,9 @@ export default function MapsDrawer({ address, map, geocode }: MapsDrawerProps) {
 
         {isOpen && (
           <Absolute>
-            <XButton onClick={() => setIsOpen(false)} />
+            <IconButton onClick={() => setIsOpen(false)}>
+              <FaXmark size="16px" />
+            </IconButton>
           </Absolute>
         )}
       </div>

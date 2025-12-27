@@ -96,14 +96,13 @@ const TimeCapsule = styled.li<{ $isSelected: boolean }>`
   justify-content: center;
   align-items: center;
   padding: 12px ${({ theme }) => theme.space.lg};
-  background-color: ${({ theme, $isSelected }) => $isSelected && theme.colors.background.box.default.inverse};
+  background-color: ${({ theme, $isSelected }) => $isSelected && theme.colors.background.box.accent.primary};
   border: 1px solid transparent;
   border-radius: ${({ theme }) => theme.space.xl};
-  color: ${({ $isSelected, theme }) => $isSelected && theme.colors.text.inverse};
-  font-weight: ${({ theme }) => theme.fontWeight.light};
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
   cursor: pointer;
 
   &:hover {
-    border: 1px solid ${({ theme }) => theme.colors.line.box.highlight};
+    border: 1px solid ${({ theme }) => theme.colors.line.box.hover};
   }
 `;

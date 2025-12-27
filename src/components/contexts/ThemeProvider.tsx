@@ -4,8 +4,8 @@ import { ThemeProvider as EmotionThemeProvider, Global } from '@emotion/react';
 import { createTheme, ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 
 import { darkTheme, lightTheme } from '@/styles/theme';
-import { globalStyles } from '@/styles/Globalstyle';
 import { ThemeContext } from './ThemeContext';
+import { globalStyles } from '@/styles/globalStyles';
 
 const muiLightTheme = createTheme({ palette: { mode: 'light' } });
 const muiDarkTheme = createTheme({ palette: { mode: 'dark' } });

@@ -8,7 +8,7 @@ import { useSWRConfig } from 'swr';
 
 import NotiItem from './NotiItem';
 
-import Loading from '@/components/Loading';
+import Spinner from '@/components/Spinner';
 import Flex from '@/components/styled/Flex';
 import type { RootState } from '@/store';
 import { ModalType } from '@/store/modalSlice';
@@ -115,7 +115,7 @@ export default function NotiModal() {
     return (
       <Background>
         <Flex justifyContent="center" alignItems="center">
-          <Loading color="#279EFF" />
+          <Spinner color="#279EFF" />
         </Flex>
       </Background>
     );
@@ -142,7 +142,7 @@ export default function NotiModal() {
           {!isEnd && (
             <div ref={moreLoadRef}>
               <Flex justifyContent="center" alignItems="center">
-                <Loading color="#279EFF" />
+                <Spinner color="#279EFF" />
               </Flex>
             </div>
           )}

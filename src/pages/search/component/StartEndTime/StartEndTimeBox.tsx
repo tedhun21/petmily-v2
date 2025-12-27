@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 import { createPortal } from 'react-dom';
 
 import { useFormContext } from 'react-hook-form';
@@ -6,20 +6,21 @@ import { useFormContext } from 'react-hook-form';
 import { FaXmark } from 'react-icons/fa6';
 
 import StartEndTimeModal from './StartEndTimeModal';
-import { AddText, type FormValues, InputBox, Modal, XButton } from '../SearchBox';
+import { AddText, type FormValues, InputBox, Modal } from '../SearchBox';
 import { useSelector } from 'react-redux';
 import type { RootState } from '@/store';
 import { ModalType } from '@/store/modalSlice';
 import Box from '@/components/styled/Box';
-import { Button } from '@/components/styled/Button';
 import { FiSearch } from 'react-icons/fi';
 import Flex from '@/components/styled/Flex';
-import { Text } from '@/components/styled/Text';
+import Text from '@/components/styled/Text';
 import useOutsideClickModal from '@/hooks/useOutsideClickModal';
+import { colors } from '@/styles/colors';
+import { IconButton } from '@/components/styled/IconButtonAndLink';
 
 interface IProps {
   handleBoxClick: (e: React.MouseEvent, modalType: ModalType) => void;
-  handleSetValue: (field: keyof FormValues, value: any) => void;
+  handleSetValue: (field: keyof FormValues, value: string) => void;
 }
 
 export default function StartEndTimeBox({ handleBoxClick, handleSetValue }: IProps) {
@@ -60,14 +61,14 @@ export default function StartEndTimeBox({ handleBoxClick, handleSetValue }: IPro
             <AddText $isClicked={startTime?.length > 0}>{dateText(startTime, endTime)}</AddText>
           </Flex>
           {currentModal === ModalType.SEARCH_TIME && startTime?.length > 0 && (
-            <XButton type="button" onClick={handleInputRemove}>
+            <IconButton type="button" onClick={handleInputRemove}>
               <FaXmark size="12px" />
-            </XButton>
+            </IconButton>
           )}
           <Box css={{ flex: 0 }}>
-            <Button type="submit" variant="icon" borderRadius="circle" style={{ backgroundColor: '#279EFF' }}>
-              <FiSearch size="24px" color="white" />
-            </Button>
+            <IconButton type="submit" bgColor={colors.blue400} onClick={(e: React.MouseEvent) => e.stopPropagation()}>
+              <FiSearch size="24px" color={colors.white} />
+            </IconButton>
           </Box>
         </Flex>
       </InputBox>

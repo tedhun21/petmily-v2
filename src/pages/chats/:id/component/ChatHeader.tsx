@@ -1,16 +1,18 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import styled from '@emotion/styled';
 import { FiMenu } from 'react-icons/fi';
+import { FaArrowLeft } from 'react-icons/fa6';
 
 import type { ChatMember } from '@/types/chat.type';
 import ChatRoomDrawer from './ChatRoomDrawer';
 import { useChat } from '../contexts/ChatProvider';
-import BackButton from '@/components/buttons/BackButton';
-import { Button } from '@/components/styled/Button';
-import { Text } from '@/components/styled/Text';
+import Text from '@/components/styled/Text';
+import { IconButton } from '@/components/styled/IconButtonAndLink';
 
 export default function ChatHeader() {
+  const navigate = useNavigate();
   const {
     chatRoomValues: { otherMembers },
   } = useChat();
@@ -23,11 +25,13 @@ export default function ChatHeader() {
 
   return (
     <Header>
-      <BackButton />
+      <IconButton type="button" onClick={() => navigate(-1)}>
+        <FaArrowLeft />
+      </IconButton>
       <Text size="xl">{otherMembers?.map((other: ChatMember) => other?.user?.nickname)?.join(', ')}</Text>
-      <Button type="button" onClick={handleDrawerToggle} variant="icon" borderRadius="circle">
+      <IconButton type="button" onClick={handleDrawerToggle}>
         <FiMenu size="28px" color="#279EFF" />
-      </Button>
+      </IconButton>
       <ChatRoomDrawer isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} />
     </Header>
   );

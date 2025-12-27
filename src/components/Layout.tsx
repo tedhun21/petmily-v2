@@ -14,12 +14,14 @@ export function Layout() {
 const Container = styled.div`
   display: flex;
   justify-content: center;
-  height: 100vh;
+  min-height: 100vh;
 `;
 
 const Wrapper = styled.div`
-  flex: auto;
   width: 100%;
+  min-width: 360px;
   max-width: 600px;
-  background-color: ${({ theme }) => theme.colors.background.primary};
+  background-color: ${({ theme }) => theme.colors.background.layer0};
+
+  padding-bottom: var(--safe-area-bottom, 0px);
 `;

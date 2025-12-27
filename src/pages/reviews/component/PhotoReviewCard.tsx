@@ -10,7 +10,7 @@ import 'swiper/css/pagination';
 import { dateAgo } from '@/utils/date';
 import { ImageCentered, RoundedImageWrapper } from '@/styles/commonStyle';
 import type { Review } from '@/types/review.type';
-import { Text } from '@/components/styled/Text';
+import Text from '@/components/styled/Text';
 
 import Flex from '@/components/styled/Flex';
 import Link from '@/components/styled/Link';
@@ -98,7 +98,7 @@ export default function PhotoReviewCard({ review }: ReviewPhotoCardProps) {
             </PetsitterImage>
             <span>{petsitter?.nickname} 펫시터님</span>
           </Flex>
-          <Link to={`/users/${petsitter?.nickname}`} type="text">
+          <Link to={`/users/${petsitter?.id}`} type="text">
             자세히 보기
           </Link>
         </PetsitterContainer>

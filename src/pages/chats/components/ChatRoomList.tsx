@@ -4,7 +4,7 @@ import { useInView } from 'framer-motion';
 
 import useChatRooms from '@/pages/chats/hooks/useChatRooms';
 import ChatRoomItem from './ChatRoomItem';
-import Loading from '@/components/Loading';
+import Spinner from '@/components/Spinner';
 import Flex from '@/components/styled/Flex';
 
 export default function ChatRoomList() {
@@ -21,7 +21,7 @@ export default function ChatRoomList() {
   if (isLoading && chatRooms.length === 0) {
     return (
       <Flex justifyContent="center" alignItems="center">
-        <Loading color="279EFF" />
+        <Spinner color="279EFF" />
       </Flex>
     );
   }
@@ -44,7 +44,7 @@ export default function ChatRoomList() {
       {!isEnd && (
         <div ref={ref}>
           <Flex justifyContent="center" alignItems="center">
-            <Loading color="#279EFF" />
+            <Spinner color="#279EFF" />
           </Flex>
         </div>
       )}

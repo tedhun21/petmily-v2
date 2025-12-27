@@ -8,15 +8,15 @@ import { useAuthSWR, useAuthSWRMutation } from '@/hooks/authSWR';
 import { toast } from 'react-toastify';
 import { FaXmark } from 'react-icons/fa6';
 
-import Loading from '@/components/Loading';
-import { BottomFixed, Float } from '@/styles/commonStyle';
+import Spinner from '@/components/Spinner';
 import { deleter, fetcher, multipartPoster, updater } from '@/api';
 import HoverRating from '@/components/HoverRating';
-import { Button } from '@/components/styled/Button';
-import XButton from '@/components/buttons/XButton';
-import { Text } from '@/components/styled/Text';
+import Button from '@/components/styled/Button';
+import Text from '@/components/styled/Text';
 import Flex from '@/components/styled/Flex';
-import BackHeader from '@/components/headers/BackHeader';
+import FixedBottom from '@/components/FixedBottom';
+import { IconButton } from '@/components/styled/IconButtonAndLink';
+import Header from '@/components/headers/Header';
 
 interface ReviewFormValues {
   star: number;
@@ -206,7 +206,7 @@ export default function ReviewPage() {
 
   return (
     <>
-      <BackHeader title={review ? '후기 수정' : '후기 작성'} />
+      <Header center={review ? '후기 수정' : '후기 작성'} />
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <Flex direction="column" gap="xl">
@@ -244,7 +244,9 @@ export default function ReviewPage() {
                   <ImagePreviewItem key={index}>
                     <Img src={URL.createObjectURL(file)} alt={`selected_${index}`} />
                     <Absolute>
-                      <XButton onClick={() => handleRemoveInputImage(index)} />
+                      <IconButton onClick={() => handleRemoveInputImage(index)}>
+                        <FaXmark size="16px" />
+                      </IconButton>
                     </Absolute>
                   </ImagePreviewItem>
                 ))}
@@ -262,49 +264,47 @@ export default function ReviewPage() {
           </Flex>
         </Flex>
 
-        <BottomFixed>
-          <FloatButtonContainer>
-            {review ? (
-              <Flex gap="lg">
-                <Button type="submit" disabled={isUpdateMutating} variant="primary" size="lg" fullWidth>
-                  {isUpdateMutating ? (
-                    <Flex justifyContent="center" alignItems="center">
-                      <Loading />
-                    </Flex>
-                  ) : (
-                    <span>후기 수정</span>
-                  )}
-                </Button>
-                <Button
-                  type="button"
-                  onClick={handleDelete}
-                  disabled={isDeleteMutating}
-                  variant="error"
-                  size="lg"
-                  fullWidth
-                >
-                  {isDeleteMutating ? (
-                    <Flex justifyContent="center" alignItems="center">
-                      <Loading />
-                    </Flex>
-                  ) : (
-                    <span>후기 삭제</span>
-                  )}
-                </Button>
-              </Flex>
-            ) : (
-              <Button type="submit" disabled={isCreateMutating} size="lg" fullWidth>
-                {isCreateMutating ? (
+        <FixedBottom>
+          {review ? (
+            <Flex gap="lg">
+              <Button type="submit" disabled={isUpdateMutating} variant="primary" size="lg" fullWidth>
+                {isUpdateMutating ? (
                   <Flex justifyContent="center" alignItems="center">
-                    <Loading />
+                    <Spinner />
                   </Flex>
                 ) : (
-                  <span>후기 등록</span>
+                  <span>후기 수정</span>
                 )}
               </Button>
-            )}
-          </FloatButtonContainer>
-        </BottomFixed>
+              <Button
+                type="button"
+                onClick={handleDelete}
+                disabled={isDeleteMutating}
+                variant="error"
+                size="lg"
+                fullWidth
+              >
+                {isDeleteMutating ? (
+                  <Flex justifyContent="center" alignItems="center">
+                    <Spinner />
+                  </Flex>
+                ) : (
+                  <span>후기 삭제</span>
+                )}
+              </Button>
+            </Flex>
+          ) : (
+            <Button type="submit" disabled={isCreateMutating} size="lg" fullWidth>
+              {isCreateMutating ? (
+                <Flex justifyContent="center" alignItems="center">
+                  <Spinner />
+                </Flex>
+              ) : (
+                <span>후기 등록</span>
+              )}
+            </Button>
+          )}
+        </FixedBottom>
       </form>
     </>
   );
@@ -316,7 +316,7 @@ const TextArea = styled.textarea`
   padding: ${({ theme }) => theme.space.sm};
   background-color: ${({ theme }) => theme.colors.background.input.primary};
   border-radius: ${({ theme }) => theme.radius.md};
-  color: ${({ theme }) => theme.colors.text.active};
+  color: ${({ theme }) => theme.colors.text.primary};
   ${({ theme }) => theme.typeScale.sm};
 
   &:hover {
@@ -350,7 +350,7 @@ const RemoveButton = styled.button`
   align-items: center;
   width: 24px;
   height: 24px;
-  background-color: ${({ theme }) => theme.colors.background.highlight};
+  background-color: ${({ theme }) => theme.colors.background.accent};
   border: 1px solid ${({ theme }) => theme.colors.line.box.primary};
   border-radius: ${({ theme }) => theme.radius.circle};
 `;
@@ -359,12 +359,4 @@ const Absolute = styled.div`
   position: absolute;
   top: 0;
   right: 0;
-`;
-
-const FloatButtonContainer = styled(Float)`
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  padding: ${({ theme }) => theme.space.xl};
-  background-color: ${({ theme }) => theme.colors.background.primary};
 `;

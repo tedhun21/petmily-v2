@@ -13,12 +13,14 @@ import { fetcher } from '@/api';
 import MeButton from './components/MeButton';
 import NotiButton from './components/NotiButton/NotiButton';
 
-import { Button } from '@/components/styled/Button';
-import { Text } from '@/components/styled/Text';
+import Text from '@/components/styled/Text';
 import Box from '@/components/styled/Box';
 import Flex from '@/components/styled/Flex';
-import Link from '../styled/Link';
+
 import { ThemeContext } from '../contexts/ThemeContext';
+
+import Link from '../styled/Link';
+import { IconButton, IconLink } from '../styled/IconButtonAndLink';
 
 export default function TopHeader() {
   const { isDarkMode, setIsDarkMode } = useContext(ThemeContext);
@@ -50,9 +52,9 @@ export default function TopHeader() {
 
         <Flex gap="sm">
           <Flex alignItems="center" gap="xs">
-            <Button type="button" onClick={handleDarkMode} variant="icon" borderRadius="circle">
+            <IconButton onClick={handleDarkMode} variant="clear" size="sm">
               {isDarkMode ? <FiSun size="24px" /> : <MdNightlightRound size="24px" />}
-            </Button>
+            </IconButton>
 
             {me && (
               <>
@@ -66,9 +68,9 @@ export default function TopHeader() {
               )} */}
 
                 <div style={{ position: 'relative' }}>
-                  <Link to="/chats" variant="icon">
+                  <IconLink to="/chats" variant="clear" size="sm">
                     <FaRegPaperPlane size="24px" />
-                  </Link>
+                  </IconLink>
 
                   {unreadChatCount > 0 && (
                     <UnreadCountContainer>

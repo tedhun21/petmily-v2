@@ -11,23 +11,23 @@ export const globalStyles = (theme: Theme) => css`
 
   body {
     font-family: 'Noto Sans KR', Roboto, sans-serif;
-    background-color: ${theme.colors.background.secondary};
-    color: ${theme.colors.text.active};
+    background-color: ${theme.colors.background.layer1};
+    color: ${theme.colors.text.primary};
   }
 
   a {
-    color: inherit;
     text-decoration: none;
-  }
-
-  li {
-    list-style-type: none;
+    color: inherit;
   }
 
   button {
     border: none;
+    cursor: pointer;
     color: inherit;
-    background: none;
+  }
+
+  li {
+    list-style-type: none;
   }
 
   input {

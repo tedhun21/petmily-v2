@@ -14,7 +14,7 @@ export default function CustomPortalModal({ children, onClose, style }: IProps) 
     }
   };
 
-  const modalContainer = document.getElementById('root');
+  const modalContainer = document.getElementById('modal-root');
 
   if (!modalContainer) {
     return null;
@@ -38,11 +38,11 @@ const Backdrop = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1300;
+  z-index: 9999;
 `;
 
 const ContentBox = styled.div`
-  background-color: ${({ theme }) => theme.colors.background.primary};
+  background-color: ${({ theme }) => theme.colors.background.layer1};
   border-radius: 8px;
   overflow: hidden;
 `;

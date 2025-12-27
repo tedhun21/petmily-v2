@@ -1,21 +1,21 @@
 import styled from '@emotion/styled';
 import { ImageCentered, RoundedImageWrapper } from '@/styles/commonStyle';
-import { UserRole } from '@/types/user.type';
+import { UserRole, type UserRoleType } from '@/types/user.type';
 import { PetsitterFeedback } from './PetsitterFeedback';
-import { Text } from '@/components/styled/Text';
+import Text from '@/components/styled/Text';
 import Box from '@/components/styled/Box';
 import Flex from '@/components/styled/Flex';
 
 interface IProps {
-  role: UserRole;
+  role: UserRoleType;
   nickname: string | null;
   photo: string | null;
   body: string | null;
-  star: number | null;
+  totalStarSum: number | null;
   reviewCount: number | null;
 }
 
-export default function UserBasicInfo({ role, nickname, photo, body, star, reviewCount }: IProps) {
+export default function UserBasicInfo({ role, nickname, photo, body, totalStarSum, reviewCount }: IProps) {
   return (
     <Box w="100%">
       <Flex direction="column" gap="sm">
@@ -25,7 +25,7 @@ export default function UserBasicInfo({ role, nickname, photo, body, star, revie
           </UserImage>
           <Div>
             <Text size="base">{role === UserRole.PETSITTER ? `펫시터: ${nickname} 님` : `${nickname} 님`}</Text>
-            <PetsitterFeedback star={star} reviewCount={reviewCount} />
+            <PetsitterFeedback totalStarSum={totalStarSum} reviewCount={reviewCount} />
           </Div>
         </Flex>
         <Body>{body}</Body>

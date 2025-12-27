@@ -1,44 +1,41 @@
 import { FaXmark } from 'react-icons/fa6';
-import styled from '@emotion/styled';
 import { deleteRecentSearch } from '@/utils/localStorage';
+import { IconButton } from '@/components/styled/IconButtonAndLink';
+import Flex from '@/components/styled/Flex';
+import Box from '@/components/styled/Box';
+import Text from '@/components/styled/Text';
+import Button from '@/components/styled/Button';
 
-export default function RecentSearches({ data, setRecentSearches }: any) {
-  const handleDeleteRecent = async (e: React.MouseEvent, id: number) => {
-    e.stopPropagation();
+type RecentLocationSearch = {
+  id: number;
+  name: string;
+};
 
-    deleteRecentSearch('recentSearches', id);
-    setRecentSearches((prev: any) => prev.filter((item: any) => item.id !== id));
-  };
-  return (
-    <List>
-      {data?.map((search: any) => (
-        <Item key={search.id}>
-          <span>{search.name}</span>
-          <button type="button" onClick={(e) => handleDeleteRecent(e, search.id)}>
-            <FaXmark />
-          </button>
-        </Item>
-      ))}
-    </List>
-  );
+interface IProps {
+  data: RecentLocationSearch[];
+  handleLocationClick: (searchName: string) => void;
+  setRecentSearches: React.Dispatch<React.SetStateAction<RecentLocationSearch[]>>;
 }
 
-const List = styled.ul`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.space.sm};
-`;
-
-const Item = styled.li`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 4px ${({ theme }) => theme.space.sm};
-  border-radius: ${({ theme }) => theme.radius.md};
-  ${({ theme }) => theme.typeScale.sm};
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.background.highlight};
-    color: ${({ theme }) => theme.colors.text.white};
-  }
-`;
+export default function RecentSearches({ data, handleLocationClick, setRecentSearches }: IProps) {
+  const handleDeleteRecent = async (id: number) => {
+    deleteRecentSearch('recentSearches', id);
+    setRecentSearches((prev: RecentLocationSearch[]) => prev.filter((item: RecentLocationSearch) => item.id !== id));
+  };
+  return (
+    <Flex direction="column" gap="sm">
+      {data?.map((search: RecentLocationSearch) => (
+        <Box as="li" key={search.id} p="sm" br="md">
+          <Flex justifyContent="space-between" alignItems="center">
+            <Button as="button" variant="transparent" onClick={() => handleLocationClick(search.name)}>
+              <Text size="sm">{search.name}</Text>
+            </Button>
+            <IconButton type="button" onClick={() => handleDeleteRecent(search.id)} variant="fill" shape="circle">
+              <FaXmark size="16px" />
+            </IconButton>
+          </Flex>
+        </Box>
+      ))}
+    </Flex>
+  );
+}

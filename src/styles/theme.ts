@@ -5,6 +5,7 @@
 import { colors } from './colors';
 
 export type Theme = {
+  name: 'light' | 'dark';
   typeScale: {
     xs: string;
     sm: string;
@@ -43,13 +44,17 @@ export type Theme = {
 
   colors: {
     text: {
-      white: string;
-      active: string;
-      inactive: string;
-      highlight: string;
+      primary: string;
       secondary: string;
+      disabled: string;
       inverse: string;
+      accent: {
+        default: string;
+        hover: string;
+        active: string;
+      };
       error: string;
+      white: string;
       black: string;
     };
     line: {
@@ -62,19 +67,17 @@ export type Theme = {
       box: {
         primary: string;
         hover: string;
-        highlight: string;
+        active: string;
       };
       divider: {
         primary: string;
-        highlight: string;
+        accent: string;
       };
     };
     background: {
-      primary: string;
-      secondary: string;
-      highlight: string;
-      deepHighlight: string;
-      darkHighlight: string;
+      layer0: string;
+      layer1: string;
+      accent: string;
       error: string;
       box: {
         default: {
@@ -161,16 +164,21 @@ const baseTheme = {
 // =======================
 
 export const lightTheme: Theme = {
+  name: 'light',
   ...baseTheme,
   colors: {
     text: {
-      white: colors.white,
-      active: colors.grey900,
-      inactive: colors.grey500,
-      highlight: colors.blue500,
-      secondary: colors.grey400,
+      primary: colors.blackOpacity87,
+      secondary: colors.blackOpacity60,
+      disabled: colors.blackOpacity38,
+      accent: {
+        default: colors.blue400,
+        hover: colors.blue500,
+        active: colors.blue600,
+      },
       inverse: colors.grey200,
       error: colors.red500,
+      white: colors.white,
       black: colors.black,
     },
     line: {
@@ -183,26 +191,24 @@ export const lightTheme: Theme = {
       box: {
         primary: colors.grey300,
         hover: colors.grey800,
-        highlight: colors.blue500,
+        active: colors.blue500,
       },
       divider: {
         primary: colors.grey200,
-        highlight: colors.blue600,
+        accent: colors.blue600,
       },
     },
     background: {
-      primary: colors.background,
-      secondary: colors.greyBackground,
-      highlight: colors.blue500,
-      deepHighlight: colors.blue600,
-      darkHighlight: colors.blue700,
+      layer0: colors.white,
+      layer1: colors.grey100,
+      accent: colors.blue400,
       error: colors.red500,
       box: {
         default: {
-          primary: colors.layeredBackground,
-          hover: colors.grey200,
-          active: colors.grey300,
-          inverse: colors.inverseGrey50,
+          primary: colors.grey50,
+          hover: colors.grey100,
+          active: colors.grey200,
+          inverse: colors.grey300,
         },
         accent: {
           primary: colors.blue500,
@@ -237,56 +243,58 @@ export const lightTheme: Theme = {
 // =======================
 // Dark Theme
 // =======================
-
 export const darkTheme: Theme = {
+  name: 'dark',
   ...baseTheme,
   colors: {
     text: {
-      white: colors.white,
-      active: colors.inverseGrey900,
-      inactive: colors.inverseGrey600,
-      highlight: colors.blue600,
-      secondary: colors.inverseGrey400,
-      inverse: colors.inverseGrey900,
+      primary: colors.whiteOpacity87,
+      secondary: colors.whiteOpacity60,
+      disabled: colors.whiteOpacity38,
+      accent: {
+        default: colors.blue400,
+        hover: colors.blue300,
+        active: colors.blue200,
+      },
+      inverse: colors.grey900,
       error: colors.red600,
+      white: colors.white,
       black: colors.black,
     },
     line: {
       input: {
-        primary: colors.inverseGrey300,
-        hover: colors.inverseGrey500,
+        primary: colors.grey800,
+        hover: colors.grey700,
         focus: colors.blue600,
         error: colors.red600,
       },
       box: {
-        primary: colors.inverseGrey400,
+        primary: colors.grey400,
         hover: colors.grey300,
-        highlight: colors.blue600,
+        active: colors.blue600,
       },
       divider: {
-        primary: colors.inverseGrey400,
-        highlight: colors.blue600,
+        primary: colors.grey400,
+        accent: colors.blue600,
       },
     },
     background: {
-      primary: colors.darkBackground,
-      secondary: colors.darkGreyBackground,
-      highlight: colors.blue600,
-      deepHighlight: colors.blue700,
-      darkHighlight: colors.blue800,
+      layer0: colors.grey900,
+      layer1: colors.black,
+      accent: colors.blue500,
       error: colors.red600,
       box: {
         default: {
-          primary: colors.darkLayeredBackground,
-          hover: colors.inverseGrey100,
-          active: colors.inverseGrey200,
+          primary: colors.grey800,
+          hover: colors.grey700,
+          active: colors.grey600,
           inverse: colors.grey200,
         },
         accent: {
           primary: colors.blue600,
           hover: colors.blue700,
           active: colors.blue800,
-          disabled: colors.inverseGrey700,
+          disabled: colors.grey700,
         },
         error: {
           primary: colors.red600,
@@ -295,10 +303,10 @@ export const darkTheme: Theme = {
         },
       },
       input: {
-        primary: colors.inverseGrey100,
-        hover: colors.inverseGrey200,
-        focus: colors.inverseGrey300,
-        disabled: colors.inverseGrey200,
+        primary: colors.grey900,
+        hover: colors.grey800,
+        focus: colors.grey700,
+        disabled: colors.grey200,
       },
     },
   },

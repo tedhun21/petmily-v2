@@ -1,7 +1,7 @@
 import MyPetsitterSettings from './MyPetsitterSetting';
 import MySchedule from './MySchedule';
 import type { User } from '@/types/user.type';
-import { Text } from '@/components/styled/Text';
+import Text from '@/components/styled/Text';
 
 interface MyPetsitterProfileProps {
   me: User;

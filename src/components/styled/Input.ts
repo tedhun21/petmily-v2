@@ -45,7 +45,13 @@ const getVariantStyles = (theme: Theme, variant: Variant, error?: boolean) => {
         &:focus {
           border-color: ${theme.colors.line.input.focus};
         }
-        ${error && `border-color: ${theme.colors.line.input.error}`};
+        ${error &&
+        css`
+          border-color: ${theme.colors.line.input.error};
+          &:focus {
+            border-color: ${theme.colors.line.input.error};
+          }
+        `}
       `;
     case 'search':
       return css`
@@ -54,18 +60,17 @@ const getVariantStyles = (theme: Theme, variant: Variant, error?: boolean) => {
   }
 };
 
-// ===== Styled Component =====
 export const Input = styled('input', {
   shouldForwardProp: (prop) => !styleProps.includes(prop) && prop[0] !== '$',
 })<InputProps>`
   font-weight: 500;
   transition: all 0.2s ease-in-out;
   outline: none;
-  color: ${({ theme }) => theme.colors.text.active};
+  color: ${({ theme }) => theme.colors.text.primary};
   background-color: ${({ theme }) => theme.colors.background.input.primary};
 
   &::placeholder {
-    color: ${({ theme }) => theme.colors.text.inactive};
+    color: ${({ theme }) => theme.colors.text.secondary};
   }
 
   &:hover:not(:disabled) {
@@ -79,7 +84,7 @@ export const Input = styled('input', {
   &:disabled {
     cursor: not-allowed;
     background-color: ${({ theme }) => theme.colors.background.input.disabled};
-    color: ${({ theme }) => theme.colors.text.inactive};
+    color: ${({ theme }) => theme.colors.text.secondary};
   }
 
   border-radius: ${({ theme, borderRadius = 'md' }) => theme.radius[borderRadius]};

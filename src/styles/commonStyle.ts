@@ -2,13 +2,13 @@ import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 
 export const Title = styled.h1`
-  color: ${({ theme }) => theme.colors.text.active};
+  color: ${({ theme }) => theme.colors.text.primary};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
   ${({ theme }) => theme.typeScale.xl};
 `;
 
 export const SubTitle = styled.h2`
-  color: ${({ theme }) => theme.colors.text.active};
+  color: ${({ theme }) => theme.colors.text.primary};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
   ${({ theme }) => theme.typeScale.lg};
 `;
@@ -74,19 +74,4 @@ export const Divider = styled.div<{
         height: ${$thickness || '1px'};
         width: ${$length || '100%'};
       `};
-`;
-
-export const Fixed = styled.div`
-  position: fixed;
-  z-index: 10;
-  width: 100%;
-  max-width: 600px;
-`;
-
-export const BottomFixed = styled(Fixed)`
-  bottom: 0;
-`;
-
-export const Float = styled.div`
-  position: absolute;
 `;

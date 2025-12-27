@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 import type { User } from '@/types/user.type';
-import { Text } from '@/components/styled/Text';
+import Text from '@/components/styled/Text';
 import { ImageCentered, RoundedImageWrapper } from '@/styles/commonStyle';
 import Flex from '@/components/styled/Flex';
 import Box from '@/components/styled/Box';

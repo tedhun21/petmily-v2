@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 
 import { fetcher } from '@/api';
 import Flex from '@/components/styled/Flex';
-import Loading from '@/components/Loading';
+import Spinner from '@/components/Spinner';
 import PhotoReviewCard from './PhotoReviewCard';
 import PhotoReviewCardSkeleton from './PhotoReviewCardSkeleton';
 import type { Review } from '@/types/review.type';
@@ -67,8 +67,8 @@ export default function PhotoReviews() {
       {!isEnd && !isEmpty && !isInitialLoading && (
         <div ref={ref}>
           <Flex justifyContent="center" alignItems="center">
-            {/* 다음 페이지 요청 중일 때만 Loading 인디케이터 표시 */}
-            {isFetchingMore && <Loading color="#279EFF" />}
+            {/* 다음 페이지 요청 중일 때만 Spinner 인디케이터 표시 */}
+            {isFetchingMore && <Spinner color="#279EFF" />}
             {/* 데이터가 로드된 후 다음 요청을 기다리는 상태에서는 ref만 남김 */}
             {!isFetchingMore && <div style={{ height: '20px' }} />}
           </Flex>

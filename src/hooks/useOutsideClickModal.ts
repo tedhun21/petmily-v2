@@ -14,5 +14,5 @@ export default function useOutsideClickModal<T extends HTMLElement>(ref: React.R
     window.addEventListener('click', handleClick);
 
     return () => window.removeEventListener('click', handleClick);
-  }, [ref]);
+  }, [ref, dispatch]);
 }

@@ -3,6 +3,20 @@
 // =======================
 
 export const colors = {
+  white: '#FFFFFF',
+  black: '#000000',
+
+  whiteOpacity38: 'rgba(255, 255, 255, 0.38)',
+  whiteOpacity50: 'rgba(255, 255, 255, 0.5)',
+  whiteOpacity60: 'rgba(255, 255, 255, 0.6)',
+  whiteOpacity70: 'rgba(255, 255, 255, 0.7)',
+  whiteOpacity80: 'rgba(255, 255, 255, 0.8)',
+  whiteOpacity87: 'rgba(255, 255, 255, 0.87)',
+
+  blackOpacity38: 'rgba(0, 0, 0, 0.38)',
+  blackOpacity60: 'rgba(0, 0, 0, 0.60)',
+  blackOpacity87: 'rgba(0, 0, 0, 0.87)',
+
   grey50: '#FBFBFB',
   grey100: '#F5F6F8',
   grey200: '#EAEAEA',
@@ -25,14 +39,11 @@ export const colors = {
   greyOpacity800: 'rgba(26, 26, 26, 0.5)',
   greyOpacity900: 'rgba(0, 0, 0, 0.5)',
 
-  white: '#FFFFFF',
-  black: '#000000',
-
   blue50: '#E0F2FF',
   blue100: '#B3E0FF',
   blue200: '#80CCFF',
   blue300: '#4DB8FF',
-  blue400: '#279EFF',
+  blue400: '#279EFF', // 기준 색
   blue500: '#1D8CE7',
   blue600: '#1A73E8',
   blue700: '#1451A5',
@@ -104,35 +115,4 @@ export const colors = {
   green700: '#388E3C',
   green800: '#2E7D32',
   green900: '#1B5E20',
-
-  whiteOpacity50: 'rgba(255, 255, 255, 0.5)',
-  whiteOpacity100: 'rgba(255, 255, 255, 0.6)',
-  whiteOpacity200: 'rgba(255, 255, 255, 0.7)',
-  whiteOpacity300: 'rgba(255, 255, 255, 0.8)',
-  whiteOpacity400: 'rgba(255, 255, 255, 0.9)',
-  whiteOpacity500: 'rgba(255, 255, 255, 0.95)',
-  whiteOpacity600: 'rgba(255, 255, 255, 0.96)',
-  whiteOpacity700: 'rgba(255, 255, 255, 0.97)',
-  whiteOpacity800: 'rgba(255, 255, 255, 0.98)',
-  whiteOpacity900: 'rgba(255, 255, 255, 0.99)',
-
-  inverseGrey50: '#2C2C2C',
-  inverseGrey100: '#3B3B3B',
-  inverseGrey200: '#404040',
-  inverseGrey300: '#474747',
-  inverseGrey400: '#525252',
-  inverseGrey500: '#636363',
-  inverseGrey600: '#6B6B6B',
-  inverseGrey700: '#787878',
-  inverseGrey800: '#A6A6A6',
-  inverseGrey900: '#EAEAEA',
-
-  background: '#FFFFFF',
-  darkBackground: '#1C1C1C',
-  greyBackground: '#F5F6F8',
-  darkGreyBackground: '#121212',
-  layeredBackground: '#F2F2F2',
-  darkLayeredBackground: '#2C2C2C',
-  floatBackground: '#FFFFFF',
-  darkFloatBackground: '#1C1C1C',
 };

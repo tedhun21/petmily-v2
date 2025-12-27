@@ -6,20 +6,21 @@ import { fetcher } from '@/api';
 import MyPetmily from '@/pages/me/components/MyPetmily';
 import { ImageCentered, RoundedImageWrapper } from '@/styles/commonStyle';
 import MyPetsitterProfile from './components/MyPetsitterProfile';
-import BackHeader from '@/components/headers/BackHeader';
 import { UserRole } from '@/types/user.type';
-import { Text } from '@/components/styled/Text';
+import Text from '@/components/styled/Text';
 import Box from '@/components/styled/Box';
 import Flex from '@/components/styled/Flex';
 import Link from '@/components/styled/Link';
+import Header from '@/components/headers/Header';
+import BackButton from '@/components/buttons/BackButton';
 
 export default function MyPage() {
   const { data: me } = useAuthSWR('/users/me', fetcher);
 
   return (
     <>
-      <BackHeader link="/" />
-      <main>
+      <Header left={<BackButton />} center={<Text size="lg">내 정보</Text>} />
+      <>
         <Box p="md">
           <Flex justifyContent="space-between" alignItems="center">
             <Flex gap="lg">
@@ -52,7 +53,7 @@ export default function MyPage() {
         ) : me?.role === UserRole.PETSITTER ? (
           <MyPetsitterProfile me={me} />
         ) : null}
-      </main>
+      </>
     </>
   );
 }
@@ -60,5 +61,5 @@ export default function MyPage() {
 const MyImage = styled(RoundedImageWrapper)`
   width: 60px;
   height: 60px;
-  border: 2px solid ${({ theme }) => theme.colors.line.box.highlight};
+  border: 2px solid ${({ theme }) => theme.colors.line.box.active};
 `;

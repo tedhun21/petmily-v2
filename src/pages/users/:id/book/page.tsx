@@ -21,14 +21,14 @@ import { Divider, SubTitle } from '@/styles/commonStyle';
 
 import Confirm from '@/pages/users/:id/book/component/Confirm';
 
-import Loading from '@/components/Loading';
-import CustomDaumPostcode from '@/components/CustomDaumPostcode';
+import Spinner from '@/components/Spinner';
+import CustomDaumPostcode, { type PostcodeData } from '@/components/CustomDaumPostcode';
 import SelectedPetsitter from './component/SelectedPetsitter';
-import BackHeader from '@/components/headers/BackHeader';
-import { Button } from '@/components/styled/Button';
-import { Text } from '@/components/styled/Text';
-import Box from '@/components/styled/Box';
+import Button from '@/components/styled/Button';
+import Text from '@/components/styled/Text';
 import Flex from '@/components/styled/Flex';
+import type { Pet } from '@/types/pet.type';
+import Header from '@/components/headers/Header';
 
 const schema = yup.object().shape({
   checkedPets: yup.array().min(1, '적도오 한 마리의 펫을 선택해야 합니다.'),
@@ -46,10 +46,8 @@ export default function BookPage() {
   const startTime = searchParams.get('checkIn');
   const endTime = searchParams.get('checkOut');
 
-  // 주소 모달
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // 약관 동의 체크
   const [isChecked, setIsChecked] = useState(false);
 
   const methods = useForm({
@@ -75,7 +73,7 @@ export default function BookPage() {
     setIsModalOpen(true);
   };
 
-  const handleComplete = (data: any) => {
+  const handleComplete = (data: PostcodeData) => {
     const { address, zonecode } = data;
 
     if (data) {
@@ -88,12 +86,12 @@ export default function BookPage() {
     setIsModalOpen(false);
   };
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data) => {
     const { checkedPets, zipcode, address, detailAddress, body } = data;
 
     const formattedStartTime = dayjs(startTime, 'HH:mm').format('HH:mm:ss');
     const formattedEndTime = dayjs(endTime, 'HH:mm').format('HH:mm:ss');
-    const formattedPetIds = checkedPets.map((pet: any) => pet.id);
+    const formattedPetIds = checkedPets.map((pet: Pet) => pet.id);
 
     const formattedData = {
       date,
@@ -123,7 +121,7 @@ export default function BookPage() {
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)}>
         <Main>
-          <BackHeader title="예약 요청" />
+          <Header center="예약 요청" />
           <Container>
             <SelectedPetsitter petsitter={petsitter} />
 
@@ -217,7 +215,7 @@ export default function BookPage() {
             <Confirm isChecked={isChecked} setIsChecked={setIsChecked} />
 
             <Button disabled={disabled} size="lg" borderRadius="lg" fullWidth>
-              {isMutating ? <Loading /> : <span>예약하기</span>}
+              {isMutating ? <Spinner /> : <span>예약하기</span>}
             </Button>
           </ButtonContainer>
         </Main>
@@ -257,7 +255,7 @@ const Reservation = styled.section`
 const StyledTextField = styled(TextField)`
   /* 라벨 */
   .MuiInputLabel-root {
-    color: ${({ theme }) => theme.colors.text.active};
+    color: ${({ theme }) => theme.colors.text.primary};
     ${({ theme }) => theme.typeScale.sm};
   }
 
@@ -273,13 +271,13 @@ const StyledTextField = styled(TextField)`
 
   /* value */
   .MuiOutlinedInput-input {
-    color: ${({ theme }) => theme.colors.text.active};
+    color: ${({ theme }) => theme.colors.text.primary};
     ${({ theme }) => theme.typeScale.sm};
   }
 
   /* 포커스 상태 스타일 */
   .Mui-focused .MuiOutlinedInput-input {
-    color: ${({ theme }) => theme.colors.text.active};
+    color: ${({ theme }) => theme.colors.text.primary};
   }
 `;
 
@@ -290,6 +288,6 @@ const ButtonContainer = styled.div`
   flex: 1;
   justify-content: center;
   padding: ${({ theme }) => theme.space.xl};
-  background-color: ${({ theme }) => theme.colors.background.primary};
+  background-color: ${({ theme }) => theme.colors.background.accent};
   gap: ${({ theme }) => theme.space.sm};
 `;

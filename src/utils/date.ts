@@ -183,3 +183,17 @@ export const timeOptions = (): string[] => {
   }
   return times;
 };
+
+//** 선택된 시간이 시간 범위 내에 포함되는지 */
+export const isTimeBetween = (
+  time: string,
+  startTime: string | null,
+  endTime: string | null,
+  unit: 'hour' | 'minute' = 'minute',
+  inclusivity: '()' | '[]' | '[)' | '(]' = '[]',
+) => {
+  const startTimeDayjs = dayjs(startTime, 'HH:mm');
+  const endTimeDayjs = dayjs(endTime, 'HH:mm');
+  const timeDayjs = dayjs(time, 'HH:mm');
+  return timeDayjs.isBetween(startTimeDayjs, endTimeDayjs, unit, inclusivity);
+};

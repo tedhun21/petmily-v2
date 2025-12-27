@@ -11,10 +11,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import { poster } from '@/api';
 import GoogleOAuthButton from '@/components/buttons/OAuthButton';
-import Loading from '@/components/Loading';
+import Spinner from '@/components/Spinner';
 
-import { Button } from '@/components/styled/Button';
-import { Text } from '@/components/styled/Text';
+import Button from '@/components/styled/Button';
+import Text from '@/components/styled/Text';
 import Flex from '@/components/styled/Flex';
 import Link from '@/components/styled/Link';
 import Box from '@/components/styled/Box';
@@ -140,7 +140,7 @@ export default function LoginPage() {
 
             <Flex direction="column" gap="md">
               <Button type="submit" disabled={isMutating} variant="primary" size="md" fullWidth>
-                {isMutating ? <Loading /> : '로 그 인'}
+                {isMutating ? <Spinner /> : '로 그 인'}
               </Button>
 
               <Flex alignItems="center" gap="sm">

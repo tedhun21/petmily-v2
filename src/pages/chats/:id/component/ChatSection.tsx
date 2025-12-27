@@ -5,7 +5,7 @@ import { IoMdArrowRoundUp } from 'react-icons/io';
 import ChatHeader from './ChatHeader';
 import ChatContainer from './ChatContainer';
 import { useChat } from '../contexts/ChatProvider';
-import { Button } from '@/components/styled/Button';
+import Button from '@/components/styled/Button';
 import { Input } from '@/components/styled/Input';
 import Box from '@/components/styled/Box';
 import Flex from '@/components/styled/Flex';
