@@ -5,11 +5,11 @@ import { ImageCentered, RoundedImageWrapper, Title } from '@/styles/commonStyle'
 import { Link } from 'react-router-dom';
 import { FaXmark } from 'react-icons/fa6';
 import type { ChatMember } from '@/types/chat.type';
-import { useChat } from '../contexts/ChatProvider';
-import Button from '@/components/styled/Button';
 import Text from '@/components/styled/Text';
 import Flex from '@/components/styled/Flex';
 import Box from '@/components/styled/Box';
+import { IconButton } from '@/components/styled/IconButtonAndLink';
+import { useChat } from '../contexts/ChatProvider';
 
 interface ChatRoomDrawerProps {
   isDrawerOpen: boolean;
@@ -17,9 +17,7 @@ interface ChatRoomDrawerProps {
 }
 
 export default function ChatRoomDrawer({ isDrawerOpen, setIsDrawerOpen }: ChatRoomDrawerProps) {
-  const {
-    chatRoomValues: { meMember, otherMembers },
-  } = useChat();
+  const { meMember, otherMembers } = useChat();
 
   return (
     <AnimatePresence>
@@ -40,36 +38,38 @@ export default function ChatRoomDrawer({ isDrawerOpen, setIsDrawerOpen }: ChatRo
           >
             <ContentWrapper>
               <Flex justifyContent="flex-end">
-                <Button onClick={() => setIsDrawerOpen(false)} variant="icon" borderRadius="circle">
+                <IconButton onClick={() => setIsDrawerOpen(false)} shape="circle">
                   <FaXmark size="24px" />
-                </Button>
+                </IconButton>
               </Flex>
 
               <div>
                 <Flex alignItems="center">
                   <Title>채팅 참여자</Title>
-                  <Text size="base" color="highlight">
+                  <Text size="base" color="accent">
                     {(otherMembers?.length ?? 0) + 1}
                   </Text>
                 </Flex>
 
                 <Box as="ul" p="sm">
-                  <Flex gap="sm">
+                  <Flex direction="column" gap="sm">
                     <Link to={`/users/${meMember?.user.nickname}`}>
-                      <Flex as="li" alignItems="center">
-                        <MemberImage>
-                          <ImageCentered
-                            src={meMember?.user.photo ? `${meMember?.user.photo}` : '/imgs/DefaultUserProfile.jpg'}
-                          />
-                        </MemberImage>
-                        <span>{meMember?.user.nickname}</span>
-                      </Flex>
+                      <Box p="sm">
+                        <Flex as="li" alignItems="center" gap="sm">
+                          <MemberImage>
+                            <ImageCentered
+                              src={meMember?.user.photo ? `${meMember?.user.photo}` : '/imgs/DefaultUserProfile.jpg'}
+                            />
+                          </MemberImage>
+                          <span>{meMember?.user.nickname}</span>
+                        </Flex>
+                      </Box>
                     </Link>
 
                     {otherMembers?.map((member: ChatMember) => (
                       <Link to={`/users/${member.user.nickname}`} key={member.user?.id}>
                         <Box as="li" p="sm">
-                          <Flex>
+                          <Flex alignItems="center" gap="sm">
                             <MemberImage>
                               <ImageCentered
                                 src={meMember?.user.photo ? `${meMember?.user.photo}` : '/imgs/DefaultUserProfile.jpg'}
@@ -115,8 +115,8 @@ const StyledInMotionDiv = styled(motion.div)`
   z-index: 11;
   width: 60%;
   height: 100%;
-  background-color: ${({ theme }) => theme.colors.background.primary};
   box-shadow: ${({ theme }) => theme.shadow.onlyBottom};
+  background-color: ${({ theme }) => theme.colors.background.box.default.primary};
   border-top-left-radius: ${({ theme }) => theme.radius.lg};
   border-bottom-left-radius: ${({ theme }) => theme.radius.lg};
 `;
@@ -126,17 +126,18 @@ const ContentWrapper = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
+
   padding: ${({ theme }) => theme.space.xl};
 
-  & > :nth-child(1) {
+  & > div:nth-of-type(1) {
     flex: 0;
   }
 
-  & > :nth-child(2) {
+  & > div:nth-of-type(2) {
     flex: 1;
   }
 
-  & > :nth-child(3) {
+  & > div:nth-of-type(3) {
     flex: 0;
   }
 `;

@@ -6,6 +6,7 @@ import useSWRMutation from 'swr/mutation';
 import styled from '@emotion/styled';
 import GoogleOAuthButton from '@/components/buttons/OAuthButton';
 import { toast } from 'react-toastify';
+import { isAxiosError } from 'axios';
 
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -113,51 +114,32 @@ export default function SignupPage() {
   };
 
   const onSubmit = async (data: IFormSignupInputs) => {
-    const { username, phone, address, detailAddress, email, nickname, password, passwordConfirm, isPetsitter } = data;
-
-    if (password !== passwordConfirm) {
-      setError('password', {
-        type: 'dismatch',
-        message: '비밀번호가 서로 다릅니다.',
-      });
-      setError('passwordConfirm', {
-        type: 'dismatch',
-        message: '비밀번호가 서로 다릅니다.',
-      });
-
-      return;
-    }
+    const { isPetsitter } = data;
 
     const createData = {
-      username,
-      phone,
-      address,
+      ...data,
       zipcode: getValues('zipcode'),
-      detailAddress,
-      email,
-      nickname,
-      password,
-      role: isPetsitter ? 'Petsitter' : 'Client',
+      role: isPetsitter ? 'petsitter' : 'client',
       provider: 'local',
       verified: false,
     };
 
     try {
       await trigger(createData);
-    } catch (e: any) {
-      if (e.response) {
-        if (e.response.data.statusCode === 409) {
-          if (e.response.data.field === 'email') {
-            setError('email', {
-              type: e.response.data.error,
-              message: e.response.data.message,
-            });
-          }
-          if (e.response.data.field === 'nickname') {
-            setError('nickname', {
-              type: e.response.data.error,
-              message: e.response.data.message,
-            });
+    } catch (e) {
+      if (isAxiosError(e)) {
+        const response = e.response;
+
+        if (response) {
+          const { statusCode, message, field } = response.data;
+
+          if (statusCode === 409) {
+            if (field === 'email' || field === 'nickname') {
+              setError(field, {
+                type: 'manual',
+                message: message,
+              });
+            }
           }
         }
       }

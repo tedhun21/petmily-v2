@@ -7,15 +7,14 @@ import { FaArrowLeft } from 'react-icons/fa6';
 
 import type { ChatMember } from '@/types/chat.type';
 import ChatRoomDrawer from './ChatRoomDrawer';
-import { useChat } from '../contexts/ChatProvider';
 import Text from '@/components/styled/Text';
 import { IconButton } from '@/components/styled/IconButtonAndLink';
+import { useChat } from '../contexts/ChatProvider';
 
 export default function ChatHeader() {
   const navigate = useNavigate();
-  const {
-    chatRoomValues: { otherMembers },
-  } = useChat();
+
+  const { otherMembers } = useChat();
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
@@ -25,12 +24,12 @@ export default function ChatHeader() {
 
   return (
     <Header>
-      <IconButton type="button" onClick={() => navigate(-1)}>
-        <FaArrowLeft />
+      <IconButton type="button" onClick={() => navigate(-1)} shape="circle">
+        <FaArrowLeft size="24px" />
       </IconButton>
       <Text size="xl">{otherMembers?.map((other: ChatMember) => other?.user?.nickname)?.join(', ')}</Text>
-      <IconButton type="button" onClick={handleDrawerToggle}>
-        <FiMenu size="28px" color="#279EFF" />
+      <IconButton type="button" onClick={handleDrawerToggle} shape="circle">
+        <FiMenu size="24px" color="#279EFF" />
       </IconButton>
       <ChatRoomDrawer isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} />
     </Header>
@@ -43,6 +42,6 @@ const Header = styled.header`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: ${({ theme }) => theme.space.xl};
+  padding: ${({ theme }) => theme.space.lg};
   box-shadow: ${({ theme }) => theme.shadow.dp01};
 `;

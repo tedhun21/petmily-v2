@@ -16,7 +16,6 @@ export type InputProps = {
   borderRadius?: BorderRadius;
 } & React.ComponentProps<'input'>;
 
-// ===== Helper functions =====
 const getSizeStyles = (theme: Theme, size: Size) => {
   switch (size) {
     case 'sm':

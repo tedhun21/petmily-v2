@@ -1,9 +1,11 @@
-import { useCallback, useLayoutEffect, useRef, useState } from 'react';
+import { useRef, useState, useLayoutEffect, useCallback } from 'react';
 
 type ThresholdOption = { value: number; unit: 'px' | '%' };
 
-interface UseScrollOptions {
+export interface UseScrollOptions {
   ref: React.RefObject<HTMLElement | null>;
+  direction?: 'normal' | 'reverse';
+  enabled?: boolean;
   thresholds?: {
     nearTop?: ThresholdOption;
     nearBottom?: ThresholdOption;
@@ -12,25 +14,27 @@ interface UseScrollOptions {
   };
 }
 
-const resolveThreshold = (threshold: ThresholdOption | undefined, scrollHeight: number): number => {
-  if (!threshold) return 0;
-  if (threshold.unit === 'px') {
-    return threshold.value;
+interface ScrollInfo {
+  x: number;
+  y: number;
+  yDirection: 'up' | 'down' | null;
+}
+
+const resolveThreshold = (option: ThresholdOption, scrollHeight: number): number => {
+  if (option.unit === 'px') {
+    return option.value;
   }
-  return (threshold.value * scrollHeight) / 100;
+  return (scrollHeight * option.value) / 100;
 };
 
-export const useScroll = ({ ref, thresholds = {} }: UseScrollOptions) => {
-  const { nearTop, nearBottom, farFromTop, farFromBottom } = thresholds;
-
-  const scrollInfoRef = useRef({ x: 0, y: 0, yDirection: null as 'up' | 'down' | null });
-
-  const [isAtTop, setIsAtTop] = useState<boolean | null>(null); // 최상단인지
-  const [isAtBottom, setIsAtBottom] = useState<boolean | null>(null); // 최하단인지
-  const [isNearTop, setIsNearTop] = useState<boolean | null>(null); // 최상단 입계값 이내
-  const [isNearBottom, setIsNearBottom] = useState<boolean | null>(null); // 최하단 임계값 이내
-  const [isFarFromTop, setIsFarFromTop] = useState<boolean | null>(null); // 최상단 임계값 넘어
-  const [isFarFromBottom, setIsFarFromBottom] = useState<boolean | null>(null); // 최하단 임계값 넘어
+export const useScroll = ({ ref, direction = 'normal', enabled = true, thresholds }: UseScrollOptions) => {
+  const scrollInfoRef = useRef<ScrollInfo>({ x: 0, y: 0, yDirection: null });
+  const [isAtTop, setIsAtTop] = useState<boolean | null>(null);
+  const [isAtBottom, setIsAtBottom] = useState<boolean | null>(null);
+  const [isNearTop, setIsNearTop] = useState<boolean | null>(null);
+  const [isNearBottom, setIsNearBottom] = useState<boolean | null>(null);
+  const [isFarFromTop, setIsFarFromTop] = useState<boolean | null>(null);
+  const [isFarFromBottom, setIsFarFromBottom] = useState<boolean | null>(null);
 
   const lastY = useRef(0);
 
@@ -41,63 +45,86 @@ export const useScroll = ({ ref, thresholds = {} }: UseScrollOptions) => {
     const { scrollTop, scrollHeight, clientHeight, scrollLeft } = target;
 
     const newY = scrollTop;
-    const direction = newY > lastY.current ? 'down' : 'up';
+    const yDirection = newY > lastY.current ? 'down' : 'up';
     lastY.current = newY;
 
     scrollInfoRef.current = {
       x: scrollLeft,
       y: newY,
-      yDirection: direction,
+      yDirection,
     };
 
-    const distanceFromBottom = scrollHeight - scrollTop - clientHeight;
+    if (direction === 'normal') {
+      const distanceFromBottom = scrollHeight - scrollTop - clientHeight;
+      setIsAtTop(scrollTop === 0);
+      setIsAtBottom(Math.abs(distanceFromBottom) < 1);
 
-    setIsAtTop(scrollTop === 0);
-    setIsAtBottom(Math.abs(distanceFromBottom) < 1);
+      if (thresholds?.nearTop) {
+        const nearTopThresholdPx = resolveThreshold(thresholds.nearTop, scrollHeight);
+        setIsNearTop(scrollTop <= nearTopThresholdPx);
+      }
+      if (thresholds?.nearBottom) {
+        const nearBottomThresholdPx = resolveThreshold(thresholds.nearBottom, scrollHeight);
+        setIsNearBottom(scrollHeight > clientHeight && distanceFromBottom <= nearBottomThresholdPx);
+      }
+      if (thresholds?.farFromTop) {
+        const farFromTopThresholdPx = resolveThreshold(thresholds.farFromTop, scrollHeight);
+        setIsFarFromTop(scrollTop > farFromTopThresholdPx);
+      }
+      if (thresholds?.farFromBottom) {
+        const farFromBottomThresholdPx = resolveThreshold(thresholds.farFromBottom, scrollHeight);
+        setIsFarFromBottom(distanceFromBottom > farFromBottomThresholdPx);
+      }
+    } else {
+      // direction === 'reverse'
+      const distanceFromTop = scrollHeight - Math.abs(scrollTop) - clientHeight;
+      const distanceFromBottom = Math.abs(scrollTop);
 
-    if (nearTop) {
-      const nearTopThresholdPx = resolveThreshold(nearTop, scrollHeight);
-      setIsNearTop(scrollTop <= nearTopThresholdPx);
+      setIsAtTop(distanceFromTop < 1);
+      setIsAtBottom(scrollTop === 0);
+
+      if (thresholds?.nearTop) {
+        const nearTopThresholdPx = resolveThreshold(thresholds.nearTop, scrollHeight);
+        setIsNearTop(distanceFromTop <= nearTopThresholdPx);
+      }
+      if (thresholds?.nearBottom) {
+        const nearBottomThresholdPx = resolveThreshold(thresholds.nearBottom, scrollHeight);
+        setIsNearBottom(scrollHeight > clientHeight && distanceFromBottom <= nearBottomThresholdPx);
+      }
+      if (thresholds?.farFromTop) {
+        const farFromTopThresholdPx = resolveThreshold(thresholds.farFromTop, scrollHeight);
+        setIsFarFromTop(distanceFromTop > farFromTopThresholdPx);
+      }
+      if (thresholds?.farFromBottom) {
+        const farFromBottomThresholdPx = resolveThreshold(thresholds.farFromBottom, scrollHeight);
+        setIsFarFromBottom(distanceFromBottom > farFromBottomThresholdPx);
+      }
     }
-
-    if (nearBottom) {
-      const nearBottomThresholdPx = resolveThreshold(nearBottom, scrollHeight);
-      setIsNearBottom(scrollHeight > clientHeight && distanceFromBottom <= nearBottomThresholdPx);
-    }
-
-    if (farFromTop) {
-      const farFromTopThresholdPx = resolveThreshold(farFromTop, scrollHeight);
-      setIsFarFromTop(scrollTop > farFromTopThresholdPx);
-    }
-
-    if (farFromBottom) {
-      const farFromBottomThresholdPx = resolveThreshold(farFromBottom, scrollHeight);
-
-      setIsFarFromBottom(distanceFromBottom > farFromBottomThresholdPx);
-    }
-  }, [ref, nearTop, nearBottom, farFromTop, farFromBottom]);
+  }, [ref, direction, thresholds]);
 
   const scrollToTop = useCallback(
     (options?: { behavior: 'smooth' | 'auto' }) => {
       if (ref.current) {
-        ref.current.scrollTo({ top: 0, behavior: options?.behavior || 'auto' });
+        const top = direction === 'normal' ? 0 : ref.current.scrollHeight;
+        ref.current.scrollTo({ top, behavior: options?.behavior || 'auto' });
       }
     },
-    [ref],
+    [ref, direction],
   );
 
   const scrollToBottom = useCallback(
     (options?: { behavior: 'smooth' | 'auto' }) => {
       if (ref.current) {
-        ref.current.scrollTo({ top: ref.current.scrollHeight, behavior: options?.behavior || 'auto' });
+        const top = direction === 'normal' ? ref.current.scrollHeight : 0;
+        ref.current.scrollTo({ top, behavior: options?.behavior || 'auto' });
       }
     },
-    [ref],
+    [ref, direction],
   );
 
   useLayoutEffect(() => {
     const element = ref.current;
-    if (!element) return;
+    if (!enabled || !element) return;
 
     handleScroll();
 
@@ -106,10 +133,10 @@ export const useScroll = ({ ref, thresholds = {} }: UseScrollOptions) => {
     return () => {
       element.removeEventListener('scroll', handleScroll);
     };
-  }, [ref, handleScroll]);
+  }, [ref, enabled, handleScroll]);
 
   return {
-    scrollInfo: scrollInfoRef,
+    scrollInfoRef,
     isAtTop,
     isNearTop,
     isFarFromTop,

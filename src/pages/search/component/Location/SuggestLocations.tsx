@@ -5,11 +5,16 @@ import Text from '@/components/styled/Text';
 import Flex from '@/components/styled/Flex';
 import Button from '@/components/styled/Button';
 
-export default function SuggestLocations({ data, handleLocationClick }: any) {
+interface IProps {
+  data: string[];
+  handleLocationClick: (location: string) => void;
+}
+
+export default function SuggestLocations({ data, handleLocationClick }: IProps) {
   return (
     <Flex as="li" direction="column">
       {data?.map((location: string, index: number) => (
-        <Button key={index} onClick={(e) => handleLocationClick(e, location)}>
+        <Button key={index} onClick={() => handleLocationClick(location)}>
           <Box p="sm" bg="box.default.primary" br="md">
             <HiOutlineLocationMarker size="20px" />
           </Box>

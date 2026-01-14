@@ -1,8 +1,8 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 
 import { useSelector } from 'react-redux';
 import { useAuthSWRInfinite } from '@/hooks/authSWR';
-import { useInView } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 
 import Spinner from '@/components/Spinner';
 import Box from '@/components/styled/Box';
@@ -12,10 +12,10 @@ import type { RootState } from '@/store';
 import { fetcher } from '@/api';
 import type { Reservation } from '@/types/reservation.type';
 
+const pageSize = 10;
+
 export default function CareContainer() {
-  const ref = useRef(null);
-  const isInView = useInView(ref);
-  const pageSize = 10;
+  const { ref, inView } = useInView();
 
   const {
     reservation: { month, filter },
@@ -27,16 +27,17 @@ export default function CareContainer() {
       ? `/reservations?page=${pageIndex + 1}&pageSize=${pageSize}&status=${filter}&date=${month}`
       : null;
   };
-  const { data, size, setSize, isLoading } = useAuthSWRInfinite(getKey, fetcher);
+  const { data, size, setSize, isLoading, isValidating } = useAuthSWRInfinite(getKey, fetcher);
 
   const isEmpty = data?.[0]?.results?.length === 0;
-  const isEnd = data && data[data.length - 1]?.results?.length < pageSize;
+  const lastPage = data?.[data.length - 1];
+  const isEnd = lastPage?.pagination ? lastPage.pagination.page >= lastPage.pagination.totalPages : false;
 
   useEffect(() => {
-    if (isInView) {
+    if (inView && !isEnd && !isValidating) {
       setSize(size + 1);
     }
-  }, [isInView]);
+  }, [inView, setSize, isEnd, isValidating]);
 
   if (isLoading) {
     return (

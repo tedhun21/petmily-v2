@@ -1,100 +1,98 @@
-import { useEffect, useState } from 'react';
-
+import { useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 
 import { fetcher } from '@/api';
 import { useAuthSWR } from '@/hooks/authSWR';
 import { makeOpponentQuery } from '@/utils/misc';
 import type { ChatMember, ChatRoom } from '@/types/chat.type';
-import { removeMessagesByChatRoom } from '@/store/newMessageSlice';
-import type { User } from '@/types/user.type';
 
-interface UseChatRoomOptions {
-  opponentIds?: string[] | null;
+interface IProps {
   chatRoomId?: string | null;
-  me: User;
+  opponentIds?: string[] | null;
 }
 
-export type UseChatRoomReturn = {
-  chatRoom: ChatRoom | null;
-  setChatRoom: React.Dispatch<React.SetStateAction<ChatRoom | null>>;
-  meMember: ChatMember | undefined;
-  otherMembers: ChatMember[] | undefined;
-};
+export interface UseChatRoomReturn {
+  chatRoom: ChatRoom;
+  meMember: ChatMember;
+  otherMembers: ChatMember[];
+  updateMemberRead: (payload: {
+    lastReadMessage: { id: number; chatRoom: { id: number }; createdAt: string };
+    readBy: number;
+  }) => void;
+}
 
-// 채팅방 가져오기
-export default function useChatRoom({ opponentIds, chatRoomId, me }: UseChatRoomOptions): UseChatRoomReturn {
+export default function useChatRoom({ chatRoomId, opponentIds }: IProps): UseChatRoomReturn {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
-  const [chatRoom, setChatRoom] = useState<ChatRoom | null>(null);
-
-  const meMember: ChatMember | undefined = chatRoom?.chatMembers.meMember ?? undefined;
-  const otherMembers: ChatMember[] | undefined = chatRoom?.chatMembers.otherMembers ?? undefined;
-
-  // 채팅방 데이터 페칭
-  // 기존 채팅방 ID로 조회
-  const { data: byId } = useAuthSWR(chatRoomId ? `/chats/${chatRoomId}` : null, fetcher);
-
-  // opponentIds 기반으로 조회 (chatRoomId 없을 경우)
-  const { data: byUsers } = useAuthSWR(
-    !chatRoomId && (opponentIds?.length ?? 0) > 0 ? `/chats/by-users?${makeOpponentQuery(opponentIds ?? [])}` : null,
+  const { data: chatRoom, mutate } = useAuthSWR(
+    chatRoomId
+      ? `/chats/${chatRoomId}`
+      : opponentIds?.length
+        ? `/chats/by-users?${makeOpponentQuery(opponentIds)}`
+        : null,
     fetcher,
   );
 
-  // 채팅방 데이터 세팅 (기존 방 or opponent 기반 조회 결과)
-  useEffect(() => {
-    // 1 . chatRoomId로 채팅방을 찾은 경우
-    if (byId) {
-      setChatRoom(byId);
-      return;
-    }
+  const meMember: ChatMember = chatRoom?.chatMembers.meMember;
+  const otherMembers: ChatMember[] = chatRoom?.chatMembers.otherMembers;
 
-    // 2. opponentIds로 채팅방을 찾은 경우
-    if (byUsers) {
-      navigate(`/chats/${byUsers.id}`, { replace: true });
+  const updateMemberRead = useCallback(
+    ({
+      lastReadMessage,
+      readBy,
+    }: {
+      lastReadMessage: { id: number; chatRoom: { id: number }; createdAt: string };
+      readBy: number;
+    }) => {
+      mutate(
+        (prevChatRoom: ChatRoom | undefined) => {
+          if (!prevChatRoom) return prevChatRoom;
 
-      setChatRoom(byUsers);
-    }
+          // Check if the update is for the current user (me)
+          if (prevChatRoom.chatMembers.meMember.user.id === readBy) {
+            const updatedMe = {
+              ...prevChatRoom.chatMembers.meMember,
+              lastReadMessage,
+            };
+            return {
+              ...prevChatRoom,
+              chatMembers: {
+                ...prevChatRoom.chatMembers,
+                meMember: updatedMe,
+              },
+            };
+          }
 
-    if (me && !chatRoomId && opponentIds && opponentIds.length > 0) {
-      const tempChatRoom: ChatRoom = {
-        id: -1,
-        lastMessage: null,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        chatMembers: {
-          meMember: {
-            id: -1,
-            unreadCount: 0,
-            lastReadMessage: null,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-            user: {
-              id: me.id,
-              role: me.role,
-              nickname: me.nickname,
-              photo: me.photo,
+          // If not for me, check other members
+          const updatedOthers = prevChatRoom.chatMembers.otherMembers.map((member: ChatMember) => {
+            if (member.user.id === readBy) {
+              return {
+                ...member,
+                lastReadMessage,
+              };
+            }
+            return member;
+          });
+
+          return {
+            ...prevChatRoom,
+            chatMembers: {
+              ...prevChatRoom.chatMembers,
+              otherMembers: updatedOthers,
             },
-          },
-          otherMembers: [],
+          };
         },
-      };
+        { revalidate: false },
+      );
+    },
+    [mutate],
+  );
 
-      setChatRoom(tempChatRoom);
-    }
-  }, [byId, byUsers]);
-
-  // 컴포넌트 언마운트 또는 채팅방 변경 시 새 메시지 초기화
-  // 채팅방을 나가거나 다른 채팅방으로 이동할 때, 이전 채팅방의 새 메시지를 Redux store에서 정리
   useEffect(() => {
-    return () => {
-      if (chatRoom?.id) {
-        dispatch(removeMessagesByChatRoom(chatRoom.id));
-      }
-    };
-  }, [chatRoom?.id]);
+    if (chatRoom?.id && chatRoomId !== chatRoom.id) {
+      navigate(`/chats/${chatRoom.id}`, { replace: true });
+    }
+  }, [chatRoom?.id, navigate]);
 
-  return { chatRoom, setChatRoom, meMember, otherMembers };
+  return { chatRoom, meMember, otherMembers, updateMemberRead };
 }

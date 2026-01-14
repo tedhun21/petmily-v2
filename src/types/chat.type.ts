@@ -19,14 +19,14 @@ export interface ChatRoom extends CoreType {
 
 export interface Message extends CoreType {
   content: string;
-  chatRoom: ChatRoom;
   sender: ChatUser;
+  chatRoom: ChatRoom;
 }
 
-export interface PendingMessage extends Omit<Message, 'id'> {
+export interface PendingMessage extends Omit<CoreType, 'id'> {
   id: string;
   tempId: string;
-  status: 'pending' | 'sent' | 'error';
+  content: string;
+  sender: ChatUser;
+  status: 'pending' | 'error';
 }
-
-export type ChatMessage = Message | PendingMessage;

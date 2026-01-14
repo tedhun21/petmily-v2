@@ -117,10 +117,7 @@ export type Theme = {
   };
 };
 
-// =======================
 // Base Theme
-// =======================
-
 const baseTheme = {
   typeScale: {
     xs: 'font-size: 0.75rem; line-height: 1rem;',
@@ -159,10 +156,7 @@ const baseTheme = {
   },
 };
 
-// =======================
 // Light Theme
-// =======================
-
 export const lightTheme: Theme = {
   name: 'light',
   ...baseTheme,
@@ -240,9 +234,7 @@ export const lightTheme: Theme = {
   },
 };
 
-// =======================
 // Dark Theme
-// =======================
 export const darkTheme: Theme = {
   name: 'dark',
   ...baseTheme,

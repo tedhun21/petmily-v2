@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-import type { ChatMessage } from '@/types/chat.type';
+import type { Message } from '@/types/chat.type';
 
 export const formatStatus = (status: string) => {
   switch (status) {
@@ -18,7 +18,7 @@ export const formatStatus = (status: string) => {
 /**
  * 마지막으로 읽은 메시지와 지금 메시지의 비교
  */
-export const isMessageUnread = (target: ChatMessage, reference?: ChatMessage | null) =>
+export const isMessageUnread = (target: Message, reference?: Message | null) =>
   reference ? dayjs(target.createdAt).isAfter(reference.createdAt) : true;
 
 export const makeOpponentQuery = (opponentIds: string[]) => {

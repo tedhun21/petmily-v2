@@ -36,7 +36,7 @@ export default function Result({ petsitter }: ResultProps) {
           </Flex>
         </Flex>
 
-        <li>
+        <ul>
           <Flex gap="xs">
             {(petsitter?.possiblePetSpecies ?? []).map((species: PetSpeciesType) => (
               <li key={species}>
@@ -44,13 +44,12 @@ export default function Result({ petsitter }: ResultProps) {
               </li>
             ))}
           </Flex>
-        </li>
+        </ul>
       </Flex>
     </Card>
   );
 }
 
-// TODO: 버튼 + shadow
 const Card = styled(Link)`
   display: flex;
   align-items: center;

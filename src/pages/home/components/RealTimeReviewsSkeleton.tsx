@@ -1,6 +1,6 @@
-import Flex from '@/components/styled/Flex';
-import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
+import Flex from '@/components/styled/Flex';
+import { pulse } from '@/styles/commonStyle';
 
 function SkeletonCard() {
   return (
@@ -30,12 +30,6 @@ export default function RealTimeReviewsSkeleton() {
     </Container>
   );
 }
-
-const pulse = keyframes`
-  50% {
-    opacity: 0.5;
-  }
-`;
 
 const SkeletonElement = styled.div`
   background-color: ${({ theme }) => theme.colors.background.box.default.hover};

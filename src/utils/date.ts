@@ -5,8 +5,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import updateLocale from 'dayjs/plugin/updateLocale';
 import isBetween from 'dayjs/plugin/isBetween';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-
-import type { ChatMessage } from '@/types/chat.type';
+import type { Message, PendingMessage } from '@/types/chat.type';
 
 // Day.js 플러그인 확장 로케일 설정
 dayjs.extend(relativeTime);
@@ -48,13 +47,13 @@ export const timeRange = (start: string | null, end: string | null) => {
   return `${formattedStart} ~ ${formattedEnd}`;
 };
 
-/** "몇 년 전", "며칠 전" e등의 상대 시간 반환 */
+/** "몇 년 전", "며칠 전" 등의 상대 시간 반환 */
 export const dateAgo = (date: string) => {
   const target = dayjs(date);
   return target.isValid() ? target.from(dayjs()) : 'Invalid date';
 };
 
-/** 채팅 리스트에서 업데이트 시간 표기 */
+/** 채팅방 리스트에서 업데이트 시간 표기 */
 export const updatedAtAgo = (date: string) => {
   if (!date) return null;
 
@@ -119,7 +118,7 @@ export function formatToLocaleAMPM(dateString: string) {
 }
 
 /** 발신자 프로필 사진 표시 여부 */
-export const shouldShowSenderPhoto = (current: ChatMessage, previous?: ChatMessage) => {
+export const shouldShowSenderPhoto = (current: Message | PendingMessage, previous?: Message | PendingMessage) => {
   if (!previous) return true;
 
   // 1. 이전 메시지와 같은 '분'이 아닐 때 O
@@ -131,7 +130,7 @@ export const shouldShowSenderPhoto = (current: ChatMessage, previous?: ChatMessa
 };
 
 /** 닉네임 표시 여부 */
-export const shouldShowNickname = (current: ChatMessage, previous?: ChatMessage) => {
+export const shouldShowNickname = (current: Message | PendingMessage, previous?: Message | PendingMessage) => {
   // 이전 메세지가 없을 경우
   if (!previous) return true;
 
@@ -148,7 +147,11 @@ export const shouldShowNickname = (current: ChatMessage, previous?: ChatMessage)
 };
 
 /** 시간 표시 여부 */
-export const shouldShowTime = (current: ChatMessage, previous?: ChatMessage, next?: ChatMessage) => {
+export const shouldShowTime = (
+  current: Message | PendingMessage,
+  previous?: Message | PendingMessage,
+  next?: Message | PendingMessage,
+) => {
   // previous 메시지와 '분' 같으면 O
   const isSameMinutePrev = previous && dayjs(current.createdAt).isSame(previous.createdAt, 'minute');
   // previous 메시지와 '유저' 같으면 X
@@ -170,7 +173,7 @@ export const shouldShowTime = (current: ChatMessage, previous?: ChatMessage, nex
 };
 
 /** 날짜 구분선 표시 여부 */
-export const shouldShowDateDivider = (current: ChatMessage, previous?: ChatMessage) => {
+export const shouldShowDateDivider = (current: Message | PendingMessage, previous?: Message | PendingMessage) => {
   return !previous || !dayjs(current.createdAt).isSame(previous?.createdAt, 'day');
 };
 

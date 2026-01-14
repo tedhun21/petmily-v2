@@ -1,33 +1,35 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 
 import styled from '@emotion/styled';
-import { useInView } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 import { useAuthSWRInfinite } from '@/hooks/authSWR';
 
 import { fetcher } from '@/api';
 import Spinner from '@/components/Spinner';
 import Flex from '@/components/styled/Flex';
 
+const PAGE_SIZE = 10;
+
 export default function MySchedule() {
-  const ref = useRef(null);
-  const isInView = useInView(ref);
-  const pageSize = 10;
+  const { ref, inView } = useInView();
 
   const getKey = (pageIndex: number, previousPageData: any) => {
-    if (previousPageData && !previousPageData.length) return null;
-    return `/reservations?page=${pageIndex + 1}&pageSize=${pageSize}`;
+    if (previousPageData && !previousPageData.results.length) return null;
+    return `/reservations?page=${pageIndex + 1}&pageSize=${PAGE_SIZE}`;
   };
 
   const { data, size, setSize, isLoading } = useAuthSWRInfinite(getKey, fetcher);
 
   const isEmpty = data?.[0]?.length === 0;
-  const isEnd = data && data[data.length - 1]?.results.length < pageSize;
+
+  const lastPage = data?.[data.length - 1];
+  const isEnd = lastPage?.pagination ? lastPage.pagination.page >= lastPage.pagination.totalPages : false;
 
   useEffect(() => {
-    if (isInView) {
+    if (inView) {
       setSize(size + 1);
     }
-  }, [isInView]);
+  }, [inView, setSize]);
 
   if (isLoading) {
     return (

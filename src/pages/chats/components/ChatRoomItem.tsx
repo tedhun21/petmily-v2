@@ -46,7 +46,7 @@ export default function ChatRoomItem({ chatRoom }: ChatRoomItemProps) {
             <Flex direction="column" gap="sm">
               <div>
                 {others?.map((other: ChatMember) => (
-                  <span key={other.id}>{other.user?.nickname ?? 'unknown'}</span>
+                  <span key={other.id}>{other.user?.nickname ?? '알 수 없음'}</span>
                 ))}
               </div>
               <Text size="xs">{lastMessage?.content}</Text>
@@ -84,5 +84,4 @@ const NewMessage = styled.div`
   padding: ${({ theme }) => theme.space.xs};
   background-color: ${({ theme }) => theme.colors.background.error};
   border-radius: ${({ theme }) => theme.radius.md};
-  color: ${({ theme }) => theme.colors.text.white};
 `;

@@ -2,6 +2,7 @@ import { useRef, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import Text from '@/components/styled/Text';
 import Button from '@/components/styled/Button';
+import Flex from '@/components/styled/Flex';
 
 interface LocationCapsuleContainerProps {
   data: string[];
@@ -34,7 +35,7 @@ export default function LocationCapsuleContainer({ data, handleLocationClick }: 
   }, []);
 
   return (
-    <Container ref={containerRef}>
+    <Flex ref={containerRef} direction="column" gap="lg">
       <Text size="xs">서울</Text>
       <List $columnCount={columnCount}>
         {data.map((location: string) => (
@@ -43,15 +44,9 @@ export default function LocationCapsuleContainer({ data, handleLocationClick }: 
           </Button>
         ))}
       </List>
-    </Container>
+    </Flex>
   );
 }
-
-const Container = styled.div`
-  display: flex;
-  flex: 1 1 auto;
-  gap: ${({ theme }) => theme.space.lg};
-`;
 
 const List = styled.ul<{ $columnCount: number }>`
   display: grid;

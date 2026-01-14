@@ -1,8 +1,7 @@
-import { useEffect, useRef } from 'react';
+import { Fragment, useEffect } from 'react';
 import useSWRInfinite from 'swr/infinite';
 import { useSearchParams } from 'react-router-dom';
-
-import { useInView } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 
 import { fetcher } from '@/api';
 import Result from './Result';
@@ -11,28 +10,32 @@ import Box from '@/components/styled/Box';
 import Flex from '@/components/styled/Flex';
 import type { Petsitter } from '@/types/user.type';
 
+const PAGE_SIZE = 10;
+
 export default function Results() {
   const [searchParams] = useSearchParams();
-  const ref = useRef(null);
-  const isInView = useInView(ref);
 
-  const pageSize = 10;
+  const { ref, inView } = useInView();
+
   const getKey = (pageIndex: number, previousPageData: any) => {
     if (!searchParams || Array.from(searchParams).length === 0) return null;
-    if (previousPageData && !previousPageData.length) return null;
-    return `/users/petsitters/possible?${searchParams}&page=${pageIndex + 1}&pageSize=${pageSize}`;
+
+    if (previousPageData && previousPageData.results.length === 0) return null;
+
+    return `/users/petsitters/possible?${searchParams}&page=${pageIndex + 1}&pageSize=${PAGE_SIZE}`;
   };
 
-  const { isLoading, data, size, setSize } = useSWRInfinite(getKey, fetcher);
+  const { isLoading, isValidating, data, setSize } = useSWRInfinite(getKey, fetcher);
 
   const isEmpty = data?.[0]?.results?.length === 0;
-  const isEnd = data && data[data.length - 1]?.results?.length < pageSize;
+  const lastPage = data?.[data.length - 1];
+  const isEnd = lastPage?.pagination ? lastPage.pagination.page >= lastPage.pagination.totalPages : false;
 
   useEffect(() => {
-    if (isInView) {
-      setSize(size + 1);
+    if (inView && !isEnd && !isValidating) {
+      setSize((prev) => prev + 1);
     }
-  }, [isInView]);
+  }, [inView, isEnd, isValidating, setSize]);
 
   if (isEmpty) {
     return (
@@ -56,11 +59,13 @@ export default function Results() {
         <section>
           <ul>
             <Flex direction="column" gap="lg">
-              {data[0].results.length > 0 &&
-                Array.isArray(data[0].results) &&
-                data.map((page: any) =>
-                  page?.results.map((petsitter: Petsitter) => <Result key={petsitter.id} petsitter={petsitter} />),
-                )}
+              {data.map((page, index) => (
+                <Fragment key={index}>
+                  {page.results.map((petsitter: Petsitter) => (
+                    <Result key={petsitter.id} petsitter={petsitter} />
+                  ))}
+                </Fragment>
+              ))}
             </Flex>
           </ul>
         </section>
@@ -68,7 +73,7 @@ export default function Results() {
 
       {data && !isEnd && (
         <Flex justifyContent="center" alignItems="center">
-          <Spinner color="#279EFF" />
+          <Spinner ref={ref} color="#279EFF" />
         </Flex>
       )}
     </Box>

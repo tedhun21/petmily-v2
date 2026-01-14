@@ -23,14 +23,20 @@ export default function RecentSearches({ data, handleLocationClick, setRecentSea
     setRecentSearches((prev: RecentLocationSearch[]) => prev.filter((item: RecentLocationSearch) => item.id !== id));
   };
   return (
-    <Flex direction="column" gap="sm">
+    <Flex direction="column">
       {data?.map((search: RecentLocationSearch) => (
-        <Box as="li" key={search.id} p="sm" br="md">
+        <Box as="li" key={search.id} p="xs" br="md">
           <Flex justifyContent="space-between" alignItems="center">
-            <Button as="button" variant="transparent" onClick={() => handleLocationClick(search.name)}>
+            <Button type="button" onClick={() => handleLocationClick(search.name)} variant="transparent">
               <Text size="sm">{search.name}</Text>
             </Button>
-            <IconButton type="button" onClick={() => handleDeleteRecent(search.id)} variant="fill" shape="circle">
+            <IconButton
+              type="button"
+              onClick={() => handleDeleteRecent(search.id)}
+              variant="clear"
+              shape="circle"
+              size="sm"
+            >
               <FaXmark size="16px" />
             </IconButton>
           </Flex>

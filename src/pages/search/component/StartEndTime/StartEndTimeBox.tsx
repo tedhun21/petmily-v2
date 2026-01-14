@@ -66,7 +66,11 @@ export default function StartEndTimeBox({ handleBoxClick, handleSetValue }: IPro
             </IconButton>
           )}
           <Box css={{ flex: 0 }}>
-            <IconButton type="submit" bgColor={colors.blue400} onClick={(e: React.MouseEvent) => e.stopPropagation()}>
+            <IconButton
+              type="submit"
+              bgColor={colors.blue400}
+              onClick={(e) => e.stopPropagation()}
+            >
               <FiSearch size="24px" color={colors.white} />
             </IconButton>
           </Box>

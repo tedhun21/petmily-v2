@@ -51,15 +51,16 @@ export default function ReviewCard({ review }: ReviewCardProps) {
 const ClientImage = styled(RoundedImageWrapper)`
   width: 46px;
   height: 46px;
-  border: 2px solid ${({ theme }) => theme.colors.line.box.highlight};
+  border: 2px solid ${({ theme }) => theme.colors.line.box.active};
 `;
 
 const ReviewText = styled.p`
-  display: box;
-  -webkit-line-clamp: 3; /* 3줄까지만 표시 */
+  display: -webkit-box;
   -webkit-box-orient: vertical;
-  overflow: hidden; /* 넘치는 텍스트 숨김 */
-  text-overflow: ellipsis; /* 넘칠 경우 ... 표시 */
-  line-height: 1.5; /* 줄 간격 */
-  word-wrap: break-word; /* 긴 단어가 있으면 줄 바꿈 */
+  overflow: hidden;
+
+  -webkit-line-clamp: 3; /* 3줄까지만 표시 */
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  ${({ theme }) => theme.typeScale.base}
 `;

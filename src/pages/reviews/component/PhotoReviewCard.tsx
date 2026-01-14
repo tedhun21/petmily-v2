@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState, useLayoutEffect } from 'react';
 
 import styled from '@emotion/styled';
 import { PiStarFill } from 'react-icons/pi';
@@ -14,10 +14,14 @@ import Text from '@/components/styled/Text';
 
 import Flex from '@/components/styled/Flex';
 import Link from '@/components/styled/Link';
+import Box from '@/components/styled/Box';
+import Button from '@/components/styled/Button';
 
 interface ReviewPhotoCardProps {
   review: Review;
 }
+
+const limitLines = 3;
 
 export default function PhotoReviewCard({ review }: ReviewPhotoCardProps) {
   const [isTextOverflow, setIsTextOverflow] = useState(false);
@@ -29,17 +33,16 @@ export default function PhotoReviewCard({ review }: ReviewPhotoCardProps) {
   } = review;
 
   const handleRestOpen = () => {
-    setIsExpanded(true);
+    setIsExpanded((prev) => !prev);
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (textRef.current) {
-      const element = textRef.current;
+      const { scrollHeight, clientHeight } = textRef.current;
 
-      const lineHeight = parseFloat(getComputedStyle(element).lineHeight);
-      const maxHeight = lineHeight * 3;
-      if (element.scrollHeight > maxHeight) {
-        setIsTextOverflow(true);
+      const hasOverflow = scrollHeight > clientHeight;
+      if (isTextOverflow !== hasOverflow) {
+        setIsTextOverflow(hasOverflow);
       }
     }
   }, [review.body]);
@@ -58,9 +61,18 @@ export default function PhotoReviewCard({ review }: ReviewPhotoCardProps) {
           {review?.photos &&
             review.photos.map((photo: string, index: number) => (
               <SwiperSlide key={index}>
-                <ReviewImageContainer>
+                <Box
+                  w="100%"
+                  br="lg"
+                  css={{
+                    position: 'relative',
+                    overflow: 'hidden',
+                    aspectRatio: '1/1',
+                    objectFit: 'cover',
+                  }}
+                >
                   <ImageCentered src={`${photo}`} alt={`review_photo_${index}`} />
-                </ReviewImageContainer>
+                </Box>
               </SwiperSlide>
             ))}
         </Swiper>
@@ -75,13 +87,13 @@ export default function PhotoReviewCard({ review }: ReviewPhotoCardProps) {
             </Flex>
           </Flex>
           <div>
-            <ReviewText ref={textRef} $isExpanded={isExpanded}>
+            <ReviewText ref={textRef} limitLines={limitLines} isExpanded={isExpanded}>
               {review?.body}
             </ReviewText>
-            {isTextOverflow && !isExpanded && (
-              <RestButton type="button" onClick={handleRestOpen}>
-                더보기
-              </RestButton>
+            {isTextOverflow && (
+              <Button type="button" onClick={handleRestOpen} variant="transparent" size="sm">
+                {isExpanded ? '접기' : '더보기'}
+              </Button>
             )}
           </div>
           <Text size="xs">{dateAgo(review.createdAt)}</Text>
@@ -107,26 +119,17 @@ export default function PhotoReviewCard({ review }: ReviewPhotoCardProps) {
   );
 }
 
-const ReviewImageContainer = styled.div`
-  position: relative;
-  overflow: hidden;
-  width: 100%;
-  aspect-ratio: 1/1;
-  object-fit: cover;
-`;
-
-const ReviewText = styled.p<{ $isExpanded: boolean }>`
-  display: box;
-  -webkit-line-clamp: ${({ $isExpanded }) => ($isExpanded ? 'none' : '3')};
+const ReviewText = styled.p<{ limitLines: number; isExpanded: boolean }>`
+  display: -webkit-box;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
-  line-height: 1.5;
-  word-wrap: break-word;
-`;
 
-const RestButton = styled.button`
-  ${({ theme }) => theme.typeScale.xs};
+  /** 줄 수 제한 */
+  -webkit-line-clamp: ${({ isExpanded }) => (isExpanded ? 'none' : 3)};
+
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  ${({ theme }) => theme.typeScale.base};
 `;
 
 // TODO: border
@@ -135,7 +138,7 @@ const PetsitterContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: ${({ theme }) => theme.space.md};
-  border: 2px solid ${({ theme }) => theme.colors.line.box.highlight};
+  border: 2px solid ${({ theme }) => theme.colors.line.box.active};
   border-radius: ${({ theme }) => theme.radius.md};
   gap: ${({ theme }) => theme.space.sm};
 `;
@@ -143,5 +146,5 @@ const PetsitterContainer = styled.div`
 const PetsitterImage = styled(RoundedImageWrapper)`
   width: 40px;
   height: 40px;
-  border: 2px solid ${({ theme }) => theme.colors.line.box.highlight};
+  border: 2px solid ${({ theme }) => theme.colors.line.box.primary};
 `;

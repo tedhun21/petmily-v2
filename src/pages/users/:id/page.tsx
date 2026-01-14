@@ -21,8 +21,6 @@ export default function ProfilePage() {
   // 유저 정보 가져오기
   const { data: user } = useSWR(`/users/${id}`, fetcher);
 
-  console.log('user', user);
-
   return (
     <>
       <Header center={user?.nickname} />

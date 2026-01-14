@@ -1,9 +1,9 @@
-/** @jsxImportSource @emotion/react */
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import useSWRMutation from 'swr/mutation';
 import { toast } from 'react-toastify';
+import { isAxiosError } from 'axios';
 
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
@@ -21,7 +21,6 @@ import Box from '@/components/styled/Box';
 import { Input } from '@/components/styled/Input';
 import { AuthContext } from '@/components/contexts/AuthContext';
 import { Divider } from '@/styles/commonStyle';
-import type { AxiosError } from 'axios';
 
 const schema = yup.object().shape({
   email: yup.string().email('이메일 형식을 지켜주세요.').required('ID는 필수입니다.'),
@@ -36,7 +35,6 @@ type IFormLoginInputs = yup.InferType<typeof schema>;
 
 export default function LoginPage() {
   const navigate = useNavigate();
-
   const { refreshToken } = useContext(AuthContext);
 
   const {
@@ -56,7 +54,20 @@ export default function LoginPage() {
         toast.success('환영해요!');
       }
     },
-    onError: () => {
+    onError: (e) => {
+      if (isAxiosError(e)) {
+        if (e.response) {
+          const data = e.response.data;
+
+          if (data.statusCode === 400) {
+            if (data.message.includes('email')) {
+              setError('email', { message: data.message });
+            } else if (data.message.includes('password')) {
+              setError('password', { message: data.message });
+            }
+          }
+        }
+      }
       toast.error('로그인에 실패헸어요. 다시 시도해 주세요');
     },
   });
@@ -64,30 +75,7 @@ export default function LoginPage() {
   const onSubmit = async (data: IFormLoginInputs) => {
     const { email, password } = data;
 
-    await trigger(
-      { email, password },
-      {
-        onError: (error: AxiosError) => {
-          if (error.response) {
-            const data = error.response.data as { statusCode: number; error: string; message: string };
-            // not found
-            if (data.statusCode === 404) {
-              setError('email', {
-                type: data.error,
-                message: data.message,
-              });
-            }
-            // unauthorized
-            if (data.statusCode === 401) {
-              setError('password', {
-                type: data.error,
-                message: data.message,
-              });
-            }
-          }
-        },
-      },
-    );
+    await trigger({ email, password });
   };
 
   return (

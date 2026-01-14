@@ -1,38 +1,22 @@
-import { useEffect, useRef } from 'react';
-
-import { useInView } from 'framer-motion';
+import { useEffect } from 'react';
+import { useInView } from 'react-intersection-observer';
 
 import useChatRooms from '@/pages/chats/hooks/useChatRooms';
 import ChatRoomItem from './ChatRoomItem';
 import Spinner from '@/components/Spinner';
 import Flex from '@/components/styled/Flex';
 
+const PAGE_SIZE = 20;
+
 export default function ChatRoomList() {
-  const ref = useRef<HTMLDivElement | null>(null);
-  const isInView = useInView(ref);
-  const { chatRooms, setSize, isLoading, isEnd } = useChatRooms();
+  const { ref, inView } = useInView();
+  const { chatRooms, setSize, isValidating, isEnd } = useChatRooms({ pageSize: PAGE_SIZE });
 
   useEffect(() => {
-    if (isInView && !isLoading) {
+    if (inView && !isEnd && !isValidating) {
       setSize((prev) => prev + 1);
     }
-  }, [isInView, isLoading, setSize]);
-
-  if (isLoading && chatRooms.length === 0) {
-    return (
-      <Flex justifyContent="center" alignItems="center">
-        <Spinner color="279EFF" />
-      </Flex>
-    );
-  }
-
-  if (!isLoading && chatRooms.length === 0) {
-    return (
-      <Flex justifyContent="center" alignItems="center">
-        <span>채팅방이 없습니다.</span>
-      </Flex>
-    );
-  }
+  }, [inView, isEnd, isValidating, setSize]);
 
   return (
     <>
@@ -41,6 +25,7 @@ export default function ChatRoomList() {
           <ChatRoomItem key={chatRoom.id} chatRoom={chatRoom} />
         ))}
       </ul>
+
       {!isEnd && (
         <div ref={ref}>
           <Flex justifyContent="center" alignItems="center">

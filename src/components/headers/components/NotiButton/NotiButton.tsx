@@ -31,7 +31,7 @@ export default function NotiButton() {
 
   return (
     <NotiContaier id="noti-container">
-      <IconButton type="button" onClick={toggleNoti}>
+      <IconButton type="button" onClick={toggleNoti} variant="clear" size="sm" shape="circle">
         <IoNotificationsOutline size="24px" />
       </IconButton>
       {currentModal === ModalType.NOTIFICATION &&

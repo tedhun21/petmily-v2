@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import type { Theme } from '@/styles/theme';
 import { Link } from 'react-router-dom';
 
-type Size = 'sm' | 'md' | 'lg' | 'xl';
+type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 type Variant = 'fill' | 'clear' | 'border';
 
 type StyleProps = {
@@ -33,7 +33,7 @@ const variantStyles = (theme: Theme, variant: StyleProps['variant'] = 'fill', bg
       `;
     case 'border':
       return css`
-        background-color: transparent;
+        background-color: inherit;
         border: 1px solid ${theme.colors.line.box.primary};
 
         &:hover {
@@ -47,15 +47,15 @@ const variantStyles = (theme: Theme, variant: StyleProps['variant'] = 'fill', bg
 
     case 'clear':
       return css`
-        background-color: ${theme.colors.background.layer0};
+        background-color: transparent;
         border: none;
 
         &:hover {
-          filter: ${dark ? 'brightness(1.15)' : 'brightness(0.95)'};
+          background-color: ${theme.colors.background.box.default.hover};
         }
 
         &:active {
-          filter: ${dark ? 'brightness(1.1)' : 'brightness(0.9)'};
+          background-color: ${theme.colors.background.box.default.active};
         }
       `;
   }
@@ -63,6 +63,11 @@ const variantStyles = (theme: Theme, variant: StyleProps['variant'] = 'fill', bg
 
 const sizeStyles = (theme: Theme, size: Size) => {
   switch (size) {
+    case 'xs':
+      return css`
+        padding: ${theme.space.xs};
+        ${theme.typeScale.xs};
+      `;
     case 'sm':
       return css`
         padding: ${theme.space.sm};
@@ -92,7 +97,7 @@ const BaseIconElement = styled.div<StyleProps>`
   align-items: center;
   cursor: pointer;
 
-  border-radius: ${({ shape = 'circle' }) => (shape === 'rounded' ? '12px' : '50%')};
+  border-radius: ${({ shape = 'rounded' }) => (shape === 'rounded' ? '12px' : '50%')};
   transition: all 0.2s ease-in-out;
 
   &:active {
@@ -108,7 +113,10 @@ const BaseIconElement = styled.div<StyleProps>`
     }
   }
 
-  ${({ theme, variant = 'clear', bgColor }) => variantStyles(theme, variant, bgColor)};
+  ${({ theme, variant = 'clear', bgColor }) => {
+    const effectiveVariant = variant === 'clear' && bgColor ? 'fill' : variant;
+    return variantStyles(theme, effectiveVariant, bgColor);
+  }};
   ${({ theme, size = 'md' }) => sizeStyles(theme, size)};
 `;
 

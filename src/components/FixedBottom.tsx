@@ -12,7 +12,6 @@ export default function FixedBottom({ children, hasSafeAreaPadding = false }: IP
   useEffect(() => {
     if (hasSafeAreaPadding && ref.current) {
       const totalHeight = ref.current.offsetHeight;
-      console.log('totalHeight', totalHeight);
 
       document.documentElement.style.setProperty('--safe-area-bottom', `${totalHeight}px`);
 

@@ -1,7 +1,7 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 
 import styled from '@emotion/styled';
-import { useInView } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 
 import { useAuthSWRInfinite } from '@/hooks/authSWR';
 import PetmilyCard from './PetmilyCard';
@@ -10,33 +10,39 @@ import Spinner from '@/components/Spinner';
 import type { Pet } from '@/types/pet.type';
 import Flex from '@/components/styled/Flex';
 import Link from '@/components/styled/Link';
+import Box from '@/components/styled/Box';
+import { pulse } from '@/styles/commonStyle';
+
+const pageSize = 3;
 
 export default function MyPetContainer() {
-  const ref = useRef(null);
-  const isInView = useInView(ref);
-  const pageSize = 6;
+  const { ref, inView } = useInView();
 
   const getKey = (pageIndex: number, previousPageData: any) => {
-    if (previousPageData && !previousPageData.length) return null;
+    if (previousPageData && !previousPageData.results.length) return null;
     return `/pets?page=${pageIndex + 1}&pageSize=${pageSize}`;
   };
 
-  const { data, size, setSize, isLoading } = useAuthSWRInfinite(getKey, fetcher);
+  const { data, setSize, isLoading, isValidating } = useAuthSWRInfinite(getKey, fetcher);
 
   const isEmpty = data?.[0]?.results?.length === 0;
-  const isEnd = data && data[data.length - 1]?.results?.length < pageSize;
+
+  const lastPage = data?.[data.length - 1];
+  const isEnd = lastPage?.pagination ? lastPage.pagination.page >= lastPage.pagination.totalPages : false;
 
   useEffect(() => {
-    if (isInView) {
-      setSize(size + 1);
+    if (inView && !isEnd && !isValidating) {
+      setSize((prev) => prev + 1);
     }
-  }, [isInView]);
+  }, [inView, setSize, isEnd, isValidating]);
 
   if (isLoading) {
     return (
-      <Flex justifyContent="center" alignItems="center">
-        <Spinner color="#279EFF" />
-      </Flex>
+      <CardContainer>
+        {Array.from({ length: pageSize }).map((_, index) => (
+          <PetmilyCardSkeleton key={index} />
+        ))}
+      </CardContainer>
     );
   }
 
@@ -59,19 +65,37 @@ export default function MyPetContainer() {
         data?.map((page: any) => page?.results.map((pet: Pet) => <PetmilyCard key={pet.id} pet={pet} />))}
 
       {!isEnd && (
-        <div ref={ref}>
-          <Flex justifyContent="center" alignItems="center">
-            <Spinner color="#279EFF" />
-          </Flex>
-        </div>
+        <Flex ref={ref} justifyContent="center" alignItems="center">
+          <Spinner color="#279EFF" />
+        </Flex>
       )}
     </CardContainer>
   );
 }
+
+const PetmilyCardSkeleton = () => (
+  <PetmilyCardSkeletonContainer p="md" br="md">
+    <Flex direction="column" gap="lg">
+      <SkeletonElement style={{ height: '100%', width: '100%', aspectRatio: 1, borderRadius: '8px' }} />
+      <SkeletonElement style={{ height: '1.5rem', width: '50%' }} />
+      <SkeletonElement style={{ height: '1.25rem', width: '80%' }} />
+    </Flex>
+  </PetmilyCardSkeletonContainer>
+);
 
 const CardContainer = styled.ul`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-gap: ${({ theme }) => theme.space.md};
   width: 100%;
+`;
+
+const PetmilyCardSkeletonContainer = styled(Box)`
+  border: 2px solid ${({ theme }) => theme.colors.background.box.default.hover};
+`;
+
+const SkeletonElement = styled.div`
+  background-color: ${({ theme }) => theme.colors.background.box.default.hover};
+  border-radius: ${({ theme }) => theme.radius.md};
+  animation: ${pulse} 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 `;

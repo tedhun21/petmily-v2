@@ -2,6 +2,8 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import type { Theme } from '@/styles/theme';
 
+const get = (obj: any, path: string) => path.split('.').reduce((acc, key) => acc && acc[key], obj);
+
 const getSize = (value?: string | number) => {
   if (value === undefined) return undefined;
   return typeof value === 'number' ? `${value}px` : value;
@@ -21,7 +23,7 @@ type SpacingValue = keyof Theme['space'] | number;
 type RadiusValue = keyof Theme['radius'] | number;
 
 type BoxProps = {
-  bg?: string;
+  bgColor?: string;
   w?: string;
   h?: string;
   p?: SpacingValue;
@@ -45,7 +47,12 @@ type BoxProps = {
 const Box = styled.div<BoxProps>`
   width: ${({ w }) => getSize(w)};
   height: ${({ h }) => getSize(h)};
-  background-color: ${({ bg }) => bg};
+  background-color: ${({ theme, bgColor }) => {
+    if (typeof bgColor === 'string' && bgColor.includes('.')) {
+      return get(theme.colors, bgColor) || bgColor;
+    }
+    return bgColor;
+  }};
   border-radius: ${({ theme, br }) => getRadius(theme, br)};
   box-shadow: ${({ theme, shadow }) => (shadow ? theme.shadow[shadow] : undefined)};
 

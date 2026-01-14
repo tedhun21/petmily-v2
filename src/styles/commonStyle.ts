@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
+import { keyframes } from '@emotion/react';
 
 export const Title = styled.h1`
   color: ${({ theme }) => theme.colors.text.primary};
@@ -29,34 +29,6 @@ export const ImageCentered = styled.img`
   transform: translate(-50%, -50%);
 `;
 
-export const DefaultLink = styled(Link)`
-  background-color: ${({ theme }) => theme.colors.background.box.default.primary};
-  border-radius: ${({ theme }) => theme.radius.md};
-  color: inherit;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.background.box.default.hover};
-  }
-
-  &:active {
-    box-shadow: ${({ theme }) => theme.shadow.inset};
-  }
-`;
-
-export const BlueLink = styled(DefaultLink)`
-  background-color: ${({ theme }) => theme.colors.background.box.accent.primary};
-  color: ${({ theme }) => theme.colors.text.white};
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.background.box.accent.hover};
-  }
-
-  &:active {
-    background-color: ${({ theme }) => theme.colors.background.box.accent.active};
-    box-shadow: ${({ theme }) => theme.shadow.inset};
-  }
-`;
-
 export const Divider = styled.div<{
   $orientation?: 'horizontal' | 'vertical';
   $thickness?: string;
@@ -75,3 +47,8 @@ export const Divider = styled.div<{
         width: ${$length || '100%'};
       `};
 `;
+
+export const pulse = keyframes`
+  50% {
+    opacity:0.5
+  }`;

@@ -1,55 +1,50 @@
 import { createContext, useContext } from 'react';
+import { useParams, useSearchParams } from 'react-router-dom';
 
-import { fetcher } from '@/api';
-import { useAuthSWR } from '@/hooks/authSWR';
 import useChatRoom, { type UseChatRoomReturn } from '../hooks/useChatRoom';
 import useChatSocket, { type UseSocketReturn } from '../hooks/useChatSocket';
 import useMessages, { type UseMessagesReturn } from '../hooks/useMessages';
 import { type UseChatReadStatus, useChatReadStatus } from '../hooks/useChatReadStatus';
 
-interface ChatProviderOptions {
-  children: React.ReactNode;
-  value: {
-    opponentIds?: string[] | null;
-    chatRoomId?: string | null;
-  };
-}
+type ChatContextReturn = UseChatRoomReturn & UseMessagesReturn & UseSocketReturn & UseChatReadStatus;
 
-type ChatContextReturn = {
-  chatRoomValues: UseChatRoomReturn;
-  messageValues: UseMessagesReturn;
-  socketValues: UseSocketReturn;
-  readStatus: UseChatReadStatus;
-};
+export const ChatContext = createContext<ChatContextReturn | null>(null);
 
-const ChatContext = createContext<ChatContextReturn | null>(null);
+export default function ChatProvider({ children }: { children: React.ReactNode }) {
+  const { id } = useParams();
+  const [searchParams] = useSearchParams();
 
-export default function ChatProvider({ children, value }: ChatProviderOptions) {
-  const { opponentIds, chatRoomId } = value;
+  const opponentIds = searchParams.getAll('opponentIds');
+  const chatRoomId = id === 'temp' ? null : id;
 
-  const { data: me } = useAuthSWR('/users/me', fetcher);
-
-  const chatRoomValues = useChatRoom({ opponentIds, chatRoomId, me });
-
-  const messageValues = useMessages({
-    chatRoom: chatRoomValues.chatRoom,
+  const chatRoomValues = useChatRoom({
+    chatRoomId,
+    opponentIds: opponentIds.length > 0 ? opponentIds : null,
   });
 
-  const socketValues = useChatSocket({ chatRoomValues, setNewMessages: messageValues.setNewMessages, me });
-  const readStatus = useChatReadStatus({ markMessageAsRead: socketValues.markMessageAsRead });
+  const messageValues = useMessages({ chatRoom: chatRoomValues.chatRoom });
 
-  return (
-    <ChatContext.Provider
-      value={{
-        chatRoomValues,
-        messageValues,
-        socketValues,
-        readStatus,
-      }}
-    >
-      {children}
-    </ChatContext.Provider>
-  );
+  const socketValues = useChatSocket({
+    chatRoom: chatRoomValues.chatRoom,
+    meMember: chatRoomValues.meMember,
+    otherMembers: chatRoomValues.otherMembers,
+    addPendingMessage: messageValues.addPendingMessage,
+    updatePendingMessageStatus: messageValues.updatePendingMessageStatus,
+    replaceMessage: messageValues.replaceMessage,
+    addIncomingMessage: messageValues.addIncomingMessage,
+    updateMemberRead: chatRoomValues.updateMemberRead,
+  });
+
+  const readStatusValues = useChatReadStatus({ markMessageAsRead: socketValues.markMessageAsRead });
+
+  const value = {
+    ...chatRoomValues,
+    ...messageValues,
+    ...socketValues,
+    ...readStatusValues,
+  };
+
+  return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;
 }
 
 export const useChat = () => {

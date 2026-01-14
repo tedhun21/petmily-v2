@@ -1,7 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-
 import dayjs from 'dayjs';
-import { useInView } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 import { FaXmark } from 'react-icons/fa6';
 
 import { ImageCentered, RoundedImageWrapper } from '@/styles/commonStyle';
@@ -12,59 +10,47 @@ import {
   shouldShowSenderPhoto,
   shouldShowTime,
 } from '@/utils/date';
-import type { ChatMessage, Message, PendingMessage } from '@/types/chat.type';
+import type { Message, PendingMessage } from '@/types/chat.type';
 import { IoMdRefresh } from 'react-icons/io';
-import { useChat } from '../contexts/ChatProvider';
-import Button from '@/components/styled/Button';
+
 import Text from '@/components/styled/Text';
 import Flex from '@/components/styled/Flex';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import { Label } from '@/components/styled/Label';
 import Box from '@/components/styled/Box';
+import { IconButton } from '@/components/styled/IconButtonAndLink';
+import { useChat } from '../contexts/ChatProvider';
 
 interface IProps {
-  message: ChatMessage;
+  message: Message | PendingMessage;
   isMyMessage: boolean;
-  previousMessage?: ChatMessage;
-  nextMessage?: ChatMessage;
+  previousMessage?: Message | PendingMessage;
+  nextMessage?: Message | PendingMessage;
   unreadCount: number;
 }
 
-export default React.memo(function MessageItem({
-  message,
-  isMyMessage,
-  previousMessage,
-  nextMessage,
-  unreadCount,
-}: IProps) {
-  const {
-    messageValues: { setNewMessages },
-    socketValues: { sendMessage },
-    readStatus: { onMessageVisible },
-  } = useChat();
-  const ref = useRef<HTMLLIElement>(null);
-  const isInView = useInView(ref, { once: true });
+export default function MessageItem({ message, isMyMessage, previousMessage, nextMessage, unreadCount }: IProps) {
+  const { sendMessage, removePendingMessage, onMessageVisible } = useChat();
+
+  // type narrowing (리턴값이 true일 때 msg는 PendingMessage 타입
+  const isPendingMessage = (msg: Message | PendingMessage): msg is PendingMessage => {
+    return 'status' in msg;
+  };
+
+  const { ref } = useInView({
+    triggerOnce: true,
+    onChange: (inView) => {
+      if (inView && !isPendingMessage(message)) {
+        onMessageVisible(message);
+      }
+    },
+  });
 
   const showSenderPhoto = shouldShowSenderPhoto(message, previousMessage);
   const showTime = shouldShowTime(message, previousMessage, nextMessage);
   const showDateDivider = shouldShowDateDivider(message, previousMessage);
   const showNickname = shouldShowNickname(message, previousMessage);
-
-  // type narrowing (리턴값이 true일 때 msg는 PendingMessage 타입
-  const isPendingMessage = (msg: ChatMessage): msg is PendingMessage => {
-    return 'status' in msg;
-  };
-
-  const deleteNewMessage = () => {
-    setNewMessages((prev) => prev.filter((msg) => msg.id !== message.id));
-  };
-
-  useEffect(() => {
-    if (isInView && !('status' in message)) {
-      onMessageVisible(message as Message);
-    }
-  }, [isInView]);
 
   return (
     <li ref={ref}>
@@ -93,22 +79,20 @@ export default React.memo(function MessageItem({
               {showTime && <Text size="xs">{formatToLocaleAMPM(message.createdAt)}</Text>}
               {isPendingMessage(message)
                 ? message.status === 'error' && (
-                    <ErrorStatus>
-                      <Button
-                        onClick={() => sendMessage(message.content, message?.tempId)}
-                        variant="icon"
-                        size="sm"
-                        borderRadius="circle"
-                      >
-                        <ReSendMark />
-                      </Button>
-                      <Button onClick={deleteNewMessage} variant="icon" size="sm" borderRadius="circle">
-                        <XMark />
-                      </Button>
-                    </ErrorStatus>
+                    <Box p="xs" bgColor="background.box.default.primary" br="md">
+                      <Flex>
+                        <IconButton onClick={() => sendMessage(message.content, message?.tempId)} size="xs">
+                          <ReSendMark />
+                        </IconButton>
+                        <IconButton onClick={() => removePendingMessage(message.id)} size="xs">
+                          <XMark />
+                        </IconButton>
+                      </Flex>
+                    </Box>
                   )
-                : unreadCount > 0 && (
-                    <Text size="xs" color="highlight" weight="semibold">
+                : isMyMessage &&
+                  unreadCount > 0 && (
+                    <Text size="xs" color="text.accent.default" weight="semibold">
                       {unreadCount}
                     </Text>
                   )}
@@ -118,7 +102,7 @@ export default React.memo(function MessageItem({
       </Item>
     </li>
   );
-});
+}
 
 const Item = styled.div<{ $isMyMessage: boolean }>`
   display: flex;
@@ -167,15 +151,6 @@ const Bubble = styled.div<{ $isMyMessage: boolean }>`
     color: white;
     word-wrap: break-word;
   }
-`;
-
-// TODO
-const ErrorStatus = styled.div`
-  display: flex;
-  align-items: center;
-  padding: ${({ theme }) => theme.space.xs};
-  background-color: ${({ theme }) => theme.colors.background.box.default.primary};
-  border-radius: ${({ theme }) => theme.radius.md};
 `;
 
 const ReSendMark = styled(IoMdRefresh)`

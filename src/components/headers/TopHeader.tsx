@@ -52,7 +52,7 @@ export default function TopHeader() {
 
         <Flex gap="sm">
           <Flex alignItems="center" gap="xs">
-            <IconButton onClick={handleDarkMode} variant="clear" size="sm">
+            <IconButton onClick={handleDarkMode} variant="clear" size="sm" shape="circle">
               {isDarkMode ? <FiSun size="24px" /> : <MdNightlightRound size="24px" />}
             </IconButton>
 
@@ -68,7 +68,7 @@ export default function TopHeader() {
               )} */}
 
                 <div style={{ position: 'relative' }}>
-                  <IconLink to="/chats" variant="clear" size="sm">
+                  <IconLink to="/chats" variant="clear" size="sm" shape="circle">
                     <FaRegPaperPlane size="24px" />
                   </IconLink>
 
