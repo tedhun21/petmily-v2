@@ -1,20 +1,11 @@
 import styled from '@emotion/styled';
-import { type FormValues, ModalLayOut } from '../SearchBox';
-import { timeOptions } from '@/utils/date';
 import { useFormContext } from 'react-hook-form';
 import dayjs from 'dayjs';
-import type { RootState } from '@/store';
-import { useDispatch, useSelector } from 'react-redux';
-import { ModalType, openModal } from '@/store/modalSlice';
+
+import { timeOptions } from '@/utils/date';
 import Flex from '@/components/styled/Flex';
 
-interface IProps {
-  handleSetValue: (field: keyof FormValues, value: any) => void;
-}
-
-export default function StartEndTimeModal({ handleSetValue }: IProps) {
-  const dispatch = useDispatch();
-  const { currentModal } = useSelector((state: RootState) => state.modal);
+export default function StartEndTimePopover() {
   const { setValue, watch } = useFormContext();
 
   const startTime = watch('startTime');
@@ -50,26 +41,24 @@ export default function StartEndTimeModal({ handleSetValue }: IProps) {
   };
 
   return (
-    <ModalLayOut>
-      <Flex direction="column" gap="lg">
-        <span>{'체크인 & 체크아웃'} 시간 선택</span>
-        <List>
-          {timeOptions().map((time: string) => {
-            const inTime = startTime === time;
-            const outTime = endTime === time;
-            const isBetween = isTimeBetween(time);
+    <Flex direction="column" gap="lg">
+      <span>{'체크인 & 체크아웃'} 시간 선택</span>
+      <List>
+        {timeOptions().map((time: string) => {
+          const inTime = startTime === time;
+          const outTime = endTime === time;
+          const isBetween = isTimeBetween(time);
 
-            return (
-              <CapsuleWrapper key={time} $isBetween={isBetween} $isStartTime={inTime} $isEndTime={outTime}>
-                <TimeCapsule onClick={(e) => handleCapsuleClick(e, time)} $isSelected={inTime || outTime}>
-                  {time}
-                </TimeCapsule>
-              </CapsuleWrapper>
-            );
-          })}
-        </List>
-      </Flex>
-    </ModalLayOut>
+          return (
+            <CapsuleWrapper key={time} $isBetween={isBetween} $isStartTime={inTime} $isEndTime={outTime}>
+              <TimeCapsule onClick={(e) => handleCapsuleClick(e, time)} $isSelected={inTime || outTime}>
+                {time}
+              </TimeCapsule>
+            </CapsuleWrapper>
+          );
+        })}
+      </List>
+    </Flex>
   );
 }
 

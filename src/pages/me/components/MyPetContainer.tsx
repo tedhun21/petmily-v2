@@ -12,18 +12,19 @@ import Flex from '@/components/styled/Flex';
 import Link from '@/components/styled/Link';
 import Box from '@/components/styled/Box';
 import { pulse } from '@/styles/commonStyle';
+import type { OffsetResponse } from '@/types/common.type';
 
 const pageSize = 3;
 
 export default function MyPetContainer() {
   const { ref, inView } = useInView();
 
-  const getKey = (pageIndex: number, previousPageData: any) => {
+  const getKey = (pageIndex: number, previousPageData: OffsetResponse<Pet> | null) => {
     if (previousPageData && !previousPageData.results.length) return null;
     return `/pets?page=${pageIndex + 1}&pageSize=${pageSize}`;
   };
 
-  const { data, setSize, isLoading, isValidating } = useAuthSWRInfinite(getKey, fetcher);
+  const { data, setSize, isLoading, isValidating, error } = useAuthSWRInfinite(getKey, fetcher);
 
   const isEmpty = data?.[0]?.results?.length === 0;
 
@@ -31,10 +32,18 @@ export default function MyPetContainer() {
   const isEnd = lastPage?.pagination ? lastPage.pagination.page >= lastPage.pagination.totalPages : false;
 
   useEffect(() => {
-    if (inView && !isEnd && !isValidating) {
+    if (inView && !isEnd && !isValidating && !error) {
       setSize((prev) => prev + 1);
     }
-  }, [inView, setSize, isEnd, isValidating]);
+  }, [inView, setSize, isEnd, isValidating, error]);
+
+  if (error) {
+    return (
+      <Flex justifyContent="center" alignItems="center">
+        <span>Failed to load pets.</span>
+      </Flex>
+    );
+  }
 
   if (isLoading) {
     return (
@@ -62,7 +71,7 @@ export default function MyPetContainer() {
     <CardContainer>
       {data &&
         Array.isArray(data) &&
-        data?.map((page: any) => page?.results.map((pet: Pet) => <PetmilyCard key={pet.id} pet={pet} />))}
+        data?.map((page) => page?.results.map((pet: Pet) => <PetmilyCard key={pet.id} pet={pet} />))}
 
       {!isEnd && (
         <Flex ref={ref} justifyContent="center" alignItems="center">

@@ -13,7 +13,7 @@ export default function MyPetsitterSettings({ petsitter }: { petsitter: Petsitte
   return (
     <InfoList>
       {petsitter?.possiblePetSpecies && (
-        <Box p="md" br="lg" bg="background.box.default.primary">
+        <Box p="md" br="lg" bgColor="background.box.default.primary">
           <Flex direction="column" gap="md">
             <span>케어 가능 동물</span>
             <ItemWrapper>
@@ -31,7 +31,7 @@ export default function MyPetsitterSettings({ petsitter }: { petsitter: Petsitte
         </Box>
       )}
       {petsitter?.possibleLocations && (
-        <Box p="md" br="lg" bg="background.box.default.primary">
+        <Box p="md" br="lg" bgColor="background.box.default.primary">
           <Flex direction="column" gap="md">
             <span>케어 가능 지역</span>
             <ItemWrapper>
@@ -47,7 +47,7 @@ export default function MyPetsitterSettings({ petsitter }: { petsitter: Petsitte
         </Box>
       )}
       {petsitter?.possibleDays && (
-        <Box p="md" br="lg" bg="background.box.default.primary">
+        <Box p="md" br="lg" bgColor="background.box.default.primary">
           <Flex direction="column" gap="md">
             <span>케어 가능 요일</span>
             <ItemWrapper>
@@ -66,7 +66,7 @@ export default function MyPetsitterSettings({ petsitter }: { petsitter: Petsitte
         </Box>
       )}
       {petsitter?.possibleStartTime && petsitter?.possibleEndTime && (
-        <Box p="md" br="lg" bg="background.box.default.primary">
+        <Box p="md" br="lg" bgColor="background.box.default.primary">
           <Flex direction="column" gap="md">
             <span>케어 가능 시간</span>
             <Label size="sm" borderRadius="lg" color="blue">

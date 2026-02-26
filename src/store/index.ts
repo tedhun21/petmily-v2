@@ -1,18 +1,18 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore } from '@reduxjs/toolkit';
 
-import newMessageReducer from "./newMessageSlice";
-import notificationReducer from "./notificationSlice";
-import modalReducer from "./modalSlice";
-import contextReducer from "./contextSlice";
-import authReducer from "./authSlice";
+import authReducer from './slices/authSlice';
+import contextReducer from './slices/contextSlice';
+import modalReducer from './slices/modalSlice';
+import newMessageReducer from './slices/newMessageSlice';
+import notificationReducer from './slices/notificationSlice';
 
 export const store = configureStore({
   reducer: {
+    auth: authReducer,
+    context: contextReducer,
+    modal: modalReducer,
     newMessage: newMessageReducer,
     notification: notificationReducer,
-    modal: modalReducer,
-    context: contextReducer,
-    auth: authReducer,
   },
 });
 

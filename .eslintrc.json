@@ -9,7 +9,7 @@
     "plugin:@typescript-eslint/recommended",
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
-    "plugin:@emotion/recommended",
+    "plugin:react/jsx-runtime",
     "plugin:prettier/recommended"
   ],
   "parser": "@typescript-eslint/parser",
@@ -18,15 +18,24 @@
       "jsx": true
     },
     "ecmaVersion": "latest",
-    "sourceType": "module",
-    "project": "./tsconfig.json"
+    "sourceType": "module"
   },
-  "plugins": [
-    "react",
-    "react-hooks",
-    "@typescript-eslint",
-    "@emotion"
+  "overrides": [
+    {
+      "files": ["src/**/*.{ts,tsx}"],
+      "parserOptions": {
+        "project": "./tsconfig.app.json"
+      }
+    },
+    {
+      "files": ["vite.config.ts"],
+      "parserOptions": {
+        "project": "./tsconfig.node.json"
+      }
+    }
   ],
+
+  "plugins": ["react", "react-hooks", "@typescript-eslint", "@emotion"],
   "settings": {
     "react": {
       "version": "detect"
@@ -34,9 +43,10 @@
   },
   "rules": {
     "react/react-in-jsx-scope": "off",
+    "react/display-name": "off",
     "@emotion/pkg-renaming": "error",
     "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }]
+    "react/no-unknown-property": ["error", { "ignore": ["css"] }]
   },
   "ignorePatterns": ["dist/", "node_modules/"]
 }

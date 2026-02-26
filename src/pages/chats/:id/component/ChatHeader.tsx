@@ -9,12 +9,12 @@ import type { ChatMember } from '@/types/chat.type';
 import ChatRoomDrawer from './ChatRoomDrawer';
 import Text from '@/components/styled/Text';
 import { IconButton } from '@/components/styled/IconButtonAndLink';
-import { useChat } from '../contexts/ChatProvider';
+import { useChatRoomContext } from '../context/ChatProvider';
 
 export default function ChatHeader() {
   const navigate = useNavigate();
 
-  const { otherMembers } = useChat();
+  const { otherMembers } = useChatRoomContext();
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 

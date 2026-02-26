@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import useSWRMutation from 'swr/mutation';
 
 import styled from '@emotion/styled';
-import { Modal } from '@mui/material';
 import { FaXmark } from 'react-icons/fa6';
 
 import { poster } from '@/api';
@@ -21,7 +20,7 @@ export default function EmailCodeModalButton({ email }: { email: string }) {
     if (open && email) {
       trigger({ email });
     }
-  }, [open, email]);
+  }, [open, email, trigger]);
 
   return (
     <>
@@ -29,9 +28,10 @@ export default function EmailCodeModalButton({ email }: { email: string }) {
         <FaXmark color="red" size="20px" />
         <span>인증하기</span>
       </EmailButton>
-      <CustomModal open={open} onClose={() => setOpen(false)}>
+      {/* TODO: POSTCODE MODAL */}
+      {/* <CustomModal open={open} onClose={() => setOpen(false)}>
         <ModalContainer>hi</ModalContainer>
-      </CustomModal>
+      </CustomModal> */}
     </>
   );
 }
@@ -41,13 +41,13 @@ const EmailButton = styled.button`
   align-items: center;
 `;
 
-const CustomModal = styled(Modal)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+// const CustomModal = styled(Modal)`
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+// `;
 
-const ModalContainer = styled.div`
-  width: 360px;
-  background-color: white;
-`;
+// const ModalContainer = styled.div`
+//   width: 360px;
+//   background-color: white;
+// `;

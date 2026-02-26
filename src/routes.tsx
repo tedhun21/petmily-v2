@@ -11,15 +11,16 @@ import ChatsPage from '@/pages/chats/page';
 import ChatPage from '@/pages/chats/:id/page';
 import CaresPage from '@/pages/cares/page';
 import CarePage from '@/pages/cares/:id/page';
-import MapsPage from '@/pages/cares/:id/maps/MapsPage';
+import MapsPage from '@/pages/cares/:id/maps/page';
 import ReviewPage from '@/pages/cares/:id/review/page';
 import JournalPage from '@/pages/cares/:id/journal/page';
 import MyPage from '@/pages/me/page';
 import EditMePage from '@/pages/me/edit/page';
 import CreatePetPage from '@/pages/me/pets/register/page';
 import EditPetPage from '@/pages/me/pets/:id/edit/page';
-import ProfilePage from '@/pages/users/:id/page';
+import ProfilePage from './pages/users/:id/page';
 import BookPage from '@/pages/users/:id/book/page';
+import ConfirmPage from './pages/users/:id/book/confirm/page';
 
 import RedirectPage from '@/pages/common/Redirect';
 import NotFoundPage from '@/pages/common/NotFound';
@@ -48,6 +49,7 @@ export const routes = [
       { path: 'me/pets/:id/edit', element: <EditPetPage /> },
       { path: 'users/:id', element: <ProfilePage /> },
       { path: 'users/:id/book', element: <BookPage /> },
+      { path: 'users/:id/book/confirm', element: <ConfirmPage /> },
       { path: 'auth/connect/google/callback', element: <RedirectPage /> },
       { path: '*', element: <NotFoundPage /> },
     ],

@@ -45,7 +45,7 @@ export default function PhotoReviewCard({ review }: ReviewPhotoCardProps) {
         setIsTextOverflow(hasOverflow);
       }
     }
-  }, [review.body]);
+  }, [review.body, isTextOverflow]);
 
   return (
     <article>

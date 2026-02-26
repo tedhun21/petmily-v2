@@ -1,18 +1,19 @@
+import { useRef, useEffect, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { IoMdArrowRoundUp } from 'react-icons/io';
 import Box from '@/components/styled/Box';
 import Flex from '@/components/styled/Flex';
 import { IconButton } from '@/components/styled/IconButtonAndLink';
 import styled from '@emotion/styled';
-import { useRef, useEffect, useCallback } from 'react';
 import { colors } from '@/styles/colors';
-import { useChat } from '../contexts/ChatProvider';
+import { useChatActionsContext } from '../context/ChatProvider';
 
 export default function MessageInput() {
   const { register, setValue, handleSubmit, watch } = useForm<{ message: string }>();
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const formRef = useRef<HTMLFormElement | null>(null);
-  const { sendMessage } = useChat();
+
+  const { sendMessage } = useChatActionsContext();
 
   const { ref: rhfRef, ...rest } = register('message');
 

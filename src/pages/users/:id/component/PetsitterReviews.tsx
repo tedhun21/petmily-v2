@@ -27,11 +27,11 @@ export default function PetsitterReviews({ nickname }: ReviewsProps) {
           <span>{data?.pagination.total} 개</span>
         </Flex>
 
-        <StyledSwiper slidesPerView={1.2}>
+        <Swiper slidesPerView={1.2} spaceBetween={8} css={{ width: '100%' }}>
           {data &&
             data.results.map((review: Review) => (
               <SwiperSlide key={review.id}>
-                <Box as="li" p="lg" br="md" bg="background.secondary">
+                <Box as="li" p="lg" br="md" bgColor="background.box.default.primary">
                   <Flex justifyContent="space-between">
                     <div>
                       <Flex alignItems="center" gap="sm">
@@ -68,15 +68,11 @@ export default function PetsitterReviews({ nickname }: ReviewsProps) {
                 </Box>
               </SwiperSlide>
             ))}
-        </StyledSwiper>
+        </Swiper>
       </Flex>
     </Box>
   );
 }
-
-const StyledSwiper = styled(Swiper)`
-  width: 100%;
-`;
 
 const UserImage = styled(RoundedImageWrapper)`
   width: 40px;

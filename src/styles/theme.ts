@@ -1,7 +1,3 @@
-// =======================
-// Types
-// =======================
-
 import { colors } from './colors';
 
 export type Theme = {
@@ -40,6 +36,13 @@ export type Theme = {
     ['3xl']: string;
     ['4xl']: string;
     ['5xl']: string;
+  };
+
+  zIndices: {
+    bottomCTA: number;
+    modalBackdrop: number;
+    modalContent: number;
+    popover: number;
   };
 
   colors: {
@@ -153,6 +156,13 @@ const baseTheme = {
     ['3xl']: '2rem',
     ['4xl']: '2.5rem',
     ['5xl']: '3.75rem',
+  },
+
+  zIndices: {
+    bottomCTA: 10,
+    modalBackdrop: 30,
+    modalContent: 31,
+    popover: 20,
   },
 };
 

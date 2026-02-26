@@ -12,30 +12,27 @@ import type { RootState } from '@/store';
 import { fetcher } from '@/api';
 import MeButton from './components/MeButton';
 import NotiButton from './components/NotiButton/NotiButton';
+import { ThemeContext } from '../contexts/ThemeProvider';
 
 import Text from '@/components/styled/Text';
 import Box from '@/components/styled/Box';
 import Flex from '@/components/styled/Flex';
 
-import { ThemeContext } from '../contexts/ThemeContext';
-
 import Link from '../styled/Link';
 import { IconButton, IconLink } from '../styled/IconButtonAndLink';
+import { selectTotalNewMessageCount } from '@/store/slices/newMessageSlice';
 
 export default function TopHeader() {
   const { isDarkMode, setIsDarkMode } = useContext(ThemeContext);
-  const { newMessages } = useSelector((state: RootState) => state.newMessage);
+  const clientNewCount = useSelector(selectTotalNewMessageCount);
   const { newNotifications } = useSelector((state: RootState) => state.notification);
 
   const { data: me } = useAuthSWR('/users/me', fetcher);
 
   // const { data: unreadCount } = useSWR('/notifications/unreadCount', fetcher);
-  const { data: unreadMessageCount } = useAuthSWR('/chats/unread-count', fetcher);
+  const { data: serverTotalUnreadCount } = useAuthSWR('/chats/unread-count', fetcher);
 
-  // console.log('newMessages', newMessages);
-  // console.log('unreadMessageCount', unreadMessageCount);
-
-  const unreadChatCount = unreadMessageCount + newMessages.length;
+  const unreadChatCount = serverTotalUnreadCount + clientNewCount;
 
   // const unreadNotificationCount: number = unreadCount + newNotifications.length;
 

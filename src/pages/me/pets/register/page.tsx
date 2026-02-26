@@ -19,7 +19,7 @@ import { multipartPoster } from '@/api';
 import Button from '@/components/styled/Button';
 import { Input } from '@/components/styled/Input';
 import Flex from '@/components/styled/Flex';
-import FixedBottom from '@/components/FixedBottom';
+import FixedBottom from '@/components/BottomCTA';
 import { ImageCentered } from '@/styles/commonStyle';
 import Box from '@/components/styled/Box';
 import { IconButton } from '@/components/styled/IconButtonAndLink';

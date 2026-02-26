@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 
 import { ImageCentered, RoundedImageWrapper } from '@/styles/commonStyle';
 import { type Pet, PetSpecies } from '@/types/pet.type';
+import Flex from '@/components/styled/Flex';
 
 interface PetItemProps {
   pet: Pet;
@@ -24,41 +25,35 @@ export default function PetItem({ pet }: PetItemProps) {
   };
 
   return (
-    <Item onClick={handleCheckChange}>
-      <PetImage $isChecked={isChecked}>
-        <ImageCentered
-          src={
-            pet.photo
-              ? `${pet.photo}`
-              : pet.species === PetSpecies.DOG
-                ? '/imgs/DogProfile.png'
-                : pet.species === PetSpecies.CAT
-                  ? '/imgs/CatProfile.png'
-                  : undefined
-          }
-          alt="pet_photo"
-        />
-      </PetImage>
+    <Flex direction="column" alignItems="center" gap="sm">
+      <button type="button" onClick={handleCheckChange} css={{ position: 'relative', backgroundColor: 'transparent' }}>
+        <PetImage $isChecked={isChecked}>
+          <ImageCentered
+            src={
+              pet.photo
+                ? `${pet.photo}`
+                : pet.species === PetSpecies.DOG
+                  ? '/imgs/DogProfile.png'
+                  : pet.species === PetSpecies.CAT
+                    ? '/imgs/CatProfile.png'
+                    : undefined
+            }
+            alt="pet_photo"
+          />
+        </PetImage>
+
+        <Check $isChecked={isChecked}>✓</Check>
+      </button>
       <span>{pet.name}</span>
-      {isChecked ? <Check $isChecked={isChecked}>✓</Check> : null}
-    </Item>
+    </Flex>
   );
 }
-
-const Item = styled.li`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  cursor: pointer;
-  gap: ${({ theme }) => theme.space.sm};
-`;
 
 const PetImage = styled(RoundedImageWrapper)<{ $isChecked: boolean }>`
   width: 80px;
   height: 80px;
-  transform: ${({ $isChecked }) => ($isChecked ? 'brightness(1.05)' : 'brightness(1)')};
-  transition: transform 0.3s ease-in-out;
+  transform: ${({ $isChecked }) => ($isChecked ? 'scale(1.05)' : 'scale(1)')};
+  transition: transform 0.2s ease-in-out;
 `;
 
 const Check = styled.div<{ $isChecked: boolean }>`
@@ -70,8 +65,9 @@ const Check = styled.div<{ $isChecked: boolean }>`
   align-items: center;
   width: ${({ theme }) => theme.space['2xl']};
   height: ${({ theme }) => theme.space['2xl']};
-  background-color: ${({ theme }) => theme.colors.background.highlight};
+  background-color: ${({ theme }) => theme.colors.background.accent};
   border-radius: ${({ theme }) => theme.radius.circle};
-  opacity: ${({ $isChecked }) => ($isChecked ? 1 : 0)};
-  transform: ${({ $isChecked }) => ($isChecked ? 'scale(1)' : 'scale(0.5)')};
+  transform: ${({ $isChecked }) => ($isChecked ? 'scale(1)' : 'scale(0)')};
+  transition: transform 0.2s ease-in-out;
+  color: ${({ theme }) => theme.colors.text.white};
 `;

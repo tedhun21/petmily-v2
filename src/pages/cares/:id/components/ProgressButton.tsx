@@ -1,12 +1,12 @@
-import { useContext, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import styled from '@emotion/styled';
+import { SocketContext } from '@/components/contexts/SocketProvider';
 
 import Spinner from '@/components/Spinner';
 import { ReservationStatus, type Reservation } from '@/types/reservation.type';
 import { UserRole, type UserRoleType } from '@/types/user.type';
-import { SocketContext } from '@/components/contexts/SocketContext';
 import Button from '@/components/styled/Button';
 
 interface ProgressButtonProps {
@@ -16,33 +16,33 @@ interface ProgressButtonProps {
 
 export default function ProgressButton({ meRole, reservation }: ProgressButtonProps) {
   const navigate = useNavigate();
-  const { socketRef } = useContext(SocketContext);
+  const { socket } = useContext(SocketContext);
   const [isLoading, setIsLoading] = useState(false);
 
   // 예약 수락
-  const handleAccept = () => {
+  const handleAccept = useCallback(() => {
     setIsLoading(true);
-    if (reservation && socketRef.current) {
-      socketRef.current.emit('updateStatus', {
+    if (reservation && socket) {
+      socket.emit('updateStatus', {
         reservationId: reservation.id,
         newStatus: ReservationStatus.ACCEPTED,
       });
     }
     setIsLoading(false);
-  };
+  }, [socket, reservation]);
 
   // 예약 취소
-  const handleCancel = () => {
+  const handleCancel = useCallback(() => {
     setIsLoading(true);
-    if (reservation && socketRef.current) {
-      socketRef.current.emit('updateStatus', {
+    if (reservation && socket) {
+      socket.emit('updateStatus', {
         reservationId: reservation.id,
         newStatus: ReservationStatus.CANCELED,
       });
     }
 
     setIsLoading(false);
-  };
+  }, [socket, reservation]);
 
   const handleLinkReview = () => {
     navigate(`/cares/${reservation?.id}/review`);

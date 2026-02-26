@@ -1,10 +1,18 @@
-import { useEffect } from 'react';
+import { useEffect, createContext } from 'react';
+
+import useSWR from 'swr';
 import { useDispatch } from 'react-redux';
 
 import { fetcher } from '@/api';
-import { AuthContext } from './AuthContext';
-import { clearAccessToken, setAccessToken } from '@/store/authSlice';
-import useSWR from 'swr';
+import { clearAccessToken, setAccessToken } from '@/store/slices/authSlice';
+
+interface ContextProps {
+  refreshToken: () => Promise<string | null>;
+}
+
+export const AuthContext = createContext<ContextProps>({
+  refreshToken: async () => null,
+});
 
 export default function AuthProvider({ children }: { children: React.ReactNode }) {
   const dispatch = useDispatch();

@@ -10,6 +10,7 @@ import { Title } from '@/styles/commonStyle';
 import type { Petsitter } from '@/types/user.type';
 import UsedPetsitterCard from './UsedPetsitterCard';
 import UsedPetsittersSkeleton from './UsedPetsittersSkeleton';
+import type { OffsetResponse } from '@/types/common.type';
 
 export default function UsedPetsitters() {
   const pageSize = 12;
@@ -36,7 +37,7 @@ export default function UsedPetsitters() {
           >
             {data &&
               data[0]?.results.length > 0 &&
-              data.map((page: any) =>
+              data.map((page: OffsetResponse<Petsitter>) =>
                 page?.results?.map((petsitter: Petsitter) => (
                   <SwiperSlide key={petsitter.id} style={{ width: '220px' }}>
                     <UsedPetsitterCard petsitter={petsitter} />

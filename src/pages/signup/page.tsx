@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import useSWRMutation from 'swr/mutation';
 import styled from '@emotion/styled';
@@ -11,7 +11,6 @@ import { isAxiosError } from 'axios';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import CustomPortalModal from '@/components/CustomPortalModal';
 import CustomDaumPostcode, { type PostcodeData } from '@/components/CustomDaumPostcode';
 import Button from '@/components/styled/Button';
 import { Input } from '@/components/styled/Input';
@@ -20,9 +19,10 @@ import Box from '@/components/styled/Box';
 import Flex from '@/components/styled/Flex';
 import { Divider } from '@/styles/commonStyle';
 import { poster } from '@/api';
-
 import Spinner from '@/components/Spinner';
 import Header from '@/components/headers/Header';
+
+import Modal from '@/components/Modal';
 
 const schema = yup.object().shape({
   username: yup
@@ -60,7 +60,7 @@ type IFormSignupInputs = yup.InferType<typeof schema>;
 export default function SignupPage() {
   const navigate = useNavigate();
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isPostcodeOpen, setIsPostcodeOpen] = useState(false);
 
   const {
     register,
@@ -97,20 +97,17 @@ export default function SignupPage() {
     },
   });
 
-  const onToggleModal = () => {
-    setIsModalOpen(true);
-  };
-
   const handleComplete = (data: PostcodeData) => {
     if (data) {
       clearErrors('address');
     }
+
     const { address, zonecode } = data;
 
     setValue('address', address);
     setValue('zipcode', zonecode);
 
-    setIsModalOpen(false);
+    setIsPostcodeOpen(false);
   };
 
   const onSubmit = async (data: IFormSignupInputs) => {
@@ -189,15 +186,20 @@ export default function SignupPage() {
                   </div>
                 </InputWrapper>
                 <InputWrapper>
-                  <Input
-                    placeholder="주소"
-                    {...register('address', { required: true })}
-                    onClick={onToggleModal}
-                    onKeyDown={onToggleModal}
-                    error={errors.address ? true : undefined}
-                    autoComplete="off"
-                    fullWidth
-                  />
+                  <Modal isOpen={isPostcodeOpen} setIsOpen={setIsPostcodeOpen}>
+                    <Modal.Trigger>
+                      <Input
+                        placeholder="주소"
+                        {...register('address', { required: true })}
+                        error={errors.address ? true : undefined}
+                        autoComplete="off"
+                        fullWidth
+                      />
+                    </Modal.Trigger>
+                    <Modal.Content>
+                      <CustomDaumPostcode onComplete={handleComplete} />
+                    </Modal.Content>
+                  </Modal>
                   <div>
                     {errors.address?.message && (
                       <Text size="xs" color="error">
@@ -205,12 +207,6 @@ export default function SignupPage() {
                       </Text>
                     )}
                   </div>
-
-                  {isModalOpen && (
-                    <CustomPortalModal onClose={() => setIsModalOpen(false)}>
-                      <CustomDaumPostcode width="400px" maxHeight={600} onComplete={handleComplete} />
-                    </CustomPortalModal>
-                  )}
                 </InputWrapper>
                 <InputWrapper>
                   <Input
@@ -319,7 +315,6 @@ export default function SignupPage() {
   );
 }
 
-// TODO
 const InputWrapper = styled(Box)`
   > div {
     min-height: 18px;

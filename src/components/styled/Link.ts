@@ -1,6 +1,7 @@
 import { Link as RouteLink } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { linkStyles, type ButtonVariant, type LinkSize, type LinkVariant } from '@/styles/helpers';
+import { css } from '@emotion/react';
 
 const styleProps = ['variant', 'btnVariant', 'size', 'borderRadius', 'fullWidth'];
 
@@ -29,6 +30,12 @@ const Link = styled(RouteLink, {
   ${({ theme, size = 'md' }) => linkStyles.size(theme, size)};
 
   ${({ theme, variant = 'text', btnVariant = 'transparent' }) => linkStyles.variant(theme, variant, btnVariant)};
+
+  ${({ fullWidth }) =>
+    fullWidth &&
+    css`
+      width: 100%;
+    `};
 `;
 
 export default Link;

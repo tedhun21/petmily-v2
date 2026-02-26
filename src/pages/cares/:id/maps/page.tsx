@@ -1,9 +1,9 @@
-import { fetcher } from "@/api";
-import { useEffect, useRef, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-import useSWR from "swr";
+import { fetcher } from '@/api';
+import { useEffect, useRef, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import useSWR from 'swr';
 
-import MapsDrawer from "./component/Drawer";
+import MapsDrawer from './component/Drawer';
 
 const NAVER_MAPS_CLIENT_ID = import.meta.env.REACT_APP_NAVER_MAPS_CLIENT_ID;
 
@@ -12,20 +12,17 @@ export default function MapsPage() {
   const mapRef = useRef<HTMLDivElement>(null);
   const [mapObj, setMapObj] = useState<any>(null);
 
-  const address = params.get("address");
+  const address = params.get('address');
 
   // 주소(address)로 위도(latitude) 경도(longitude) 불러오기
-  const { data: geocode } = useSWR(
-    address ? `/maps/geocode?location=${address}` : null,
-    fetcher
-  );
+  const { data: geocode } = useSWR(address ? `/maps/geocode?location=${address}` : null, fetcher);
 
   useEffect(() => {
-    if (geocode && geocode.status === "OK" && geocode.addresses.length > 0) {
+    if (geocode && geocode.status === 'OK' && geocode.addresses.length > 0) {
       const { addresses } = geocode;
 
-      const script = document.createElement("script");
-      script.type = "text/javascript";
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
       script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${NAVER_MAPS_CLIENT_ID}`;
       script.async = true;
 
@@ -38,16 +35,10 @@ export default function MapsPage() {
         if (!naver || !mapRef.current || !addresses[0]) return;
 
         // 마커의 위치
-        const markerPosition = new naver.maps.LatLng(
-          addresses[0].y,
-          addresses[0].x
-        );
+        const markerPosition = new naver.maps.LatLng(addresses[0].y, addresses[0].x);
 
         // 지도 중심 위치를 마커 위치보다 약간 아래로 이동
-        const centerPosition = new naver.maps.LatLng(
-          addresses[0].y - 0.005,
-          addresses[0].x
-        );
+        const centerPosition = new naver.maps.LatLng(addresses[0].y - 0.005, addresses[0].x);
 
         // 지도 생성
         const map = new naver.maps.Map(mapRef.current, {
@@ -73,13 +64,9 @@ export default function MapsPage() {
   }, [geocode]);
 
   return (
-    <div style={{ position: "relative", height: "100%", overflow: "hidden" }}>
-      <div ref={mapRef} style={{ width: "100%", height: "100%" }} />
-      <MapsDrawer
-        address={address ?? undefined}
-        map={mapObj}
-        geocode={geocode ?? undefined}
-      />
+    <div style={{ position: 'relative', height: '100%', overflow: 'hidden' }}>
+      <div ref={mapRef} style={{ width: '100%', height: '100%' }} />
+      <MapsDrawer address={address ?? undefined} map={mapObj} geocode={geocode ?? undefined} />
     </div>
   );
 }

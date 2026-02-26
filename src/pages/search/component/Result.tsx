@@ -14,7 +14,7 @@ interface ResultProps {
 
 export default function Result({ petsitter }: ResultProps) {
   return (
-    <Card to={`/users/${petsitter.nickname}`}>
+    <Card to={`/users/${petsitter.id}`}>
       <PetsitterImage>
         <ImageCentered
           src={petsitter?.photo ? `${petsitter.photo}` : '/imgs/DefaultUserProfile.jpg'}

@@ -1,61 +1,88 @@
-import { useMemo, useCallback, useState } from 'react';
+import { useCallback, useMemo } from 'react';
+import type { ChatMessage, Message, PendingMessage } from '@/types/chat.type';
 import { fetcher } from '@/api';
 import { useAuthSWRInfinite } from '@/hooks/authSWR';
-import type { ChatRoom, Message, PendingMessage } from '@/types/chat.type';
+import type { CursorResponse } from '@/types/common.type';
 
 interface IProps {
-  chatRoom: ChatRoom | null;
+  chatRoomId: number | undefined;
 }
-
-export type UseMessagesReturn = {
-  serverMessages: Message[];
-  pendingMessages: PendingMessage[];
-  isLoading: boolean;
-  isValidating: boolean;
-  hasNextPage: boolean;
-  setSize: (_size: number | ((_size: number) => number)) => Promise<any[] | undefined>;
-  addPendingMessage: (newMessage: PendingMessage) => void;
-  updatePendingMessageStatus: (tempId: string, status: 'error') => void;
-  replaceMessage: (tempId: string, newMessage: Message) => void;
-  removePendingMessage: (tempId: string) => void;
-  addIncomingMessage: (newMessage: Message) => void;
-};
 
 const PAGE_SIZE = 50;
 
-export default function useMessages({ chatRoom }: IProps): UseMessagesReturn {
-  const [pendingMessages, setPendingMessages] = useState<PendingMessage[]>([]);
-
-  const getKey = (pageIndex: number, previousPageData: any) => {
-    if (!chatRoom || chatRoom?.id === -1) return null;
-    const baseKey = `/chats/${chatRoom.id}/messages`;
+export default function useMessages({ chatRoomId }: IProps) {
+  const getKey = (pageIndex: number, previousPageData: CursorResponse<ChatMessage> | null) => {
+    if (!chatRoomId) return null;
+    const baseKey = `/chats/${chatRoomId}/messages`;
     if (pageIndex === 0 && !previousPageData) return `${baseKey}?pageSize=${PAGE_SIZE}`;
-
     if (previousPageData?.pagination?.hasNextPage && previousPageData.pagination.nextCursor) {
-      const nextCursor = previousPageData.pagination.nextCursor;
-      return `${baseKey}?cursor=${nextCursor}&pageSize=${PAGE_SIZE}`;
+      return `${baseKey}?cursor=${previousPageData.pagination.nextCursor}&pageSize=${PAGE_SIZE}`;
     }
     return null;
   };
 
-  const { data, isLoading, isValidating, setSize, mutate } = useAuthSWRInfinite<any>(getKey, fetcher);
+  const { data, size, setSize, isLoading, isValidating, mutate } = useAuthSWRInfinite<CursorResponse<ChatMessage>>(
+    getKey,
+    fetcher,
+  );
 
-  const serverMessages: Message[] = useMemo(() => (data ? data.flatMap((page) => page.results) : []), [data]);
+  const messages = useMemo(() => (data ? data.flatMap((page) => page.results) : []), [data]);
+  const hasNextPage = data?.[data.length - 1]?.pagination?.hasNextPage ?? false;
+  // 무한 스크롤 중복 호출 방지를 위한 플래그
+  const isCurrentBatchLoaded = (!isLoading && data?.length === size) ?? false;
 
-  const lastPage = data?.[data.length - 1];
-  const hasNextPage = lastPage?.pagination ? lastPage?.pagination.hasNextPage : false;
-
-  const addIncomingMessage = useCallback(
-    (newMessage: Message) => {
+  const _internalUpsert = useCallback(
+    (
+      newMsgOrUpdate: Message | PendingMessage | Partial<PendingMessage>,
+      tempId?: string,
+      newStatus?: 'pending' | 'error',
+    ) => {
       mutate(
-        (cachedData) => {
-          if (!cachedData) return;
-          const newData = [...cachedData];
-          newData[0] = {
-            ...newData[0],
-            results: [newMessage, ...newData[0].results],
-          };
-          return newData;
+        (prev) => {
+          if (!prev || !prev[0]) return prev;
+
+          const firstPage = { ...prev[0] };
+          const messages = [...(firstPage.results || [])];
+
+          // 1. [수정/확정] tempId가 있는 경우
+          if (tempId) {
+            const idx = messages.findIndex((m) => 'tempId' in m && m.tempId === tempId);
+            if (idx !== -1) {
+              if (newStatus) {
+                // 상태만 바꿀 때는 기존 데이터 유지
+                messages[idx] = { ...messages[idx], status: newStatus };
+              } else {
+                // 서버 데이터로 확정(Commit)할 때는 기존 펜딩 데이터(tempId 포함)를 완전히 버림
+                messages[idx] = newMsgOrUpdate as Message;
+              }
+              return [{ ...firstPage, results: messages }, ...prev.slice(1)];
+            }
+          }
+
+          // 2. [신규 추가]
+          const newMsg = newMsgOrUpdate as Message | PendingMessage;
+
+          if (!('id' in newMsg)) {
+            // [변경] 내 펜딩 메시지는 가장 최신이어야 하므로 배열의 '앞'에 삽입
+            messages.unshift(newMsg);
+          } else {
+            // [추가] 이미 존재하는 메시지(id 기준)라면 무시 (중복 방지)
+            const isDuplicate = messages.some((m) => 'id' in m && m.id === newMsg.id);
+            if (isDuplicate) return prev;
+
+            // 상대방 메시지(id 있음)는 펜딩들보다는 뒤에(위쪽에) 위치해야 함
+            const lastRealMsgIdx = messages.findIndex((m) => 'id' in m);
+
+            if (lastRealMsgIdx === -1) {
+              // 리스트에 진짜 메시지가 하나도 없으면 펜딩 뒤(배열 끝)에 추가
+              messages.push(newMsg);
+            } else {
+              // 가장 최신 진짜 메시지 바로 앞(화면상으로는 위쪽)에 삽입
+              messages.splice(lastRealMsgIdx, 0, newMsg);
+            }
+          }
+
+          return [{ ...firstPage, results: messages }, ...prev.slice(1)];
         },
         { revalidate: false },
       );
@@ -63,37 +90,48 @@ export default function useMessages({ chatRoom }: IProps): UseMessagesReturn {
     [mutate],
   );
 
-  const addPendingMessage = useCallback((newMessage: PendingMessage) => {
-    setPendingMessages((prev) => [newMessage, ...prev]);
-  }, []);
-
-  const removePendingMessage = useCallback((tempId: string) => {
-    setPendingMessages((prev) => prev.filter((msg) => msg.tempId !== tempId));
-  }, []);
-
-  const replaceMessage = useCallback(
-    (tempId: string, newMessage: Message) => {
-      removePendingMessage(tempId);
-      addIncomingMessage(newMessage);
-    },
-    [removePendingMessage, addIncomingMessage],
+  const addPendingMessage = useCallback(
+    (pendingMessage: PendingMessage) => _internalUpsert(pendingMessage),
+    [_internalUpsert],
   );
 
-  const updatePendingMessageStatus = useCallback((tempId: string, status: 'error') => {
-    setPendingMessages((prev) => prev.map((msg) => (msg.tempId === tempId ? { ...msg, status } : msg)));
-  }, []);
+  const removePendingMessage = useCallback(
+    (tempId: string) => {
+      mutate((prev) => {
+        if (!prev || !prev[0]) return prev;
+
+        const firstPage = { ...prev[0] };
+
+        const filteredMessages = firstPage.results.filter((m) => !('tempId' in m && m.tempId === tempId));
+
+        return [{ ...firstPage, results: filteredMessages }, ...prev.slice(1)];
+      });
+    },
+    [mutate],
+  );
+
+  const addIncomingMessage = useCallback((serverMessage: Message) => _internalUpsert(serverMessage), [_internalUpsert]);
+
+  const commitMessage = useCallback(
+    (tempId: string, newMessage: Message) => _internalUpsert(newMessage, tempId),
+    [_internalUpsert],
+  );
+
+  const updatePendingMessageStatus = useCallback(
+    (tempId: string, newStatus: 'pending' | 'error') => _internalUpsert({}, tempId, newStatus),
+    [_internalUpsert],
+  );
 
   return {
-    serverMessages,
-    pendingMessages,
-    isLoading,
-    isValidating,
-    hasNextPage,
+    messages,
     setSize,
+    hasNextPage,
+    isValidating,
+    isCurrentBatchLoaded,
     addPendingMessage,
     removePendingMessage,
-    updatePendingMessageStatus,
-    replaceMessage,
     addIncomingMessage,
+    commitMessage,
+    updatePendingMessageStatus,
   };
 }

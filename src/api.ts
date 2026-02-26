@@ -2,7 +2,7 @@ import axios, { AxiosError, isAxiosError, isCancel } from 'axios';
 import type { AxiosRequestConfig } from 'axios';
 import { API_URL } from '@/config';
 import store from '@/store';
-import { clearAccessToken, setAccessToken } from '@/store/authSlice';
+import { clearAccessToken, setAccessToken } from './store/slices/authSlice';
 
 /* --- 통합 axios 인스턴스 --- */
 const api = axios.create({

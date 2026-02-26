@@ -64,7 +64,6 @@ export const Input = styled('input', {
 })<InputProps>`
   font-weight: 500;
   transition: all 0.2s ease-in-out;
-  outline: none;
   color: ${({ theme }) => theme.colors.text.primary};
   background-color: ${({ theme }) => theme.colors.background.input.primary};
 

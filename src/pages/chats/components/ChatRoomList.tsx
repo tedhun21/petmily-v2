@@ -6,17 +6,23 @@ import ChatRoomItem from './ChatRoomItem';
 import Spinner from '@/components/Spinner';
 import Flex from '@/components/styled/Flex';
 
-const PAGE_SIZE = 20;
-
 export default function ChatRoomList() {
   const { ref, inView } = useInView();
-  const { chatRooms, setSize, isValidating, isEnd } = useChatRooms({ pageSize: PAGE_SIZE });
+  const { chatRooms, setSize, isValidating, isEnd, error } = useChatRooms();
 
   useEffect(() => {
-    if (inView && !isEnd && !isValidating) {
+    if (inView && !isEnd && !isValidating && !error) {
       setSize((prev) => prev + 1);
     }
-  }, [inView, isEnd, isValidating, setSize]);
+  }, [inView, isEnd, isValidating, setSize, error]);
+
+  if (error) {
+    return (
+      <Flex justifyContent="center" alignItems="center">
+        <span>Failed to load chat rooms.</span>
+      </Flex>
+    );
+  }
 
   return (
     <>

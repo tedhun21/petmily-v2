@@ -22,6 +22,5 @@ const Wrapper = styled.div`
   min-width: 360px;
   max-width: 600px;
   background-color: ${({ theme }) => theme.colors.background.layer0};
-
-  padding-bottom: var(--safe-area-bottom, 0px);
+  padding-bottom: var(--bottom-cta-height, 0px);
 `;

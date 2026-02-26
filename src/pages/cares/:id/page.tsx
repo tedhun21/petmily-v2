@@ -1,37 +1,36 @@
 import { useContext, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import { useAuthSWR } from '@/hooks/authSWR';
+import { SocketContext } from '@/components/contexts/SocketProvider';
 
 import { formatStatus } from '@/utils/misc';
 import { fetcher } from '@/api';
-
 import PetsitterCard from './components/PetsitterCard';
 import PetContainer from './components/PetContainer';
 import DetailReservation from './components/DetailReservation';
 import ProgressButton from './components/ProgressButton';
 import ClientCard from './components/ClientCard';
 import { UserRole } from '@/types/user.type';
-import { SocketContext } from '@/components/contexts/SocketContext';
+
 import type { ReservationStatusType } from '@/types/reservation.type';
 import Flex from '@/components/styled/Flex';
 import Text from '@/components/styled/Text';
-import FixedBottom from '@/components/FixedBottom';
+import FixedBottom from '@/components/BottomCTA';
 import Header from '@/components/headers/Header';
 import BackButton from '@/components/buttons/BackButton';
 
 export default function CarePage() {
   const { id } = useParams();
 
-  const { socketRef } = useContext(SocketContext);
+  const { socket } = useContext(SocketContext);
 
   const { data: me } = useAuthSWR('/users/me', fetcher);
   const { data: reservation, mutate } = useAuthSWR(`/reservations/${id}`, fetcher);
 
   // 웹소켓: 예약 상태 변경
   useEffect(() => {
-    if (!me || !socketRef.current || !reservation?.id) return;
-    const socket = socketRef.current;
+    if (!me || !socket || !reservation?.id) return;
 
     const reservationId = reservation.id.toString();
 
@@ -53,7 +52,7 @@ export default function CarePage() {
     return () => {
       socket.off('listenStatus', handleStatusUpdate);
     };
-  }, [me, socketRef, reservation, mutate]);
+  }, [me, socket, reservation, mutate]);
 
   return (
     <>

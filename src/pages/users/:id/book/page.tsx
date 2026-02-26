@@ -1,37 +1,39 @@
-import { useState } from 'react';
-
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { Controller, FormProvider, useForm } from 'react-hook-form';
+import { useNavigate, useParams } from 'react-router-dom';
+import { FormProvider, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-
-import dayjs from 'dayjs';
-import { toast } from 'react-toastify';
 
 import useSWR from 'swr';
 import { useAuthSWR, useAuthSWRMutation } from '@/hooks/authSWR';
 
-import styled from '@emotion/styled';
-import { Modal, TextField } from '@mui/material';
-
-import { timeRange } from '@/utils/date';
 import { fetcher, poster } from '@/api';
 import SelectPets from './component/SelectPets';
-import { Divider, SubTitle } from '@/styles/commonStyle';
 
-import Confirm from '@/pages/users/:id/book/component/Confirm';
-
-import Spinner from '@/components/Spinner';
-import CustomDaumPostcode, { type PostcodeData } from '@/components/CustomDaumPostcode';
-import SelectedPetsitter from './component/SelectedPetsitter';
-import Button from '@/components/styled/Button';
 import Text from '@/components/styled/Text';
+import Box from '@/components/styled/Box';
 import Flex from '@/components/styled/Flex';
+import { Input } from '@/components/styled/Input';
+import { useDispatch, useSelector } from 'react-redux';
+import { closeModal, ModalType, openModal } from '@/store/slices/modalSlice';
+import type { RootState } from '@/store';
+import Button from '@/components/styled/Button';
+import SelectTimes from './component/SelectTimes';
+import SelectDate from './component/SelectDate';
+import { toast } from 'react-toastify';
 import type { Pet } from '@/types/pet.type';
 import Header from '@/components/headers/Header';
+import BackButton from '@/components/buttons/BackButton';
+import Accordion from '@/components/Accordion';
+import CustomDaumPostcode, { type PostcodeData } from '@/components/CustomDaumPostcode';
+import { useState } from 'react';
+import BottomCTA from '@/components/BottomCTA';
+import Modal from '@/components/Modal';
 
 const schema = yup.object().shape({
-  checkedPets: yup.array().min(1, '적도오 한 마리의 펫을 선택해야 합니다.'),
+  checkedPets: yup.array().min(1, '적어도 한 마리의 펫을 선택해야 합니다.'),
+  startTime: yup.string(),
+  endTime: yup.string(),
+  date: yup.string(),
   zipcode: yup.string(),
   address: yup.string().required('주소를 입력해 주세요.'),
   detailAddress: yup.string().required('상세 주소를 입력해주세요.'),
@@ -40,37 +42,35 @@ const schema = yup.object().shape({
 
 export default function BookPage() {
   const navigate = useNavigate();
-  const { nickname } = useParams();
-  const [searchParams] = useSearchParams();
-  const date = searchParams.get('date');
-  const startTime = searchParams.get('checkIn');
-  const endTime = searchParams.get('checkOut');
+  const dispatch = useDispatch();
+  const { id } = useParams();
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const [isChecked, setIsChecked] = useState(false);
+  const [currentStep, setCurrentStep] = useState(0);
 
   const methods = useForm({
     resolver: yupResolver(schema),
-    defaultValues: {
-      checkedPets: [],
-      zipcode: '',
-      address: '',
-      detailAddress: '',
-      body: '',
+  });
+
+  const { data: me } = useAuthSWR('/users/me', fetcher);
+  const { data: petsitter } = useSWR(id ? `/users/${id}` : null, fetcher);
+  const { isMutating, trigger } = useAuthSWRMutation('/reservations', poster, {
+    onSuccess: () => {
+      toast.success('예약 요청을 보냈어요.');
+      navigate('/cares');
+    },
+    onError: () => {
+      toast.error('예약 요청을 실패했어요.');
     },
   });
 
-  const { checkedPets, address, detailAddress } = methods.watch();
+  const { currentModal } = useSelector((state: RootState) => state.modal);
 
-  const disabled = checkedPets?.length === 0 || address === '' || detailAddress === '' || !isChecked;
+  const handlePostcodeModalOpen = () => {
+    dispatch(openModal(ModalType.POSTCODE));
+  };
 
-  const { data: me } = useAuthSWR('/users/me', fetcher);
-  const { data: petsitter } = useSWR(`/users?q=${nickname}`, fetcher);
-  const { isMutating, trigger } = useAuthSWRMutation('/reservations', poster);
-
-  const onToggleModal = () => {
-    setIsModalOpen(true);
+  const handlePostcodeModalClose = () => {
+    dispatch(closeModal());
   };
 
   const handleComplete = (data: PostcodeData) => {
@@ -83,211 +83,130 @@ export default function BookPage() {
     methods.setValue('address', address);
     methods.setValue('zipcode', zonecode);
 
-    setIsModalOpen(false);
+    handlePostcodeModalClose();
   };
 
-  const onSubmit = async (data) => {
-    const { checkedPets, zipcode, address, detailAddress, body } = data;
+  const onSubmit = async (data: any) => {
+    const { checkedPets, date, startTime, endTime, zipcode, address, detailAddress, body } = data;
 
-    const formattedStartTime = dayjs(startTime, 'HH:mm').format('HH:mm:ss');
-    const formattedEndTime = dayjs(endTime, 'HH:mm').format('HH:mm:ss');
     const formattedPetIds = checkedPets.map((pet: Pet) => pet.id);
 
     const formattedData = {
+      petIds: formattedPetIds,
       date,
-      startTime: formattedStartTime,
-      endTime: formattedEndTime,
+      startTime,
+      endTime,
       zipcode,
       address,
       detailAddress,
       body,
-      petIds: formattedPetIds,
       petsitterId: petsitter.id,
-      status: 'Pending',
     };
 
-    trigger(formattedData, {
-      onSuccess: () => {
-        toast.success('예약 요청을 보냈어요');
-        navigate('/cares');
-      },
-      onError: () => {
-        toast.error('예약 요청을 실패했어요');
-      },
-    });
+    trigger(formattedData);
   };
 
+  const checkedPets = methods.watch('checkedPets');
+
   return (
-    <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)}>
-        <Main>
-          <Header center="예약 요청" />
-          <Container>
-            <SelectedPetsitter petsitter={petsitter} />
+    <>
+      <Header left={<BackButton />} center={<Text size="lg">예약</Text>} />
+      <FormProvider {...methods}>
+        <form onSubmit={methods.handleSubmit(onSubmit)}>
+          <Box p="md">
+            <Flex direction="column" gap="md">
+              {/* 1. 펫 선택 */}
+              <Box p="lg" br="lg" shadow="dp03">
+                <Accordion isOpen={currentStep === 1} onToggle={() => setCurrentStep(currentStep === 1 ? 0 : 1)}>
+                  <Accordion.Trigger>
+                    <Flex justifyContent="space-between" alignItems="center">
+                      <Text size="lg">1. 맡기실 펫을 선택해주세요</Text>
+                      {checkedPets && checkedPets.length > 0 && currentStep !== 1 && (
+                        <Button type="button">변경</Button>
+                      )}
+                    </Flex>
+                  </Accordion.Trigger>
 
-            <Reservation>
-              <SubTitle>예약 정보</SubTitle>
+                  <Accordion.Content>
+                    <Flex direction="column">
+                      <SelectPets />
+                      <Button
+                        type="button"
+                        disabled={checkedPets?.length === 0}
+                        onClick={() => setCurrentStep(2)}
+                        css={{ alignSelf: 'flex-end' }}
+                      >
+                        다음
+                      </Button>
+                    </Flex>
+                  </Accordion.Content>
+                </Accordion>
+              </Box>
 
-              <Flex direction="column">
-                <Flex justifyContent="space-between" alignItems="center">
-                  <Text size="base" weight="bold">
-                    예약 날짜
-                  </Text>
-                  <Text size="sm">{date}</Text>
-                </Flex>
-                <Flex justifyContent="space-between" alignItems="center">
-                  <Text size="base" weight="bold">
-                    예약 시간
-                  </Text>
-                  <Text size="sm">{timeRange(startTime, endTime)}</Text>
-                </Flex>
-              </Flex>
+              {/* 2. 날짜 및 시간 선택 */}
+              <Box p="lg" br="lg" shadow="dp03">
+                <Accordion isOpen={currentStep === 2} onToggle={() => setCurrentStep(currentStep === 2 ? 0 : 2)}>
+                  <Accordion.Trigger>
+                    <Text size="lg">2. 언제 방문할까요?</Text>
+                  </Accordion.Trigger>
 
-              <span></span>
-            </Reservation>
+                  <Accordion.Content>
+                    <Box mt="lg">
+                      <Flex direction="column" alignItems="flex-start" gap="lg">
+                        <SelectDate possibleDays={petsitter?.possibleDays} />
 
-            {me ? (
-              <>
-                <SelectPets />
+                        <SelectTimes petsitter={petsitter} />
+                      </Flex>
+                    </Box>
+                  </Accordion.Content>
+                </Accordion>
+              </Box>
 
-                <Divider />
+              {/* 3. 방문 주소 선택 */}
+              <Box p="lg" br="lg" shadow="dp03">
+                <Accordion>
+                  <Accordion.Trigger>
+                    <Text size="lg">3. 어디로 방문할까요?</Text>
+                  </Accordion.Trigger>
 
-                <Flex as="section" direction="column" gap="lg">
-                  <SubTitle>어디로 방문할까요?</SubTitle>
-                  <Controller
-                    name="address"
-                    control={methods.control}
-                    rules={{ required: '주소를 입력해주세요' }}
-                    render={({ field }) => (
-                      <StyledTextField {...field} label="주소를 입력해주세요" onClick={onToggleModal} />
-                    )}
-                  />
-
-                  <Controller
-                    name="detailAddress"
-                    control={methods.control}
-                    rules={{ required: '상세주소를 확인해주세요' }}
-                    render={({ field }) => <StyledTextField {...field} label="상세주소를 입력해주세요" />}
-                  />
-
-                  <Modal
-                    open={isModalOpen}
-                    onClose={() => setIsModalOpen(false)}
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    <div style={{ width: '360px' }}>
-                      <CustomDaumPostcode onComplete={handleComplete} style={{ width: '100%', height: '100%' }} />
-                    </div>
-                  </Modal>
-                </Flex>
-
-                <Divider />
-
-                <Flex as="section" direction="column" gap="lg">
-                  <SubTitle>요청사항</SubTitle>
-                  <Controller
-                    name="body"
-                    render={({ field }) => (
-                      <StyledTextField
-                        {...field}
-                        label={'예) 산책중에 아무거나 잘 삼켜서 주의해주셔야 해요.'}
-                        multiline
+                  <Flex direction="column" gap="md">
+                    <button type="button" onClick={handlePostcodeModalOpen}>
+                      <Input
+                        {...methods.register('address')}
+                        placeholder="주소를 입력해주세요"
+                        autoComplete="off"
+                        fullWidth
                       />
-                    )}
-                  />
-                </Flex>
-              </>
-            ) : (
-              <>
-                <Divider />
-                <div>
-                  <span>예약하려면 로그인 하세요</span>
-                </div>
-              </>
-            )}
-          </Container>
+                    </button>
+                    <Input {...methods.register('detailAddress')} placeholder="상세주소를 입력해주세요" />
+                  </Flex>
+                </Accordion>
 
-          <ButtonContainer>
-            <Confirm isChecked={isChecked} setIsChecked={setIsChecked} />
+                {/* <Modal open={currentModal === ModalType.POSTCODE} onClose={handlePostcodeModalClose}>
+                  <CustomDaumPostcode onComplete={handleComplete} />
+                </Modal> */}
+              </Box>
 
-            <Button disabled={disabled} size="lg" borderRadius="lg" fullWidth>
-              {isMutating ? <Spinner /> : <span>예약하기</span>}
+              {/* 4. 요청사항 */}
+              <Box p="lg" br="lg" shadow="dp03">
+                <Text size="lg">4. 요청사항 (선택)</Text>
+
+                <Input
+                  {...methods.register('body')}
+                  placeholder="예) 산책중에 아무거나 잘 삼켜서 주의해주셔야 해요."
+                  fullWidth
+                />
+              </Box>
+            </Flex>
+          </Box>
+
+          <BottomCTA>
+            <Button type="submit" size="lg" fullWidth>
+              예약하기
             </Button>
-          </ButtonContainer>
-        </Main>
-      </form>
-    </FormProvider>
+          </BottomCTA>
+        </form>
+      </FormProvider>
+    </>
   );
 }
-
-const Main = styled.main`
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-`;
-
-// TODO
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: auto;
-  overflow-y: auto;
-  height: 100%;
-  padding: ${({ theme }) => theme.space.xl};
-  gap: ${({ theme }) => theme.space.xl};
-`;
-
-// TODO
-const Reservation = styled.section`
-  display: flex;
-  flex-direction: column;
-  padding: ${({ theme }) => theme.space['2xl']};
-  background-color: ${({ theme }) => theme.colors.background.box.default.primary};
-  border-radius: ${({ theme }) => theme.space.md};
-  box-shadow: ${({ theme }) => theme.shadow.dp01};
-  gap: ${({ theme }) => theme.space.lg};
-`;
-
-const StyledTextField = styled(TextField)`
-  /* 라벨 */
-  .MuiInputLabel-root {
-    color: ${({ theme }) => theme.colors.text.primary};
-    ${({ theme }) => theme.typeScale.sm};
-  }
-
-  /* input 배경 */
-  .MuiOutlinedInput-root {
-    background-color: ${({ theme }) => theme.colors.background.input.primary};
-    border-radius: ${({ theme }) => theme.radius.sm};
-
-    &:hover {
-      background-color: ${({ theme }) => theme.colors.background.input.hover};
-    }
-  }
-
-  /* value */
-  .MuiOutlinedInput-input {
-    color: ${({ theme }) => theme.colors.text.primary};
-    ${({ theme }) => theme.typeScale.sm};
-  }
-
-  /* 포커스 상태 스타일 */
-  .Mui-focused .MuiOutlinedInput-input {
-    color: ${({ theme }) => theme.colors.text.primary};
-  }
-`;
-
-// TODO
-const ButtonContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  justify-content: center;
-  padding: ${({ theme }) => theme.space.xl};
-  background-color: ${({ theme }) => theme.colors.background.accent};
-  gap: ${({ theme }) => theme.space.sm};
-`;

@@ -12,7 +12,7 @@ import { fetcher, poster, updater } from '@/api';
 import { Title } from '@/styles/commonStyle';
 import Text from '@/components/styled/Text';
 import Flex from '@/components/styled/Flex';
-import FixedBottom from '@/components/FixedBottom';
+import FixedBottom from '@/components/BottomCTA';
 import Button from '@/components/styled/Button';
 
 interface JournalFormValue {

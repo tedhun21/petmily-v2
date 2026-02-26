@@ -16,7 +16,7 @@ export default function UsedPetsitterCard({ petsitter }: IProps) {
   const possibleTimeRange = timeRange(petsitter?.possibleStartTime ?? null, petsitter?.possibleEndTime ?? null);
 
   return (
-    <Link to={`/users/${petsitter.nickname}`}>
+    <Link to={`/users/${petsitter.id}`}>
       <ImageWrapper>
         <ImageCentered
           src={petsitter?.photo ? `${petsitter.photo}` : '/imgs/DefaultUserProfile.jpg'}
@@ -59,5 +59,5 @@ const ImageWrapper = styled(RoundedImageWrapper)`
   flex-shrink: 0;
   width: 60px;
   height: 60px;
-  border: 2px solid ${({ theme }) => theme.colors.line.box.highlight};
+  border: 2px solid ${({ theme }) => theme.colors.line.box.active};
 `;

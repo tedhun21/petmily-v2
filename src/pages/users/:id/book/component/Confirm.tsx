@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import styled from '@emotion/styled';
 import { FaRegCircleCheck, FaCircleCheck } from 'react-icons/fa6';
-import { Modal } from '@mui/material';
 
 import { SubTitle, Title } from '@/styles/commonStyle';
 import Text from '@/components/styled/Text';
@@ -33,7 +32,7 @@ export default function Confirm({ isChecked, setIsChecked }: ConfirmProps) {
         </TermsButton>
       </Flex>
 
-      <Modal open={open} onClose={handleClose}>
+      {/* <PortalModal open={open} onClose={handleClose}>
         <TermsContainer>
           <TextCenter style={{ textAlign: 'center' }}>
             <Title>안내사항</Title>
@@ -105,7 +104,7 @@ export default function Confirm({ isChecked, setIsChecked }: ConfirmProps) {
             확인했습니다
           </Button>
         </TermsContainer>
-      </Modal>
+      </PortalModal> */}
     </ConfirmContainer>
   );
 }

@@ -4,11 +4,14 @@ export interface CoreType {
   updatedAt: string;
 }
 
-export interface PaginationType {
-  page: number;
-  pageSize: number;
-  total: number;
-  totalPages: number;
+export interface OffsetResponse<T> {
+  results: T[];
+  pagination: { page: number; pageSize: number; total: number; totalPages: number };
+}
+
+export interface CursorResponse<T> {
+  results: T[];
+  pagination: { hasNextPage: boolean; nextCursor: { id: number; createdAt: string } };
 }
 
 export const DayOfWeek = {

@@ -1,19 +1,15 @@
-import { useEffect } from 'react';
-
+import { useEffect, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import styled from '@emotion/styled';
 import { useSearchParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 
 import DateBox from './Date/DateBox';
 import LocationBox from './Location/LocationBox';
 import StartEndTimeBox from './StartEndTime/StartEndTimeBox';
-import type { RootState } from '@/store';
-import { closeModal, ModalType, openModal } from '@/store/modalSlice';
 import { saveToRecentSearch } from '@/utils/localStorage';
-import { Divider } from '@/styles/commonStyle';
 import Flex from '@/components/styled/Flex';
 import Box from '@/components/styled/Box';
+import { css } from '@emotion/react';
 
 export type FormValues = {
   location: string | null;
@@ -22,10 +18,19 @@ export type FormValues = {
   endTime: string | null;
 };
 
+export const PopoverType = {
+  LOCATION: 'location',
+  DATE: 'date',
+  TIME: 'time',
+} as const;
+
+export type PopoverType = (typeof PopoverType)[keyof typeof PopoverType];
+
 export default function SearchBox() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const dispatch = useDispatch();
-  const { currentModal } = useSelector((state: RootState) => state.modal);
+  const parentRef = useRef<HTMLDivElement>(null);
+
+  const [activePopover, setActivePopover] = useState<PopoverType | null>(null);
 
   const methods = useForm<FormValues>({
     defaultValues: {
@@ -36,40 +41,7 @@ export default function SearchBox() {
     },
   });
 
-  const handleBoxClick = (e: React.MouseEvent, modalType: ModalType) => {
-    e.stopPropagation();
-
-    dispatch(openModal(modalType));
-  };
-
-  // null인 input으로 넘어가기
-  const handleSetValue = (field: keyof FormValues, value: string) => {
-    methods.setValue(field, value);
-
-    // 현재 폼의 모든 값 가져오기
-    const formValues = methods.getValues();
-
-    // 모든 필드가 채워져 있으면 setIsSelected를 null로 설정
-    const allFieldsFilled = Object.values(formValues).every((val) => val !== null);
-
-    if (allFieldsFilled) {
-      dispatch(closeModal());
-      return;
-    }
-
-    // 현재 값이 null이 아닐 때만 다음 필드로 이동
-    if (value !== null) {
-      const nextField = Object.entries(formValues).find(([key, val]) => key !== field && val === null)?.[0];
-
-      if (nextField) {
-        dispatch(openModal(nextField));
-      }
-    }
-  };
-
-  const selected = (modalType: ModalType | null) => {
-    return modalType !== null && modalType.startsWith('search_');
-  };
+  const focusNextField = () => {};
 
   const onSubmit = async (data: FormValues) => {
     // 검색 파라미터를 URL로 설정
@@ -99,17 +71,34 @@ export default function SearchBox() {
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)}>
-        <Container id="container" $selected={selected(currentModal)} p="xs" br="lg" shadow="dp02">
-          <Flex>
-            <LocationBox handleBoxClick={handleBoxClick} handleSetValue={handleSetValue} />
+        <Container ref={parentRef} $selected={!!activePopover} p="xs" br="lg" shadow="dp02">
+          <Flex
+            css={css`
+              & > * {
+                flex: 1;
+              }
+            `}
+          >
+            <LocationBox
+              parentRef={parentRef}
+              activePopover={activePopover}
+              setActivePopover={setActivePopover}
+              focusNextField={focusNextField}
+            />
 
-            <Divider $orientation="vertical" />
+            <DateBox
+              parentRef={parentRef}
+              activePopover={activePopover}
+              setActivePopover={setActivePopover}
+              focusNextField={focusNextField}
+            />
 
-            <DateBox handleBoxClick={handleBoxClick} handleSetValue={handleSetValue} />
-
-            <Divider $orientation="vertical" />
-
-            <StartEndTimeBox handleBoxClick={handleBoxClick} handleSetValue={handleSetValue} />
+            <StartEndTimeBox
+              parentRef={parentRef}
+              activePopover={activePopover}
+              setActivePopover={setActivePopover}
+              focusNextField={focusNextField}
+            />
           </Flex>
         </Container>
       </form>
@@ -123,16 +112,16 @@ const Container = styled(Box)<{ $selected: boolean }>`
   border: 1px solid ${({ theme }) => theme.colors.line.input.primary};
 `;
 
-export const InputBox = styled.div<{ $selected: boolean }>`
-  flex: 1;
-  padding: 8px;
+export const InputBox = styled.div<{ $selected: boolean; $isChildHovered?: boolean }>`
+  padding: 12px;
   background-color: ${({ $selected, theme }) => $selected && theme.colors.background.box.default.primary};
   border-radius: 20px;
   box-shadow: ${({ $selected, theme }) => $selected && theme.shadow.dp02};
   cursor: pointer;
 
   &:hover {
-    background-color: ${({ $selected, theme }) => !$selected && theme.colors.background.box.default.hover};
+    background-color: ${({ $selected, theme, $isChildHovered }) =>
+      !$selected && !$isChildHovered && theme.colors.background.box.default.hover};
   }
 `;
 
@@ -152,24 +141,8 @@ export const AddText = styled.span<{ $isClicked?: boolean }>`
   ${({ theme }) => theme.typeScale.sm};
 `;
 
-export const Modal = styled.div`
-  position: absolute;
-  top: 100%;
-  left: 0;
-  z-index: 1;
-  width: 100%;
-  margin-top: ${({ theme }) => theme.space.lg};
-`;
-
-export const ModalLayOut = styled.div`
-  display: flex;
-  width: 100%;
-  padding: ${({ theme }) => theme.space.xl};
+export const StyledPopover = styled.div`
   background-color: ${({ theme }) => theme.colors.background.box.default.primary};
-  border-radius: ${({ theme }) => theme.space['3xl']};
-  box-shadow: ${({ theme }) => theme.shadow.dp02};
-`;
-
-export const HalfModalLayOut = styled(ModalLayOut)`
-  width: 50%;
+  padding: ${({ theme }) => theme.space.lg};
+  border-radius: ${({ theme }) => theme.space.lg};
 `;

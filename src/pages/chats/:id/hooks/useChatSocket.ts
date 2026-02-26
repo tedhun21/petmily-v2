@@ -1,136 +1,121 @@
-import { useCallback, useContext, useEffect } from 'react';
-
-import type { ChatMember, ChatRoom, Message, PendingMessage } from '@/types/chat.type';
-
-import { AuthContext } from '@/components/contexts/AuthContext';
-import { SocketContext } from '@/components/contexts/SocketContext';
+import { useContext, useEffect, useCallback } from 'react';
+import { SocketContext } from '@/components/contexts/SocketProvider';
+import { AuthContext } from '@/components/contexts/AuthProvider';
+import type { AckPayload, Message, ChatMember, PendingMessage } from '@/types/chat.type';
 
 interface IProps {
-  chatRoom: ChatRoom | null;
-  meMember: ChatMember | null;
-  otherMembers: ChatMember[];
-  addPendingMessage: (tempMessage: PendingMessage) => void;
-  updatePendingMessageStatus: (tempId: string, status: 'error') => void;
+  chatRoomId: number | undefined;
+  meMember: ChatMember | undefined;
+  otherMembers: ChatMember[] | undefined;
+  updateMemberRead: (lastReadMessage: Message, readBy: number) => void;
+  addPendingMessage: (pendingMessage: PendingMessage) => void;
+  commitMessage: (tempId: string, serverMessage: Message) => void;
+  updatePendingMessageStatus: (tempId: string, status: 'pending' | 'error') => void;
   addIncomingMessage: (newMessage: Message) => void;
-  replaceMessage: (tempId: string, newMessage: Message) => void;
-  updateMemberRead: (payload: {
-    lastReadMessage: { id: number; chatRoom: { id: number }; createdAt: string };
-    readBy: number;
-  }) => void;
 }
 
-export type UseSocketReturn = {
-  sendMessage: (message: string, retryTempId?: string) => void;
-  markMessageAsRead: (messageId: number, messageCreatedAt: string) => void;
-};
-
-// 1. 메시지 송신
-// 2. 읽음 처리 서버 송신
-export default function useChatSocket({
-  chatRoom,
+export function useChatSocket({
+  chatRoomId,
   meMember,
   otherMembers,
+  updateMemberRead,
   addPendingMessage,
+  commitMessage,
   updatePendingMessageStatus,
   addIncomingMessage,
-  replaceMessage,
-  updateMemberRead,
 }: IProps) {
-  const { socketRef } = useContext(SocketContext);
-
+  const { socket } = useContext(SocketContext);
   const { refreshToken } = useContext(AuthContext);
 
   // 새 메시지 송신
   const sendMessage = useCallback(
-    (message: string, retryTempId?: string) => {
-      const socket = socketRef.current;
-      if (!socket || !chatRoom || !meMember) return;
+    (messageContent: string, retryTempId?: string) => {
+      if (!socket || !chatRoomId || !meMember || !otherMembers) return;
 
       const tempId = retryTempId || crypto.randomUUID();
-      const isRetry = !!retryTempId;
-
-      if (!isRetry) {
-        const tempMessage: PendingMessage = {
-          id: tempId,
+      if (!retryTempId) {
+        const optimisticMessage: PendingMessage = {
           tempId,
-          content: message,
-          status: 'pending',
+          content: messageContent,
           createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
           sender: meMember.user,
+          status: 'pending',
         };
-        addPendingMessage(tempMessage);
+        addPendingMessage(optimisticMessage);
       }
 
       const payload = {
-        chatRoomId: chatRoom.id,
+        chatRoomId,
         tempId,
-        opponentIds: otherMembers.map((other) => other.id),
-        content: message,
+        content: messageContent,
+        opponentIds: otherMembers.map((m) => m.user.id),
       };
 
-      socket.emit('chat:message:new', payload, async (ack: any) => {
-        if (ack.success) {
-          replaceMessage(tempId, ack.data);
+      socket.emit('chat:message:new', payload, async (ack: AckPayload) => {
+        if (ack.success && ack.data) {
+          commitMessage(tempId, ack.data);
         } else {
+          updatePendingMessageStatus(tempId, 'error');
           if (ack.error?.code === 'TOKEN_EXPIRED') {
-            try {
-              await refreshToken();
-              sendMessage(message, tempId);
-            } catch (e) {
-              updatePendingMessageStatus(tempId, 'error');
-            }
-          } else {
-            updatePendingMessageStatus(tempId, 'error');
+            await refreshToken();
+            sendMessage(messageContent, tempId);
           }
         }
       });
     },
     [
-      socketRef,
-      chatRoom,
+      socket,
+      chatRoomId,
       meMember,
       otherMembers,
       addPendingMessage,
-      replaceMessage,
+      commitMessage,
       updatePendingMessageStatus,
       refreshToken,
     ],
   );
 
-  // 읽음 처리 송신
-  const markMessageAsRead = useCallback(
+  // 읽음 상태 송신
+  const updateReadStatus = useCallback(
     (messageId: number, messageCreatedAt: string) => {
-      const socket = socketRef.current;
-      if (!socket || !chatRoom?.id || !messageId) return;
-      socket.emit('chat:read:mark', {
-        chatRoomId: chatRoom.id,
+      if (!socket) return;
+
+      const payload = {
+        chatRoomId,
         lastReadMessageId: messageId,
         lastReadMessageCreatedAt: messageCreatedAt,
-      });
+      };
+
+      // 송신
+      socket.emit('chat:read:mark', payload);
     },
-    [socketRef.current, chatRoom],
+    [socket, chatRoomId],
   );
 
-  // 채팅방 조인
+  // 방의 생명주기
   useEffect(() => {
-    const socket = socketRef.current;
+    if (!socket || !chatRoomId) return;
 
-    if (!socket || !chatRoom) return;
-    socket.emit('chat:room:join', { chatRoomId: chatRoom.id });
-  }, [socketRef.current, chatRoom]);
+    const joinRoom = () => {
+      socket.emit('chat:room:join', { chatRoomId });
+    };
+
+    joinRoom();
+    socket.on('connect', joinRoom);
+
+    return () => {
+      socket.off('connect', joinRoom);
+      socket.emit('chat:room:leave', { chatRoomId });
+    };
+  }, [socket, chatRoomId]);
 
   // 새 메시지 수신
   useEffect(() => {
-    const socket = socketRef.current;
+    if (!socket || !chatRoomId) return;
 
-    if (!socket || !meMember) return;
-
-    const handleNewMessage = (payload: { newMessage: Message }) => {
-      const { newMessage } = payload;
-      if (newMessage.sender.id !== meMember.user.id) {
-        addIncomingMessage(newMessage);
-      }
+    const handleNewMessage = (newMessage: Message) => {
+      if (newMessage?.sender?.id === meMember?.user?.id) return;
+      addIncomingMessage(newMessage);
     };
 
     socket.on('chat:room:message:new', handleNewMessage);
@@ -138,17 +123,22 @@ export default function useChatSocket({
     return () => {
       socket.off('chat:room:message:new', handleNewMessage);
     };
-  }, [socketRef.current, addIncomingMessage, meMember]);
+  }, [socket, chatRoomId, meMember?.user.id, addIncomingMessage]);
 
-  // 읽음 처리 수신
+  // 읽음 상태 수신
   useEffect(() => {
-    const socket = socketRef.current;
-    if (!socket) return;
+    if (!socket || !chatRoomId) return;
 
-    socket.on('chat:room:read:update', (payload) => {
-      updateMemberRead(payload);
-    });
-  }, [socketRef.current]);
+    const handleReadUpdate = ({ lastReadMessage, readBy }: { lastReadMessage: Message; readBy: number }) => {
+      updateMemberRead(lastReadMessage, readBy);
+    };
 
-  return { sendMessage, markMessageAsRead };
+    socket.on('chat:room:read:update', handleReadUpdate);
+
+    return () => {
+      socket.off('chat:room:read:update', handleReadUpdate);
+    };
+  }, [socket, chatRoomId, updateMemberRead]);
+
+  return { sendMessage, updateReadStatus };
 }

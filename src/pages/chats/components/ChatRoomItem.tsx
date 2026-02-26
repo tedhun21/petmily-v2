@@ -1,7 +1,6 @@
 import { useSelector } from 'react-redux';
 
 import type { RootState } from '@/store';
-import { selectNewMessagesByChatRoom } from '@/store/newMessageSlice';
 
 import styled from '@emotion/styled';
 import Flex from '@/components/styled/Flex';
@@ -18,18 +17,18 @@ interface ChatRoomItemProps {
 }
 
 export default function ChatRoomItem({ chatRoom }: ChatRoomItemProps) {
-  const newMessages = useSelector((state: RootState) => selectNewMessagesByChatRoom(state, chatRoom.id));
+  const newMessagesByChatRoom = useSelector((state: RootState) => state.newMessage.messagesByRoom[chatRoom.id]);
 
   const others = chatRoom.chatMembers.otherMembers;
 
   // 최신 메시지 추출
-  const newestMessage = newMessages[0];
+  const newestMessage = newMessagesByChatRoom?.[0];
 
   // 최신 메세지 내용 (새로운 메세지가 없으면 기존 lastMessage 사용)
   const lastMessage = newestMessage || chatRoom.lastMessage;
 
   // 읽지 않은 메세지 개수 (원래 unreadCount 값 + 새로 들어온 메세지 개수)
-  const unreadCount = (chatRoom.chatMembers.meMember?.unreadCount || 0) + newMessages?.length;
+  const unreadCount = (chatRoom.chatMembers.meMember?.unreadCount || 0) + (newMessagesByChatRoom?.length || 0);
 
   return (
     <Link to={`/chats/${chatRoom.id}`}>
@@ -56,7 +55,9 @@ export default function ChatRoomItem({ chatRoom }: ChatRoomItemProps) {
             <Text size="xs">{updatedAtAgo(lastMessage?.createdAt)}</Text>
             {unreadCount > 0 && (
               <NewMessage>
-                <Text size="xs">{unreadCount}</Text>
+                <Text size="xs" color="white">
+                  {unreadCount}
+                </Text>
               </NewMessage>
             )}
           </Flex>

@@ -1,7 +1,3 @@
-import dayjs from 'dayjs';
-
-import type { Message } from '@/types/chat.type';
-
 export const formatStatus = (status: string) => {
   switch (status) {
     case 'pending':
@@ -13,14 +9,4 @@ export const formatStatus = (status: string) => {
     case 'completed':
       return '완료됨';
   }
-};
-
-/**
- * 마지막으로 읽은 메시지와 지금 메시지의 비교
- */
-export const isMessageUnread = (target: Message, reference?: Message | null) =>
-  reference ? dayjs(target.createdAt).isAfter(reference.createdAt) : true;
-
-export const makeOpponentQuery = (opponentIds: string[]) => {
-  return opponentIds.map((id) => `opponentIds=${id}`).join('&');
 };

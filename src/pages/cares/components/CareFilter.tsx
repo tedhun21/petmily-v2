@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 
 import { fetcher } from '@/api';
 import type { RootState } from '@/store';
-import { setFilter, setMonth } from '@/store/contextSlice';
+import { setFilter, setMonth } from '@/store/slices/contextSlice';
 import { ReservationStatus } from '@/types/reservation.type';
 import type { ReservationStatusType } from '@/types/reservation.type';
 import Button from '@/components/styled/Button';

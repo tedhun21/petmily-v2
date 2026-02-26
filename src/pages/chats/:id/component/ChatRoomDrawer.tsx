@@ -9,7 +9,6 @@ import Text from '@/components/styled/Text';
 import Flex from '@/components/styled/Flex';
 import Box from '@/components/styled/Box';
 import { IconButton } from '@/components/styled/IconButtonAndLink';
-import { useChat } from '../contexts/ChatProvider';
 
 interface ChatRoomDrawerProps {
   isDrawerOpen: boolean;
@@ -17,8 +16,6 @@ interface ChatRoomDrawerProps {
 }
 
 export default function ChatRoomDrawer({ isDrawerOpen, setIsDrawerOpen }: ChatRoomDrawerProps) {
-  const { meMember, otherMembers } = useChat();
-
   return (
     <AnimatePresence>
       {isDrawerOpen && (
@@ -43,7 +40,7 @@ export default function ChatRoomDrawer({ isDrawerOpen, setIsDrawerOpen }: ChatRo
                 </IconButton>
               </Flex>
 
-              <div>
+              {/* <div>
                 <Flex alignItems="center">
                   <Title>채팅 참여자</Title>
                   <Text size="base" color="accent">
@@ -53,7 +50,7 @@ export default function ChatRoomDrawer({ isDrawerOpen, setIsDrawerOpen }: ChatRo
 
                 <Box as="ul" p="sm">
                   <Flex direction="column" gap="sm">
-                    <Link to={`/users/${meMember?.user.nickname}`}>
+                    <Link to={`/users/${meMember?.user.id}`}>
                       <Box p="sm">
                         <Flex as="li" alignItems="center" gap="sm">
                           <MemberImage>
@@ -67,7 +64,7 @@ export default function ChatRoomDrawer({ isDrawerOpen, setIsDrawerOpen }: ChatRo
                     </Link>
 
                     {otherMembers?.map((member: ChatMember) => (
-                      <Link to={`/users/${member.user.nickname}`} key={member.user?.id}>
+                      <Link to={`/users/${member.user.id}`} key={member.user?.id}>
                         <Box as="li" p="sm">
                           <Flex alignItems="center" gap="sm">
                             <MemberImage>
@@ -82,7 +79,7 @@ export default function ChatRoomDrawer({ isDrawerOpen, setIsDrawerOpen }: ChatRo
                     ))}
                   </Flex>
                 </Box>
-              </div>
+              </div> */}
 
               <div>
                 <span>채팅방 나가기</span>

@@ -18,7 +18,7 @@ export default function MySchedule() {
     return `/reservations?page=${pageIndex + 1}&pageSize=${PAGE_SIZE}`;
   };
 
-  const { data, size, setSize, isLoading } = useAuthSWRInfinite(getKey, fetcher);
+  const { data, size, setSize, isLoading, isValidating, error } = useAuthSWRInfinite(getKey, fetcher);
 
   const isEmpty = data?.[0]?.length === 0;
 
@@ -26,15 +26,15 @@ export default function MySchedule() {
   const isEnd = lastPage?.pagination ? lastPage.pagination.page >= lastPage.pagination.totalPages : false;
 
   useEffect(() => {
-    if (inView) {
-      setSize(size + 1);
+    if (inView && !isEnd && !isValidating && !error) {
+      setSize((prev) => prev + 1);
     }
-  }, [inView, setSize]);
+  }, [inView, setSize, isEnd, isValidating, error]);
 
-  if (isLoading) {
+  if (error) {
     return (
       <Flex justifyContent="center" alignItems="center">
-        <Spinner color="#279EFF" />
+        <span>Failed to load schedule.</span>
       </Flex>
     );
   }

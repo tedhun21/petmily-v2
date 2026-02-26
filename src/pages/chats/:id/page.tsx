@@ -1,13 +1,14 @@
-import ChatProvider from './contexts/ChatProvider';
 import ChatHeader from './component/ChatHeader';
 import ChatContainer from './component/ChatContainer';
 import MessageInput from './component/MessageInput';
 import styled from '@emotion/styled';
 
+import ChatProvider from './context/ChatProvider';
+
 export default function ChatPage() {
   return (
     <ChatProvider>
-      <Wrapper css={{ position: 'relative' }}>
+      <Wrapper>
         <ChatHeader />
         <ChatContainer />
         <MessageInput />

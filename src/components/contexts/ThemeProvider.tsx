@@ -1,11 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, createContext } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { ThemeProvider as EmotionThemeProvider, Global } from '@emotion/react';
 import { createTheme, ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 
 import { darkTheme, lightTheme } from '@/styles/theme';
-import { ThemeContext } from './ThemeContext';
 import { globalStyles } from '@/styles/globalStyles';
+
+interface ThemeContextType {
+  isDarkMode: boolean;
+  setIsDarkMode: (value: boolean) => void;
+}
+
+export const ThemeContext = createContext<ThemeContextType>({
+  isDarkMode: false,
+  setIsDarkMode: () => null,
+});
 
 const muiLightTheme = createTheme({ palette: { mode: 'light' } });
 const muiDarkTheme = createTheme({ palette: { mode: 'dark' } });
@@ -29,7 +38,7 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
     <ThemeContext.Provider value={{ isDarkMode, setIsDarkMode }}>
       <MuiThemeProvider theme={isDarkMode ? muiDarkTheme : muiLightTheme}>
         <EmotionThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
-          <Global styles={globalStyles} />
+          <Global styles={globalStyles(isDarkMode ? darkTheme : lightTheme)} />
           {children}
           <ToastContainer
             position="bottom-center"

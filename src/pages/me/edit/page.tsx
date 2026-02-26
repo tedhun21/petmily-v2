@@ -37,14 +37,15 @@ import Text from '@/components/styled/Text';
 import Box from '@/components/styled/Box';
 import Flex from '@/components/styled/Flex';
 import { ImageCentered } from '@/styles/commonStyle';
-import CustomPortalModal from '@/components/CustomPortalModal';
 import { IconButton } from '@/components/styled/IconButtonAndLink';
 import { colors } from '@/styles/colors';
-import FixedBottom from '@/components/FixedBottom';
 import Header from '@/components/headers/Header';
 import BackButton from '@/components/buttons/BackButton';
 import { FiTrash2 } from 'react-icons/fi';
 import ConfirmModal from '@/components/ConfirmModal';
+
+import BottomCTA from '@/components/BottomCTA';
+import Modal from '@/components/Modal';
 
 const schema = yup.object({
   nickname: yup
@@ -90,7 +91,7 @@ export default function EditMePage() {
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
-  const [isPostCodeModalOpen, setPostCodeModalOpen] = useState<boolean>(false);
+  const [isPostcodeOpen, setIsPostcodeOpen] = useState(false);
   const [newLocation, setNewLocation] = useState<string>('');
 
   const {
@@ -211,10 +212,6 @@ export default function EditMePage() {
     }
   };
 
-  const onToggleModal = () => {
-    setPostCodeModalOpen(true);
-  };
-
   const handleComplete = (data: PostcodeData) => {
     const { address, zonecode } = data;
 
@@ -225,7 +222,7 @@ export default function EditMePage() {
     setValue('address', address);
     setValue('zipcode', zonecode);
 
-    setPostCodeModalOpen(false);
+    setIsPostcodeOpen(false);
   };
 
   const handlePetSpecies = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -270,7 +267,6 @@ export default function EditMePage() {
     setValue('possibleLocations', updatedLocations);
   };
 
-  // 회원 정보 수정
   const onSubmit = async (data: FormValues) => {
     const { photo, possibleStartTime, possibleEndTime, ...restOfData } = data;
 
@@ -419,19 +415,21 @@ export default function EditMePage() {
             <InputWrapper>
               <label htmlFor="address">주소</label>
               <Flex direction="column">
-                <Input id="address" onClick={onToggleModal} {...register('address')} readOnly />
+                <Modal isOpen={isPostcodeOpen} setIsOpen={setIsPostcodeOpen}>
+                  <Modal.Trigger>
+                    <Input id="address" {...register('address')} readOnly />
+                  </Modal.Trigger>
+                  <Modal.Content>
+                    <CustomDaumPostcode onComplete={handleComplete} />
+                  </Modal.Content>
+                </Modal>
+
                 {errors.address && (
                   <Text size="sm" color="error">
                     {errors.address.message}
                   </Text>
                 )}
               </Flex>
-
-              {isPostCodeModalOpen && (
-                <CustomPortalModal onClose={() => setPostCodeModalOpen(false)} style={{ width: '400px' }}>
-                  <CustomDaumPostcode width="100%" maxHeight={600} onComplete={handleComplete} />
-                </CustomPortalModal>
-              )}
             </InputWrapper>
             <InputWrapper>
               <label htmlFor="detailAddress">상세 주소</label>
@@ -483,7 +481,7 @@ export default function EditMePage() {
                   <Flex direction="column" gap="xs">
                     <Flex gap="xs">
                       {possibleLocations?.map((location: string) => (
-                        <Box as="li" key={location} p="xs" br="md" bg="background.highlight">
+                        <Box as="li" key={location} p="xs" br="md" bgColor="background.accent">
                           <Flex alignItems="center" gap="xs">
                             <Text size="sm" color="white">
                               {location}
@@ -591,7 +589,7 @@ export default function EditMePage() {
           </Flex>
         </Box>
 
-        <FixedBottom hasSafeAreaPadding={true}>
+        <BottomCTA>
           <Box p="xl">
             <Flex direction="column" gap="md">
               <Button disabled={isMutating} type="submit" variant="primary" size="lg" fullWidth>
@@ -599,7 +597,7 @@ export default function EditMePage() {
               </Button>
             </Flex>
           </Box>
-        </FixedBottom>
+        </BottomCTA>
       </form>
     </>
   );

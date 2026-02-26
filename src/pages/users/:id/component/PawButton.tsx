@@ -6,6 +6,8 @@ import { fetcher, updater } from '@/api';
 import Spinner from '@/components/Spinner';
 import Text from '@/components/styled/Text';
 import Flex from '@/components/styled/Flex';
+import Button from '@/components/styled/Button';
+import { toast } from 'react-toastify';
 
 interface IProps {
   userId: number | null;
@@ -26,7 +28,7 @@ export default function PawButton({ userId }: IProps) {
   });
 
   const { isMutating, trigger } = useAuthSWRMutation('/users/me/paws', updater, {
-    onSuccess: (data: any) => {
+    onSuccess: (data: { message: 'pawed' | 'unpawed' }) => {
       if (data.message === 'pawed') {
         setIsPawed(true);
       } else if (data.message === 'unpawed') {
@@ -43,11 +45,13 @@ export default function PawButton({ userId }: IProps) {
     };
     try {
       await trigger(formData);
-    } catch (e) {}
+    } catch {
+      toast.error('실패했습니다. 다시 시도 해주세요');
+    }
   };
 
   return (
-    <button onClick={handlePaw}>
+    <Button onClick={handlePaw} fullWidth>
       {isMutating && isLoading ? (
         <Spinner />
       ) : isPawed ? (
@@ -61,6 +65,6 @@ export default function PawButton({ userId }: IProps) {
           <PiPawPrintFill size="24px" />
         </Flex>
       )}
-    </button>
+    </Button>
   );
 }

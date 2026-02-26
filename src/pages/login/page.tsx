@@ -8,6 +8,7 @@ import { isAxiosError } from 'axios';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { AuthContext } from '@/components/contexts/AuthProvider';
 
 import { poster } from '@/api';
 import GoogleOAuthButton from '@/components/buttons/OAuthButton';
@@ -19,7 +20,6 @@ import Flex from '@/components/styled/Flex';
 import Link from '@/components/styled/Link';
 import Box from '@/components/styled/Box';
 import { Input } from '@/components/styled/Input';
-import { AuthContext } from '@/components/contexts/AuthContext';
 import { Divider } from '@/styles/commonStyle';
 
 const schema = yup.object().shape({

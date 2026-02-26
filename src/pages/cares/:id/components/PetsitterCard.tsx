@@ -40,7 +40,7 @@ export default function PetsitterCard({ petsitter }: PetsitterCardProps) {
             <Link to={`/chats/temp?${params.toString()}`} type="text" size="sm">
               채팅 하기
             </Link>
-            <Link to={`/users/${petsitter?.nickname}`} type="text" size="sm">
+            <Link to={`/users/${petsitter?.id}`} type="text" size="sm">
               프로필 보기
             </Link>
           </Flex>
@@ -61,7 +61,7 @@ export default function PetsitterCard({ petsitter }: PetsitterCardProps) {
             {petsitter?.possibleDays?.map((day: string, index: number) => {
               const matchedDay = weekdays.find((weekday) => weekday.value === day);
               return (
-                <Box as="li" key={index} px="sm" py="xs" bg="background.box.accent.primary" br="lg">
+                <Box as="li" key={index} px="sm" py="xs" bgColor="background.box.accent.primary" br="lg">
                   <Text size="sm" color="white">
                     {matchedDay?.label}
                   </Text>
@@ -82,5 +82,5 @@ export default function PetsitterCard({ petsitter }: PetsitterCardProps) {
 const PetsitterImage = styled(RoundedImageWrapper)`
   width: 100px;
   height: 100px;
-  border: 2px solid ${({ theme }) => theme.colors.line.box.highlight};
+  border: 2px solid ${({ theme }) => theme.colors.line.box.active};
 `;

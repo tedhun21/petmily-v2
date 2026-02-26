@@ -10,7 +10,7 @@ export const saveToRecentSearch = (key: string, data: string) => {
   const currentData = localStorage.getItem(key);
   const current: SearchItem[] = currentData ? JSON.parse(currentData) : [];
 
-  const exist = current.some((search: any) => search.name === data);
+  const exist = current.some((search: SearchItem) => search.name === data);
   if (exist) return;
 
   if (current.length > 5) {
@@ -36,7 +36,7 @@ export const deleteRecentSearch = (key: string, id: number) => {
   const currentData = localStorage.getItem(key);
   const current = currentData ? JSON.parse(currentData) : [];
 
-  const filtered = current.filter((search: any) => search.id !== id);
+  const filtered = current.filter((search: SearchItem) => search.id !== id);
 
   if (filtered.length === 0) {
     localStorage.removeItem(key);

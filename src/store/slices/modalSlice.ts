@@ -1,13 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-export enum ModalType {
-  ADDRESS = 'address',
-  ME_BUTTON = 'me_button',
-  NOTIFICATION = 'notification',
-  SEARCH_LOCATION = 'search_location',
-  SEARCH_DATE = 'search_date',
-  SEARCH_TIME = 'search_time',
-}
+export const ModalType = {
+  POSTCODE: 'postcode',
+} as const;
+
+export type ModalType = (typeof ModalType)[keyof typeof ModalType];
 
 export interface ModalState {
   currentModal: ModalType | null;

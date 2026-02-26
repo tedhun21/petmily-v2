@@ -1,7 +1,7 @@
+import { Link } from 'react-router-dom';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import type { Theme } from '@/styles/theme';
-import { Link } from 'react-router-dom';
 
 type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 type Variant = 'fill' | 'clear' | 'border';
@@ -44,7 +44,6 @@ const variantStyles = (theme: Theme, variant: StyleProps['variant'] = 'fill', bg
           filter: ${dark ? 'brightness(1.1)' : 'brightness(0.9)'};
         }
       `;
-
     case 'clear':
       return css`
         background-color: transparent;

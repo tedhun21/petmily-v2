@@ -9,6 +9,7 @@ import Spinner from '@/components/Spinner';
 import Box from '@/components/styled/Box';
 import Flex from '@/components/styled/Flex';
 import type { Petsitter } from '@/types/user.type';
+import type { OffsetResponse } from '@/types/common.type';
 
 const PAGE_SIZE = 10;
 
@@ -17,7 +18,7 @@ export default function Results() {
 
   const { ref, inView } = useInView();
 
-  const getKey = (pageIndex: number, previousPageData: any) => {
+  const getKey = (pageIndex: number, previousPageData: OffsetResponse<Petsitter> | null) => {
     if (!searchParams || Array.from(searchParams).length === 0) return null;
 
     if (previousPageData && previousPageData.results.length === 0) return null;
@@ -25,22 +26,22 @@ export default function Results() {
     return `/users/petsitters/possible?${searchParams}&page=${pageIndex + 1}&pageSize=${PAGE_SIZE}`;
   };
 
-  const { isLoading, isValidating, data, setSize } = useSWRInfinite(getKey, fetcher);
+  const { isLoading, isValidating, data, setSize, error } = useSWRInfinite(getKey, fetcher);
 
-  const isEmpty = data?.[0]?.results?.length === 0;
+  // const isEmpty = data?.[0]?.results?.length === 0;
   const lastPage = data?.[data.length - 1];
   const isEnd = lastPage?.pagination ? lastPage.pagination.page >= lastPage.pagination.totalPages : false;
 
   useEffect(() => {
-    if (inView && !isEnd && !isValidating) {
+    if (inView && !isEnd && !isValidating && !error) {
       setSize((prev) => prev + 1);
     }
-  }, [inView, isEnd, isValidating, setSize]);
+  }, [inView, isEnd, isValidating, setSize, error]);
 
-  if (isEmpty) {
+  if (error) {
     return (
       <Flex justifyContent="center" alignItems="center">
-        <span>펫시터를 찾을 수 없습니다</span>
+        <span>Failed to load search results.</span>
       </Flex>
     );
   }

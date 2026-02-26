@@ -34,7 +34,7 @@ export default function Button({ children, size, loading, disabled, ...rest }: B
 }
 
 const StyledButton = styled.button<StyleProps>`
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 500;

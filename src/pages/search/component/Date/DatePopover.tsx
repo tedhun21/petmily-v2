@@ -5,69 +5,58 @@ import dayjs from 'dayjs';
 import styled from '@emotion/styled';
 import { ko } from 'date-fns/locale';
 
-import { type FormValues, ModalLayOut } from '../SearchBox';
-
-interface IProps {
-  handleSetValue: (field: keyof FormValues, value: string) => void;
-}
-
-export default function DateModal({ handleSetValue }: IProps) {
+export default function DatePopover() {
   const { watch, control } = useFormContext();
   const selectedDate = watch('date');
 
   return (
-    <ModalLayOut>
-      <DatepickerWrapper onClick={(e) => e.stopPropagation()}>
-        <Controller
-          control={control}
-          name="date"
-          render={({ field }) => (
-            <DatePicker
-              locale={ko}
-              dateFormatCalendar="yyyy년 MM월"
-              selected={selectedDate ? new Date(selectedDate) : null}
-              onChange={(date: Date | null) => {
-                field.onChange(date ? dayjs(date).format('YYYY-MM-DD') : null);
-                handleSetValue('date', dayjs(date).format('YYYY-MM-DD'));
-              }}
-              minDate={new Date()}
-              maxDate={new Date(new Date().setMonth(new Date().getMonth() + 2))}
-              inline
-            />
-          )}
-        />
-      </DatepickerWrapper>
-    </ModalLayOut>
+    <DatepickerWrapper onClick={(e) => e.stopPropagation()}>
+      <Controller
+        control={control}
+        name="date"
+        render={({ field }) => (
+          <DatePicker
+            locale={ko}
+            dateFormatCalendar="yyyy년 MM월"
+            selected={selectedDate ? new Date(selectedDate) : null}
+            onChange={(date: Date | null) => field.onChange(date ? dayjs(date).format('YYYY-MM-DD') : null)}
+            minDate={new Date()}
+            maxDate={new Date(new Date().setMonth(new Date().getMonth() + 2))}
+            inline
+          />
+        )}
+      />
+    </DatepickerWrapper>
   );
 }
 
 const DatepickerWrapper = styled.div`
   width: 100%;
-  height: 400px;
+  height: 100%;
 
-  .react-datepicker {
+  & .react-datepicker {
     width: 100%;
     height: 100%;
     background-color: transparent;
     border: none;
     color: inherit;
 
-    .react-datepicker__month-container {
+    & .react-datepicker__month-container {
       width: 100%;
       height: 100%;
 
-      .react-datepicker__header {
+      & .react-datepicker__header {
         height: 15%;
         background-color: transparent;
         border: none;
 
-        .react-datepicker__current-month {
+        & .react-datepicker__current-month {
           color: inherit;
           ${({ theme }) => theme.typeScale.base};
         }
       }
 
-      .react-datepicker__day-names {
+      & .react-datepicker__day-names {
         display: flex;
         justify-content: center;
 
@@ -77,13 +66,13 @@ const DatepickerWrapper = styled.div`
         }
       }
 
-      .react-datepicker__month {
+      & .react-datepicker__month {
         display: flex;
         flex-direction: column;
         justify-content: space-around;
         height: 85%;
 
-        .react-datepicker__week {
+        & .react-datepicker__week {
           display: flex;
           justify-content: center;
 
@@ -91,27 +80,29 @@ const DatepickerWrapper = styled.div`
             color: inherit;
           }
 
-          .react-datepicker__day--selected,
-          .react-datepicker__day--in-range {
+          & .react-datepicker__day--selected,
+          & .react-datepicker__day--in-range {
             /* 선택된 날짜 */
             background-color: ${({ theme }) => theme.colors.background.accent} !important;
             border-radius: 50%;
             color: ${({ theme }) => theme.colors.text.white};
           }
 
-          .react-datepicker__day--today {
+          & .react-datepicker__day--today {
             /* 오늘 날짜 */
             background-color: transparent;
+            border: 1px solid ${({ theme }) => theme.colors.line.box.primary};
+            border-radius: 50%;
           }
 
-          .react-datepicker__day--disabled {
+          & .react-datepicker__day--disabled {
             /* 비활성화된 날짜 */
             color: ${({ theme }) => theme.colors.text.secondary};
             text-decoration: line-through;
             cursor: default;
           }
 
-          .react-datepicker__day {
+          & .react-datepicker__day {
             display: flex;
             justify-content: center;
             align-items: center;

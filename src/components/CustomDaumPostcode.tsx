@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef } from 'react';
-import { ThemeContext } from './contexts/ThemeContext';
+import { ThemeContext } from './contexts/ThemeProvider';
 
 // -------------------------------------------------------------------
 // 1. Daum Postcode API가 반환하는 주소 데이터 타입 정의

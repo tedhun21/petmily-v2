@@ -3,6 +3,7 @@ import type { User } from './user.type';
 
 export type ChatUser = Pick<User, 'id' | 'nickname' | 'photo' | 'role'>;
 
+// --- 기존 인터페이스 유지 ---
 export interface ChatMember extends CoreType {
   user: ChatUser;
   unreadCount: number | null;
@@ -23,10 +24,19 @@ export interface Message extends CoreType {
   chatRoom: ChatRoom;
 }
 
-export interface PendingMessage extends Omit<CoreType, 'id'> {
-  id: string;
+export interface PendingMessage {
   tempId: string;
   content: string;
   sender: ChatUser;
   status: 'pending' | 'error';
+  createdAt: string;
+}
+
+export type ChatMessage = Message | PendingMessage;
+
+export interface AckPayload {
+  success: boolean;
+  data: Message;
+  tempId: string;
+  error?: { code: string; message: string };
 }

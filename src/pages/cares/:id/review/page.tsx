@@ -14,7 +14,7 @@ import HoverRating from '@/components/HoverRating';
 import Button from '@/components/styled/Button';
 import Text from '@/components/styled/Text';
 import Flex from '@/components/styled/Flex';
-import FixedBottom from '@/components/FixedBottom';
+import FixedBottom from '@/components/BottomCTA';
 import { IconButton } from '@/components/styled/IconButtonAndLink';
 import Header from '@/components/headers/Header';
 

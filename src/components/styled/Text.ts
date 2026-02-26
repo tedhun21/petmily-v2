@@ -9,11 +9,7 @@ type TextProps = {
 };
 
 const Text = styled.span<TextProps>`
-  color: ${({ theme, color }) => {
-    if (typeof color === 'string' && color.includes('.')) {
-      return get(theme.colors, color) || color;
-    }
-  }};
+  color: ${({ theme, color }) => (typeof color === 'string' && color.includes('.') ? get(theme.colors, color) : color)};
   font-weight: ${({ theme, weight = 'medium' }) => theme.fontWeight[weight]};
   ${({ theme, size = 'base' }) => theme.typeScale[size]};
 `;

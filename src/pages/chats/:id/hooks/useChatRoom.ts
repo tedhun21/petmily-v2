@@ -3,82 +3,52 @@ import { useNavigate } from 'react-router-dom';
 
 import { fetcher } from '@/api';
 import { useAuthSWR } from '@/hooks/authSWR';
-import { makeOpponentQuery } from '@/utils/misc';
-import type { ChatMember, ChatRoom } from '@/types/chat.type';
+import type { ChatMember, ChatRoom, Message } from '@/types/chat.type';
 
 interface IProps {
-  chatRoomId?: string | null;
-  opponentIds?: string[] | null;
+  chatRoomId: number | undefined;
+  opponentIds: string[];
 }
 
 export interface UseChatRoomReturn {
-  chatRoom: ChatRoom;
-  meMember: ChatMember;
-  otherMembers: ChatMember[];
-  updateMemberRead: (payload: {
-    lastReadMessage: { id: number; chatRoom: { id: number }; createdAt: string };
-    readBy: number;
-  }) => void;
+  chatRoom?: ChatRoom;
+  meMember?: ChatMember;
+  otherMembers?: ChatMember[];
+  updateMemberRead: (lastReadMessage: Message, readBy: number) => void;
 }
 
-export default function useChatRoom({ chatRoomId, opponentIds }: IProps): UseChatRoomReturn {
+export default function useChatRoom({ chatRoomId, opponentIds }: IProps) {
   const navigate = useNavigate();
 
-  const { data: chatRoom, mutate } = useAuthSWR(
-    chatRoomId
-      ? `/chats/${chatRoomId}`
-      : opponentIds?.length
-        ? `/chats/by-users?${makeOpponentQuery(opponentIds)}`
-        : null,
-    fetcher,
-  );
+  const getKey = chatRoomId
+    ? `/chats/${chatRoomId}`
+    : opponentIds.length > 0
+      ? `/chats/by-users?${opponentIds.map((id) => `opponentIds=${id}`).join('&')}`
+      : null;
 
-  const meMember: ChatMember = chatRoom?.chatMembers.meMember;
-  const otherMembers: ChatMember[] = chatRoom?.chatMembers.otherMembers;
+  const { data: chatRoom, mutate } = useAuthSWR<ChatRoom>(getKey, fetcher);
+
+  const meMember = chatRoom?.chatMembers.meMember;
+  const otherMembers = chatRoom?.chatMembers.otherMembers;
 
   const updateMemberRead = useCallback(
-    ({
-      lastReadMessage,
-      readBy,
-    }: {
-      lastReadMessage: { id: number; chatRoom: { id: number }; createdAt: string };
-      readBy: number;
-    }) => {
+    (lastReadMessage: Message, readBy: number) => {
       mutate(
-        (prevChatRoom: ChatRoom | undefined) => {
-          if (!prevChatRoom) return prevChatRoom;
+        (prev) => {
+          if (!prev) return prev;
 
-          // Check if the update is for the current user (me)
-          if (prevChatRoom.chatMembers.meMember.user.id === readBy) {
-            const updatedMe = {
-              ...prevChatRoom.chatMembers.meMember,
-              lastReadMessage,
-            };
-            return {
-              ...prevChatRoom,
-              chatMembers: {
-                ...prevChatRoom.chatMembers,
-                meMember: updatedMe,
-              },
-            };
-          }
+          const { meMember, otherMembers } = prev.chatMembers;
 
-          // If not for me, check other members
-          const updatedOthers = prevChatRoom.chatMembers.otherMembers.map((member: ChatMember) => {
-            if (member.user.id === readBy) {
-              return {
-                ...member,
-                lastReadMessage,
-              };
-            }
-            return member;
-          });
+          const isMe = meMember.user.id === readBy;
 
           return {
-            ...prevChatRoom,
+            ...prev,
             chatMembers: {
-              ...prevChatRoom.chatMembers,
-              otherMembers: updatedOthers,
+              ...prev.chatMembers,
+              meMember: isMe ? { ...meMember, lastReadMessage } : meMember,
+              otherMembers: isMe
+                ? otherMembers
+                : otherMembers.map((m) => (m.user.id === readBy ? { ...m, lastReadMessage } : m)),
             },
           };
         },
@@ -89,10 +59,12 @@ export default function useChatRoom({ chatRoomId, opponentIds }: IProps): UseCha
   );
 
   useEffect(() => {
-    if (chatRoom?.id && chatRoomId !== chatRoom.id) {
+    if (!chatRoom) return;
+
+    if (chatRoom.id !== Number(chatRoomId)) {
       navigate(`/chats/${chatRoom.id}`, { replace: true });
     }
-  }, [chatRoom?.id, navigate]);
+  }, [chatRoom, chatRoomId, navigate]);
 
   return { chatRoom, meMember, otherMembers, updateMemberRead };
 }

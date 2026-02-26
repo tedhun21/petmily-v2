@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { useState } from 'react';
 import { FaXmark } from 'react-icons/fa6';
 import { FiSearch } from 'react-icons/fi';
 import styled from '@emotion/styled';
@@ -11,7 +11,7 @@ interface SearchInputProps {
 export default function SearchInput({ input, setInput }: SearchInputProps) {
   const [isFocused, setIsFocused] = useState(false);
 
-  const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.currentTarget.value);
   };
 
@@ -43,17 +43,17 @@ const InputSection = styled.section<{ $isFocused: boolean }>`
   align-items: center;
   padding: ${({ theme }) => theme.space.sm};
   background-color: ${({ theme }) => theme.colors.background.box.default.primary};
-  border: 2px solid ${({ theme }) => theme.colors.line.box.highlight};
+  border: 2px solid ${({ theme }) => theme.colors.line.box.active};
   border-radius: ${({ theme }) => theme.radius.lg};
   gap: ${({ theme }) => theme.space.sm};
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.background.box.default.hover};
-    border-color: ${({ theme }) => theme.colors.line.box.highlight};
+    border-color: ${({ theme }) => theme.colors.line.box.active};
   }
 
   &:focus-within {
-    border-color: ${({ theme }) => theme.colors.line.box.highlight};
+    border-color: ${({ theme }) => theme.colors.line.box.active};
   }
 `;
 

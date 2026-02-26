@@ -6,10 +6,10 @@ import Flex from '@/components/styled/Flex';
 
 interface LocationCapsuleContainerProps {
   data: string[];
-  handleLocationClick: (searchName: string) => void;
+  handleSetValue: (value: string, search: boolean) => void;
 }
 
-export default function LocationCapsuleContainer({ data, handleLocationClick }: LocationCapsuleContainerProps) {
+export default function LocationCapsuleContainer({ data, handleSetValue }: LocationCapsuleContainerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [columnCount, setColumnCount] = useState(3); // 기본값 3
 
@@ -39,7 +39,7 @@ export default function LocationCapsuleContainer({ data, handleLocationClick }: 
       <Text size="xs">서울</Text>
       <List $columnCount={columnCount}>
         {data.map((location: string) => (
-          <Button key={location} onClick={() => handleLocationClick(location)}>
+          <Button key={location} onClick={() => handleSetValue(location, false)}>
             {location}
           </Button>
         ))}

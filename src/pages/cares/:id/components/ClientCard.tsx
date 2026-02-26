@@ -14,9 +14,7 @@ interface ClientCardProps {
 export default function ClientCard({ client }: ClientCardProps) {
   const opponentIds = [client?.id];
   const params = new URLSearchParams();
-  if (client?.id !== undefined) {
-    opponentIds.forEach((id) => params.append('opponentIds', id.toString())); // opponentIds=1&opponentIds=2
-  }
+  params.set('opponentIds', opponentIds.sort().join(','));
 
   return (
     <Box p="xl" br="lg" shadow="dp03">
@@ -44,5 +42,5 @@ export default function ClientCard({ client }: ClientCardProps) {
 const ClientImage = styled(RoundedImageWrapper)`
   width: 80px;
   height: 80px;
-  border: 2px solid ${({ theme }) => theme.colors.line.box.highlight};
+  border: 2px solid ${({ theme }) => theme.colors.line.box.active};
 `;

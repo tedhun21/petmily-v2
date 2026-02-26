@@ -7,15 +7,15 @@ import Button from '@/components/styled/Button';
 
 interface IProps {
   data: string[];
-  handleLocationClick: (location: string) => void;
+  handleSetValue: (value: string, search: boolean) => void;
 }
 
-export default function SuggestLocations({ data, handleLocationClick }: IProps) {
+export default function SuggestLocations({ data, handleSetValue }: IProps) {
   return (
     <Flex as="li" direction="column">
       {data?.map((location: string, index: number) => (
-        <Button key={index} onClick={() => handleLocationClick(location)}>
-          <Box p="sm" bg="box.default.primary" br="md">
+        <Button key={index} onClick={() => handleSetValue(location, false)}>
+          <Box p="sm" bgColor="box.default.primary" br="md">
             <HiOutlineLocationMarker size="20px" />
           </Box>
           <Text size="sm" color="white">

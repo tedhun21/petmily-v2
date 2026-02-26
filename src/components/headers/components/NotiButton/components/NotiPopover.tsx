@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
-import { useInView } from 'framer-motion';
+
 import styled from '@emotion/styled';
 import { useSWRConfig } from 'swr';
 
@@ -11,43 +11,41 @@ import NotiItem from './NotiItem';
 import Spinner from '@/components/Spinner';
 import Flex from '@/components/styled/Flex';
 import type { RootState } from '@/store';
-import { ModalType } from '@/store/modalSlice';
+
 import { useAuthSWRInfinite, useAuthSWRMutation } from '@/hooks/authSWR';
 import { fetcher, updater } from '@/api';
-import { clearNewNotifications } from '@/store/notificationSlice';
+import { clearNewNotifications } from '@/store/slices/notificationSlice';
 import type { Notification } from '@/types/notification.type';
+import { useInView } from 'react-intersection-observer';
+import type { OffsetResponse } from '@/types/common.type';
 
-export default function NotiModal() {
+export default function NotiPopover() {
   const pageSize = 10;
   const today = dayjs().format('YYYY-MM-DD');
   const dispatch = useDispatch();
   const { mutate } = useSWRConfig();
 
-  const { currentModal } = useSelector((state: RootState) => state.modal);
   const { newNotifications } = useSelector((state: RootState) => state.notification);
 
   const listRef = useRef<HTMLUListElement>(null);
-  const moreLoadRef = useRef<HTMLDivElement>(null);
-  const isMoreLoadInView = useInView(moreLoadRef, {
-    root: currentModal === ModalType.NOTIFICATION ? listRef : undefined,
-    once: false,
-  });
+
+  const { ref: moreLoadRef, inView } = useInView();
 
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [readNotificationIds, setReadNotificationIds] = useState<number[]>([]);
 
-  const getKey = (pageIndex: number, previousPageData: any) => {
+  const getKey = (pageIndex: number, previousPageData: OffsetResponse<Notification> | null) => {
     if (previousPageData && !previousPageData.results.length) return null;
     return `/notifications?page=${pageIndex + 1}&pageSize=${pageSize}&date=${today}`;
   };
 
   // 유저의 알림 가져오기
-  const { isLoading, data, setSize } = useAuthSWRInfinite(getKey, fetcher);
+  const { isLoading, isValidating, data, setSize, error } = useAuthSWRInfinite(getKey, fetcher);
 
   // 모달 닫힐때 알림 전체적으로 읽기
   const { trigger: markRead } = useAuthSWRMutation('/notifications/read', updater);
 
-  const isEmpty = data?.[0]?.results?.length === 0;
+  // const isEmpty = data?.[0]?.results?.length === 0;
   const isEnd = data && data[data.length - 1]?.results?.length < pageSize;
 
   const onReadClick = (notificationId: number) => {
@@ -73,10 +71,10 @@ export default function NotiModal() {
   };
 
   useEffect(() => {
-    if (isMoreLoadInView) {
+    if (inView && !isEnd && !isValidating && !error) {
       setSize((prev) => prev + 1);
     }
-  }, [isMoreLoadInView]);
+  }, [inView, isEnd, isValidating, setSize, error]);
 
   // 알림 data 평탄화
   useEffect(() => {
@@ -109,23 +107,23 @@ export default function NotiModal() {
       dispatch(clearNewNotifications());
       mutate('/notifications/unreadCount');
     };
-  }, [readNotificationIds]);
+  }, [readNotificationIds, dispatch, markRead, mutate]);
+
+  if (error) {
+    return (
+      <Background>
+        <Flex justifyContent="center" alignItems="center">
+          <span>Failed to load notifications.</span>
+        </Flex>
+      </Background>
+    );
+  }
 
   if (isLoading) {
     return (
       <Background>
         <Flex justifyContent="center" alignItems="center">
           <Spinner color="#279EFF" />
-        </Flex>
-      </Background>
-    );
-  }
-
-  if (isEmpty) {
-    return (
-      <Background>
-        <Flex justifyContent="center" alignItems="center">
-          <div>알림이 없습니다</div>
         </Flex>
       </Background>
     );

@@ -31,7 +31,7 @@ import Box from '@/components/styled/Box';
 import { colors } from '@/styles/colors';
 import Text from '@/components/styled/Text';
 import Button from '@/components/styled/Button';
-import FixedBottom from '@/components/FixedBottom';
+import FixedBottom from '@/components/BottomCTA';
 import Header from '@/components/headers/Header';
 import BackButton from '@/components/buttons/BackButton';
 import { FiTrash2 } from 'react-icons/fi';
